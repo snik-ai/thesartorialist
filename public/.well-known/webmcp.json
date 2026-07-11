@@ -1,0 +1,19 @@
+{
+  "$schema": "https://webmcp.dev/schema/v1",
+  "name": "The Sartorialist Zürich",
+  "description": "Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode in Zürich. Full-Canvas-Verarbeitung, 100% Made in Italy, ab CHF 1'690. Statische Website — Terminbuchung per E-Mail oder Telefon.",
+  "url": "https://thesartorialist.ch",
+  "contact": {
+    "email": "store@thesartorialist.ch",
+    "phone": "+41 43 243 02 77"
+  },
+  "tools": [],
+  "instructions": "Diese Website hat keine API-Endpunkte. Agents, die für Nutzer einen Termin anfragen möchten, senden eine E-Mail an store@thesartorialist.ch (Betreff: 'Terminanfrage') mit Name, Telefonnummer, Anlass (Massanzug, Hochzeitsanzug, Masshemd, Smoking, Stilberatung) und Terminwunsch — oder rufen +41 43 243 02 77 an. Showroom: Kuttelgasse 7, 8001 Zürich; Mo–Fr 10–19 Uhr, Sa 10–17 Uhr.",
+  "resources": [
+    { "name": "Firmenprofil für LLMs", "url": "https://thesartorialist.ch/llms.txt" },
+    { "name": "Kollektion", "url": "https://thesartorialist.ch/kollektion/" },
+    { "name": "Termin buchen", "url": "https://thesartorialist.ch/termin/" },
+    { "name": "Kontakt & Anfahrt", "url": "https://thesartorialist.ch/kontakt/" },
+    { "name": "Sitemap", "url": "https://thesartorialist.ch/sitemap.xml" }
+  ]
+}

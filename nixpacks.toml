@@ -1,0 +1,13 @@
+# Coolify / Nixpacks — statischer Next.js-Export, ausgeliefert via `serve`.
+# Kein SPA-Flag (-s): trailingSlash-Export erzeugt echte HTML-Dateien pro Route.
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npx serve out -l 3000"

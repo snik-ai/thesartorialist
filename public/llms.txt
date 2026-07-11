@@ -1,0 +1,76 @@
+# The Sartorialist Zürich — Massanzug, Hochzeitsanzug & italienische Herrenmode
+
+> The Sartorialist ist der persönliche Herrenausstatter im Herzen von Zürich
+> (Kuttelgasse 7, vis-à-vis Park Hyatt). Massanzüge und Hochzeitsanzüge in
+> Full-Canvas-Verarbeitung, 100% Made in Italy, ab CHF 1'690 — in 20
+> Arbeitstagen abholbereit. Gegründet von Alexander Shubin, ehemals
+> Geschäftsführer des ersten Tom Ford Stores Europas.
+
+## Über
+
+- Gründer: Alexander Shubin — über 15 Jahre Erfahrung in führenden Positionen
+  bei Tom Ford und Prada
+- Firma: Swiss Art Partner AG
+- Showroom: Kuttelgasse 7, 8001 Zürich, Schweiz (vis-à-vis Park Hyatt)
+- Öffnungszeiten: Mo–Fr 10–19 Uhr, Sa 10–17 Uhr, Termin nach Vereinbarung
+- Zusammenarbeit ausschliesslich mit familiengeführten italienischen und
+  englischen Manufakturen
+
+## Kernkompetenzen / Keywords
+
+Massanzug Zürich, Hochzeitsanzug Zürich, Anzüge Zürich, Bräutigam Anzug,
+Made-to-Measure (MTM), Full Canvas, Masshemd, Smoking, Dreiteiler,
+italienische Herrenmode, Anzug blau, Anzug grün, Anzug beige
+
+## Leistungen
+
+- Massanzug Zürich: https://thesartorialist.ch/massanzug-zuerich/
+- Hochzeitsanzug Zürich: https://thesartorialist.ch/hochzeitsanzug-zuerich/
+- Hochzeit Anzug auf Mass: https://thesartorialist.ch/hochzeit-anzug-2024/
+- Anzüge Zürich: https://thesartorialist.ch/anzuege-zuerich/
+- Kollektion (Terminbuchung statt Kauf): https://thesartorialist.ch/kollektion/
+- Änderungsschneiderei: https://thesartorialist.ch/services/
+- Termin buchen: https://thesartorialist.ch/termin/
+
+## Brands im Store
+
+- Orazio Luciano (Neapel, handgemachte Anzüge): https://thesartorialist.ch/orazio-luciano/
+- Maria Santangelo (Neapel, handgenähte Hemden seit 1953): https://thesartorialist.ch/maria-santangelo/
+- Loro Piana (feinste Stoffe, über 200 Jahre): https://thesartorialist.ch/loro-piana/
+- Holland & Sherry (britische Stofftradition): https://thesartorialist.ch/holland-sherry/
+- Gran Sasso (italienische Strickmode): https://thesartorialist.ch/gran-sasso/
+- Jacob Cohën (Luxus-Denim): https://thesartorialist.ch/jacob-cohen/
+- Paul & Shark (Premium-Mode seit 1975): https://thesartorialist.ch/paul-and-shark/
+- Woolrich (Outdoor-Ikone seit 1830): https://thesartorialist.ch/woolrich/
+
+Stoffpartner: Loro Piana, Vitale Barberis Canonico, Drago, Reda, Cerruti,
+Scabal, Solbiati, Zegna, Holland & Sherry; Hemden: Canclini, Albini,
+Thomas Mason.
+
+## Preise
+
+- Massanzug: ab CHF 1'690 (Endpreis je nach Stoff- und Designwahl,
+  typisch bis ca. CHF 2'500)
+- Masshemd: Preis auf Anfrage, Auswahl aus über 400 Hemdenstoffen
+- Zahlung auf Raten: 0% Zinsen via HeidiPay
+- Beratung (60–90 Minuten): kostenlos und unverbindlich
+
+## USPs
+
+- Alle Anzüge ausschliesslich in Full-Canvas-Verarbeitung (vernäht statt geklebt)
+- 100% Made in Italy
+- Über 1'000 Anzugstoffe, über 30 Messparameter
+- Schnellste Lieferzeit der Schweiz: in 20 Arbeitstagen abholbereit
+- Persönliche Beratung durch den Gründer — keine wechselnden Mitarbeiter
+
+## Kontakt
+
+- Telefon: +41 43 243 02 77 / +41 76 488 06 30
+- E-Mail: store@thesartorialist.ch
+- Instagram: https://www.instagram.com/the_sartorialist_zurich/
+- Terminanfrage: https://thesartorialist.ch/termin/
+
+## Technologien
+
+Next.js (statischer Export), semantisches HTML, JSON-LD (ClothingStore,
+Product, Service, FAQPage, BreadcrumbList), WCAG 2.1 AA.

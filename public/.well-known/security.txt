@@ -1,0 +1,4 @@
+Contact: mailto:store@thesartorialist.ch
+Expires: 2028-07-01T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://thesartorialist.ch/.well-known/security.txt

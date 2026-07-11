@@ -1,0 +1,13 @@
+/* TEAM */
+Gründer & Inhaber: Alexander Shubin
+Firma: Swiss Art Partner AG — The Sartorialist Zürich
+Standort: Kuttelgasse 7, 8001 Zürich, Schweiz
+Kontakt: store [at] thesartorialist.ch
+Instagram: @the_sartorialist_zurich
+
+/* SITE */
+Sprache: Deutsch (de-CH)
+Stack: Next.js (App Router, statischer Export), TypeScript
+Fonts: Playfair Display (Display-Serif), Inter (Sans)
+Standards: HTML5, WCAG 2.1 AA, JSON-LD Structured Data
+Design & Entwicklung: DLM Digital — https://dlm-digital.ch
