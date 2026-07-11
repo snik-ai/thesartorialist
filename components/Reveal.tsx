@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
-// Sanfte Scroll-Einblendungen: beobachtet Schlüssel-Elemente und setzt .reveal/.in.
-// Respektiert prefers-reduced-motion und läuft bei jedem Routenwechsel neu.
+// Sanfte Scroll-Einblendungen für Editorial-Blöcke. Kritische Inhalte
+// (Produkt-Info, Buchungs-Wizard, Formulare) sind bewusst NICHT dabei —
+// sie müssen immer sofort sichtbar sein, unabhängig von JS/Animation.
 const SELECTOR = [
   '.section-head',
   '.product-card',
@@ -12,8 +13,6 @@ const SELECTOR = [
   '.split-body',
   '.brand-row',
   '.gallery-grid img',
-  '.pdp-info',
-  '.wizard',
   '.cta-band .container',
 ].join(', ');
 
@@ -21,9 +20,20 @@ export default function Reveal() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
     const els = Array.from(document.querySelectorAll<HTMLElement>(SELECTOR));
+
+    // Reduced motion oder fehlender Observer: nichts verstecken.
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      typeof IntersectionObserver === 'undefined'
+    ) {
+      return;
+    }
+
+    for (const el of els) {
+      if (!el.classList.contains('in')) el.classList.add('reveal');
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -33,15 +43,19 @@ export default function Reveal() {
           }
         }
       },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.06 }
     );
+    for (const el of els) observer.observe(el);
 
-    for (const el of els) {
-      // Bereits sichtbare Elemente nicht doppelt animieren
-      if (!el.classList.contains('in')) el.classList.add('reveal');
-      observer.observe(el);
-    }
-    return () => observer.disconnect();
+    // Failsafe: sollte der Observer je hängen, nach 1,5 s alles einblenden.
+    const failsafe = window.setTimeout(() => {
+      for (const el of els) el.classList.add('in');
+    }, 1500);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(failsafe);
+    };
   }, [pathname]);
 
   return null;
