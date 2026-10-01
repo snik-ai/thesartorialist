@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<title>The Sartorialist – Story</title>
+<link rel="stylesheet" href="fonts.css">
+<style>html,body{margin:0;background:#F4F2ED;overflow:hidden}canvas{display:block}</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="motion.js"></script>
+<script src="timewarp.js"></script>
+<script>
+// ===========================================================================
+// The Sartorialist Zürich – Story 9:16 (1080×1920), 120 BPM, Szenenzeit 18.5 s → ~31 s mit Speed-Ramps.
+// Eine schwarze Form trägt alles:
+//  0.0 Full-Bleed schwarz + Wort-Slams «Nicht von der Stange» → 1.45 Kontraktion zum Massband (Live-Inversion)
+//  4.0 3D-Flip → Stoffkarte (Whip-Pans 5.0/6.0) · 7.0 Zoom-Through → Handwerk (Steppnaht)
+//  9.0 Filmstreifen-Push + Expansion → Vollbild «Made in Italy» · 11.0 Kontraktion → Preis-Pille (Slot)
+// 13.0 → Button · 14.25 Tap-Flood schwarz · 15.0 Iris schliesst sich zur Linie unter dem Logo (reimt auf den Anfang)
+// ===========================================================================
+const { clamp, lerp, seg, spring, sp, track, trackObj, hex, rgb, trackColor, rng, E, rrect } = M;
+const W = 1080, H = 1920;
+const ZONES = [[0.78, 1.42, 2.0], [2.5, 3.55, 1.5], [4.5, 4.95, 0.5], [7.5, 8.6, 2.0], [9.5, 10.6, 1.5], [11.6, 12.6, 2.0], [13.35, 13.95, 2.0], [16.6, 17.8, 1.0]];
+const OLDEND = 18.5;
+const TWARP = TW.make(ZONES, OLDEND);
+const DUR = Math.round(TWARP.total * 10) / 10;
+const out = document.getElementById('c'), G = out.getContext('2d');
+const scene = document.createElement('canvas'); scene.width = W; scene.height = H;
+const g = scene.getContext('2d');
+
+const INK = hex('#101010'), PAPER = hex('#F4F2ED');
+const CAMEL = '#94703F', CAMEL_L = '#D2B184';
+const SERIF = '"Playfair Display", Georgia, serif', SANS = 'Inter, sans-serif';
+const p4out = (p) => 1 - Math.pow(1 - clamp(p), 4), p4in = (p) => Math.pow(clamp(p), 4);
+const p4io = (p) => { p = clamp(p); return p < 0.5 ? 8 * p ** 4 : 1 - Math.pow(-2 * p + 2, 4) / 2; };
+
+// ---- Bilder ---------------------------------------------------------------------
+const IMG = {};
+const SRC = {
+  hs3: 'img/Holland-Sherry-3-scaled.webp', hs6: 'img/Holland-Sherry-6-scaled.webp', hs9: 'img/Holland-Sherry-9-scaled.webp',
+  sew: 'img/DSC_7266-scaled.webp', italy: 'img/italienischer-massanzug.webp',
+  logo: 'img/logo.svg',
+};
+for (const [k, s] of Object.entries(SRC)) { IMG[k] = new Image(); IMG[k].src = s; }
+function cover(img, cx, cy, w, h, fx = 0.5, fy = 0.5, z = 1) {
+  const s = Math.max(w / img.width, h / img.height) * z, iw = img.width * s, ih = img.height * s;
+  g.drawImage(img, cx - w / 2 - (iw - w) * fx, cy - h / 2 - (ih - h) * fy, iw, ih);
+}
+
+// ---- Logo-Geometrie (logo.png 600×89: Wortmarke 0–42, «ZÜRICH» 64–88) ----------------
+const LOGO = { w: 880 }; LOGO.s = LOGO.w / 600; LOGO.h = 89 * LOGO.s; LOGO.x = (W - LOGO.w) / 2; LOGO.y = 780;
+const RULE = { x: 540, y: LOGO.y + LOGO.h + 58, w: 150, h: 5, r: 2.5 };
+
+// ---- Tap (Finger ist der Carrier in die Flood) --------------------------------------
+const TAP = { t: 14.2, x: 762, y: 1150 };
+
+// ---- Die Form -----------------------------------------------------------------------
+const FULL = { x: 540, y: 960, w: W + 80, h: H + 80, r: 0 };
+const SHAPE = [
+  [0.00, FULL],
+  [1.45, { x: 540, y: 1150, w: 940, h: 170, r: 10 }, 150, 22],          // Kontraktion → Massband
+  [4.00, { x: 540, y: 1235, w: 900, h: 1000, r: 8 }, 170, 26],          // Flip → Stoffkarte
+  [7.00, { x: 540, y: 1235, w: 860, h: 1000, r: 4 }, 170, 26],          // Zoom-Through → Handwerk
+  [9.00, FULL, 150, 24],                                                 // Expansion → Vollbild
+  [11.0, { x: 540, y: 1150, w: 900, h: 300, r: 150 }, 170, 25],         // Kontraktion → Preis-Pille
+  [13.0, { x: 540, y: 1150, w: 760, h: 170, r: 85 }, 260, 28],          // → Button
+  [14.25, { x: TAP.x, y: TAP.y, w: 4600, h: 4600, r: 2300 }, 60, 17],   // Tap-Flood
+  [15.0, RULE, 160, 25],                                                 // Iris → Linie unter dem Logo
+];
+const FILL = [[0, INK], [4.18, PAPER, 3000, 110], [11.0, INK, 200, 26]];
+const CAM = [[0, 1.0], [1.45, 1.05, 110, 22], [4.0, 1.0, 110, 22], [7.0, 1.03, 110, 22], [9.0, 1.0, 110, 22], [11.0, 1.05, 110, 22], [13.0, 1.08, 110, 22], [14.25, 1.0, 150, 24]];
+const FINGER = [[0, { x: 1260, y: 2160 }], [13.55, { x: TAP.x, y: TAP.y }, 110, 19], [14.6, { x: 1320, y: 2260 }, 80, 17]];
+
+// ---- Headlines -----------------------------------------------------------------------
+// Stil: n = normal, a = Akzent (kursiv, Camel), s = Akzent mit Slot-Ziffern
+const HL = [
+  { from: 0.0, to: 2.0, beats: [0.02, 0.25, 0.5], slam: true, size: 210, ys: [800, 1010, 1220], lines: [[['Nicht', 'n']], [['von der', 'n']], [['Stange', 'a']]] },
+  { from: 2.0, to: 4.0, lines: [[['Auf', 'n'], ['den', 'n']], [['Millimeter', 'a']]] },
+  { from: 4.05, to: 7.0, lines: [[['Über', 'n'], ['1’000', 's']], [['Stoffe', 'n']]] },
+  { from: 7.05, to: 9.0, lines: [[['Full', 'n']], [['Canvas', 'a']]], sub: 'Vernäht, nicht geklebt' },
+  { from: 9.05, to: 11.0, lines: [[['100 %', 'n'], ['Made', 'n']], [['in', 'n'], ['Italy', 'a']]] },
+  { from: 11.05, to: 13.0, lines: [[['Abholbereit', 'n'], ['in', 'n']], [['20', 's'], ['Arbeitstagen', 'n']]] },
+  { from: 13.05, to: 14.25, lines: [[['Beratung', 'n']], [['kostenlos', 'a']]], sub: '60–90 Minuten · unverbindlich' },
+];
+const HX = 96, HY = [440, 595], HS = 150, MAXW = W - 2 * HX;
+const hFont = (st, size) => `${st === 'n' ? '' : 'italic '}600 ${size}px ${SERIF}`;
+
+function headlines(t, invert) {
+  for (const h of HL) {
+    if (t < h.from - 0.05 || t > h.to + 0.2) continue;
+    // Autofit: längste Zeile passt in die Satzbreite
+    let size = h.size || HS;
+    let maxw = 0;
+    for (const line of h.lines) { let w = 0; line.forEach(([wd, st], i) => { g.font = hFont(st, size); g.letterSpacing = `${-size * 0.01}px`; w += g.measureText(wd).width + (i ? size * 0.24 : 0); }); maxw = Math.max(maxw, w); }
+    if (maxw > MAXW) size = Math.floor(size * MAXW / maxw);
+    const ys = h.ys || (size < HS ? HY.map((y, i) => y + (i ? -(HS - size) * 0.9 : 0)) : HY);
+    let wi = 0, lastY = 0;
+    h.lines.forEach((line, li) => {
+      let cx = HX, acc = 0, gap = 0.05;
+      const y = ys[li]; lastY = y;
+      line.forEach(([word, st], i) => {
+        g.font = hFont(st, size); g.letterSpacing = `${-size * 0.01}px`;
+        const w = g.measureText(word).width, sw = size * 0.24;
+        const start = h.beats ? h.beats[wi] : h.from + 0.07 + li * 0.07 + acc; acc += gap; gap *= 0.84; wi++;
+        const pOut = p4in((t - (h.to - 0.36) - i * 0.022 - li * 0.03) / 0.30);
+        if (t >= start && pOut < 1) {
+          const pIn = h.slam ? E.outExpo(clamp((t - start) / 0.28)) : p4out((t - start) / 0.30);
+          const scl = h.slam ? (1 + (1 - pIn) * 0.35) * (1 + 0.05 * clamp((t - start) / 1.6)) : 1;
+          const blur = h.slam ? (1 - pIn) * 10 : 0;
+          g.save(); g.beginPath(); g.rect(cx - 40, y - size * 1.05, w + 80, size * 1.36); g.clip();
+          const ty = y + (h.slam ? 0 : (1 - pIn) * size * 0.62) - pOut * size * 1.08;
+          g.translate(cx + w / 2, ty - size * 0.35); g.scale(scl, scl); g.translate(-(cx + w / 2), -(ty - size * 0.35));
+          if (blur > 0.3) g.filter = `blur(${blur.toFixed(1)}px)`;
+          g.fillStyle = st === 'n' ? (invert ? '#fff' : rgb(INK)) : (invert ? CAMEL_L : CAMEL);
+          if (st === 's') slotWord(word, cx, ty, size, t - start - 0.05);
+          else g.fillText(word, cx, ty);
+          g.restore();
+        }
+        cx += w + sw;
+      });
+    });
+    if (h.sub) {
+      const st0 = h.from + 0.3, pIn = p4out((t - st0) / 0.34), pOut = p4in((t - (h.to - 0.34)) / 0.30);
+      if (t >= st0 && pOut < 1) {
+        const y = lastY + 92;
+        g.save(); g.beginPath(); g.rect(HX - 10, y - 50, MAXW + 20, 70); g.clip();
+        g.font = `500 42px ${SANS}`; g.letterSpacing = '0px'; g.fillStyle = invert ? 'rgba(255,255,255,.85)' : 'rgba(16,16,16,.62)';
+        g.fillText(h.sub, HX + 4, y + (1 - pIn) * 50 - pOut * 56); g.restore();
+      }
+    }
+  }
+}
+// Ziffern rollen einzeln mit (2+i) Umdrehungen in ihre Endstellung
+function slotWord(word, x, y, size, tt) {
+  let cx = x, di = 0;
+  for (const ch of word) {
+    const cw = g.measureText(ch).width;
+    if (/\d/.test(ch)) {
+      const d = +ch, s = spring(tt - di * 0.07, 120, 22);
+      const pos = d - 10 * (2 + di) * (1 - s), base = Math.floor(pos), frac = pos - base;
+      g.save(); g.beginPath(); g.rect(cx - 4, y - size * 0.86, cw + 8, size * 1.08); g.clip();
+      g.fillText(String(((base % 10) + 10) % 10), cx, y - frac * size * 1.05);
+      g.fillText(String((((base + 1) % 10) + 10) % 10), cx, y + (1 - frac) * size * 1.05);
+      g.restore(); di++;
+    } else g.fillText(ch, cx, y);
+    cx += cw;
+  }
+}
+function kicker(t, invert) {
+  const kIn = p4out((t - 2.05) / 0.4), kOut = p4in((t - 13.95) / 0.34);
+  if (t < 2.05 || kOut >= 1) return;
+  g.save(); g.beginPath(); g.rect(HX - 4, 200, 800, 60); g.clip();
+  const dy = (1 - kIn) * 44 - kOut * 50;
+  g.fillStyle = invert ? CAMEL_L : CAMEL; g.beginPath(); g.arc(HX + 7, 231 + dy, 7, 0, Math.PI * 2); g.fill();
+  g.fillStyle = invert ? '#fff' : rgb(INK);
+  g.font = `600 26px ${SANS}`; g.letterSpacing = '6px'; g.fillText('THE SARTORIALIST · ZÜRICH', HX + 32, 241 + dy);
+  g.restore();
+}
+
+// ---- Form-Pfad (Flip, Druck, Magnet) ---------------------------------------------------
+function shapeState(t) {
+  const S = trackObj(t, SHAPE);
+  const flipP = E.inOutCubic(seg(t, 4.0, 4.36));
+  const flip = Math.cos(Math.PI * flipP);
+  const press = Math.sin(Math.PI * seg(t, TAP.t - 0.05, TAP.t + 0.12)) * 0.05;
+  if (t > 13.6 && t < 14.25) { const c = trackObj(t, FINGER), m = 0.05 * clamp((t - 13.7) / 0.3) * (1 - clamp((t - 14.15) / 0.1)); S.x += (c.x - S.x) * m; S.y += (c.y - S.y) * m * 0.6; }
+  return { ...S, sy: Math.abs(flip) * (1 - press), sx: 1 - press, skew: Math.sin(Math.PI * flipP) * 0.22 * Math.sign(flip || 1), flipP };
+}
+function shapePath(S) {
+  g.translate(S.x, S.y); g.transform(1, 0, S.skew, 1, 0, 0); g.scale(S.sx, S.sy);
+  rrect(g, -S.w / 2, -S.h / 2, S.w, S.h, S.r);
+}
+
+// ---- Frame ----------------------------------------------------------------------------------
+function draw(t, tn = t) {
+  const push = 1 + 0.03 * E.inOutCubic(seg(tn, DUR - 4.5, DUR));
+  const S = shapeState(t);
+  const fill = trackColor(t, FILL);
+  const dark = 1 - clamp((fill[0] - 16) / (244 - 16));
+  const fullPhoto = t > 8.95 && t < 11.15;
+  const invertOn = dark > 0.5 || fullPhoto;
+  const cam = track(t, CAM);
+
+  g.setTransform(1, 0, 0, 1, 0, 0); g.filter = 'none'; g.globalAlpha = 1;
+  g.fillStyle = rgb(PAPER); g.fillRect(0, 0, W, H);
+  const rg = g.createRadialGradient(S.x, S.y, 0, S.x, S.y, 900);
+  rg.addColorStop(0, 'rgba(148,112,63,.10)'); rg.addColorStop(1, 'rgba(148,112,63,0)');
+  g.fillStyle = rg; g.fillRect(0, 0, W, H);
+
+  // 1) Headlines normal
+  kicker(t, false); headlines(t, false);
+  extras(t, S);
+
+  // 2) Form (Kamera nur auf der Form-Ebene)
+  g.save();
+  g.translate(S.x, S.y); g.scale(cam, cam); g.translate(-S.x, -S.y);
+  g.save(); shapePath(S);
+  g.shadowColor = `rgba(16,16,16,${0.16 - 0.06 * dark})`; g.shadowBlur = 70; g.shadowOffsetY = 28;
+  const shade = 1 - 0.3 * Math.sin(Math.PI * S.flipP);
+  g.fillStyle = rgb(fill.map((v) => v * shade)); g.fill();
+  g.restore();
+  g.save(); shapePath(S); g.clip(); g.setTransform(1, 0, 0, 1, 0, 0);
+  g.translate(S.x, S.y); g.scale(cam, cam); g.translate(-S.x, -S.y);
+  content(t, S);
+  // Lichtschimmer über grosse schwarze Flächen (Opening und Flood)
+  if (S.w > 900 && dark > 0.5) {
+    const sx = -800 + ((t * 560) % 3000);
+    const lgS = g.createLinearGradient(sx, 0, sx + 800, 700);
+    lgS.addColorStop(0, 'rgba(210,177,132,0)'); lgS.addColorStop(0.5, 'rgba(210,177,132,.07)'); lgS.addColorStop(1, 'rgba(210,177,132,0)');
+    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = lgS; g.fillRect(0, 0, W, H);
+  }
+  g.restore();
+  g.restore();
+
+  // 3) Headlines invertiert, wo die dunkle Form darunter liegt
+  if (invertOn) {
+    g.save();
+    g.translate(S.x, S.y); g.scale(cam, cam); g.translate(-S.x, -S.y);
+    shapePath(S); g.setTransform(1, 0, 0, 1, 0, 0); g.clip();
+    kicker(t, true); headlines(t, true);
+    g.restore();
+  }
+
+  // 4) Logo-Endkarte
+  endcard(t);
+
+  // ---- Linse: Zoom-Through bei 7.0 ----
+  let zs = 1, zb = 0;
+  if (t >= 6.76 && t < 7.0) { const p = seg(t, 6.76, 7.0); zs = 1 + 0.5 * E.inCubic(p); zb = 14 * E.inCubic(p); }
+  else if (t >= 7.0 && t < 7.6) { const p = seg(t, 7.0, 7.6); zs = 0.8 + 0.2 * E.outExpo(p); zb = 14 * (1 - E.outCubic(p)); }
+  G.setTransform(1, 0, 0, 1, 0, 0); G.filter = 'none';
+  G.fillStyle = rgb(PAPER); G.fillRect(0, 0, W, H);
+  G.save();
+  if (zb > 0.3) G.filter = `blur(${zb.toFixed(1)}px)`;
+  const px = 540, py = 1235;
+  G.translate(px, py); G.scale(zs * push, zs * push); G.translate(-px, -py);
+  G.drawImage(scene, 0, 0);
+  G.restore();
+
+  // Finger-Tap als Overlay
+  const f = trackObj(t, FINGER), pr = Math.sin(Math.PI * seg(t, TAP.t - 0.05, TAP.t + 0.13));
+  const rp = seg(t, TAP.t, TAP.t + 0.5);
+  if (rp > 0 && rp < 1) { G.beginPath(); G.arc(TAP.x, TAP.y, 30 + 70 * E.outCubic(rp), 0, Math.PI * 2); G.strokeStyle = `rgba(255,255,255,${0.75 * (1 - rp)})`; G.lineWidth = 4; G.stroke(); }
+  if (f.y < H + 80) {
+    G.save(); G.translate(f.x, f.y); const s = 1 - 0.18 * pr;
+    G.shadowColor = 'rgba(0,0,0,.28)'; G.shadowBlur = 24; G.shadowOffsetY = 8;
+    G.beginPath(); G.arc(0, 0, 40 * s, 0, Math.PI * 2); G.fillStyle = 'rgba(255,255,255,.88)'; G.fill();
+    G.shadowColor = 'transparent'; G.lineWidth = 3; G.strokeStyle = 'rgba(16,16,16,.18)'; G.stroke();
+    G.restore();
+  }
+
+  // Film-Finish
+  G.globalAlpha = 0.05; G.globalCompositeOperation = 'overlay';
+  G.drawImage(GRAIN[Math.floor(tn * 24) % 4], 0, 0, W, H);
+  G.globalCompositeOperation = 'source-over'; G.globalAlpha = 1;
+  const vg = G.createRadialGradient(W / 2, H * 0.5, H * 0.34, W / 2, H * 0.5, H * 0.8);
+  vg.addColorStop(0, 'rgba(40,30,20,0)'); vg.addColorStop(1, 'rgba(40,30,20,.12)');
+  G.fillStyle = vg; G.fillRect(0, 0, W, H);
+}
+
+const GRAIN = [0, 1, 2, 3].map((k) => {
+  const cv = document.createElement('canvas'); cv.width = 540; cv.height = 960;
+  const x = cv.getContext('2d'), im = x.createImageData(540, 960), r = rng(77 + k);
+  for (let i = 0; i < im.data.length; i += 4) { const v = r() * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+  x.putImageData(im, 0, 0); return cv;
+});
+
+function life(t, tIn, tOut, fin = 0.16, fout = 0.12) { const a = Math.min(clamp((t - tIn) / fin), clamp((tOut - t) / fout)); return { a, blur: (1 - a) * 10 }; }
+function withLife(L, fn) { if (L.a <= 0) return; g.save(); g.globalAlpha *= L.a; if (L.blur > 0.3) g.filter = `blur(${L.blur.toFixed(1)}px)`; fn(); g.restore(); }
+
+// ---- Inhalte in der Form -------------------------------------------------------------------
+const TAPEV = [[0, 0], [1.75, 47.5, 120, 22], [2.5, 64, 120, 22], [3.2, 102, 120, 22]];
+const MEAS = [[1.75, 'Schulter'], [2.5, 'Ärmel'], [3.2, 'Brust']];
+const FABRICS = [[4.0, 'hs3', 'Super 170’s Merino', 0.62, 0.5], [5.0, 'hs6', 'Flanell & Tweed', 0.5, 0.5], [6.0, 'hs9', 'Holland & Sherry', 0.42, 0.5]];
+
+function content(t, S) {
+  withLife(life(t, 1.55, 4.18, 0.18, 0.01), () => tape(t, S));
+  withLife(life(t, 4.18, 7.0, 0.01, 0.01), () => fabric(t, S));
+  // Handwerk → Vollbild: ein Filmstreifen, der nach oben schiebt (Vector Law)
+  if (t >= 7.0 && t < 11.3) photoStrip(t, S);
+  withLife(life(t, 11.18, 13.02, 0.14, 0.08), () => price(t, S));
+  withLife(life(t, 13.1, 14.3, 0.14, 0.06), () => button(t, S));
+}
+
+function tape(t, S) {
+  const v = track(t, TAPEV), top = S.y - S.h / 2, PX = 26;
+  const c0 = Math.floor(v - S.w / 2 / PX) - 2, c1 = Math.ceil(v + S.w / 2 / PX) + 2;
+  g.lineCap = 'butt';
+  for (let c = Math.max(0, c0); c <= c1; c++) {
+    for (const half of [0, 0.5]) {
+      const cc = c + half, x = S.x + (cc - v) * PX;
+      const len = half ? 14 : c % 10 === 0 ? 70 : c % 5 === 0 ? 46 : 26;
+      g.strokeStyle = half ? 'rgba(244,242,237,.38)' : 'rgba(244,242,237,.82)'; g.lineWidth = c % 10 === 0 && !half ? 3.2 : 2;
+      g.beginPath(); g.moveTo(x, top); g.lineTo(x, top + len); g.stroke();
+    }
+    if (c % 10 === 0) { const x = S.x + (c - v) * PX; g.font = `600 30px ${SANS}`; g.letterSpacing = '0px'; g.textAlign = 'center'; g.fillStyle = 'rgba(244,242,237,.9)'; g.fillText(String(c), x, top + 116); g.textAlign = 'left'; }
+  }
+  g.fillStyle = CAMEL_L; g.fillRect(S.x - 2, top, 4, S.h);
+}
+
+// Ausserhalb der Form: Messwert über dem Band, Hinweis darunter, Preis-Untertitel
+function extras(t, S) {
+  // Messwert
+  withLife(life(t, 1.75, 3.9, 0.16, 0.1), () => {
+    const top = S.y - S.h / 2, v = track(t, TAPEV);
+    g.fillStyle = CAMEL; g.beginPath(); g.moveTo(S.x - 13, top - 30); g.lineTo(S.x + 13, top - 30); g.lineTo(S.x, top - 10); g.closePath(); g.fill();
+    const idx = MEAS.reduce((a, m, i) => (t >= m[0] - 0.05 ? i : a), 0);
+    g.textAlign = 'center';
+    MEAS.forEach(([mt, label], i) => {
+      const pin = p4out((t - (mt - 0.05)) / 0.3), pout = i < MEAS.length - 1 ? p4in((t - (MEAS[i + 1][0] - 0.2)) / 0.16) : 0;
+      if (pin <= 0 || pout >= 1) return;
+      g.save(); g.beginPath(); g.rect(0, top - 210, W, 50); g.clip();
+      g.font = `600 28px ${SANS}`; g.letterSpacing = '7px'; g.fillStyle = CAMEL;
+      g.fillText(label.toUpperCase(), S.x + 4, top - 172 + (1 - pin) * 40 - pout * 44); g.restore();
+    });
+    const shown = Math.round(v * 2) / 2;
+    g.font = `600 84px ${SERIF}`; g.letterSpacing = '-1px'; g.fillStyle = rgb(INK);
+    g.fillText(`${shown.toFixed(1)} cm`, S.x, top - 58);
+    g.textAlign = 'left';
+  });
+  withLife(life(t, 2.25, 3.92, 0.2, 0.1), () => {
+    g.font = `500 36px ${SANS}`; g.letterSpacing = '0px'; g.textAlign = 'center'; g.fillStyle = 'rgba(16,16,16,.6)';
+    const p = p4out((t - 2.25) / 0.4);
+    g.fillText('über 30 Messpunkte, von Hand genommen', 540, S.y + S.h / 2 + 84 + (1 - p) * 26); g.textAlign = 'left';
+  });
+  // Preis-Untertitel
+  withLife(life(t, 11.5, 12.98, 0.2, 0.1), () => {
+    g.font = `500 36px ${SANS}`; g.letterSpacing = '0px'; g.textAlign = 'center'; g.fillStyle = 'rgba(16,16,16,.6)';
+    const p = p4out((t - 11.5) / 0.4);
+    g.fillText('Massanzug · Full Canvas · Made in Italy', 540, S.y + S.h / 2 + 86 + (1 - p) * 26); g.textAlign = 'left';
+  });
+  withLife(life(t, 13.35, 14.22, 0.2, 0.06), () => {
+    g.font = `500 34px ${SANS}`; g.letterSpacing = '0px'; g.textAlign = 'center'; g.fillStyle = 'rgba(16,16,16,.6)';
+    const p = p4out((t - 13.35) / 0.4);
+    g.fillText('Kuttelgasse 7 · vis-à-vis Park Hyatt', 540, S.y + S.h / 2 + 84 + (1 - p) * 26); g.textAlign = 'left';
+  });
+}
+
+function fabric(t, S) {
+  let off = 0;
+  for (const T of [5.0, 6.0]) {
+    if (t >= T - 0.2 && t < T) off = -320 * p4in(seg(t, T - 0.2, T));
+    else if (t >= T && t < T + 0.34) off = 320 * (1 - p4out(seg(t, T, T + 0.34)));
+  }
+  const idx = FABRICS.reduce((a, f, i) => (t >= f[0] ? i : a), 0), F = FABRICS[idx];
+  const z = 1.12 - 0.06 * seg(t, F[0], F[0] + 1.6);
+  cover(IMG[F[1]], S.x + off, S.y, S.w + 4, S.h + 4, F[3], F[4], z);
+  // Chip oben links
+  const L = S.x - S.w / 2 + 40, T0 = S.y - S.h / 2 + 40;
+  const pin = p4out((t - (F[0] + 0.12)) / 0.34), pout = idx < 2 ? p4in((t - (FABRICS[idx + 1][0] - 0.24)) / 0.2) : 0;
+  g.font = `600 26px ${SANS}`; g.letterSpacing = '5px';
+  const lab = F[2].toUpperCase(), lw = g.measureText(lab).width;
+  const cw = (lw + 96) * Math.min(1, pin * 1.4);
+  g.fillStyle = 'rgba(16,16,16,.6)'; rrect(g, L, T0, cw, 64, 32); g.fill();
+  g.save(); rrect(g, L, T0, cw, 64, 32); g.clip();
+  g.fillStyle = CAMEL_L; g.beginPath(); g.arc(L + 30, T0 + 32, 6, 0, Math.PI * 2); g.fill();
+  g.fillStyle = '#fff'; g.fillText(lab, L + 50, T0 + 42 + (1 - pin) * 40 - pout * 44); g.restore();
+}
+
+function photoStrip(t, S) {
+  const q = p4io(seg(t, 8.82, 9.32));
+  const h = S.h;
+  // Handwerk (Porträt) mit Kriechzoom und Steppnaht
+  if (q < 1) {
+    const oy = -q * h;
+    cover(IMG.sew, S.x, S.y + oy, S.w + 4, h + 4, 0.5, 0.42, 1.1 - 0.06 * seg(t, 7.0, 9.0));
+    // Steppnaht zeichnet sich über das Bild
+    const p = E.inOutCubic(seg(t, 7.45, 8.7));
+    if (p > 0) {
+      const x0 = S.x - S.w / 2 + 60, x1 = S.x + S.w / 2 - 60, yb = S.y + S.h / 2 - 120 + oy;
+      const pt = (u) => [lerp(x0, x1, u), yb - Math.sin(Math.PI * u) * 46];
+      g.save(); g.setLineDash([26, 16]); g.lineCap = 'round'; g.lineWidth = 5; g.strokeStyle = 'rgba(255,255,255,.92)';
+      g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 8;
+      g.beginPath(); g.moveTo(...pt(0)); for (let u = 0.01; u <= p + 1e-6; u += 0.01) g.lineTo(...pt(Math.min(u, p))); g.stroke(); g.restore();
+      // Nadel an der Spitze
+      const [nx, ny] = pt(p), [qx, qy] = pt(Math.max(0, p - 0.01));
+      const a = Math.atan2(ny - qy, nx - qx);
+      if (p < 0.999) { g.save(); g.translate(nx, ny); g.rotate(a); g.fillStyle = '#E9E6DF'; g.beginPath(); g.moveTo(34, 0); g.lineTo(-10, -4); g.lineTo(-10, 4); g.closePath(); g.fill(); g.restore(); }
+    }
+  }
+  // Vollbild Italien
+  if (q > 0) {
+    const oy = (1 - q) * h;
+    const z = 1.12 - 0.07 * seg(t, 9.0, 11.2);
+    g.save(); g.beginPath(); g.rect(S.x - S.w / 2, S.y - S.h / 2 + oy, S.w, S.h); g.clip();
+    cover(IMG.italy, S.x, S.y + oy, S.w + 4, h + 4, 0.62, 0.3, z);
+    // Abdunkeln oben (Headline) und unten
+    const top = S.y - S.h / 2 + oy;
+    const lg = g.createLinearGradient(0, top, 0, top + h);
+    lg.addColorStop(0, 'rgba(10,8,6,.62)'); lg.addColorStop(0.42, 'rgba(10,8,6,.12)'); lg.addColorStop(0.75, 'rgba(10,8,6,0)'); lg.addColorStop(1, 'rgba(10,8,6,.35)');
+    g.fillStyle = lg; g.fillRect(S.x - S.w / 2, top, S.w, h);
+    // Lichtschimmer
+    const sx = -800 + (((t - 9) * 620) % 3000);
+    const ls = g.createLinearGradient(sx, 0, sx + 800, 700);
+    ls.addColorStop(0, 'rgba(255,240,220,0)'); ls.addColorStop(0.5, 'rgba(255,240,220,.06)'); ls.addColorStop(1, 'rgba(255,240,220,0)');
+    g.fillStyle = ls; g.fillRect(0, 0, W, H);
+    g.restore();
+    // Beim Zusammenziehen zur Pille verschwindet das Foto hinter Blur
+  }
+  if (t > 10.98) { const a = clamp((t - 10.98) / 0.2); g.fillStyle = rgb(INK, a); g.fillRect(S.x - S.w / 2 - 2, S.y - S.h / 2 - 2, S.w + 4, S.h + 4); }
+}
+
+function price(t, S) {
+  const cx = S.x, cy = S.y;
+  g.textAlign = 'left';
+  g.font = `600 132px ${SERIF}`; g.letterSpacing = '0px';
+  const txt = 'CHF 1’690', tw = g.measureText(txt).width;
+  g.font = `500 34px ${SANS}`; g.letterSpacing = '6px';
+  const ab = 'AB', aw = g.measureText(ab).width;
+  const total = aw + 26 + tw, x0 = cx - total / 2;
+  const pa = p4out((t - 11.2) / 0.3);
+  g.fillStyle = CAMEL_L; g.fillText(ab, x0, cy + 40 - 54 + (1 - pa) * 20);
+  g.font = `600 132px ${SERIF}`; g.letterSpacing = '0px'; g.fillStyle = '#fff';
+  slotWord(txt, x0 + aw + 26, cy + 46, 132, t - 11.22);
+}
+
+function button(t, S) {
+  const cx = S.x, cy = S.y;
+  g.font = `600 50px ${SANS}`; g.letterSpacing = '0px'; g.fillStyle = '#fff';
+  const label = 'Termin buchen', lw = g.measureText(label).width, total = lw + 34 + 84, x0 = cx - total / 2;
+  const p = p4out((t - 13.1) / 0.34);
+  g.save(); g.beginPath(); g.rect(x0 - 10, cy - 50, lw + 20, 90); g.clip();
+  g.fillText(label, x0, cy + 18 + (1 - p) * 50); g.restore();
+  const ax = x0 + lw + 34 + 42, nudge = Math.max(0, Math.sin((t - 13.5) * Math.PI * 1.6)) * 8 * seg(t, 13.5, 13.7);
+  const ps = sp(t - 13.18, 'ui');
+  g.fillStyle = CAMEL; g.beginPath(); g.arc(ax, cy, 42 * ps, 0, Math.PI * 2); g.fill();
+  if (ps > 0.3) {
+    g.strokeStyle = '#fff'; g.lineWidth = 5; g.lineCap = 'round'; g.lineJoin = 'round';
+    g.beginPath(); g.moveTo(ax - 14 + nudge, cy); g.lineTo(ax + 14 + nudge, cy); g.moveTo(ax + 2 + nudge, cy - 12); g.lineTo(ax + 14 + nudge, cy); g.lineTo(ax + 2 + nudge, cy + 12); g.stroke(); g.lineCap = 'butt';
+  }
+}
+
+// ---- Endkarte: Die Linie ist die Form; das Logo steigt aus ihr auf ---------------------------
+function endcard(t) {
+  if (t < 15.6 || !IMG.logo.complete) return;
+  const x0 = LOGO.x, y0 = LOGO.y, lw = LOGO.w, lh = LOGO.h;
+  const p = E.outExpo(seg(t, 15.62, 16.4));
+  const full = t >= 16.4;
+  if (full) g.drawImage(IMG.logo, x0, y0, lw, lh);          // danach immer das vollständige, ungeclippte Logo
+  else if (p > 0.001) {
+    g.save(); g.beginPath(); g.rect(x0 - 20, y0 - 60, lw + 40, RULE.y - 8 - (y0 - 60)); g.clip();
+    g.drawImage(IMG.logo, x0, y0 + (1 - p) * (RULE.y - y0 + 10), lw, lh); g.restore();
+  }
+  // URL + Adresse
+  const url = 'thesartorialist.ch';
+  g.font = `600 76px ${SERIF}`; g.letterSpacing = '0px'; g.textAlign = 'center';
+  const pu = p4out((t - 16.15) / 0.4);
+  if (t > 16.15) { g.save(); g.beginPath(); g.rect(0, RULE.y + 40, W, 110); g.clip(); g.fillStyle = rgb(INK); g.fillText(url, W / 2, RULE.y + 128 + (1 - pu) * 60); g.restore(); }
+  const pa = p4out((t - 16.35) / 0.4);
+  if (t > 16.35) {
+    g.save(); g.beginPath(); g.rect(0, RULE.y + 160, W, 60); g.clip();
+    g.font = `500 34px ${SANS}`; g.fillStyle = 'rgba(16,16,16,.6)';
+    g.fillText('Kuttelgasse 7 · 8001 Zürich', W / 2, RULE.y + 200 + (1 - pa) * 40); g.restore();
+  }
+  // Outline-CTA
+  const pc = sp(t - 16.6, 'default');
+  if (pc > 0.01) {
+    g.font = `600 28px ${SANS}`; g.letterSpacing = '6px';
+    const lab = 'TERMIN VEREINBAREN', w = g.measureText(lab).width + 90, h = 84, cy = RULE.y + 330;
+    g.save(); g.globalAlpha = clamp(pc * 1.3);
+    g.strokeStyle = rgb(INK); g.lineWidth = 2.5; rrect(g, W / 2 - w / 2 * (0.8 + 0.2 * pc), cy - h / 2, w * (0.8 + 0.2 * pc), h, h / 2); g.stroke();
+    g.fillStyle = rgb(INK); g.fillText(lab, W / 2 + 3, cy + 10); g.restore();
+    // Lichtkante läuft langsam über den Button
+    const sx = W / 2 - w / 2 + ((t - 16.6) * 260) % (w + 400) - 200;
+    g.save(); rrect(g, W / 2 - w / 2, cy - h / 2, w, h, h / 2); g.clip();
+    const ls = g.createLinearGradient(sx - 80, 0, sx + 80, 0); ls.addColorStop(0, 'rgba(148,112,63,0)'); ls.addColorStop(0.5, 'rgba(148,112,63,.18)'); ls.addColorStop(1, 'rgba(148,112,63,0)');
+    g.fillStyle = ls; g.fillRect(sx - 80, cy - h / 2, 160, h); g.restore();
+  }
+  g.textAlign = 'left'; g.letterSpacing = '0px';
+}
+
+window.seek = (tn) => { draw(TWARP.newToOld(tn), tn); return true; };
+window.seekScene = (t) => { draw(t, TWARP.oldToNew(t)); return true; };
+window.DUR = DUR;
+window.ready = Promise.all([
+  ...['600 100px "Playfair Display"', 'italic 600 100px "Playfair Display"', '500 40px Inter', '600 40px Inter'].map((f) => document.fonts.load(f)),
+  ...Object.values(IMG).map((im) => new Promise((r) => { if (im.complete) r(); else { im.onload = r; im.onerror = r; } })),
+]);
+if (!location.search.includes('render')) {
+  window.ready.then(() => { const t0 = performance.now(); (function loop() { window.seek(((performance.now() - t0) / 1000) % (DUR + 0.5)); requestAnimationFrame(loop); })(); });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+The Sartorialist Zürich – Story-Video (9:16)
+============================================
+
+Ergebnis:  ../TheSartorialist-Story-Video-9x16.mp4   (1080×1920, 60 fps, 31 s, mit Ton)
+           ../TheSartorialist-Story-Video-9x16-stumm.mp4   (ohne Ton, z. B. für eigene Musik oder Voice-Over)
+           ../TheSartorialist-Story-Video-poster.png        (Standbild Endkarte)
+
+Inhalt (eine schwarze Form trägt durch den ganzen Film):
+  0–4 s    Hook «Nicht von der Stange»: Wort-Slams auf Schwarz
+           → die Fläche zieht sich zum Massband zusammen (Text invertiert live)
+  4–9 s    «Auf den Millimeter»: Massband misst Schulter / Ärmel / Brust, «über 30 Messpunkte»
+  9–14 s   3D-Flip → Stoffkarte «Über 1’000 Stoffe», Whip-Pans durch Holland-&-Sherry-Stoffe
+  14–17 s  Zoom-Through → Handwerk «Full Canvas – Vernäht, nicht geklebt», Steppnaht zeichnet sich
+  17–20 s  Filmstreifen-Push → Vollbild «100 % Made in Italy»
+  20–24 s  Kontraktion → Preis-Pille «ab CHF 1’690», «Abholbereit in 20 Arbeitstagen»
+  24–26 s  Button «Termin buchen», «Beratung kostenlos», Finger-Tap
+  26–31 s  Flood schwarz → Iris schliesst sich zur Linie → Logo steigt aus der Linie,
+           thesartorialist.ch · Kuttelgasse 7 · 8001 Zürich · «Termin vereinbaren»
+Fakten aus public/llms.txt / lib/site.ts der Website. Bilder aus public/images.
+Musik und Effekte sind im Code synthetisiert (keine Lizenzfragen).
+
+Neu erzeugen (im Ordner quellen/):
+  node make-score.js                                         # score.json aus der Timeline
+  node ~/.claude/skills/motion-reel/engine/audio.mjs score.json out/score.wav
+  ./render-par.sh 60 4 31 out/silent.mp4 9                   # paralleler Render, echte Bewegungsunschärfe
+  ffmpeg -i out/silent.mp4 -i out/score.wav -map 0:v -map 1:a -c:v copy \
+    -af "loudnorm=I=-14:TP=-1.5:LRA=11,volume=-1.6dB,alimiter=limit=0.84" -c:a aac -b:a 256k -shortest out/final.mp4
+  Vorschau im Browser: film.html öffnen (läuft in Schleife).
+
+Dateien: film.html (Film, seek(t)), motion.js / timewarp.js (Federn, Speed-Ramps),
+         fonts/ (Playfair Display, Inter), img/ (Bilder, logo.svg = vektorisierte Wortmarke).
