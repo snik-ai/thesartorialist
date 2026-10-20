@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Playfair_Display, Inter } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -57,6 +58,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Reveal />
         <JsonLd data={organizationSchema()} />
         <JsonLd data={websiteSchema()} />
+        {/* DLM-Pixel: cookie-freie Reichweitenmessung durch DLM Digital (Vertrag v2). */}
+        <Script src="https://dlm-digital.ch/px.js" data-site="the-sartorialist" strategy="afterInteractive" />
       </body>
     </html>
   );

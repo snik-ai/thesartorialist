@@ -33,9 +33,10 @@ export default function DatenschutzPage() {
         <p>
           Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber.
           Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen. Diese
-          Website ist eine statische Website: Es werden keine Cookies gesetzt, es kommen
-          keine Analyse- oder Tracking-Tools zum Einsatz, und es werden keine Inhalte von
-          Drittanbietern (z.&nbsp;B. Videos oder externe Schriften) nachgeladen.
+          Website ist eine statische Website: Es werden keine Cookies gesetzt, und es werden
+          keine Inhalte von Drittanbietern (z.&nbsp;B. Videos oder externe Schriften)
+          nachgeladen. Einzige Ausnahme ist die anonyme Reichweitenmessung durch unsere
+          Webagentur (siehe Abschnitt 4, «Reichweitenmessung»).
         </p>
         <p>
           Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen — z.&nbsp;B.
@@ -123,6 +124,16 @@ export default function DatenschutzPage() {
           vorgenommen. Der Websitebetreiber hat ein berechtigtes Interesse an der technisch
           fehlerfreien Darstellung und der Optimierung seiner Website — hierzu müssen die
           Server-Log-Files erfasst werden.
+        </p>
+        <h3>Reichweitenmessung</h3>
+        <p>
+          Zur Verbesserung dieser Website misst unsere Webagentur DLM Digital (Zürich,
+          Schweiz) in unserem Auftrag anonym, welche Seiten aufgerufen und welche
+          Kontaktwege (Telefon, WhatsApp, E-Mail, Formular) genutzt werden. Dafür werden
+          keine Cookies gesetzt und keine IP-Adressen gespeichert; eine Wiedererkennung über
+          den Tag hinaus ist nicht möglich. Inhalte von Formularen (z.&nbsp;B. Name, E-Mail,
+          Nachricht) werden nicht an DLM Digital übermittelt. Die Daten werden in der
+          Schweiz bzw. EU verarbeitet.
         </p>
         <h3>Anfragen per E-Mail oder Telefon</h3>
         <p>
