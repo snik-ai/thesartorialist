@@ -16,8 +16,10 @@ cmds = ["npm ci --include=dev"]
 [phases.build]
 cmds = [
   "npm run build",
-  "cp -r public .next/standalone/public",
-  "cp -r .next/static .next/standalone/.next/static",
+  # Inhalte zusammenführen (nicht «cp -r public …/public»: existiert der Ordner schon, entstünde public/public)
+  "mkdir -p .next/standalone/public .next/standalone/.next/static",
+  "cp -r public/. .next/standalone/public/",
+  "cp -r .next/static/. .next/standalone/.next/static/",
 ]
 
 [start]
