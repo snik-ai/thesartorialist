@@ -34,6 +34,15 @@ function slotsFor(date: Date): string[] {
     out.push(`${h}:00`);
     if (h < endHour) out.push(`${h}:30`);
   }
+  // Heute: nur Zeiten, die mindestens 90 Minuten in der Zukunft liegen
+  const jetzt = new Date();
+  if (sameDay(date, jetzt)) {
+    const ab = jetzt.getHours() * 60 + jetzt.getMinutes() + 90;
+    return out.filter((t) => {
+      const [hh, mm] = t.split(':').map(Number);
+      return hh * 60 + mm >= ab;
+    });
+  }
   return out;
 }
 
@@ -108,7 +117,7 @@ export default function BookingWizard() {
   const canNext = new Date(monthCursor.getFullYear(), monthCursor.getMonth() + 1, 1) <= maxDate;
 
   function selectable(d: Date) {
-    return d >= today && d <= maxDate && d.getDay() !== 0;
+    return d >= today && d <= maxDate && d.getDay() !== 0 && slotsFor(d).length > 0;
   }
 
   const dateLong = date
@@ -296,7 +305,7 @@ export default function BookingWizard() {
                 →
               </button>
             </div>
-            <div className="cal-grid" role="grid">
+            <div className="cal-grid" role="group" aria-label="Datum wählen">
               {WEEKDAYS.map((w) => (
                 <span key={w} className="cal-wd">{w}</span>
               ))}
