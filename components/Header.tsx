@@ -11,6 +11,7 @@ import CartButton from './shop/CartButton';
 const NAV_LEFT = [
   { label: 'Kollektion', href: '/kollektion/' },
   { label: 'Massanzug', href: '/massanzug-zuerich/' },
+  { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
 ];
 
@@ -25,7 +26,7 @@ const NAV_RIGHT = [
 const SUB_KOLLEKTION = [
   { label: 'Alle Anzüge', href: '/kollektion/' },
   { label: 'Massanzug Zürich', href: '/massanzug-zuerich/' },
-  { label: 'Massanzug-Konfigurator', href: '/massanzug-konfigurator/' },
+  { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
   { label: 'Hochzeitsanzug Zürich', href: '/hochzeitsanzug-zuerich/' },
   { label: 'Anzug blau', href: '/anzug-blau/' },
   { label: 'Anzug grün', href: '/anzug-gruen/' },
@@ -179,13 +180,13 @@ export default function Header() {
                 <span className="fs-num">02</span>
                 <span className="fs-lbl">Massanzug</span>
               </Link>
-              <Link className="fs-row" href="/hochzeitsanzug-zuerich/" onClick={close}>
+              <Link className="fs-row" href="/massanzug-konfigurator/" onClick={close}>
                 <span className="fs-num">03</span>
-                <span className="fs-lbl">Hochzeitsanzug</span>
+                <span className="fs-lbl">Styles & Options</span>
               </Link>
-              <Link className="fs-row" href="/shop/" onClick={close}>
+              <Link className="fs-row" href="/hochzeitsanzug-zuerich/" onClick={close}>
                 <span className="fs-num">04</span>
-                <span className="fs-lbl">Shop</span>
+                <span className="fs-lbl">Hochzeitsanzug</span>
               </Link>
               <button
                 type="button"
@@ -208,6 +209,10 @@ export default function Header() {
               <Link className="fs-row" href="/kontakt/" onClick={close}>
                 <span className="fs-num">08</span>
                 <span className="fs-lbl">Kontakt</span>
+              </Link>
+              <Link className="fs-row" href="/shop/" onClick={close}>
+                <span className="fs-num">09</span>
+                <span className="fs-lbl">Shop</span>
               </Link>
             </div>
 

@@ -67,5 +67,6 @@ schwebender Knopf für den Vollbild-Konfigurator, Shop nur sekundär, Film von t
   `public/images/hero-film.webp` als LCP; Einblenden erst, wenn Vimeo `play`/`timeupdate` meldet.
   «Film ansehen» öffnet ihn mit Ton. Datenschutz um Vimeo und Konfigurator ergänzt.
 - **Shop sekundär:** Shop-Hinweis von der Startseite entfernt, «Shop» in der Navigation zuletzt.
-- **Offen:** Im gelieferten Code steht als Atelier «Beethovenstrasse 24, 8002 Zürich», auf der Website
-  «Kuttelgasse 7, 8001 Zürich» (`lib/site.ts`). Verwendet wird `lib/site.ts`; Adresse vom Kunden bestätigen lassen.
+- **Neue Version des Quellcodes (06.11.2026, 09:43):** Adresse überall Kuttelgasse 7, 8001 Zürich (bestätigt
+  `lib/site.ts`), Untergruppen mit 5 Optionen auf Desktop 3 pro Reihe zentriert (`.konf-grid--5`), Menüpunkt
+  «Styles & Options» in der Hauptnavigation. Daten und Bilder unverändert.

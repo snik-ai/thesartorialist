@@ -159,7 +159,7 @@ export default function Konfigurator() {
                     )}
                   </div>
                   {u.note && <p className="konf-note">{u.note}</p>}
-                  <div className="konf-grid">
+                  <div className={`konf-grid${u.options.length === 5 ? ' konf-grid--5' : ''}`}>
                     {u.options.map((o) => {
                       const on = istGewaehlt(u.id, o.id);
                       return (

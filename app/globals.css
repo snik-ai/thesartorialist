@@ -201,10 +201,17 @@ h1, h2, h3, .serif {
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 }
-@media (max-width: 1120px) {
+@media (max-width: 1320px) {
   .header-nav { gap: 1.1rem; }
-  .header-nav a { font-size: 0.72rem; }
+  .header-nav a { font-size: 0.72rem; letter-spacing: 0.07em; }
+  .header-inner { gap: 1rem; }
 }
+@media (max-width: 1200px) {
+  /* Termin-Knopf steht schon in der Ankündigungsleiste; Platz für das Logo */
+  .header-nav--right .btn { display: none; }
+}
+.header-logo { flex-shrink: 0; }
+.header-logo .logo { max-width: none; }
 .header-nav a:hover, .header-nav a[aria-current='page'] { border-color: var(--ink); }
 
 
@@ -442,6 +449,7 @@ body.menu-open { overflow: hidden; }
 .fs-menu.is-open .fs-panel--main .fs-list .fs-row:nth-child(6) { transition-delay: 0.52s; }
 .fs-menu.is-open .fs-panel--main .fs-list .fs-row:nth-child(7) { transition-delay: 0.58s; }
 .fs-menu.is-open .fs-panel--main .fs-list .fs-row:nth-child(8) { transition-delay: 0.62s; }
+.fs-menu.is-open .fs-panel--main .fs-list .fs-row:nth-child(9) { transition-delay: 0.66s; }
 .fs-menu.is-open .fs-panel--main .fs-foot { transition-delay: 0.62s; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1824,6 +1832,11 @@ body.sheet-open { overflow: hidden; }
 .konf-note { font-size: 0.85rem; color: var(--muted); margin: -0.5rem 0 1rem; }
 
 .konf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: clamp(0.75rem, 1.6vw, 1.25rem); }
+/* Genau 5 Optionen: 3 pro Reihe, zentriert (statt 4 + 1) — wie im gelieferten Code */
+@media (min-width: 900px) {
+  .konf-grid--5 { display: flex; flex-wrap: wrap; justify-content: center; max-width: 780px; margin: 0 auto; }
+  .konf-grid--5 > .konf-card { flex: 0 0 calc((100% - 2 * clamp(0.75rem, 1.6vw, 1.25rem)) / 3); }
+}
 @media (max-width: 560px) { .konf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .konf-card { position: relative; }
 .konf-card-main {

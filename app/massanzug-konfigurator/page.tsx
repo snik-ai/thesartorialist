@@ -8,7 +8,7 @@ import { KONFIG_KATEGORIEN } from '@/lib/konfigurator/daten';
 const anzahl = KONFIG_KATEGORIEN.reduce((n, k) => n + k.subCategories.reduce((m, u) => m + u.options.length, 0), 0);
 
 export const metadata: Metadata = {
-  title: 'Massanzug-Konfigurator — Stil & Details online wählen',
+  title: 'Styles & Options — Massanzug-Konfigurator',
   description: `Stellen Sie Ihren Massanzug online zusammen: Revers, Knöpfe, Taschen, Schulter, Futter und ${anzahl} weitere Details für Sakko, Hose, Weste und Smoking. Auswahl speichern, als PDF mitnehmen und Termin in Zürich buchen.`,
   alternates: { canonical: '/massanzug-konfigurator/' },
   openGraph: {
@@ -51,12 +51,12 @@ export default function KonfiguratorPage() {
       <Breadcrumbs
         items={[
           { name: 'Massanzug', href: '/massanzug-zuerich/' },
-          { name: 'Konfigurator', href: '/massanzug-konfigurator/' },
+          { name: 'Styles & Options', href: '/massanzug-konfigurator/' },
         ]}
       />
       <section className="page-hero konf-hero">
         <div className="container">
-          <span className="eyebrow">Stil-Konfigurator</span>
+          <span className="eyebrow">Styles &amp; Options · Stil-Konfigurator</span>
           <h1 className="display">Ihr Massanzug beginnt hier.</h1>
           <p className="lead">
             Ihr Stil. Ihr Mass. Ihr Anzug. Entdecken Sie Revers, Knöpfe, Taschen und Verarbeitungsdetails und stellen Sie in
