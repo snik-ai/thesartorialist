@@ -1,0 +1,466 @@
+[
+ {
+  "source": "/en/about-us/",
+  "destination": "/ueber-uns/"
+ },
+ {
+  "source": "/en/beige-suit/",
+  "destination": "/anzug-beige/"
+ },
+ {
+  "source": "/en/blue-suit/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/en/category/brand-en/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/en/contact/",
+  "destination": "/kontakt/"
+ },
+ {
+  "source": "/en/gran-sasso/",
+  "destination": "/gran-sasso/"
+ },
+ {
+  "source": "/en/green-suit/",
+  "destination": "/anzug-gruen/"
+ },
+ {
+  "source": "/en/holland-sherry/",
+  "destination": "/holland-sherry/"
+ },
+ {
+  "source": "/en/imprint/",
+  "destination": "/impressum/"
+ },
+ {
+  "source": "/en/jacob-cohen/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/en/loro-piana/",
+  "destination": "/loro-piana/"
+ },
+ {
+  "source": "/en/made-to-measure-suit-zurich/",
+  "destination": "/massanzug-zuerich/"
+ },
+ {
+  "source": "/en/maria-santangelo/",
+  "destination": "/maria-santangelo/"
+ },
+ {
+  "source": "/en/orazio-luciano/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/en/paul-and-shark/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/en/suits-zurich/",
+  "destination": "/anzuege-zuerich/"
+ },
+ {
+  "source": "/en/wedding-suit-2024/",
+  "destination": "/hochzeit-anzug-2024/"
+ },
+ {
+  "source": "/en/wedding-suit-zurich/",
+  "destination": "/hochzeitsanzug-zuerich/"
+ },
+ {
+  "source": "/en/woolrich/",
+  "destination": "/woolrich/"
+ },
+ {
+  "source": "/es/acerca-de-nosotros/",
+  "destination": "/ueber-uns/"
+ },
+ {
+  "source": "/es/aviso-legal/",
+  "destination": "/impressum/"
+ },
+ {
+  "source": "/es/category/marca-es/",
+  "destination": "/termin/"
+ },
+ {
+  "source": "/es/contacto/",
+  "destination": "/kontakt/"
+ },
+ {
+  "source": "/es/gran-sasso/",
+  "destination": "/gran-sasso/"
+ },
+ {
+  "source": "/es/holland-sherry/",
+  "destination": "/holland-sherry/"
+ },
+ {
+  "source": "/es/jacob-cohen/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/es/loro-piana/",
+  "destination": "/loro-piana/"
+ },
+ {
+  "source": "/es/marcas/",
+  "destination": "/termin/"
+ },
+ {
+  "source": "/es/maria-santangelo/",
+  "destination": "/maria-santangelo/"
+ },
+ {
+  "source": "/es/orazio-luciano/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/es/traje-a-medida-zurich/",
+  "destination": "/massanzug-zuerich/"
+ },
+ {
+  "source": "/es/traje-azul/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/es/traje-de-boda-2024/",
+  "destination": "/hochzeit-anzug-2024/"
+ },
+ {
+  "source": "/es/trajes-de-boda/",
+  "destination": "/hochzeitsanzug-zuerich/"
+ },
+ {
+  "source": "/es/trajes-zurich/",
+  "destination": "/anzuege-zuerich/"
+ },
+ {
+  "source": "/es/woolrich/",
+  "destination": "/woolrich/"
+ },
+ {
+  "source": "/fr/a-propos-de-nous/",
+  "destination": "/ueber-uns/"
+ },
+ {
+  "source": "/fr/category/marque/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/fr/contact/",
+  "destination": "/kontakt/"
+ },
+ {
+  "source": "/fr/costume-beige/",
+  "destination": "/anzug-beige/"
+ },
+ {
+  "source": "/fr/costume-bleu/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/fr/costume-de-mariage-2024/",
+  "destination": "/hochzeit-anzug-2024/"
+ },
+ {
+  "source": "/fr/costume-sur-mesure-zurich/",
+  "destination": "/massanzug-zuerich/"
+ },
+ {
+  "source": "/fr/costume-vert/",
+  "destination": "/anzug-gruen/"
+ },
+ {
+  "source": "/fr/costumes-de-mariage/",
+  "destination": "/hochzeitsanzug-zuerich/"
+ },
+ {
+  "source": "/fr/costumes-zurich/",
+  "destination": "/anzuege-zuerich/"
+ },
+ {
+  "source": "/fr/gran-sasso/",
+  "destination": "/gran-sasso/"
+ },
+ {
+  "source": "/fr/holland-sherry/",
+  "destination": "/holland-sherry/"
+ },
+ {
+  "source": "/fr/mentions-legales/",
+  "destination": "/impressum/"
+ },
+ {
+  "source": "/fr/orazio-luciano/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/it/abiti-zurigo/",
+  "destination": "/anzuege-zuerich/"
+ },
+ {
+  "source": "/it/abito-da-matrimonio-2024/",
+  "destination": "/hochzeit-anzug-2024/"
+ },
+ {
+  "source": "/it/abito-su-misura-zurigo/",
+  "destination": "/massanzug-zuerich/"
+ },
+ {
+  "source": "/it/category/brand-it/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/it/chi-siamo/",
+  "destination": "/ueber-uns/"
+ },
+ {
+  "source": "/it/completo-beige/",
+  "destination": "/anzug-beige/"
+ },
+ {
+  "source": "/it/completo-blu/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/it/completo-verde/",
+  "destination": "/anzug-gruen/"
+ },
+ {
+  "source": "/it/contatto/",
+  "destination": "/kontakt/"
+ },
+ {
+  "source": "/it/gran-sasso/",
+  "destination": "/gran-sasso/"
+ },
+ {
+  "source": "/it/holland-sherry/",
+  "destination": "/holland-sherry/"
+ },
+ {
+  "source": "/it/jacob-cohen/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/it/maria-santangelo/",
+  "destination": "/maria-santangelo/"
+ },
+ {
+  "source": "/it/note-legali/",
+  "destination": "/impressum/"
+ },
+ {
+  "source": "/it/orazio-luciano/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/pt-pt/category/marca/",
+  "destination": "/termin/"
+ },
+ {
+  "source": "/pt-pt/contacto/",
+  "destination": "/kontakt/"
+ },
+ {
+  "source": "/pt-pt/fato-azul/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/pt-pt/fato-bege/",
+  "destination": "/anzug-beige/"
+ },
+ {
+  "source": "/pt-pt/fato-de-casamento-2024/",
+  "destination": "/hochzeit-anzug-2024/"
+ },
+ {
+  "source": "/pt-pt/fato-por-medida-zurique/",
+  "destination": "/massanzug-zuerich/"
+ },
+ {
+  "source": "/pt-pt/fato-verde/",
+  "destination": "/anzug-gruen/"
+ },
+ {
+  "source": "/pt-pt/fatos-de-noivo/",
+  "destination": "/hochzeitsanzug-zuerich/"
+ },
+ {
+  "source": "/pt-pt/fatos-zurique/",
+  "destination": "/anzuege-zuerich/"
+ },
+ {
+  "source": "/pt-pt/ficha-tecnica/",
+  "destination": "/impressum/"
+ },
+ {
+  "source": "/pt-pt/gran-sasso/",
+  "destination": "/gran-sasso/"
+ },
+ {
+  "source": "/pt-pt/holland-sherry/",
+  "destination": "/holland-sherry/"
+ },
+ {
+  "source": "/pt-pt/jacob-cohen/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/pt-pt/maria-santangelo/",
+  "destination": "/maria-santangelo/"
+ },
+ {
+  "source": "/pt-pt/orazio-luciano/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/pt-pt/rubinacci/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/pt-pt/sobre-nos/",
+  "destination": "/ueber-uns/"
+ },
+ {
+  "source": "/ru/%d0%b1%d0%b5%d0%b6%d0%b5%d0%b2%d1%8b%d0%b9-%d0%ba%d0%be%d1%81%d1%82%d1%8e%d0%bc/",
+  "destination": "/anzug-beige/"
+ },
+ {
+  "source": "/ru/%d0%b3%d1%80%d0%b0%d0%bd-%d1%81%d0%b0%d1%81%d1%81%d0%be/",
+  "destination": "/gran-sasso/"
+ },
+ {
+  "source": "/ru/%d0%ba%d0%be%d1%81%d1%82%d1%8e%d0%bc%d1%8b-%d1%86%d1%8e%d1%80%d0%b8%d1%85/",
+  "destination": "/anzuege-zuerich/"
+ },
+ {
+  "source": "/ru/%d0%ba%d0%be%d1%81%d1%82%d1%8e%d0%bc-%d0%b3%d0%be%d0%bb%d1%83%d0%b1%d0%be%d0%b3%d0%be-%d1%86%d0%b2%d0%b5%d1%82%d0%b0/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/ru/%d0%ba%d0%be%d1%81%d1%82%d1%8e%d0%bc-%d0%b7%d0%b5%d0%bb%d0%b5%d0%bd%d0%be%d0%b3%d0%be-%d1%86%d0%b2%d0%b5%d1%82%d0%b0/",
+  "destination": "/anzug-gruen/"
+ },
+ {
+  "source": "/ru/%d0%bc%d0%b0%d1%80%d0%b8%d1%8f-%d1%81%d0%b0%d0%bd%d1%82%d0%b0%d0%bd%d0%b6%d0%b5%d0%bb%d0%be/",
+  "destination": "/maria-santangelo/"
+ },
+ {
+  "source": "/ru/%d0%be%d1%80%d0%b0%d1%86%d0%b8%d0%be-%d0%bb%d1%83%d1%87%d0%b0%d0%bd%d0%be/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/ru/%d0%be-%d0%bd%d0%b0%d1%81/",
+  "destination": "/ueber-uns/"
+ },
+ {
+  "source": "/ru/%d0%bf%d0%be%d0%bb-%d0%b8-%d0%b0%d0%ba%d1%83%d0%bb%d0%b0/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/ru/%d0%bf%d1%80%d0%b8%d1%82%d0%b0%d0%bb%d0%b5%d0%bd%d0%bd%d1%8b%d0%b9-%d0%ba%d0%be%d1%81%d1%82%d1%8e%d0%bc-%d1%86%d1%8e%d1%80%d0%b8%d1%85/",
+  "destination": "/anzuege-zuerich/"
+ },
+ {
+  "source": "/ru/%d1%81%d0%b2%d0%b0%d0%b4%d0%b5%d0%b1%d0%bd%d1%8b%d0%b5-%d0%ba%d0%be%d1%81%d1%82%d1%8e%d0%bc%d1%8b/",
+  "destination": "/hochzeitsanzug-zuerich/"
+ },
+ {
+  "source": "/ru/%d1%81%d0%b2%d0%b0%d0%b4%d0%b5%d0%b1%d0%bd%d1%8b%d0%b9-%d0%ba%d0%be%d1%81%d1%82%d1%8e%d0%bc-2024/",
+  "destination": "/hochzeit-anzug-2024/"
+ },
+ {
+  "source": "/ru/%d1%81%d0%b2%d1%8f%d0%b6%d0%b8%d1%82%d0%b5%d1%81%d1%8c-%d1%81-%d0%bd%d0%b0%d0%bc%d0%b8/",
+  "destination": "/kontakt/"
+ },
+ {
+  "source": "/ru/%d1%85%d0%be%d0%bb%d0%bb%d0%b0%d0%bd%d0%b4-%d0%b8-%d1%88%d0%b5%d1%80%d1%80%d0%b8/",
+  "destination": "/holland-sherry/"
+ },
+ {
+  "source": "/ru/%d1%8f%d0%ba%d0%be%d0%b1-%d0%ba%d0%be%d1%85%d0%b5%d0%bd/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/ru/category/%d0%b1%d1%80%d0%b5%d0%bd%d0%b4/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/ru/loro-piana/",
+  "destination": "/loro-piana/"
+ },
+ {
+  "source": "/ru/woolrich/",
+  "destination": "/woolrich/"
+ },
+ {
+  "source": "/sq/category/zjarrit/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/sq/jacob-cohen/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/sq/kostum-blu/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/sq/kostum-jeshil/",
+  "destination": "/anzug-gruen/"
+ },
+ {
+  "source": "/sq/orazio-luciano/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/sr/%d0%b2%d0%be%d0%be%d0%bb%d1%80%d0%b8%d1%86%d1%85/",
+  "destination": "/woolrich/"
+ },
+ {
+  "source": "/sr/%d0%b3%d1%80%d0%b0%d0%bd-%d1%81%d0%b0%d1%81%d1%81%d0%be/",
+  "destination": "/gran-sasso/"
+ },
+ {
+  "source": "/sr/%d0%b7%d0%b5%d0%bb%d0%b5%d0%bd%d0%be-%d0%be%d0%b4%d0%b5%d0%bb%d0%be/",
+  "destination": "/anzug-gruen/"
+ },
+ {
+  "source": "/sr/%d0%bb%d0%be%d1%80%d0%be-%d0%bf%d0%b8%d0%b0%d0%bd%d0%b0/",
+  "destination": "/loro-piana/"
+ },
+ {
+  "source": "/sr/%d0%bc%d0%b0%d1%80%d0%b8%d0%b0-%d1%81%d0%b0%d0%bd%d1%82%d0%b0%d0%bd%d0%b3%d0%b5%d0%bb%d0%be/",
+  "destination": "/maria-santangelo/"
+ },
+ {
+  "source": "/sr/%d0%be%d1%80%d0%b0%d0%b7%d0%b8%d0%be-%d0%bb%d1%83%d1%86%d0%b8%d0%b0%d0%bd%d0%be/",
+  "destination": "/orazio-luciano/"
+ },
+ {
+  "source": "/sr/%d0%be-%d0%bd%d0%b0%d0%bc%d0%b0/",
+  "destination": "/ueber-uns/"
+ },
+ {
+  "source": "/sr/%d0%bf%d0%bb%d0%b0%d0%b2%d0%be-%d0%be%d0%b4%d0%b5%d0%bb%d0%be/",
+  "destination": "/anzug-blau/"
+ },
+ {
+  "source": "/sr/%d1%85%d0%be%d0%bb%d0%bb%d0%b0%d0%bd%d0%b4-%d1%81%d1%85%d0%b5%d1%80%d1%80%d0%b8/",
+  "destination": "/holland-sherry/"
+ },
+ {
+  "source": "/sr/%d1%98%d0%b0%d1%86%d0%be%d0%b1-%d1%86%d0%be%d1%85%d0%b5%d0%bd/",
+  "destination": "/category/brand/"
+ },
+ {
+  "source": "/sr/category/%d0%b2%d0%b0%d1%82%d1%80%d0%b0/",
+  "destination": "/category/brand/"
+ }
+]

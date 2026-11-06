@@ -4,6 +4,7 @@ import { BRANDS } from '@/lib/brands';
 import { SUIT_COLORS } from '@/lib/suitColors';
 import { getAllProducts } from '@/lib/shop/catalog';
 import { activePages } from '@/lib/shop/pages';
+import { GLOSSAR } from '@/lib/glossar';
 
 export const revalidate = 3600;
 
@@ -27,6 +28,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry('/termin/', 0.9),
     entry('/massanzug-zuerich/', 0.9),
     entry('/massanzug-konfigurator/', 0.8),
+    entry('/glossar/', 0.7, 'weekly'),
+    ...GLOSSAR.map((b) => entry(`/glossar/${b.slug}/`, 0.6)),
     entry('/hochzeitsanzug-zuerich/', 0.9),
     entry('/hochzeit-anzug-2024/', 0.8),
     entry('/anzuege-zuerich/', 0.8),

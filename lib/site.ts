@@ -64,6 +64,7 @@ export const FOOTER_NAV: { title: string; items: NavItem[] }[] = [
       { label: 'Hochzeit Anzug 2024', href: '/hochzeit-anzug-2024/' },
       { label: 'Anzüge Zürich', href: '/anzuege-zuerich/' },
       { label: 'Services', href: '/services/' },
+      { label: 'Glossar', href: '/glossar/' },
     ],
   },
   {

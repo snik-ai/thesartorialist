@@ -2361,3 +2361,75 @@ body.cart-open .studio-fab, body.sheet-open .studio-fab { opacity: 0; pointer-ev
 body.cart-open .kfab, body.sheet-open .kfab, body.menu-open .kfab { opacity: 0; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .kfab-panel, .kfab-badge::after { transition: none !important; animation: none !important; } }
 .kfab-toggle { border-radius: 50%; }
+
+/* ==================================================================
+   Glossar (/glossar/ und /glossar/<begriff>/)
+================================================================== */
+.glossar-hub { padding-bottom: clamp(3rem, 7vw, 5rem); }
+.glossar-suche { display: grid; gap: 1rem; margin-bottom: 2rem; }
+.glossar-field { display: grid; gap: 0.45rem; max-width: 640px; }
+.glossar-field span { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.glossar-field input { height: 60px; padding: 0 1.2rem; border: 1px solid #cfcac1; font: 400 1.1rem var(--sans); border-radius: 0; background: var(--paper); }
+.glossar-field input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.3); }
+.glossar-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.glossar-chips button { height: 40px; padding: 0 1rem; border: 1px solid var(--line); background: var(--paper); font: 500 0.82rem var(--sans); color: var(--ink); cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
+.glossar-chips button:hover { border-color: var(--ink); }
+.glossar-chips button.is-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.glossar-treffer ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.6rem; margin-top: 0.6rem; }
+.glossar-treffer a { display: grid; gap: 0.3rem; padding: 1rem 1.1rem; border: 1px solid var(--line); background: var(--paper); height: 100%; transition: border-color 0.2s ease; }
+.glossar-treffer a:hover { border-color: var(--ink); }
+.glossar-k { font-size: 0.84rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.glossar-az { position: sticky; top: 84px; z-index: 5; display: flex; flex-wrap: wrap; gap: 0.15rem; padding: 0.75rem 0; margin-bottom: 1.5rem; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+@media (max-width: 960px) { .glossar-az { top: 66px; } }
+.glossar-az a { min-width: 36px; height: 36px; display: grid; place-items: center; font: 600 0.85rem var(--sans); transition: background 0.2s ease, color 0.2s ease; }
+.glossar-az a:hover { background: var(--ink); color: var(--paper); }
+.glossar-list { columns: 3 260px; column-gap: 3rem; }
+.glossar-letter { break-inside: avoid; margin-bottom: 2rem; scroll-margin-top: 150px; }
+.glossar-l { font-size: 2.4rem; line-height: 1; color: #c9c3b8; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.4rem; }
+.glossar-letter ul { list-style: none; }
+.glossar-letter a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid var(--line); transition: padding 0.25s var(--easing); }
+.glossar-letter a:hover { padding-left: 0.4rem; }
+.glossar-t { font-family: var(--serif); font-size: 1.1rem; }
+.glossar-g { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+
+.begriff-head { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+@media (max-width: 860px) { .begriff-head { grid-template-columns: 1fr; } }
+.begriff-auch { margin-top: 0.6rem; font-size: 0.85rem; color: var(--muted); }
+.begriff-kurz { margin-top: 1.5rem; font-size: clamp(1.1rem, 1.7vw, 1.3rem); line-height: 1.65; color: var(--ink-soft); padding-left: 1.25rem; border-left: 2px solid #c9a063; }
+.begriff-bild { margin: 0; aspect-ratio: 4 / 5; overflow: hidden; background: var(--paper-warm); }
+.begriff-bild img { width: 100%; height: 100%; object-fit: cover; }
+.begriff-bild--zeichnung { background: #fff; border: 1px solid var(--line); }
+.begriff-bild--zeichnung img { object-fit: contain; padding: 2rem; }
+@media (max-width: 860px) { .begriff-bild { aspect-ratio: 4 / 3; } }
+.begriff-body { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: clamp(2rem, 5vw, 4rem); align-items: start; padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+@media (max-width: 960px) { .begriff-body { grid-template-columns: 1fr; } }
+.begriff-text { max-width: 46rem; }
+.begriff-text section + section { margin-top: 2.5rem; }
+.begriff-text .h2 { font-size: clamp(1.45rem, 2.4vw, 1.9rem); margin-bottom: 0.9rem; }
+.begriff-text p { color: var(--ink-soft); line-height: 1.8; }
+.begriff-text p + p { margin-top: 1rem; }
+.begriff-beispiel { margin: 2.75rem 0; padding: clamp(1.5rem, 3vw, 2.25rem); background: var(--paper-warm); border-left: 3px solid var(--ink); }
+.begriff-beispiel .h3 { margin-bottom: 0.7rem; }
+.begriff-faq { margin-top: 2.5rem; }
+.begriff-side { position: sticky; top: 110px; display: grid; gap: 1rem; }
+@media (max-width: 960px) { .begriff-side { position: static; } }
+.begriff-box { padding: 1.25rem 1.35rem; border: 1px solid var(--line); background: var(--paper); }
+.begriff-box-t { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+.begriff-box ul { list-style: none; display: grid; }
+.begriff-box li a { display: block; padding: 0.5rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+.begriff-box li:last-child a { border-bottom: 0; }
+.begriff-box li a:hover { color: #9a7b3f; }
+.begriff-box--ink { background: var(--ink); color: var(--paper); border-color: var(--ink); display: grid; gap: 0.8rem; }
+.begriff-box--ink .begriff-box-t { color: #c9a063; margin: 0; font-size: 0.8rem; }
+.begriff-box--ink p { font-size: 0.88rem; color: rgba(255, 255, 255, 0.75); }
+.begriff-box--ink .text-link { color: var(--paper); justify-self: center; }
+.begriff-nav { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 1.5rem; padding-bottom: clamp(2.5rem, 5vw, 4rem); border-top: 1px solid var(--line); font-size: 0.9rem; }
+.begriff-nav a:hover { color: #9a7b3f; }
+/* Mobile: Stoff-Box darf nicht breiter werden als der Bildschirm (sonst rutschen fixierte Knöpfe raus) */
+@media (max-width: 800px) { .konf-stoff-box { grid-template-columns: minmax(0, 1fr); } }
+.konf-stoff-cta .konf-code, .kfab-hours p { overflow-wrap: anywhere; }
+.konf-stoff-row .btn { flex: none; }
+/* Sicherheitsnetz: nie horizontal überlaufen */
+html, body { overflow-x: clip; }
+.hero-film-btn { bottom: clamp(5.5rem, 9vw, 6.5rem); }
+@media (max-width: 700px) { .hero-film-btn { bottom: auto; } }
