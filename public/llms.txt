@@ -39,13 +39,28 @@ italienische Herrenmode, Anzug blau, Anzug grün, Anzug beige
 - Loro Piana (feinste Stoffe, über 200 Jahre): https://thesartorialist.ch/loro-piana/
 - Holland & Sherry (britische Stofftradition): https://thesartorialist.ch/holland-sherry/
 - Gran Sasso (italienische Strickmode): https://thesartorialist.ch/gran-sasso/
-- Jacob Cohën (Luxus-Denim): https://thesartorialist.ch/jacob-cohen/
-- Paul & Shark (Premium-Mode seit 1975): https://thesartorialist.ch/paul-and-shark/
 - Woolrich (Outdoor-Ikone seit 1830): https://thesartorialist.ch/woolrich/
 
 Stoffpartner: Loro Piana, Vitale Barberis Canonico, Drago, Reda, Cerruti,
 Scabal, Solbiati, Zegna, Holland & Sherry; Hemden: Canclini, Albini,
 Thomas Mason.
+
+## Online-Shop
+
+Ergänzend zum Massanzug verkauft The Sartorialist ausgewählte Konfektion online
+(Versand in die ganze Schweiz, Checkout über Shopify). Startseite des Shops ist
+ein 3D-Kleiderschrank: https://thesartorialist.ch/shop/
+
+- Woolrich (Parkas, Mäntel, Wool Shirt Jackets, Herren und Damen): https://thesartorialist.ch/shop/woolrich/
+- Gran Sasso (Strick aus Merino und Cashmere): https://thesartorialist.ch/shop/gran-sasso/
+- Tramarossa (Sakkos und Chinos): https://thesartorialist.ch/shop/tramarossa/
+- Parkas: https://thesartorialist.ch/shop/parkas/
+- Strick: https://thesartorialist.ch/shop/strick/
+- Herren: https://thesartorialist.ch/shop/herren/ · Damen: https://thesartorialist.ch/shop/damen/
+- Produktseiten: https://thesartorialist.ch/shop/products/<handle>/ (Liste in der Sitemap)
+
+Alle Shop-Stücke lassen sich auch im Showroom an der Kuttelgasse 7 anprobieren.
+Massanzüge gibt es nicht im Shop — sie beginnen mit einem Termin im Showroom.
 
 ## Preise
 
@@ -72,5 +87,6 @@ Thomas Mason.
 
 ## Technologien
 
-Next.js (statischer Export), semantisches HTML, JSON-LD (ClothingStore,
-Product, Service, FAQPage, BreadcrumbList), WCAG 2.1 AA.
+Next.js (App Router, ISR), Shopify Storefront API (headless), three.js,
+semantisches HTML, JSON-LD (ClothingStore, Product, ProductGroup, Service,
+FAQPage, BreadcrumbList, ItemList), WCAG 2.1 AA.

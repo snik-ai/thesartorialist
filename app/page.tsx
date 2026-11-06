@@ -263,6 +263,25 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Shop-Hinweis: bewusst schlicht, der Fokus der Startseite bleibt der Anzug */}
+      <section className="section shop-teaser">
+        <div className="container split-cta">
+          <div>
+            <span className="eyebrow">Der Shop</span>
+            <h2 className="h2">Was zum Anzug passt, gibt es auch online.</h2>
+            <p className="lead">
+              Parkas von Woolrich, Strick von Gran Sasso, Sakkos von Tramarossa — bestellen Sie online oder probieren Sie
+              im Showroom an.
+            </p>
+          </div>
+          <div className="split-cta-actions">
+            <Link href="/shop/" className="btn btn--ghost">
+              Zum Kleiderschrank
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Faq items={HOME_FAQ} title="Alles rund um Massanzug & Hochzeitsanzug in Zürich" />
 
       <CtaBand />

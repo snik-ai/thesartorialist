@@ -44,6 +44,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { label: 'Kollektion', href: '/kollektion/' },
   { label: 'Massanzug', href: '/massanzug-zuerich/' },
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
+  { label: 'Shop', href: '/shop/' },
   { label: 'Brands', href: '/category/brand/' },
   { label: 'Über uns', href: '/ueber-uns/' },
 ];
@@ -66,6 +67,16 @@ export const FOOTER_NAV: { title: string; items: NavItem[] }[] = [
       { label: 'Anzug blau', href: '/anzug-blau/' },
       { label: 'Anzug grün', href: '/anzug-gruen/' },
       { label: 'Anzug beige', href: '/anzug-beige/' },
+    ],
+  },
+  {
+    title: 'Shop',
+    items: [
+      { label: 'Alle Stücke', href: '/shop/' },
+      { label: 'Woolrich', href: '/shop/woolrich/' },
+      { label: 'Gran Sasso', href: '/shop/gran-sasso/' },
+      { label: 'Tramarossa', href: '/shop/tramarossa/' },
+      { label: 'Parkas', href: '/shop/parkas/' },
     ],
   },
   {

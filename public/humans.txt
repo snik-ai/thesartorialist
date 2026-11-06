@@ -7,7 +7,7 @@ Instagram: @the_sartorialist_zurich
 
 /* SITE */
 Sprache: Deutsch (de-CH)
-Stack: Next.js (App Router, statischer Export), TypeScript
+Stack: Next.js (App Router, ISR), TypeScript, Shopify Storefront API (Shop), three.js
 Fonts: Playfair Display (Display-Serif), Inter (Sans)
 Standards: HTML5, WCAG 2.1 AA, JSON-LD Structured Data
 Design & Entwicklung: DLM Digital — https://dlm-digital.ch

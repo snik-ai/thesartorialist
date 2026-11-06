@@ -3,11 +3,14 @@ import { SITE } from '@/lib/site';
 import { COLLECTION } from '@/lib/collection';
 import { BRANDS } from '@/lib/brands';
 import { SUIT_COLORS } from '@/lib/suitColors';
+import { getAllProducts } from '@/lib/shop/catalog';
+import { activePages } from '@/lib/shop/pages';
 
-export const dynamic = 'force-static';
+export const revalidate = 3600;
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const products = await getAllProducts().catch(() => []);
 
   const entry = (
     path: string,
@@ -36,6 +39,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...COLLECTION.map((p) => entry(`/kollektion/${p.slug}/`, 0.7)),
     ...BRANDS.map((b) => entry(`/${b.slug}/`, 0.7)),
     ...SUIT_COLORS.map((s) => entry(`/${s.slug}/`, 0.7)),
+    entry('/shop/', 0.7, 'daily'),
+    ...activePages(products).map((pg) => entry(`/shop/${pg.slug}/`, 0.6, 'weekly')),
+    ...products.map((p) => ({
+      url: `${SITE.url}/shop/products/${encodeURI(p.handle)}/`,
+      lastModified: new Date(p.updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.5,
+    })),
     entry('/impressum/', 0.2, 'yearly'),
     entry('/datenschutzerklaerung/', 0.2, 'yearly'),
     entry('/allgemeine-geschaeftsbedingungen/', 0.2, 'yearly'),

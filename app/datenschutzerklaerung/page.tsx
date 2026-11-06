@@ -32,11 +32,12 @@ export default function DatenschutzPage() {
         <h3>Datenerfassung auf dieser Website</h3>
         <p>
           Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber.
-          Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen. Diese
-          Website ist eine statische Website: Es werden keine Cookies gesetzt, und es werden
-          keine Inhalte von Drittanbietern (z.&nbsp;B. Videos oder externe Schriften)
-          nachgeladen. Einzige Ausnahme ist die anonyme Reichweitenmessung durch unsere
-          Webagentur (siehe Abschnitt 4, «Reichweitenmessung»).
+          Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen. Auf den
+          Seiten ausserhalb des Shops werden keine Cookies gesetzt und keine Inhalte von
+          Drittanbietern (z.&nbsp;B. Videos oder externe Schriften) nachgeladen. Ausnahmen
+          sind die anonyme Reichweitenmessung durch unsere Webagentur (siehe Abschnitt 4,
+          «Reichweitenmessung») und der Online-Shop unter /shop, der mit Shopify betrieben
+          wird (siehe Abschnitt 4, «Online-Shop»).
         </p>
         <p>
           Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen — z.&nbsp;B.
@@ -134,6 +135,24 @@ export default function DatenschutzPage() {
           den Tag hinaus ist nicht möglich. Inhalte von Formularen (z.&nbsp;B. Name, E-Mail,
           Nachricht) werden nicht an DLM Digital übermittelt. Die Daten werden in der
           Schweiz bzw. EU verarbeitet.
+        </p>
+        <h3>Online-Shop (Shopify)</h3>
+        <p>
+          Unser Online-Shop unter thesartorialist.ch/shop wird mit Shopify betrieben
+          (Shopify International Limited, Dublin, Irland, und Shopify Inc., Ottawa, Kanada).
+          Produktdaten, Bilder und Preise werden von Shopify geladen; Produktbilder kommen
+          dabei direkt vom Shopify-Server (cdn.shopify.com), der Ihre IP-Adresse technisch
+          bedingt erhält.
+        </p>
+        <p>
+          Sobald Sie einen Artikel in den Warenkorb legen, setzen wir ein technisch
+          notwendiges Cookie mit der Kennung Ihres Warenkorbs (gültig 14 Tage) sowie die
+          Sitzungs-Cookies von Shopify, damit Warenkorb und Bestellung zusammenpassen. Die
+          Bestellung selbst — Adresse, Versand und Zahlung — schliessen Sie im Checkout von
+          Shopify unter shop.thesartorialist.ch ab; dort gelten zusätzlich die
+          Datenschutzhinweise von Shopify. Die Datenverarbeitung erfolgt zur Erfüllung des
+          Kaufvertrags. Shopify kann Daten auch in Ländern ausserhalb der Schweiz und der EU
+          bearbeiten; dafür bestehen Standardvertragsklauseln.
         </p>
         <h3>Anfragen per E-Mail oder Telefon</h3>
         <p>

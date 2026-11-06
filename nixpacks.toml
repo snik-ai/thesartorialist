@@ -1,5 +1,11 @@
-# Coolify / Nixpacks — statischer Next.js-Export, ausgeliefert via `serve`.
-# Kein SPA-Flag (-s): trailingSlash-Export erzeugt echte HTML-Dateien pro Route.
+# Coolify / Nixpacks: Next.js im Standalone-Modus (output: 'standalone'), wie racher.ch.
+# Coolify «Ports Exposes» = 3000. Der Build braucht Netzzugriff auf Shopify (Storefront API).
+[variables]
+NODE_ENV = "production"
+NEXT_TELEMETRY_DISABLED = "1"
+PORT = "3000"
+HOSTNAME = "0.0.0.0"
+
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
@@ -7,7 +13,11 @@ nixPkgs = ["nodejs_20"]
 cmds = ["npm ci"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = [
+  "npm run build",
+  "cp -r public .next/standalone/public",
+  "cp -r .next/static .next/standalone/.next/static",
+]
 
 [start]
-cmd = "npx serve out -l 3000"
+cmd = "node .next/standalone/server.js"

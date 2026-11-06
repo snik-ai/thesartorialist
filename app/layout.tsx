@@ -4,6 +4,8 @@ import { Playfair_Display, Inter } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
+import CartProvider from '@/components/shop/CartProvider';
+import CartDrawer from '@/components/shop/CartDrawer';
 import { JsonLd, organizationSchema, websiteSchema } from '@/components/JsonLd';
 import { SITE } from '@/lib/site';
 import './globals.css';
@@ -52,9 +54,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de-CH" className={`${playfair.variable} ${inter.variable}`}>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <CartDrawer />
+        </CartProvider>
         <Reveal />
         <JsonLd data={organizationSchema()} />
         <JsonLd data={websiteSchema()} />
