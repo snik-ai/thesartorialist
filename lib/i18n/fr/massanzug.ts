@@ -1,85 +1,84 @@
-// TODO übersetzen (Französisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure suit Zurich
+// Costume sur mesure Zurich
 export const massanzug: Woerterbuch['massanzug'] = {
   meta: {
-    titel: 'Made-to-Measure Suit Zurich — from CHF 1’690, Made in Italy',
+    titel: 'Costume sur mesure Zurich — à partir de CHF 1’690, Made in Italy',
     beschreibung:
-      'Made-to-measure suits in Zurich: full-canvas construction, exclusive cloths from Loro Piana, Scabal & Cerruti and a personal fitting service — from CHF 1’690.',
-    ogTitel: 'Made-to-Measure Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'Full canvas, exclusive Italian cloths, from CHF 1’690.',
+      'Costumes sur mesure à Zurich : entoilage complet, tissus exclusifs de Loro Piana, Scabal & Cerruti et un service d’essayage personnel — à partir de CHF 1’690.',
+    ogTitel: 'Costume sur mesure Zurich — The Sartorialist',
+    ogBeschreibung: 'Entoilage complet, tissus italiens exclusifs, à partir de CHF 1’690.',
   },
-  breadcrumb: 'Made-to-measure suit Zurich',
+  breadcrumb: 'Costume sur mesure Zurich',
   hero: {
-    eyebrow: 'Made to Measure',
-    h1: 'Made-to-Measure Suits Zurich',
-    lead: 'Create your own style: at The Sartorialist you become your own designer — exclusive tailoring from renowned, long-established Italian houses, cut precisely to your measurements.',
+    eyebrow: 'Sur mesure',
+    h1: 'Costumes sur mesure Zurich',
+    lead: 'Create Your Own Style : chez The Sartorialist, vous devenez votre propre créateur — une confection d’exception signée par de grandes maisons italiennes de tradition, coupée précisément à vos mesures.',
   },
   luxus: {
-    bildAlt: 'Made-to-measure suit in Zurich — tailored by The Sartorialist',
-    titel: 'The ultimate luxury: a suit cut to your measurements',
+    bildAlt: 'Costume sur mesure à Zurich — confectionné par The Sartorialist',
+    titel: 'Le luxe absolu : un costume coupé à vos mesures',
     absaetze: [
-      'There is nothing quite like wearing a suit cut precisely to your own measurements. A made-to-measure suit is a lasting piece of quality of life — an investment every gentleman should make.',
-      'The made-to-measure journey begins with try-on sizes, entirely redeveloped to deliver an even better fit. Our made-to-measure programme offers a collection of cloths for every occasion — year-round suits, jackets and eveningwear, complemented by exclusive seasonal collections.',
+      'Rien ne vaut la sensation d’un costume coupé précisément à vos propres mesures. Un costume sur mesure est une part durable de qualité de vie — un investissement que tout gentleman devrait s’offrir.',
+      'Le parcours sur mesure commence par des tailles d’essayage entièrement repensées pour offrir un tombé encore meilleur. Notre programme sur mesure propose une collection de tissus pour chaque occasion — costumes quatre saisons, vestes et tenues de soirée, complétés par des collections saisonnières exclusives.',
     ],
-    knopf: 'Book an appointment',
+    knopf: 'Prendre rendez-vous',
   },
   verarbeitung: [
     {
-      eyebrow: 'Construction',
-      titel: 'Built to last with full canvas',
-      text: 'In full-canvas construction, the canvas interlining is stitched rather than glued — from the collar to the hem. The jacket moulds itself beautifully to your body, breathes and lasts considerably longer. It is the finest construction there is, and you feel it every time you wear it.',
+      eyebrow: 'Facture',
+      titel: 'Fait pour durer, grâce à l’entoilage complet',
+      text: 'Dans un entoilage complet (full canvas), la toile intérieure est cousue et non thermocollée — du col jusqu’à l’ourlet. La veste épouse merveilleusement votre corps, respire et dure nettement plus longtemps. C’est la plus belle facture qui soit, et vous la ressentez à chaque fois que vous la portez.',
     },
     {
-      eyebrow: 'Tailoring',
-      titel: 'Jackets — light yet shapely',
-      text: 'The quality of a gentleman’s jacket is measured by how it feels to wear: the lightness and shape retention of the cloth. Canvas — an interlining of linen or cotton — gives the fine, light outer cloth its structure, through pad stitching rather than heat-fused bonding.',
+      eyebrow: 'Confection',
+      titel: 'Des vestes légères et pourtant structurées',
+      text: 'La qualité d’une veste d’homme se mesure à la sensation qu’elle procure : la légèreté et la tenue du tissu. La toile — un entoilage de lin ou de coton — donne sa structure au tissu extérieur, fin et léger, par un travail de piquage à la main et non par thermocollage.',
     },
   ],
   konfigurator: {
-    eyebrow: 'Style configurator',
-    titel: 'Put your suit together from the comfort of home.',
-    lead: 'Lapels, buttons, pockets, shoulders, lining, waistband and hem: choose what you like online at your leisure, save your selection as a PDF and bring it along to your appointment.',
-    knopf: 'Open the configurator',
+    eyebrow: 'Configurateur de style',
+    titel: 'Composez votre costume confortablement depuis chez vous.',
+    lead: 'Revers, boutons, poches, épaules, doublure, ceinture et ourlet : choisissez en ligne, en toute tranquillité, ce qui vous plaît, enregistrez votre sélection en PDF et apportez-la à votre rendez-vous.',
+    knopf: 'Ouvrir le configurateur',
   },
-  faqTitel: 'The made-to-measure process',
+  faqTitel: 'Le processus sur mesure',
   faq: [
     {
-      q: 'Where can I have a made-to-measure suit made in Zurich?',
+      q: 'Où faire confectionner un costume sur mesure à Zurich ?',
       a: [
-        'At The Sartorialist Zurich you do not receive an off-the-peg suit with minor alterations, but a one-off cut entirely for you. We begin with a consultation about your wishes, the occasion, your style and your build — then you choose from an exclusive collection of fine wools, silk blends, linen, cashmere and mohair.',
-        'Our focus is on the finest cloths in Europe: we work with Loro Piana, Scabal, Cerruti and other renowned mills.',
+        'Chez The Sartorialist Zurich, vous ne recevez pas un costume de confection légèrement retouché, mais une pièce unique coupée entièrement pour vous. Nous commençons par un entretien sur vos souhaits, l’occasion, votre style et votre morphologie — puis vous choisissez dans une collection exclusive de laines fines, de mélanges de soie, de lin, de cachemire et de mohair.',
+        'Nous privilégions les plus beaux tissus d’Europe : nous travaillons avec Loro Piana, Scabal, Cerruti et d’autres tissages renommés.',
       ],
     },
     {
-      q: 'What does full canvas mean — and why is it better?',
+      q: 'Que signifie l’entoilage complet — et pourquoi est-il meilleur ?',
       a: [
-        'In ready-to-wear, the materials are mechanically bonded under high pressure before sewing. In full-canvas construction, by contrast, the interlining is stitched rather than glued — along its entire length, from the collar to the hem. The canvas has more freedom to move and moulds itself to your body as you wear it.',
-        'The stitched construction lets the jacket breathe and makes it last far longer — the finest and most durable choice for your made-to-measure suit.',
+        'En confection industrielle, les matières sont collées mécaniquement sous haute pression avant d’être cousues. Dans un entoilage complet, à l’inverse, la toile est cousue et non collée — sur toute sa longueur, du col jusqu’à l’ourlet. La toile garde une plus grande liberté de mouvement et épouse votre corps au fil du temps.',
+        'Cette construction cousue permet à la veste de respirer et la rend bien plus durable — le choix le plus noble et le plus pérenne pour votre costume sur mesure.',
       ],
     },
     {
-      q: 'How does the made-to-measure process work?',
+      q: 'Comment se déroule le processus sur mesure ?',
       a: [
-        'Your first consultation has three steps: choosing the cloth, taking your measurements and selecting the details. You decide on lapel style and width, lining colour, side adjusters, trouser turn-ups, pocket style, buttons and much more.',
-        'Three to six weeks later your suit arrives in our store — at the final fitting we make every adjustment needed until it fits perfectly. On request, we are also happy to advise you at your office or at home.',
+        'Votre premier rendez-vous comporte trois étapes : le choix du tissu, la prise de mesures et le choix des détails. Vous décidez de la forme et de la largeur des revers, de la couleur de la doublure, des pattes de serrage latérales, des revers de pantalon, du style des poches, des boutons et de bien d’autres éléments.',
+        'Trois à six semaines plus tard, votre costume arrive dans notre boutique — lors de l’essayage final, nous procédons à tous les ajustements nécessaires jusqu’à ce qu’il tombe parfaitement. Sur demande, nous vous conseillons volontiers aussi à votre bureau ou à domicile.',
       ],
     },
     {
-      q: 'Which cloths can I choose from?',
+      q: 'Parmi quels tissus puis-je choisir ?',
       a: [
-        'From superfine wools and soft flannels to airy seersucker for summer suits; densely woven flannels for eveningwear and velvet as a refined choice for the winter wardrobe. Then colour, weave and pattern — chalk stripes, bold or subtle checks and more.',
+        'Des laines superfines aux flanelles douces, en passant par le seersucker aérien pour les costumes d’été ; des flanelles serrées pour les tenues de soirée et le velours, choix raffiné pour la garde-robe d’hiver. Viennent ensuite la couleur, l’armure et le motif — rayures craie, carreaux marqués ou discrets, et bien plus encore.',
       ],
     },
   ],
   cta: {
-    titel: 'Your made-to-measure suit — from CHF 1’690, ready in 20 working days.',
-    text: 'Made-to-measure suits are the perfect choice for the modern gentleman who values style and individuality.',
+    titel: 'Votre costume sur mesure — à partir de CHF 1’690, prêt en 20 jours ouvrables.',
+    text: 'Le costume sur mesure est le choix idéal du gentleman moderne qui accorde de l’importance au style et à l’individualité.',
   },
   schema: {
-    name: 'Made-to-measure suits Zurich',
+    name: 'Costumes sur mesure Zurich',
     beschreibung:
-      'Full-canvas made-to-measure suits in exclusive Italian cloths — a personal made-to-measure service in Zurich, from CHF 1’690.',
+      'Costumes sur mesure en entoilage complet, dans des tissus italiens exclusifs — un service sur mesure personnel à Zurich, à partir de CHF 1’690.',
   },
 };

@@ -1,44 +1,43 @@
-// TODO übersetzen (Französisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suits Zurich
+// Costumes Zurich
 export const anzuege: Woerterbuch['anzuege'] = {
   meta: {
-    titel: 'Suits Zurich — Exclusive Suits & Expert Advice',
+    titel: 'Costumes Zurich — costumes d’exception & conseil expert',
     beschreibung:
-      'Suits in Zurich: exclusive suits, jackets, shirts and trousers from The Sartorialist — handcrafted Italian tailoring meets contemporary style. Visit us at Kuttelgasse 7.',
-    ogTitel: 'Suits Zurich — The Sartorialist',
-    ogBeschreibung: 'What may well be the finest suits in Zurich — with advice of the highest standard.',
+      'Costumes à Zurich : costumes, vestes, chemises et pantalons d’exception chez The Sartorialist — la confection artisanale italienne rencontre le style contemporain. Rendez-nous visite à la Kuttelgasse 7.',
+    ogTitel: 'Costumes Zurich — The Sartorialist',
+    ogBeschreibung: 'Sans doute les plus beaux costumes de Zurich — avec un conseil du plus haut niveau.',
   },
-  breadcrumb: 'Suits Zurich',
+  breadcrumb: 'Costumes Zurich',
   hero: {
-    eyebrow: 'Gentlemen’s outfitter in the heart of Zurich',
-    h1: 'Suits Zurich',
-    lead: 'At The Sartorialist you will find what may well be the finest suits in Zurich. Our advice is expert, personal and of the highest standard — handcrafted Italian tailoring meets contemporary style.',
-    gestalten: 'Design your suit',
-    termin: 'Book an appointment',
+    eyebrow: 'Tailleur pour hommes au cœur de Zurich',
+    h1: 'Costumes Zurich',
+    lead: 'Chez The Sartorialist, vous trouverez sans doute les plus beaux costumes de Zurich. Notre conseil est expert, personnel et du plus haut niveau — la confection artisanale italienne rencontre le style contemporain.',
+    gestalten: 'Créer votre costume',
+    termin: 'Prendre rendez-vous',
   },
   abschnitte: [
     {
-      titel: 'Genuine brand expertise',
-      text: 'We offer exclusive suits, jackets, denim shirts and trousers — complemented by elegant accessories and cashmere of the finest quality. Our carefully selected exclusive brands guarantee the best materials and cuts. Fifteen years of experience in fashion, including at the menswear powerhouse Tom Ford, are your guarantee of the finest suits in Zurich.',
+      titel: 'Une véritable expertise des marques',
+      text: 'Nous proposons des costumes, vestes, chemises en denim et pantalons d’exception — complétés par d’élégants accessoires et du cachemire de la plus haute qualité. Nos marques exclusives, soigneusement sélectionnées, garantissent les meilleures matières et les meilleures coupes. Quinze ans d’expérience dans la mode, notamment chez Tom Ford, référence de la mode masculine, sont votre garantie des plus beaux costumes de Zurich.',
     },
     {
-      titel: 'How a quality suit comes to life',
-      text: 'First, you tell us what you have in mind and we take your exact measurements. Our tailoring team designs and sews the suit to fit you precisely — on average this takes just 15 to 20 days. After a final fitting we make any adjustments needed until the suit fits perfectly and meets every wish.',
+      titel: 'Ainsi naît un costume de qualité',
+      text: 'Vous nous confiez d’abord vos souhaits et nous prenons vos mesures exactes. Notre équipe de tailleurs conçoit et coud le costume pour qu’il vous aille précisément — en moyenne, cela ne prend que 15 à 20 jours. Après un essayage final, nous procédons aux ajustements nécessaires jusqu’à ce que le costume tombe parfaitement et réponde à tous vos souhaits.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Whether a modern double-breasted or a single-breasted suit, for business, a wedding or the opera: a suit is like a second skin. Beyond the style of the suit, fit, cloth and colour play a decisive role. We watch every detail closely to ensure you receive the perfect suit for your personal style.',
+      titel: 'Quel costume me convient ?',
+      text: 'Croisé moderne ou costume droit, pour les affaires, un mariage ou l’opéra : un costume est comme une seconde peau. Au-delà du style, le tombé, le tissu et la couleur jouent un rôle décisif. Nous veillons à chaque détail pour que vous receviez le costume parfait pour votre style personnel.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'An exclusive suit has its price — and we make sure the investment pays off. We advise against cheap off-the-peg suits: they never achieve the comfort and quality of a made-to-measure suit. Our prices are always fair and transparent.',
+      titel: 'Prix & conditions',
+      text: 'Un costume d’exception a son prix — et nous veillons à ce que l’investissement en vaille la peine. Nous déconseillons les costumes de confection bon marché : ils n’atteignent jamais le confort et la qualité d’un costume sur mesure. Nos prix sont toujours justes et transparents.',
     },
   ],
   schema: {
-    name: 'Suits Zurich',
+    name: 'Costumes Zurich',
     beschreibung:
-      'Exclusive suits, jackets, shirts and trousers in Zurich — advice of the highest standard at The Sartorialist.',
+      'Costumes, vestes, chemises et pantalons d’exception à Zurich — un conseil du plus haut niveau chez The Sartorialist.',
   },
 };

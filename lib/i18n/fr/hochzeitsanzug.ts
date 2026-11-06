@@ -1,92 +1,91 @@
-// TODO übersetzen (Französisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Wedding suit Zurich
+// Costume de mariage Zurich
 export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
   meta: {
-    titel: 'Men’s Wedding Suit Zurich — Made to Measure',
+    titel: 'Costume de mariage homme Zurich — sur mesure',
     beschreibung:
-      'Men’s wedding suits made to measure in Zurich: a perfect fit, breathable natural cloths and personal details down to embroidery in the lining. For the groom from CHF 1’690.',
-    ogTitel: 'Wedding Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'The perfect look for the most beautiful day of your life.',
+      'Costumes de mariage pour homme sur mesure à Zurich : un tombé parfait, des tissus naturels respirants et des détails personnels jusqu’à la broderie dans la doublure. Pour le marié, à partir de CHF 1’690.',
+    ogTitel: 'Costume de mariage Zurich — The Sartorialist',
+    ogBeschreibung: 'Le look parfait pour le plus beau jour de votre vie.',
   },
-  breadcrumb: 'Wedding suit Zurich',
+  breadcrumb: 'Costume de mariage Zurich',
   hero: {
-    eyebrow: 'Wedding suits for men',
-    h1: 'Wedding Suits Zurich',
-    lead: 'The perfect look for the most beautiful day of your life: a suit that fits impeccably, lets your personality shine and moves with you every step of the way.',
+    eyebrow: 'Costumes de mariage pour homme',
+    h1: 'Costumes de mariage Zurich',
+    lead: 'Le look parfait pour le plus beau jour de votre vie : un costume au tombé impeccable, qui révèle votre personnalité et vous accompagne à chaque pas.',
   },
   warum: {
-    bildAlt: 'Made-to-measure wedding suit by The Sartorialist Zurich',
-    titel: 'Why choose The Sartorialist for your wedding suit?',
+    bildAlt: 'Costume de mariage sur mesure de The Sartorialist Zurich',
+    titel: 'Pourquoi choisir The Sartorialist pour votre costume de mariage ?',
     liste: [
-      '15 years of experience — your guarantee of the finest wedding suits in Zurich and beyond',
-      'We love fashion — and we love advising our clients in person',
-      'Current trends, exclusive materials and fair terms',
-      'Full canvas for made-to-measure suits that fit perfectly',
+      '15 ans d’expérience — votre garantie des plus beaux costumes de mariage à Zurich et au-delà',
+      'Nous aimons la mode — et nous aimons conseiller personnellement nos clients',
+      'Tendances actuelles, matières exclusives et conditions équitables',
+      'L’entoilage complet pour des costumes sur mesure au tombé parfait',
     ],
-    text: 'At The Sartorialist, your made-to-measure wedding suit fulfils every wish, is crafted from the finest cloths and, thanks to its distinctive details, is a true one-off — at a fair price.',
-    knopf: 'Arrange a no-obligation consultation',
+    text: 'Chez The Sartorialist, votre costume de mariage sur mesure comble tous vos souhaits, est confectionné dans les plus beaux tissus et devient, grâce à ses détails singuliers, une véritable pièce unique — à un prix juste.',
+    knopf: 'Convenir d’un conseil sans engagement',
   },
   bloecke: [
     {
-      eyebrow: 'Fit',
-      titel: 'Fit and comfort — essential for every wedding',
+      eyebrow: 'Tombé',
+      titel: 'Tombé et confort — essentiels pour tout mariage',
       absaetze: [
-        'On your wedding day, your body is on the move from morning to night: the nervous wait before the ceremony, kneeling in church, the photo shoot, the first dance, the long wedding breakfast, the party that follows. Off-the-peg suits rarely keep up — they crease, bag and constrict.',
-        'A made-to-measure wedding suit from The Sartorialist accompanies you perfectly through every moment: thanks to an impeccable fit and exceptionally fine natural cloths, your suit breathes with you and reliably wicks away heat and moisture.',
+        'Le jour de votre mariage, vous êtes en mouvement du matin au soir : l’attente fébrile avant la cérémonie, l’agenouillement à l’église, la séance photo, la première danse, le long repas de noces, la fête qui suit. Les costumes de confection suivent rarement — ils se froissent, pochent et entravent.',
+        'Un costume de mariage sur mesure de The Sartorialist vous accompagne parfaitement à chaque instant : grâce à un tombé impeccable et à des tissus naturels d’une rare finesse, votre costume respire avec vous et évacue de façon fiable la chaleur et l’humidité.',
       ],
     },
     {
-      eyebrow: 'Details',
-      titel: 'You choose the details — and create a one-off',
+      eyebrow: 'Détails',
+      titel: 'Vous choisissez les détails — et créez une pièce unique',
       absaetze: [
-        'Choose from a range of button shapes and finishes, and have your bride’s name, a motto or your wedding date embroidered into the lining. Luxurious cufflinks add a touch of brilliance to the moment you exchange rings.',
-        'Complete the look with a wide selection of ties, braces and bow ties — and, if you wish, a made-to-measure shirt cut to your exact measurements.',
+        'Choisissez parmi une palette de formes et de finitions de boutons, et faites broder dans la doublure le prénom de votre épouse, une devise ou la date de votre mariage. De luxueux boutons de manchette ajoutent une touche d’éclat à l’échange des alliances.',
+        'Complétez le look par un large choix de cravates, de bretelles et de nœuds papillon — et, si vous le souhaitez, par une chemise sur mesure coupée à vos mesures exactes.',
       ],
     },
   ],
-  faqTitel: 'Frequently asked questions about wedding suits',
+  faqTitel: 'Questions fréquentes sur les costumes de mariage',
   faq: [
     {
-      q: 'What is the difference between a wedding suit and a business suit?',
+      q: 'Quelle différence entre un costume de mariage et un costume d’affaires ?',
       a: [
-        'A wedding suit is not simply an ordinary suit — it is a statement. While a business suit is functional and understated, a wedding suit takes centre stage on one of the most emotional days of your life. It must fit perfectly, reflect your character, suit the style of the wedding and stand the test of time, both in photographs and in memory.',
+        'Un costume de mariage n’est pas un simple costume — c’est une affirmation. Alors qu’un costume d’affaires se veut fonctionnel et sobre, le costume de mariage occupe le devant de la scène lors de l’un des jours les plus émouvants de votre vie. Il doit tomber parfaitement, refléter votre caractère, s’accorder au style du mariage et traverser le temps, en photo comme dans les souvenirs.',
       ],
     },
     {
-      q: 'How far in advance should I have my wedding suit made?',
+      q: 'Combien de temps à l’avance faut-il faire confectionner son costume de mariage ?',
       a: [
-        'We recommend booking your appointment at least 8 to 10 weeks before the wedding — earlier is better. That leaves ample time for choosing the cloth, taking measurements, the first fitting, any alterations and the final personal touches. Short-notice requests are possible in exceptional cases — just ask us.',
+        'Nous vous recommandons de prendre rendez-vous au moins 8 à 10 semaines avant le mariage — le plus tôt sera le mieux. Vous disposez ainsi de tout le temps nécessaire pour le choix du tissu, la prise de mesures, le premier essayage, d’éventuelles retouches et les dernières touches personnelles. Les demandes de dernière minute sont possibles à titre exceptionnel — n’hésitez pas à nous consulter.',
       ],
     },
     {
-      q: 'Which suit styles are popular for weddings?',
+      q: 'Quels styles de costume sont appréciés pour un mariage ?',
       a: [
-        'The classic three-piece suit with waistcoat (timelessly elegant), the modern slim-fit suit (a sleek silhouette), the Italian linen suit (ideal for summer weddings), the dinner suit or dinner jacket (black tie), the vintage suit in tweed or checks (for rustic settings), as well as coloured suits in dark green, burgundy or beige.',
-        'You set the direction — we make sure it is executed to perfection.',
+        'Le trois-pièces classique avec gilet (d’une élégance intemporelle), le costume moderne à coupe ajustée (une silhouette élancée), le costume italien en lin (idéal pour les mariages d’été), le smoking ou la veste de smoking (black tie), le costume vintage en tweed ou à carreaux (pour un cadre champêtre), ainsi que les costumes de couleur en vert foncé, bordeaux ou beige.',
+        'Vous donnez la direction — nous veillons à une exécution parfaite.',
       ],
     },
     {
-      q: 'Can I still wear my made-to-measure suit after the wedding?',
+      q: 'Puis-je encore porter mon costume sur mesure après le mariage ?',
       a: [
-        'Yes — that is precisely one of its advantages. From the very first consultation we make sure your suit stays versatile: classic colours such as navy, charcoal or dark green, understated cloths, and the option to wear the waistcoat or accessories separately. Italian cloths keep their shape and elegance for years to come.',
+        'Oui — c’est précisément l’un de ses atouts. Dès le premier rendez-vous, nous veillons à ce que votre costume reste polyvalent : des couleurs classiques comme le bleu marine, l’anthracite ou le vert foncé, des tissus sobres, et la possibilité de porter le gilet ou les accessoires séparément. Les tissus italiens conservent leur tenue et leur élégance pendant de longues années.',
       ],
     },
     {
-      q: 'Which accessories go with a wedding suit?',
+      q: 'Quels accessoires accompagnent un costume de mariage ?',
       a: [
-        'We offer a carefully curated selection of bow ties, ties, pocket squares, cufflinks, waistcoats and leather belts, all perfectly matched to your suit. We are also happy to coordinate colours with the bridal gown or the décor.',
+        'Nous proposons une sélection soigneusement choisie de nœuds papillon, de cravates, de pochettes, de boutons de manchette, de gilets et de ceintures en cuir, parfaitement assortis à votre costume. Nous harmonisons aussi volontiers les couleurs avec la robe de la mariée ou la décoration.',
       ],
     },
   ],
   cta: {
-    titel: 'Your wedding suit — book 8–10 weeks before the big day.',
+    titel: 'Votre costume de mariage — à réserver 8 à 10 semaines avant le grand jour.',
     text: '',
   },
   schema: {
-    name: 'Wedding suits Zurich',
+    name: 'Costumes de mariage Zurich',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: a perfect fit, fine natural cloths and individual details — The Sartorialist.',
+      'Costumes de mariage sur mesure à Zurich : un tombé parfait, de beaux tissus naturels et des détails individuels — The Sartorialist.',
   },
 };

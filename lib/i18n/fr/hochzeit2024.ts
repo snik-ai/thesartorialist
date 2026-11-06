@@ -1,56 +1,55 @@
-// TODO übersetzen (Französisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure wedding suit (page "wedding-suit-2024")
+// Costume de mariage sur mesure (page « costume-de-mariage-2024 »)
 export const hochzeit2024: Woerterbuch['hochzeit2024'] = {
   meta: {
-    titel: 'Made-to-Measure Wedding Suit — Zurich',
+    titel: 'Costume de mariage sur mesure — Zurich',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: classic design meets modern style — tailored for every celebration, venue and style. Complimentary measuring at The Sartorialist.',
-    ogTitel: 'Made-to-Measure Wedding Suit — The Sartorialist Zurich',
-    ogBeschreibung: 'Made-to-measure wedding suits in the heart of Zurich.',
+      'Costumes de mariage sur mesure à Zurich : le design classique rencontre le style moderne — confectionnés pour chaque célébration, chaque lieu et chaque style. Prise de mesures gracieuse chez The Sartorialist.',
+    ogTitel: 'Costume de mariage sur mesure — The Sartorialist Zurich',
+    ogBeschreibung: 'Costumes de mariage sur mesure au cœur de Zurich.',
   },
-  breadcrumb: 'Wedding suit',
+  breadcrumb: 'Costume de mariage',
   hero: {
-    eyebrow: 'Weddings · Made to measure',
-    h1: 'Made-to-Measure Wedding Suits',
-    lead: 'At The Sartorialist you will find what may well be the finest wedding suits in Zurich — with expert, personal advice of the highest standard.',
-    knopf: 'Book a complimentary measuring',
+    eyebrow: 'Mariage · Sur mesure',
+    h1: 'Costumes de mariage sur mesure',
+    lead: 'Chez The Sartorialist, vous trouverez sans doute les plus beaux costumes de mariage de Zurich — avec un conseil expert et personnel du plus haut niveau.',
+    knopf: 'Réserver une prise de mesures gracieuse',
   },
-  bildAlt: 'Made-to-measure wedding suit — a groom at The Sartorialist Zurich',
+  bildAlt: 'Costume de mariage sur mesure — un marié chez The Sartorialist Zurich',
   abschnitte: [
     {
-      titel: 'Wedding suits by The Sartorialist in Zurich',
-      text: 'A wedding day is a unique occasion, and the perfect suit underlines the significance of the moment. Our collection unites classic design with modern style. A made-to-measure suit does not merely fit perfectly — it conveys a special sense of luxury and individuality, tailored to your build and your style so that it remains comfortable all day long.',
+      titel: 'Les costumes de mariage de The Sartorialist à Zurich',
+      text: 'Le jour du mariage est une occasion unique, et le costume parfait souligne la portée de ce moment. Notre collection unit design classique et style moderne. Un costume sur mesure ne se contente pas de tomber parfaitement — il procure un sentiment particulier de luxe et d’individualité, adapté à votre morphologie et à votre style, pour rester confortable toute la journée.',
     },
     {
-      titel: 'Made for every celebration',
-      text: 'Whether an intimate gathering or a grand wedding, an elegant ballroom, a rustic barn or a ceremony in the open air — our suits ensure you always look your best. Our wedding suits are made from the finest cloths such as noble wool, silk or linen: light and breathable for summer weddings, warmer and more structured for the cooler seasons.',
+      titel: 'Conçus pour chaque célébration',
+      text: 'Réunion intime ou grand mariage, salle de bal élégante, grange rustique ou cérémonie en plein air — nos costumes vous assurent une allure toujours impeccable. Nos costumes de mariage sont confectionnés dans les plus beaux tissus, comme la laine noble, la soie ou le lin : légers et respirants pour les mariages d’été, plus chauds et plus structurés pour les saisons fraîches.',
     },
     {
-      titel: 'Individual design',
-      text: 'Every wedding is unique — and so should your suit be. From the choice of cloth and the cut to personal details such as embroidery or special buttons, the result is an unmistakable garment that reflects exactly what you have in mind.',
+      titel: 'Une création individuelle',
+      text: 'Chaque mariage est unique — votre costume doit l’être aussi. Du choix du tissu et de la coupe jusqu’aux détails personnels comme une broderie ou des boutons particuliers, naît un vêtement inimitable qui reflète exactement ce que vous imaginez.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Choosing the perfect suit depends on your style, your build and the occasion. Whether classically elegant or modern and contemporary — our team helps you select the cut, cloth and details that best express your personality.',
+      titel: 'Quel costume me convient ?',
+      text: 'Le choix du costume parfait dépend de votre style, de votre morphologie et de l’occasion. Classique et élégant ou moderne et contemporain — notre équipe vous aide à choisir la coupe, le tissu et les détails qui expriment le mieux votre personnalité.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'Our prices depend on the cloth you choose, the details and the individual design — every suit is a one-off. The service includes comprehensive advice, made-to-measure tailoring and all necessary alterations. For a personal quotation, visit us at our atelier in Zurich.',
+      titel: 'Prix & conditions',
+      text: 'Nos prix dépendent du tissu choisi, des détails et de la création individuelle — chaque costume est une pièce unique. La prestation comprend un conseil complet, la confection sur mesure et toutes les retouches nécessaires. Pour une offre personnelle, rendez-nous visite dans notre atelier à Zurich.',
     },
     {
-      titel: 'We love suits!',
-      text: 'A perfectly fitting suit leaves a lasting impression. It is our passion to advise our clients attentively and thoroughly — in our store at Kuttelgasse 7 in Zurich. The finest selection, warm and personal advice, and fair prices.',
+      titel: 'Nous aimons les costumes !',
+      text: 'Un costume au tombé parfait laisse une impression durable. Notre passion est de conseiller nos clients avec attention et minutie — dans notre boutique de la Kuttelgasse 7 à Zurich. La plus belle sélection, un conseil chaleureux et personnel, et des prix justes.',
     },
   ],
   cta: {
-    titel: 'Have your measurements taken — complimentary.',
-    text: 'No-obligation measuring and advice at our atelier, Kuttelgasse 7, Zurich.',
+    titel: 'Faites prendre vos mesures — gracieusement.',
+    text: 'Prise de mesures et conseil sans engagement dans notre atelier, Kuttelgasse 7, Zurich.',
   },
   schema: {
-    name: 'Made-to-measure wedding suits',
+    name: 'Costumes de mariage sur mesure',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich — classic design, modern style, complimentary measuring.',
+      'Costumes de mariage sur mesure à Zurich — design classique, style moderne, prise de mesures gracieuse.',
   },
 };

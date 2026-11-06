@@ -1,36 +1,35 @@
-// TODO übersetzen (Französisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Contact & directions
+// Contact & accès
 export const kontakt: Woerterbuch['kontakt'] = {
   meta: {
-    titel: 'Contact & Directions — Kuttelgasse 7, Zurich',
+    titel: 'Contact & accès — Kuttelgasse 7, Zurich',
     beschreibung:
-      'The Sartorialist Zurich: Kuttelgasse 7, 8001 Zürich. Telephone +41 43 243 02 77, store@thesartorialist.ch. Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
+      'The Sartorialist Zurich : Kuttelgasse 7, 8001 Zurich. Téléphone +41 43 243 02 77, store@thesartorialist.ch. Lu–ve 10 h–19 h, sa 10 h–17 h.',
     ogTitel: 'Contact — The Sartorialist Zurich',
-    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — our showroom in the heart of Zurich.',
+    ogBeschreibung: 'Kuttelgasse 7, 8001 Zurich — notre showroom au cœur de Zurich.',
   },
   breadcrumb: 'Contact',
   hero: {
-    eyebrow: 'Contact & directions',
-    h1: 'Your menswear boutique, style adviser & tailor',
-    lead: 'Visit our boutique and, over a fine coffee, let us show you what we mean — with no obligation. Ideally, book an appointment so that we can devote our full attention to you.',
+    eyebrow: 'Contact & accès',
+    h1: 'Votre boutique pour hommes, conseiller de style & tailleur',
+    lead: 'Rendez-nous visite et laissez-nous vous montrer, autour d’un bon café et sans engagement, ce que nous entendons par là. Idéalement, prenez rendez-vous afin que nous puissions vous consacrer toute notre attention.',
   },
-  bildAlt: 'The Sartorialist boutique at Kuttelgasse 7 in Zurich',
+  bildAlt: 'La boutique The Sartorialist à la Kuttelgasse 7 à Zurich',
   info: {
-    adresse: 'Address',
-    route: 'Directions on Google Maps',
-    telefon: 'Telephone',
-    email: 'Email',
+    adresse: 'Adresse',
+    route: 'Itinéraire sur Google Maps',
+    telefon: 'Téléphone',
+    email: 'E-mail',
     instagram: 'Instagram',
-    oeffnungszeiten: 'Opening hours',
+    oeffnungszeiten: 'Heures d’ouverture',
   },
-  wunschtermin: 'Your preferred appointment',
-  ablauf: 'More about the consultation',
+  wunschtermin: 'Votre rendez-vous souhaité',
+  ablauf: 'En savoir plus sur le rendez-vous conseil',
   alternativ: {
-    frage: 'No suitable time available?',
-    rueckruf: 'Request a call back',
+    frage: 'Aucun créneau ne vous convient ?',
+    rueckruf: 'Demander à être rappelé',
     whatsapp: 'WhatsApp',
-    waText: 'Hello, I would like to book a consultation.',
+    waText: 'Bonjour, je souhaiterais réserver un rendez-vous conseil.',
   },
 };
