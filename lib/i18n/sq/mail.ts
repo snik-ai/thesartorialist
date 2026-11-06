@@ -63,4 +63,20 @@ export const mail: Woerterbuch['mail'] = {
     perMail: 'Përgjigjuni me e-mail',
     textKurz: 'Me kënaqësi Ju ofrojmë takimet e mëposhtme:',
   },
+  erinnerung: {
+    betreff: 'Kujtesë: takimi Juaj sot — {termin}',
+    betreffWunsch: 'Kujtesë: takimi i kërkuar për sot — {termin}',
+    vorschau: 'Së shpejti: {termin}',
+    titel: 'Shihemi së shpejti, {vorname}.',
+    text: 'Mezi presim t’Ju mirëpresim së shpejti në atelie.',
+    textWunsch: 'Keni kërkuar këtë takim për sot. Ende nuk e kemi konfirmuar shprehimisht — nëse nuk përshtatet, do t’Ju kontaktojmë në kohë. Për çdo pyetje na telefononi.',
+    kicker: 'Takimi Juaj',
+    kickerWunsch: 'Takimi i kërkuar (ende i pakonfirmuar)',
+    zweck: {
+      beratung: 'Këshillim personal',
+      massnehmen: 'Marrja e masave',
+      anprobe: 'Provë',
+      abholung: 'Marrja',
+    },
+  },
 };

@@ -63,4 +63,20 @@ export const mail: Woerterbuch['mail'] = {
     perMail: 'Responder por correo electrónico',
     textKurz: 'Con mucho gusto le proponemos las siguientes citas:',
   },
+  erinnerung: {
+    betreff: 'Recordatorio: su cita de hoy — {termin}',
+    betreffWunsch: 'Recordatorio: la cita solicitada para hoy — {termin}',
+    vorschau: 'En breve: {termin}',
+    titel: 'Hasta pronto, {vorname}.',
+    text: 'Será un placer recibirle en breve en el atelier.',
+    textWunsch: 'Solicitó esta cita para hoy. Todavía no la hemos confirmado expresamente; si no fuera posible, nos pondremos en contacto con usted a tiempo. Para cualquier consulta, llámenos.',
+    kicker: 'Su cita',
+    kickerWunsch: 'La cita solicitada (aún no confirmada)',
+    zweck: {
+      beratung: 'Asesoramiento personal',
+      massnehmen: 'Toma de medidas',
+      anprobe: 'Prueba',
+      abholung: 'Recogida',
+    },
+  },
 };

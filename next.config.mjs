@@ -59,6 +59,13 @@ const nextConfig = {
   trailingSlash: true,
   // Mehrere Root-Layouts (je Sprache): unbekannte URLs rendert app/global-not-found.tsx
   experimental: { globalNotFound: true },
+  // PDF-Belege (Angebot, Rechnung mit QR-Zahlteil, Massblatt): PDFKit liest seine Schriftmetriken zur Laufzeit
+  // aus node_modules — nicht bündeln, Datendateien in den Standalone-Build aufnehmen.
+  serverExternalPackages: ['pdfkit', 'swissqrbill', 'fontkit'],
+  outputFileTracingIncludes: {
+    '/api/admin/**': ['./node_modules/pdfkit/js/data/**'],
+    '/api/angebot/**': ['./node_modules/pdfkit/js/data/**'],
+  },
   poweredByHeader: false,
   images: {
     unoptimized: true,

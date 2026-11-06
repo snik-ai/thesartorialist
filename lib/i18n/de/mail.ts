@@ -64,4 +64,20 @@ export const mail = {
     perMail: 'Per E-Mail antworten',
     textKurz: 'Gerne schlagen wir Ihnen folgende Termine vor:',
   },
+  erinnerung: {
+    betreff: 'Erinnerung: Ihr Termin heute — {termin}',
+    betreffWunsch: 'Erinnerung: Ihr Wunschtermin heute — {termin}',
+    vorschau: 'In Kürze: {termin}',
+    titel: 'Bis gleich, {vorname}.',
+    text: 'Wir freuen uns, Sie in Kürze im Atelier zu begrüssen.',
+    textWunsch: 'Sie hatten für heute diesen Termin angefragt. Wir haben ihn noch nicht ausdrücklich bestätigt — sollte er nicht passen, melden wir uns rechtzeitig bei Ihnen. Rufen Sie uns bei Fragen gerne an.',
+    kicker: 'Ihr Termin',
+    kickerWunsch: 'Ihr Wunschtermin (noch nicht bestätigt)',
+    zweck: {
+      beratung: 'Persönliche Beratung',
+      massnehmen: 'Massnehmen',
+      anprobe: 'Anprobe',
+      abholung: 'Abholung',
+    },
+  },
 };

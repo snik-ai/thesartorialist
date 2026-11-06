@@ -5,6 +5,8 @@ import { db, schema } from '@/lib/db';
 import { apiAdmin, fehler, jsonBody, txt, UUID } from '@/lib/admin/zugang';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
 import { telNorm } from '@/lib/crm/telefon';
+import { LEAD_LABEL, LEAD_PHASEN } from '@/lib/crm/belege';
+import type { KontaktStatus, LeadPhase } from '@/lib/db/schema';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -40,6 +42,34 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     set.brandDomain = d || null;
   }
   if ('notiz' in b) set.notiz = txt(b.notiz, 4000) || null;
+  if ('anrede' in b) set.anrede = ['Herr', 'Frau'].includes(txt(b.anrede, 10)) ? txt(b.anrede, 10) : null;
+  if ('strasse' in b) set.strasse = txt(b.strasse, 120) || null;
+  if ('plz' in b) set.plz = txt(b.plz, 10) || null;
+  if ('ort' in b) set.ort = txt(b.ort, 80) || null;
+  if ('land' in b) set.land = (txt(b.land, 2) || 'CH').toUpperCase();
+  if ('potenzialRp' in b) {
+    const p = b.potenzialRp === null || b.potenzialRp === '' ? null : Math.round(Number(b.potenzialRp));
+    if (p !== null && (!Number.isFinite(p) || p < 0 || p > 100_000_000)) return fehler('Potenzial ungültig');
+    set.potenzialRp = p;
+  }
+  if ('status' in b) {
+    const s = txt(b.status, 10) as KontaktStatus;
+    if (!['lead', 'kunde', 'inaktiv'].includes(s)) return fehler('Status ungültig');
+    if (s !== k.status) {
+      set.status = s;
+      if (s === 'kunde' && !k.kundeSeit) set.kundeSeit = new Date();
+      log.push(`Status: ${s === 'lead' ? 'Lead' : s === 'kunde' ? 'Kunde' : 'Inaktiv'}`);
+    }
+  }
+  if ('leadPhase' in b) {
+    const p = txt(b.leadPhase, 12) as LeadPhase;
+    if (!LEAD_PHASEN.some((x) => x.key === p)) return fehler('Phase ungültig');
+    if (p !== k.leadPhase) {
+      set.leadPhase = p;
+      set.verlorenGrund = p === 'verloren' ? txt(b.verlorenGrund, 300) || null : null;
+      log.push(`Pipeline: ${LEAD_LABEL[p]}${p === 'verloren' && set.verlorenGrund ? ` (${set.verlorenGrund})` : ''}`);
+    }
+  }
 
   const quelle = `Backend · ${a.s.user.email}${txt(b.einwilligungQuelle, 200) ? ` · ${txt(b.einwilligungQuelle, 200)}` : ''}`;
   if (typeof b.whatsapp === 'boolean' && b.whatsapp !== Boolean(k.einwilligungWhatsapp)) {

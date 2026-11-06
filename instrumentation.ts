@@ -10,5 +10,8 @@ export async function register() {
     } catch (err) {
       console.error('[db] Migration fehlgeschlagen:', (err as Error).message);
     }
+    // Termin-Erinnerungen (2 h vorher) — alle 5 Minuten, idempotent
+    const { starteScheduler } = await import('./lib/crm/scheduler');
+    starteScheduler();
   }
 }

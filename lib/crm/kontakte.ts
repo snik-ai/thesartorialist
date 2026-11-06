@@ -87,6 +87,9 @@ export async function aktivitaetLoggen(
     text?: string | null;
     daten?: Record<string, unknown>;
     adminUserId?: string | null;
+    angebotId?: string | null;
+    auftragId?: string | null;
+    rechnungId?: string | null;
   },
 ) {
   await x.insert(schema.aktivitaet).values({
@@ -98,6 +101,9 @@ export async function aktivitaetLoggen(
     text: a.text ?? null,
     daten: a.daten,
     adminUserId: a.adminUserId ?? null,
+    angebotId: a.angebotId ?? null,
+    auftragId: a.auftragId ?? null,
+    rechnungId: a.rechnungId ?? null,
   });
 }
 
@@ -133,6 +139,15 @@ export async function zusammenfuehren(zielId: string, quelleId: string, adminUse
     const [ziel] = await tx.select().from(k).where(and(eq(k.id, zielId), isNull(k.zusammengefuehrtIn))).for('update');
     const [quelle] = await tx.select().from(k).where(and(eq(k.id, quelleId), isNull(k.zusammengefuehrtIn))).for('update');
     if (!ziel || !quelle) throw new Error('Kontakt nicht gefunden oder schon zusammengeführt');
+    // Nur ein aktives Massblatt je Kontakt: das ältere wird beim Zusammenführen archiviert
+    const aktive = await tx
+      .select({ id: schema.massblatt.id, kontaktId: schema.massblatt.kontaktId, gemessenAm: schema.massblatt.gemessenAm })
+      .from(schema.massblatt)
+      .where(and(or(eq(schema.massblatt.kontaktId, zielId), eq(schema.massblatt.kontaktId, quelleId)), eq(schema.massblatt.aktiv, true)));
+    if (aktive.length > 1) {
+      const aelter = [...aktive].sort((a, b) => a.gemessenAm.getTime() - b.gemessenAm.getTime())[0];
+      await tx.update(schema.massblatt).set({ aktiv: false }).where(eq(schema.massblatt.id, aelter.id));
+    }
     for (const t of [schema.termin, schema.aktivitaet, schema.angebot, schema.auftrag, schema.rechnung, schema.massblatt]) {
       await tx.update(t).set({ kontaktId: zielId }).where(eq(t.kontaktId, quelleId));
     }
@@ -152,6 +167,14 @@ export async function zusammenfuehren(zielId: string, quelleId: string, adminUse
         einwilligungSms: frueher(ziel.einwilligungSms, quelle.einwilligungSms),
         einwilligungSmsQuelle: ziel.einwilligungSmsQuelle ?? quelle.einwilligungSmsQuelle,
         abgemeldet: frueher(ziel.abgemeldet, quelle.abgemeldet),
+        // Kunde schlägt Lead; Adresse ergänzen
+        status: ziel.status === 'kunde' || quelle.status === 'kunde' ? 'kunde' : ziel.status,
+        leadPhase: ziel.status === 'kunde' || quelle.status === 'kunde' ? 'gewonnen' : ziel.leadPhase,
+        kundeSeit: frueher(ziel.kundeSeit, quelle.kundeSeit),
+        anrede: ziel.anrede ?? quelle.anrede,
+        strasse: ziel.strasse ?? quelle.strasse,
+        plz: ziel.plz ?? quelle.plz,
+        ort: ziel.ort ?? quelle.ort,
         erstelltAm: frueher(ziel.erstelltAm, quelle.erstelltAm)!,
         aktualisiertAm: new Date(),
       })
