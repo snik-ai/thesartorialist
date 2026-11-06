@@ -1,23 +1,22 @@
-// TODO übersetzen (Französisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
 // Newsletter
 export const newsletter: Woerterbuch['newsletter'] = {
   meta: {
-    titel: 'Newsletter — Offers & New Arrivals',
+    titel: 'Newsletter — offres & nouveautés',
     beschreibung:
-      'Subscribe to The Sartorialist Zurich newsletter and receive our latest offers — unsubscribe at any time.',
+      'Abonnez-vous à la newsletter de The Sartorialist Zurich et recevez nos dernières offres — désabonnement possible à tout moment.',
     ogTitel: 'Newsletter — The Sartorialist Zurich',
-    ogBeschreibung: 'New arrivals, collections and offers delivered straight to your inbox.',
+    ogBeschreibung: 'Nouveautés, collections et offres directement dans votre boîte de réception.',
   },
   breadcrumb: 'Newsletter',
-  eyebrow: 'Stay informed',
+  eyebrow: 'Restez informé',
   h1: 'Newsletter',
-  lead: 'Subscribe to our newsletter and receive our latest offers, collections and invitations. You can unsubscribe at any time.',
-  knopf: 'Subscribe now',
-  hinweis: 'Subscribing opens a pre-filled email to {email}.',
+  lead: 'Abonnez-vous à notre newsletter et recevez nos dernières offres, collections et invitations. Vous pouvez vous désabonner à tout moment.',
+  knopf: 'S’abonner maintenant',
+  hinweis: 'L’inscription ouvre un e-mail prérempli à l’adresse {email}.',
   mail: {
-    betreff: 'Newsletter subscription',
-    text: 'Hello\n\nI would like to subscribe to The Sartorialist newsletter.\n\nName:\nEmail:\n\nKind regards',
+    betreff: 'Inscription à la newsletter',
+    text: 'Bonjour,\n\nJe souhaite m’abonner à la newsletter de The Sartorialist.\n\nNom :\nE-mail :\n\nMeilleures salutations',
   },
 };
