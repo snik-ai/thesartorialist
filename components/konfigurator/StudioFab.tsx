@@ -6,9 +6,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuswahl } from '@/lib/konfigurator/useAuswahl';
+import { pfad } from '@/lib/i18n/routen';
+import { fmt } from '@/lib/i18n/fmt';
+import { useSprache } from '@/components/i18n/SprachKontext';
 
 export default function StudioFab() {
+  const { lang, t } = useSprache();
   const path = usePathname();
+  const konfig = pfad(lang, 'konfigurator');
   const { auswahl } = useAuswahl();
   const [seen, setSeen] = useState(false);
   const count = Object.values(auswahl).reduce((n, a) => n + a.length, 0);
@@ -21,13 +26,13 @@ export default function StudioFab() {
     return () => window.removeEventListener('scroll', sc);
   }, []);
 
-  if (path.startsWith('/massanzug-konfigurator') || path.startsWith('/termin')) return null;
+  if (path.startsWith(konfig) || path.startsWith(pfad(lang, 'termin'))) return null;
 
   return (
     <Link
-      href="/massanzug-konfigurator/"
+      href={konfig}
       className={`studio-fab${seen || count ? ' is-in' : ''}`}
-      aria-label={count ? `Anzug gestalten, ${count} Details gewählt` : 'Anzug gestalten'}
+      aria-label={count ? fmt(t.studioFab.aria, { n: count }) : t.studioFab.label}
     >
       <span className="studio-fab-icon" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -35,7 +40,7 @@ export default function StudioFab() {
         </svg>
         {count > 0 && <span className="studio-fab-n num">{count}</span>}
       </span>
-      <span className="studio-fab-label">Anzug gestalten</span>
+      <span className="studio-fab-label">{t.studioFab.label}</span>
     </Link>
   );
 }

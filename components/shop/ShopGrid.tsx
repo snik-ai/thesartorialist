@@ -6,27 +6,26 @@
 // Farbe, Preis mit Histogramm), «Alle Filter» als Seitenpanel bzw. Vollbild auf
 // dem Handy, aktive Filter als Chips, Trefferzahl live, Ansicht gross/kompakt.
 // Gefiltert wird im Browser (kleines Sortiment); der Zustand steht in der URL,
-// Filter-Links sind teilbar.
+// Filter-Links sind teilbar. Texte kommen in der Seitensprache als Prop «t»;
+// Filterwerte und URL-Parameter bleiben deutsch, angezeigt wird über t.werte.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ShopCard, { type CardData } from './ShopCard';
 import PriceRange from './PriceRange';
 import { chf } from '@/lib/shop/format';
-import { SIZE_SYSTEMS, SWATCH, sizeSort } from '@/lib/shop/taxonomy';
+import { SWATCH, sizeSort } from '@/lib/shop/taxonomy';
+import { fmt, mz } from '@/lib/i18n/fmt';
+import type { Sprache } from '@/lib/i18n/sprachen';
+import type { Woerterbuch } from '@/lib/i18n/de';
+
+/** Alle Texte, die die Produktliste im Browser braucht (nur die Seitensprache). */
+export type ShopGridTexte = Pick<Woerterbuch['shop'], 'grid' | 'karte' | 'preis' | 'werte' | 'groessenSysteme'>;
 
 type Facet = 'group' | 'sub' | 'type' | 'brand' | 'size' | 'color';
 type State = Record<Facet, string[]> & { gender: string; price: [number, number] | null; sort: string };
 type Panel = 'brand' | 'size' | 'color' | 'price' | 'sort';
 
 const FACETS: Facet[] = ['group', 'sub', 'type', 'brand', 'size', 'color'];
-const LABEL: Record<Facet | 'price' | 'gender', string> = {
-  group: 'Kategorie', sub: 'Art', type: 'Modell', brand: 'Marke', size: 'Grösse', color: 'Farbe', price: 'Preis', gender: 'Für',
-};
-const SORTS = [
-  { key: 'neu', label: 'Neueste zuerst' },
-  { key: 'preis-auf', label: 'Preis aufsteigend' },
-  { key: 'preis-ab', label: 'Preis absteigend' },
-  { key: 'marke', label: 'Marke A–Z' },
-];
+const SORT_KEYS = ['neu', 'preis-auf', 'preis-ab', 'marke'] as const;
 const EMPTY: Omit<State, 'sort'> = { group: [], sub: [], type: [], brand: [], size: [], color: [], gender: '', price: null };
 const PARAM: Record<Facet, string> = { group: 'kategorie', sub: 'art', type: 'modell', brand: 'marke', size: 'groesse', color: 'farbe' };
 
@@ -110,7 +109,22 @@ const FilterIcon = () => (
   </svg>
 );
 
-export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide?: ('brand' | 'gender')[] }) {
+export default function ShopGrid({
+  items,
+  lang,
+  t: texte,
+  hide = [],
+}: {
+  items: CardData[];
+  lang: Sprache;
+  t: ShopGridTexte;
+  hide?: ('brand' | 'gender')[];
+}) {
+  const t = texte.grid;
+  const LABEL = t.facetten;
+  const SORTS = SORT_KEYS.map((key) => ({ key, label: t.sort[key] }));
+  /** Anzeigename eines Filterwerts (Kategorie, Farbe, Für) */
+  const w = (k: string) => texte.werte[k] ?? k;
   const [s, setS] = useState<State>({ ...EMPTY, sort: 'neu' });
   const [panel, setPanel] = useState<Panel | null>(null);
   const [sheet, setSheet] = useState(false);
@@ -185,7 +199,8 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
     const arr = [...m].map(([k, n]) => ({ k, n }));
     if (f === 'size') return arr.sort((a, b) => sizeSort(a.k, b.k));
     if (f === 'group' || f === 'sub') return arr.sort((a, b) => [...m.keys()].indexOf(a.k) - [...m.keys()].indexOf(b.k));
-    return arr.sort((a, b) => a.k.localeCompare(b.k, 'de'));
+    // Alphabetisch nach dem angezeigten Namen (Deutsch: unverändert)
+    return arr.sort((a, b) => (lang === 'de' ? a.k.localeCompare(b.k, 'de') : w(a.k).localeCompare(w(b.k), lang)));
   };
 
   // Drei Ebenen: Kategorie-Pills → Unterkategorie-Kacheln → Modell-Pills
@@ -215,17 +230,17 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
     f === 'sub' ? subs.length > 1 : f === 'type' ? types.length > 1 : visible(f),
   );
   const activeTotal = (['group', 'sub', 'type', 'brand', 'size', 'color', 'price', 'gender'] as const).reduce((a, f) => a + activeIn(f), 0);
-  const count = (n: number) => `${n} ${n === 1 ? 'Stück' : 'Stücke'}`;
+  const count = (n: number) => mz(n, t.anzahlEins, t.anzahlMehr);
 
   const chips = [
     ...FACETS.flatMap((f) =>
-      s[f].map((k) => ({ id: f + k, label: f === 'size' ? sizeLabel(k) : k, swatch: f === 'color' ? SWATCH[k] : undefined, clear: () => toggle(f, k) })),
+      s[f].map((k) => ({ id: f + k, label: f === 'size' ? sizeLabel(k) : w(k), swatch: f === 'color' ? SWATCH[k] : undefined, clear: () => toggle(f, k) })),
     ),
-    ...(s.gender ? [{ id: 'g', label: s.gender, swatch: undefined, clear: () => set({ gender: '' }) }] : []),
+    ...(s.gender ? [{ id: 'g', label: w(s.gender), swatch: undefined, clear: () => set({ gender: '' }) }] : []),
     ...(s.price ? [{ id: 'p', label: `${chf(s.price[0])} – ${chf(s.price[1])}`, swatch: undefined, clear: () => set({ price: null }) }] : []),
   ];
   const summary = (f: Facet | 'price') =>
-    f === 'price' ? (s.price ? `${chf(s.price[0])} – ${chf(s.price[1])}` : '') : s[f].map((k) => (f === 'size' ? sizeLabel(k) : k)).join(', ');
+    f === 'price' ? (s.price ? `${chf(s.price[0])} – ${chf(s.price[1])}` : '') : s[f].map((k) => (f === 'size' ? sizeLabel(k) : w(k))).join(', ');
 
   /* ---------- Inhalte der Facetten (Panel und Seitenpanel nutzen dieselben) ---------- */
   const Row = ({ f, o }: { f: Facet; o: { k: string; n: number } }) => {
@@ -233,14 +248,14 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
     return (
       <button type="button" className={`frow${on ? ' is-on' : ''}`} aria-pressed={on} disabled={o.n === 0 && !on} onClick={() => toggle(f, o.k)}>
         <span className="frow-box">{on && <Check />}</span>
-        <span className="frow-label">{o.k}</span>
+        <span className="frow-label">{w(o.k)}</span>
         <span className="frow-n num">{o.n}</span>
       </button>
     );
   };
 
   const body = (f: Facet | 'price') => {
-    if (f === 'price') return <PriceRange bounds={bounds} prices={prices} value={s.price} onChange={(price) => set({ price })} />;
+    if (f === 'price') return <PriceRange t={texte.preis} bounds={bounds} prices={prices} value={s.price} onChange={(price) => set({ price })} />;
     const list = f === 'sub' ? subs : f === 'type' ? types : opts(f);
     if (f === 'size') {
       const sys = new Map<string, { k: string; n: number }[]>();
@@ -252,12 +267,12 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
         <div className="fsizes">
           {[...sys].filter(([g, os]) => os.some((o) => o.n > 0 || s.size.includes(o.k))).map(([g, os]) => (
             <div key={g} className="fgroup">
-              <p className="fgroup-title">{SIZE_SYSTEMS[g]}</p>
+              <p className="fgroup-title">{texte.groessenSysteme[g]}</p>
               <div className="ftiles">
                 {os.map((o) => {
                   const on = s.size.includes(o.k);
                   return (
-                    <button key={o.k} type="button" className={`ftile${on ? ' is-on' : ''}`} aria-pressed={on} disabled={o.n === 0 && !on} aria-label={`Grösse ${sizeLabel(o.k)}, ${count(o.n)}`} onClick={() => toggle('size', o.k)}>
+                    <button key={o.k} type="button" className={`ftile${on ? ' is-on' : ''}`} aria-pressed={on} disabled={o.n === 0 && !on} aria-label={fmt(t.groesseAria, { groesse: sizeLabel(o.k), anzahl: count(o.n) })} onClick={() => toggle('size', o.k)}>
                       {sizeLabel(o.k)}
                     </button>
                   );
@@ -265,7 +280,7 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
               </div>
             </div>
           ))}
-          <p className="fhint">Nur Grössen an Lager.</p>
+          <p className="fhint">{t.nurAnLager}</p>
         </div>
       );
     }
@@ -277,7 +292,7 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
             return (
               <button key={o.k} type="button" className={`fswatch${on ? ' is-on' : ''}`} aria-pressed={on} disabled={o.n === 0 && !on} onClick={() => toggle('color', o.k)}>
                 <span className="fswatch-dot" style={{ background: SWATCH[o.k] ?? '#ccc' }}>{on && <Check />}</span>
-                <span className="frow-label">{o.k}</span>
+                <span className="frow-label">{w(o.k)}</span>
                 <span className="frow-n num">{o.n}</span>
               </button>
             );
@@ -292,7 +307,7 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
         <div className="fbrands">
           {list.length > 6 && (
             <label className="fsearch">
-              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={`${list.length} Marken durchsuchen`} aria-label="Marken durchsuchen" />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={fmt(t.markenSuchen, { n: list.length })} aria-label={t.markenSuchenAria} />
             </label>
           )}
           <div className="frows">
@@ -313,10 +328,10 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
   };
 
   const genderSeg = genders.length > 1 && !hide.includes('gender') && (
-    <div className="fseg" role="radiogroup" aria-label="Für">
+    <div className="fseg" role="radiogroup" aria-label={LABEL.gender}>
       {['', ...genders].map((g) => (
         <button key={g || 'alle'} type="button" role="radio" aria-checked={s.gender === g} className={s.gender === g ? 'is-on' : ''} onClick={() => set({ gender: g })}>
-          {g || 'Alle'}
+          {g ? w(g) : t.alle}
         </button>
       ))}
     </div>
@@ -325,13 +340,13 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
   return (
     <div className="plp" ref={top}>
       {groups.length > 1 && (
-        <nav className="cats" aria-label="Kategorien">
+        <nav className="cats" aria-label={t.kategorienAria}>
           <button type="button" className={`cat${s.group.length === 0 ? ' is-on' : ''}`} onClick={() => pickGroup(null)}>
-            Alle<span className="num">{items.filter((p) => matches(p, s, 'group')).length}</span>
+            {t.alle}<span className="num">{items.filter((p) => matches(p, s, 'group')).length}</span>
           </button>
           {groups.map((o) => (
             <button key={o.k} type="button" className={`cat${s.group.includes(o.k) ? ' is-on' : ''}`} aria-pressed={s.group.includes(o.k)} disabled={o.n === 0 && !s.group.includes(o.k)} onClick={() => pickGroup(o.k)}>
-              {o.k}
+              {w(o.k)}
               <span className="num">{o.n}</span>
             </button>
           ))}
@@ -339,7 +354,7 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
       )}
 
       {subs.length > 1 && (
-        <nav className="subcats" key={groupName || 'alle'} aria-label={`${groupName || 'Sortiment'} nach Art`}>
+        <nav className="subcats" key={groupName || 'alle'} aria-label={fmt(t.nachArtAria, { name: groupName ? w(groupName) : t.sortiment })}>
           <button type="button" className={`subcat subcat--all${s.sub.length === 0 ? ' is-on' : ''}`} aria-pressed={s.sub.length === 0} onClick={() => pickSub(null)}>
             <span className="subcat-img subcat-mosaic">
               {subs.slice(0, 4).map((o) => (
@@ -348,7 +363,7 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
                 </span>
               ))}
             </span>
-            <span className="subcat-label">Alle {groupName}</span>
+            <span className="subcat-label">{fmt(t.alleName, { name: groupName ? w(groupName) : '' })}</span>
           </button>
           {subs.map((o, i) => {
             const on = s.sub.includes(o.k);
@@ -357,7 +372,7 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
                 <span className="subcat-img">
                   <img src={subImg(o.k)} alt="" loading="lazy" />
                 </span>
-                <span className="subcat-label">{o.k}</span>
+                <span className="subcat-label">{w(o.k)}</span>
                 <span className="subcat-n num">{o.n}</span>
               </button>
             );
@@ -366,15 +381,15 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
       )}
 
       {types.length > 1 && (
-        <nav className="types" key={subName} aria-label={`${subName} nach Modell`}>
+        <nav className="types" key={subName} aria-label={fmt(t.nachModellAria, { name: w(subName) })}>
           <button type="button" className={`type${s.type.length === 0 ? ' is-on' : ''}`} aria-pressed={s.type.length === 0} onClick={() => set({ type: [] })}>
-            Alle {subName}
+            {fmt(t.alleName, { name: w(subName) })}
           </button>
           {types.map((o) => {
             const on = s.type.includes(o.k);
             return (
               <button key={o.k} type="button" className={`type${on ? ' is-on' : ''}`} aria-pressed={on} disabled={o.n === 0 && !on} onClick={() => toggle('type', o.k)}>
-                {o.k}
+                {w(o.k)}
                 <span className="num">{o.n}</span>
               </button>
             );
@@ -386,8 +401,8 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
         <div className="fbar-row">
           <button type="button" className="fbtn fbtn--all" onClick={() => { setPanel(null); setSheet(true); }} aria-haspopup="dialog">
             <FilterIcon />
-            <span className="fbtn-long">Alle Filter</span>
-            <span className="fbtn-short">Filter</span>
+            <span className="fbtn-long">{t.alleFilter}</span>
+            <span className="fbtn-short">{t.filter}</span>
             {activeTotal > 0 && <span className="fbtn-n num">{activeTotal}</span>}
           </button>
 
@@ -405,14 +420,14 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
                     <Chevron />
                   </button>
                   {isOpen && (
-                    <div className={`fdrop fdrop--${f}`} role="dialog" aria-label={`Nach ${LABEL[f]} filtern`}>
+                    <div className={`fdrop fdrop--${f}`} role="dialog" aria-label={fmt(t.nachFiltern, { label: LABEL[f] })}>
                       <div className="fdrop-body">{body(f)}</div>
                       <div className="fdrop-foot">
                         <button type="button" className="linkbtn" disabled={!n} onClick={() => set(f === 'price' ? { price: null } : { [f]: [] })}>
-                          Zurücksetzen
+                          {t.zuruecksetzen}
                         </button>
                         <button type="button" className="btn fdrop-go" onClick={() => setPanel(null)}>
-                          {count(list.length)} zeigen
+                          {fmt(t.zeigen, { anzahl: count(list.length) })}
                         </button>
                       </div>
                     </div>
@@ -426,11 +441,11 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
             {count(list.length)}
           </span>
 
-          <div className="fview" role="group" aria-label="Ansicht">
-            <button type="button" className={view === 'kompakt' ? 'is-on' : ''} aria-pressed={view === 'kompakt'} aria-label="Mehr Stücke pro Reihe" onClick={() => { setView('kompakt'); try { localStorage.setItem('ts-ansicht', 'kompakt'); } catch {} }}>
+          <div className="fview" role="group" aria-label={t.ansicht}>
+            <button type="button" className={view === 'kompakt' ? 'is-on' : ''} aria-pressed={view === 'kompakt'} aria-label={t.kompakt} onClick={() => { setView('kompakt'); try { localStorage.setItem('ts-ansicht', 'kompakt'); } catch {} }}>
               <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" fill="none" stroke="currentColor" strokeWidth="1.2" /></svg>
             </button>
-            <button type="button" className={view === 'gross' ? 'is-on' : ''} aria-pressed={view === 'gross'} aria-label="Grössere Bilder" onClick={() => { setView('gross'); try { localStorage.setItem('ts-ansicht', 'gross'); } catch {} }}>
+            <button type="button" className={view === 'gross' ? 'is-on' : ''} aria-pressed={view === 'gross'} aria-label={t.gross} onClick={() => { setView('gross'); try { localStorage.setItem('ts-ansicht', 'gross'); } catch {} }}>
               <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h12v12H2z" fill="none" stroke="currentColor" strokeWidth="1.2" /></svg>
             </button>
           </div>
@@ -438,11 +453,11 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
           <div className={`fitem fitem--sort${panel === 'sort' ? ' is-open' : ''}`}>
             <button type="button" className="fbtn fbtn--sort" aria-expanded={panel === 'sort'} onClick={() => setPanel(panel === 'sort' ? null : 'sort')}>
               <span className="fbtn-long">{SORTS.find((o) => o.key === s.sort)?.label}</span>
-              <span className="fbtn-short">Sortieren</span>
+              <span className="fbtn-short">{t.sortieren}</span>
               <Chevron />
             </button>
             {panel === 'sort' && (
-              <div className="fdrop fdrop--sort" role="dialog" aria-label="Sortieren">
+              <div className="fdrop fdrop--sort" role="dialog" aria-label={t.sortieren}>
                 <div className="fdrop-body frows">
                   {SORTS.map((o) => (
                     <button key={o.key} type="button" className={`frow frow--radio${s.sort === o.key ? ' is-on' : ''}`} aria-pressed={s.sort === o.key} onClick={() => { set({ sort: o.key }); setPanel(null); }}>
@@ -459,14 +474,14 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
         {chips.length > 0 && (
           <div className="fchips">
             {chips.map((c) => (
-              <button key={c.id} type="button" className="chip chip--active" onClick={c.clear} aria-label={`Filter ${c.label} entfernen`}>
+              <button key={c.id} type="button" className="chip chip--active" onClick={c.clear} aria-label={fmt(t.filterEntfernen, { label: c.label })}>
                 {c.swatch && <span className="chip-dot" style={{ background: c.swatch }} />}
                 {c.label}
                 <Close />
               </button>
             ))}
             <button type="button" className="linkbtn" onClick={clearAll}>
-              Alle zurücksetzen
+              {t.alleZuruecksetzen}
             </button>
           </div>
         )}
@@ -474,16 +489,16 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
 
       {list.length === 0 ? (
         <div className="plp-empty">
-          <p className="serif">Für diese Kombination haben wir gerade nichts an Lager.</p>
+          <p className="serif">{t.leer}</p>
           <button type="button" className="btn" onClick={clearAll}>
-            Alle Filter zurücksetzen
+            {t.alleFilterZuruecksetzen}
           </button>
         </div>
       ) : (
         <div className={`shop-grid shop-grid--${view}`} key={pulse}>
           {list.map((p, i) => (
             <div className="shop-cell" key={p.handle} style={{ '--i': Math.min(i, 12) } as React.CSSProperties}>
-              <ShopCard p={p} eager={i < 4} />
+              <ShopCard p={p} lang={lang} t={texte.karte} eager={i < 4} />
             </div>
           ))}
         </div>
@@ -491,16 +506,16 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
 
       {/* «Alle Filter»: Seitenpanel auf Desktop, Vollbild auf dem Handy */}
       <div className={`scrim${sheet ? ' is-open' : ''}`} onClick={() => setSheet(false)} aria-hidden="true" />
-      <aside className={`fsheet${sheet ? ' is-open' : ''}`} role="dialog" aria-modal="true" aria-label="Alle Filter" aria-hidden={!sheet} inert={!sheet}>
+      <aside className={`fsheet${sheet ? ' is-open' : ''}`} role="dialog" aria-modal="true" aria-label={t.alleFilter} aria-hidden={!sheet} inert={!sheet}>
         <div className="fsheet-head">
-          <h2 className="serif">Filtern &amp; sortieren</h2>
-          <button type="button" className="fsheet-close" onClick={() => setSheet(false)} aria-label="Filter schliessen">
+          <h2 className="serif">{t.sheetTitel}</h2>
+          <button type="button" className="fsheet-close" onClick={() => setSheet(false)} aria-label={t.filterSchliessen}>
             <Close />
           </button>
         </div>
         <div className="fsheet-body">
           <section className="facc is-open">
-            <p className="facc-title">Sortieren</p>
+            <p className="facc-title">{t.sortieren}</p>
             <div className="pills">
               {SORTS.map((o) => (
                 <button key={o.key} type="button" className={`pill${s.sort === o.key ? ' is-on' : ''}`} aria-pressed={s.sort === o.key} onClick={() => set({ sort: o.key })}>
@@ -511,7 +526,7 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
           </section>
           {genders.length > 1 && !hide.includes('gender') && (
             <section className="facc is-open">
-              <p className="facc-title">Für</p>
+              <p className="facc-title">{LABEL.gender}</p>
               {genderSeg}
             </section>
           )}
@@ -532,10 +547,10 @@ export default function ShopGrid({ items, hide = [] }: { items: CardData[]; hide
         </div>
         <div className="fsheet-foot">
           <button type="button" className="btn btn--ghost" onClick={clearAll} disabled={activeTotal === 0}>
-            Zurücksetzen
+            {t.zuruecksetzen}
           </button>
           <button type="button" className="btn" onClick={() => { setSheet(false); top.current?.scrollIntoView({ behavior: 'smooth' }); }}>
-            {count(list.length)} zeigen
+            {fmt(t.zeigen, { anzahl: count(list.length) })}
           </button>
         </div>
       </aside>

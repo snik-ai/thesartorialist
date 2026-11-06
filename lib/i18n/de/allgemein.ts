@@ -1,0 +1,182 @@
+// Gemeinsame Texte: Rahmen (Header, Menü, Footer), schwebende Knöpfe, CTA-Band, 404.
+// Deutsch ist die Quelle und definiert den Typ aller anderen Sprachen.
+// Platzhalter in {geschweiften Klammern} werden mit fmt() ersetzt; Links und Fettschrift
+// über die Auszeichnung von components/i18n/Rich.tsx.
+
+export const allgemein = {
+  meta: {
+    titelStandard: 'The Sartorialist — Massanzug & Hochzeitsanzug Zürich',
+    titelVorlage: '%s — The Sartorialist Zürich',
+    beschreibung:
+      'The Sartorialist Zürich – Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode. Full-Canvas-Verarbeitung, 100% Made in Italy, Massanzüge ab CHF 1’690. Showroom an der Kuttelgasse 7 in Zürich.',
+  },
+  breadcrumbStart: 'Startseite',
+  faqTitel: 'Häufige Fragen',
+  /** Texte, die an Client-Komponenten gehen (Header, Menü, Kontakt-Knopf, Warenkorb). Klein halten. */
+  client: {
+    logoAlt: 'The Sartorialist Zürich',
+    startseiteAria: 'The Sartorialist Zürich — Startseite',
+    ankuendigung: { text: 'Besuchen Sie unseren Showroom an der Kuttelgasse 7, Zürich.', link: 'Termin buchen' },
+    nav: {
+      stylesOptions: 'Styles & Options',
+      stoffe: 'Stoffe',
+      massanzug: 'Massanzug',
+      hochzeitsanzug: 'Hochzeitsanzug',
+      shop: 'Shop',
+      brands: 'Brands',
+      kontakt: 'Kontakt',
+    },
+    header: {
+      navLinks: 'Hauptnavigation links',
+      navRechts: 'Hauptnavigation rechts',
+      menueOeffnen: 'Menü öffnen',
+      menueSchliessen: 'Menü schliessen',
+      mobileNav: 'Mobile Navigation',
+      menue: 'Menü',
+      zurueck: 'Zurück',
+      alleBrands: 'Alle Brands',
+      megaTitel: 'Familiengeführte Manufakturen, persönlich ausgewählt.',
+      megaText:
+        'Wir arbeiten nur mit Häusern, die wir persönlich kennen — von der neapolitanischen Schneiderei bis zur Weberei mit über 200 Jahren Tradition.',
+      imShop: 'Im Shop',
+      terminBuchen: 'Termin buchen',
+    },
+    sprachwahl: { label: 'Sprache', aria: 'Sprache wählen' },
+    fab: {
+      kontakt: 'Kontakt',
+      oeffnen: 'Kontakt: WhatsApp, Anruf, Termin',
+      schliessen: 'Kontakt schliessen',
+      /** Wochentage, Sonntag zuerst */
+      tage: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+      heute: 'heute',
+      morgen: 'morgen',
+      offenBald: 'Geöffnet · schliesst um {zeit}',
+      offenBis: 'Jetzt geöffnet · bis {zeit} Uhr',
+      geschlossenBis: 'Geschlossen · öffnet {wann} um {zeit} Uhr',
+      geschlossen: 'Geschlossen',
+      waText: 'Grüezi, ich interessiere mich für einen Massanzug und hätte gerne eine Beratung.',
+      waSofort: 'Wir antworten sofort',
+      waSpaeter: 'Wir antworten zu den Öffnungszeiten',
+      anrufen: 'Anrufen',
+      rueckruf: 'Rückruf anfordern',
+      rueckrufKurz: 'Wir rufen Sie zurück',
+      terminBuchen: 'Termin buchen',
+      terminanfrage: 'Terminanfrage',
+      terminText: 'Beratung im Atelier, 60–90 Minuten',
+      danke: 'Danke',
+      zurueckRufenMorgen: 'Wir rufen Sie morgen zurück.',
+      zurueckRufenBald: 'Wir rufen Sie so rasch wie möglich zurück.',
+      zurueck: 'Zurück',
+      name: 'Name',
+      telefon: 'Telefon',
+      wunschzeit: 'Wunschzeit',
+      zeiten: ['Vormittag', 'Mittag', 'Nachmittag', 'Abend'],
+      oeffnungszeiten: 'Öffnungszeiten',
+    },
+    oeffnungszeiten: [
+      { tage: 'Montag – Freitag', zeit: '10:00 – 19:00' },
+      { tage: 'Samstag', zeit: '10:00 – 17:00' },
+      { tage: 'Termin', zeit: 'nach Vereinbarung' },
+    ],
+    studioFab: { label: 'Anzug gestalten', aria: 'Anzug gestalten, {n} Details gewählt' },
+    warenkorb: {
+      titel: 'Warenkorb',
+      schliessen: 'Warenkorb schliessen',
+      knopf: 'Warenkorb, {n} Artikel',
+      leer: 'Ihr Warenkorb ist leer.',
+      zumShop: 'Zum Shop',
+      groesse: 'Grösse {g}',
+      weniger: 'Menge verringern',
+      mehr: 'Menge erhöhen',
+      entfernen: 'Entfernen',
+      zwischensumme: 'Zwischensumme',
+      hinweis: 'Versand und allfällige Rabattcodes im nächsten Schritt.',
+      kasse: 'Zur Kasse',
+      weiter: 'Weiter einkaufen',
+    },
+  },
+  footer: {
+    text: 'Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode — Full Canvas, 100 % Made in Italy, ab CHF 1’690.',
+    sprache: 'Sprache',
+    /** Spalten: «ziel» ist ein Seiten-Schlüssel (lib/i18n/routen.json), ein Pfad oder eine URL */
+    spalten: [
+      {
+        titel: 'Atelier',
+        links: [
+          { label: 'Massanzug Zürich', ziel: 'massanzug' },
+          { label: 'Styles & Options', ziel: 'konfigurator' },
+          { label: 'Hochzeitsanzug Zürich', ziel: 'hochzeitsanzug' },
+          { label: 'Hochzeit Anzug 2024', ziel: 'hochzeit2024' },
+          { label: 'Anzüge Zürich', ziel: 'anzuege' },
+          { label: 'Services', ziel: 'services' },
+          { label: 'Glossar', ziel: 'glossar' },
+        ],
+      },
+      {
+        titel: 'Anzüge',
+        links: [
+          { label: 'Anzug blau', ziel: 'farbe:anzug-blau' },
+          { label: 'Anzug grün', ziel: 'farbe:anzug-gruen' },
+          { label: 'Anzug beige', ziel: 'farbe:anzug-beige' },
+        ],
+      },
+      {
+        titel: 'Shop',
+        links: [
+          { label: 'Alle Stücke', ziel: 'shop' },
+          { label: 'Woolrich', ziel: 'shop/woolrich/' },
+          { label: 'Gran Sasso', ziel: 'shop/gran-sasso/' },
+          { label: 'Tramarossa', ziel: 'shop/tramarossa/' },
+          { label: 'Parkas', ziel: 'shop/parkas/' },
+        ],
+      },
+      {
+        titel: 'Haus',
+        links: [
+          { label: 'Über uns', ziel: 'ueberUns' },
+          { label: 'Brands', ziel: 'brands' },
+          { label: 'Termin buchen', ziel: 'termin' },
+          { label: 'Kontakt / Anfahrt', ziel: 'kontakt' },
+          { label: 'Newsletter', ziel: 'newsletter' },
+        ],
+      },
+      {
+        titel: 'Rechtliches',
+        links: [
+          { label: 'Impressum', ziel: 'impressum' },
+          { label: 'Datenschutzerklärung', ziel: 'datenschutz' },
+          { label: 'AGB / Zahlung auf Raten', ziel: 'agb' },
+        ],
+      },
+    ],
+  },
+  cta: {
+    eyebrow: 'Termin oder Rückruf',
+    titel: 'Erleben Sie den Unterschied — bei einem Espresso im Showroom.',
+    text: 'Eine umfassende und kostenlose Beratung an der Kuttelgasse 7 in Zürich. Beratungen ausserhalb von Zürich nach Absprache.',
+    termin: 'Termin buchen',
+    rueckruf: 'Rückruf anfordern',
+    direkt: 'Lieber direkt?',
+    waText: 'Grüezi, ich hätte gerne eine Beratung für einen Massanzug.',
+  },
+  insta: {
+    titel: 'Neues aus dem Atelier',
+    folgen: '{handle} folgen',
+    aria: 'The Sartorialist auf Instagram ({handle})',
+    bilder: [
+      'Massanzug im Atelier The Sartorialist Zürich',
+      'Dreiteiler nach Mass mit Fensterkaro',
+      'Schneiderschere und Stoff im Atelier',
+      'Hochzeitsanzug nach Mass aus Zürich',
+      'Manschette mit Seidenknoten',
+      'Navyblauer Massanzug',
+    ],
+  },
+  nichtGefunden: {
+    metaTitel: 'Seite nicht gefunden',
+    titel: 'Seite nicht gefunden',
+    text: 'Diese Seite existiert nicht — aber der perfekte Anzug für Sie schon.',
+    start: 'Zur Startseite',
+    gestalten: 'Anzug gestalten',
+  },
+};

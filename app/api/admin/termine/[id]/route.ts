@@ -6,6 +6,7 @@ import { apiAdmin, fehler, jsonBody, txt, UUID } from '@/lib/admin/zugang';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
 import { icsDatei, mailTerminBestaetigt, mailTerminKunde, mailTerminVorschlag, type TerminDaten } from '@/lib/mail-vorlagen';
+import { kundenTexte, terminTextFuer } from '@/lib/i18n/kundenmail';
 import { textBestaetigung, textVorschlag } from '@/lib/crm/nachrichten';
 import { terminLang, zuerichTeile } from '@/lib/zeit';
 import type { TerminStatus } from '@/lib/db/schema';
@@ -31,9 +32,11 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!t) return fehler('Anfrage nicht gefunden', 404);
   const [k] = await db().select().from(schema.kontakt).where(eq(schema.kontakt.id, t.kontaktId)).limit(1);
   const wer = a.s.user.id;
+  // Kundenmails in der Sprache der Anfrage (Website-Sprache beim Absenden)
+  const kunde = kundenTexte(t.sprache);
   const basis = (start: Date | null): TerminDaten => {
     const z = start ? zuerichTeile(start) : null;
-    return { name: k.name || 'Kundin/Kunde', email: k.email ?? undefined, telefon: k.telefon ?? undefined, datum: z?.datum, zeit: z?.zeit, wunschText: start ? terminLang(start) : t.wunschText ?? 'nach Absprache', stil: t.stil, stoffe: t.stoffe };
+    return { name: k.name || (kunde.lang === 'de' ? 'Kundin/Kunde' : ''), email: k.email ?? undefined, telefon: k.telefon ?? undefined, datum: z?.datum, zeit: z?.zeit, wunschText: terminTextFuer(t.sprache, start, t.wunschText ?? 'nach Absprache'), stil: t.stil, stoffe: t.stoffe };
   };
   const setzeStatus = (status: TerminStatus, extra: Partial<typeof schema.termin.$inferInsert> = {}) =>
     db().update(schema.termin).set({ status, aktualisiertAm: new Date(), ...extra }).where(eq(schema.termin.id, id));
@@ -53,8 +56,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         } else {
           try {
             const d = basis(start);
-            const m = mailTerminBestaetigt(d);
-            const ics = icsDatei(d, 'kunde', 'CONFIRMED');
+            const m = mailTerminBestaetigt(d, kunde.t);
+            const ics = icsDatei(d, 'kunde', 'CONFIRMED', kunde.t);
             await sendeMail({ to: k.email, subject: m.subject, text: m.text, html: m.html, replyTo: empfaenger(), anhaenge: ics ? [{ filename: 'Termin.ics', content: ics }] : undefined });
             await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: 'mail', richtung: 'aus', titel: `Bestätigung per E-Mail: ${lang}`, text: m.text, adminUserId: wer });
             mailMeldung = ' Bestätigung mit Kalendereintrag per E-Mail verschickt.';
@@ -83,7 +86,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
           mailMeldung = ' E-Mail-Versand ist nicht konfiguriert.';
         } else {
           try {
-            const m = mailTerminVorschlag({ name: k.name, vorschlaege: lang, nachricht: nachricht || undefined });
+            const m = mailTerminVorschlag({ name: k.name, vorschlaege: slots.map((s) => terminTextFuer(t.sprache, s)), nachricht: nachricht || undefined }, kunde.t);
             await sendeMail({ to: k.email, subject: m.subject, text: m.text, html: m.html, replyTo: empfaenger() });
             await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: 'mail', richtung: 'aus', titel: 'Terminvorschläge per E-Mail', text: m.text, adminUserId: wer });
             mailMeldung = ' Vorschläge per E-Mail verschickt.';
@@ -115,8 +118,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       if (!k.email) return fehler('Keine E-Mail-Adresse.');
       if (!mailBereit()) return fehler('E-Mail-Versand ist nicht konfiguriert.', 503);
       const d = basis(t.wunschStart);
-      const m = mailTerminKunde(d);
-      const ics = icsDatei(d, 'kunde');
+      const m = mailTerminKunde(d, kunde.t);
+      const ics = icsDatei(d, 'kunde', 'TENTATIVE', kunde.t);
       try {
         await sendeMail({ to: k.email, subject: m.subject, text: m.text, html: m.html, replyTo: empfaenger(), anhaenge: ics ? [{ filename: 'Termin.ics', content: ics }] : undefined });
       } catch (err) {

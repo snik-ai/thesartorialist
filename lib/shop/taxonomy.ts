@@ -77,7 +77,7 @@ export function sizeKey(size: string, sub: string): string {
   if (/^\d+$/.test(size)) return sub === 'Chinos' ? `w-${size}` : `it-${size}`;
   return `int-${size.toUpperCase()}`;
 }
-export const SIZE_SYSTEMS: Record<string, string> = { int: 'International', it: 'Italienisch (Sakko, Strick)', w: 'Bundweite (Hosen)' };
+// Beschriftungen der Grössensysteme stehen im Wörterbuch (shop.groessenSysteme).
 const LETTERS = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL'];
 export function sizeSort(a: string, b: string) {
   const [sa, va] = a.split('-');

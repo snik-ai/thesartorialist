@@ -6,6 +6,17 @@
 > Arbeitstagen abholbereit. Gegründet von Alexander Shubin, ehemals
 > Geschäftsführer des ersten Tom Ford Stores Europas.
 
+## Sprachen / Languages
+
+- Deutsch (Hauptsprache, massgeblich): https://thesartorialist.ch/ — URLs ohne Sprachpräfix
+- English: https://thesartorialist.ch/en/ — made-to-measure suits (from CHF 1’690), wedding suits, configurator, shop, legal pages (German version legally binding)
+  - Made-to-measure suits Zurich: https://thesartorialist.ch/en/made-to-measure-suit-zurich/
+  - Wedding suits Zurich: https://thesartorialist.ch/en/wedding-suit-zurich/
+  - Suit configurator: https://thesartorialist.ch/en/suit-configurator/
+  - Book an appointment: https://thesartorialist.ch/en/appointment/
+  - Contact: https://thesartorialist.ch/en/contact/
+- Weitere Sprachen (fr, it, es, pt-pt, ru, sr, sq) folgen; jede Seite verweist per hreflang auf ihre Sprachfassungen. Das Glossar gibt es nur auf Deutsch.
+
 ## Über
 
 - Gründer: Alexander Shubin — über 15 Jahre Erfahrung in führenden Positionen

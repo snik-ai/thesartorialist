@@ -1,7 +1,12 @@
 // Shop-Landingpages (/shop/<slug>/): Marken, Damen/Herren und Kategorien.
 // Jede Seite hat eigenen Text (H1, Einleitung, Meta) und erscheint nur, wenn
 // Shopify mindestens ein passendes Produkt mit Bild liefert.
+// Deutsch ist die Quelle; andere Sprachen überlagern die Texte je Slug aus dem
+// Wörterbuch (shop.seiten), siehe seiteIn(). Slugs sind in allen Sprachen gleich.
+// Nur auf dem Server verwenden.
 import type { ShopProduct } from './catalog';
+import { woerterbuch } from '@/lib/i18n';
+import type { Sprache } from '@/lib/i18n/sprachen';
 
 export type ShopPage = {
   slug: string;
@@ -11,7 +16,7 @@ export type ShopPage = {
   title: string;
   description: string;
   intro: string;
-  /** Seite der Marke auf der Hauptsite (Herkunft, Geschichte). */
+  /** Slug der Brand-Seite auf der Hauptsite (Herkunft, Geschichte), Pfad via markenPfad(). */
   brandPage?: string;
   match: (p: ShopProduct) => boolean;
 };
@@ -27,7 +32,7 @@ export const SHOP_PAGES: ShopPage[] = [
       'Woolrich bei The Sartorialist Zürich: Arctic Parka, Cloud Parka, Wool Shirt Jackets und Mäntel für Herren und Damen. Online bestellen oder im Showroom anprobieren.',
     intro:
       'Seit 1830 steht Woolrich für Outdoor-Bekleidung, die echte Winter aushält. Bei uns finden Sie die Ikonen der Marke — vom Arctic Parka mit Daunenfüllung bis zur Wool Shirt Jacket aus Melton-Wolle — für Herren und Damen. Bestellen Sie online oder probieren Sie Ihre Grösse im Showroom an der Kuttelgasse 7 an.',
-    brandPage: '/woolrich/',
+    brandPage: 'woolrich',
     match: (p) => p.brand === 'Woolrich',
   },
   {
@@ -40,7 +45,7 @@ export const SHOP_PAGES: ShopPage[] = [
       'Gran Sasso bei The Sartorialist Zürich: Merino-Pullover, Cashmere-Strick, Troyer und Strickjacken aus den Abruzzen. Online bestellen oder im Showroom anprobieren.',
     intro:
       'Gran Sasso strickt seit 1952 in den Abruzzen — Merino, Cashmere und Seide, gefertigt in der eigenen Manufaktur in Sant’Egidio alla Vibrata. Die Pullover, Troyer und Strickjacken passen unter das Sakko genauso wie zur Jeans und sind die ideale Ergänzung zu Ihrem Massanzug.',
-    brandPage: '/gran-sasso/',
+    brandPage: 'gran-sasso',
     match: (p) => p.brand === 'Gran Sasso',
   },
   {
@@ -147,4 +152,10 @@ export function pageProducts(page: ShopPage, all: ShopProduct[]) {
 
 export function activePages(all: ShopProduct[]) {
   return SHOP_PAGES.filter((pg) => all.some(pg.match));
+}
+
+/** Landingpage mit den Texten der Sprache (Deutsch = Original aus SHOP_PAGES). */
+export function seiteIn(lang: Sprache, page: ShopPage): ShopPage {
+  if (lang === 'de') return page;
+  return { ...page, ...(woerterbuch(lang).shop.seiten[page.slug] ?? {}) };
 }

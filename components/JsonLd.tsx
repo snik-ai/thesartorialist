@@ -1,4 +1,5 @@
 import { SITE } from '@/lib/site';
+import { SPRACH_INFO, type Sprache } from '@/lib/i18n/sprachen';
 
 // Zentrale JSON-LD-Helfer — jede Seite injiziert nur, was sie braucht.
 
@@ -13,7 +14,7 @@ export function JsonLd({ data }: { data: object }) {
 
 export const ORG_ID = `${SITE.url}/#organization`;
 
-export function organizationSchema() {
+export function organizationSchema(beschreibung: string = SITE.description) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ClothingStore',
@@ -23,7 +24,7 @@ export function organizationSchema() {
     url: SITE.url,
     image: `${SITE.url}/images/the-sartorialist-zuerich.webp`,
     logo: `${SITE.url}/images/sartorialist-zurich-logo.png`,
-    description: SITE.description,
+    description: beschreibung,
     founder: { '@type': 'Person', name: SITE.founder },
     telephone: SITE.phone,
     email: SITE.email,
@@ -48,14 +49,14 @@ export function organizationSchema() {
   };
 }
 
-export function websiteSchema() {
+export function websiteSchema(lang: Sprache = 'de') {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${SITE.url}/#website`,
     name: SITE.name,
     url: SITE.url,
-    inLanguage: 'de-CH',
+    inLanguage: SPRACH_INFO[lang].html,
     publisher: { '@id': ORG_ID },
   };
 }
@@ -85,13 +86,14 @@ export function faqSchema(faqs: { q: string; a: string }[]) {
   };
 }
 
-export function serviceSchema(opts: { name: string; description: string; url: string }) {
+export function serviceSchema(opts: { name: string; description: string; url: string; lang?: Sprache }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: opts.name,
     description: opts.description,
     url: `${SITE.url}${opts.url}`,
+    ...(opts.lang ? { inLanguage: SPRACH_INFO[opts.lang].html } : {}),
     provider: { '@id': ORG_ID },
     areaServed: SITE.areaServed,
   };

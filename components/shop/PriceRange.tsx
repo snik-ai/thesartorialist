@@ -4,8 +4,11 @@
 // Eingabefelder für Min/Max und Schnellwahl-Chips. Übernommen wird beim Loslassen.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { chf } from '@/lib/shop/format';
+import { mz } from '@/lib/i18n/fmt';
+import type { Woerterbuch } from '@/lib/i18n/de';
 
 type Props = {
+  t: Woerterbuch['shop']['preis'];
   bounds: [number, number];
   prices: number[];
   value: [number, number] | null;
@@ -15,13 +18,13 @@ type Props = {
 const BINS = 24;
 const STEP = 10;
 const fmt = (n: number) => n.toLocaleString('de-CH').replace(/’/g, "'");
-const QUICK: { label: string; range: [number, number | null] }[] = [
-  { label: 'bis CHF 300', range: [0, 300] },
-  { label: 'CHF 300–700', range: [300, 700] },
-  { label: 'ab CHF 700', range: [700, null] },
+const QUICK: { label: 'bis' | 'mitte' | 'ab'; range: [number, number | null] }[] = [
+  { label: 'bis', range: [0, 300] },
+  { label: 'mitte', range: [300, 700] },
+  { label: 'ab', range: [700, null] },
 ];
 
-export default function PriceRange({ bounds, prices, value, onChange }: Props) {
+export default function PriceRange({ t, bounds, prices, value, onChange }: Props) {
   const lo0 = Math.floor(bounds[0] / STEP) * STEP;
   const hi0 = Math.ceil(bounds[1] / STEP) * STEP;
   const [v, setV] = useState<[number, number]>(value ?? [lo0, hi0]);
@@ -102,7 +105,7 @@ export default function PriceRange({ bounds, prices, value, onChange }: Props) {
             role="slider"
             className={`prange-thumb${drag === i ? ' is-drag' : ''}`}
             style={{ left: `${pct(v[i])}%` }}
-            aria-label={i === 0 ? 'Mindestpreis' : 'Höchstpreis'}
+            aria-label={i === 0 ? t.minAria : t.maxAria}
             aria-valuemin={lo0}
             aria-valuemax={hi0}
             aria-valuenow={v[i]}
@@ -116,7 +119,7 @@ export default function PriceRange({ bounds, prices, value, onChange }: Props) {
       <div className="prange-fields">
         {([0, 1] as const).map((i) => (
           <label key={i} className="pfield">
-            <span className="pfield-kicker">{i === 0 ? 'Min' : 'Max'}</span>
+            <span className="pfield-kicker">{i === 0 ? t.min : t.max}</span>
             <span className="pfield-row">
               <span className="pfield-unit">CHF</span>
               <input
@@ -128,7 +131,7 @@ export default function PriceRange({ bounds, prices, value, onChange }: Props) {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') fromText(i);
                 }}
-                aria-label={i === 0 ? 'Mindestpreis in CHF' : 'Höchstpreis in CHF'}
+                aria-label={i === 0 ? t.minFeldAria : t.maxFeldAria}
               />
             </span>
           </label>
@@ -141,14 +144,14 @@ export default function PriceRange({ bounds, prices, value, onChange }: Props) {
           const n = countIn(r[0], r[1]);
           return (
             <button key={q.label} type="button" className={`pill${on ? ' is-on' : ''}`} aria-pressed={on} disabled={n === 0 && !on} onClick={() => (on ? onChange(null) : commit(r))}>
-              {q.label}
+              {t[q.label]}
               <span className="num">{n}</span>
             </button>
           );
         })}
       </div>
       <p className="prange-note num" aria-live="polite">
-        {inRange} {inRange === 1 ? 'Stück' : 'Stücke'} in diesem Bereich
+        {mz(inRange, t.imBereichEins, t.imBereichMehr)}
       </p>
     </div>
   );

@@ -1,18 +1,20 @@
 import Link from 'next/link';
-import { SITE, FOOTER_NAV } from '@/lib/site';
+import { SITE } from '@/lib/site';
+import { woerterbuch } from '@/lib/i18n';
+import type { Sprache } from '@/lib/i18n/sprachen';
+import { ziel } from './i18n/Rich';
+import Sprachwahl from './i18n/Sprachwahl';
 import Wordmark from './Wordmark';
 
-export default function Footer() {
+export default function Footer({ lang }: { lang: Sprache }) {
+  const t = woerterbuch(lang).allgemein;
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-top">
           <div className="footer-brandcol">
-            <Wordmark light />
-            <p>
-              Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode — Full
-              Canvas, 100&nbsp;% Made in Italy, ab CHF&nbsp;1’690.
-            </p>
+            <Wordmark light alt={t.client.logoAlt} />
+            <p>{t.footer.text}</p>
             <p>
               {SITE.address.street} · {SITE.address.postalCode} {SITE.address.city}
               <br />
@@ -26,23 +28,30 @@ export default function Footer() {
                 Instagram
               </a>
             </p>
+            <Sprachwahl variante="footer" />
           </div>
-          {FOOTER_NAV.map((col) => (
-            <div key={col.title}>
-              <p className="footer-h">{col.title}</p>
+          {t.footer.spalten.map((col) => (
+            <div key={col.titel}>
+              <p className="footer-h">{col.titel}</p>
               <ul className="footer-nav">
-                {col.items.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href}>{item.label}</Link>
-                  </li>
-                ))}
+                {col.links.map((item) => {
+                  const z = ziel(lang, item.ziel);
+                  return (
+                    <li key={item.ziel}>
+                      {/* Glossar gibt es vorerst nur auf Deutsch: Link auf die deutsche Seite */}
+                      <Link href={z.href} hrefLang={item.ziel === 'glossar' && lang !== 'de' ? 'de' : undefined}>
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </div>
         <div className="footer-bottom">
           <span>
-            © {new Date().getFullYear()} {SITE.legalName} — {SITE.name}
+            © {new Date().getFullYear()} {SITE.legalName} — {lang === 'de' ? SITE.name : t.client.logoAlt}
           </span>
           <span>
             Made with <span className="heart">♡</span> by{' '}

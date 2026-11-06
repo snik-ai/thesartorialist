@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { LAENDER, telefonFormatieren, telefonGueltig, telefonLand, telefonLive, telefonMitLand, type Land } from '@/lib/formular/telefon';
 import './formular.css';
 
-export interface TelefonTexte { label: string; optional?: string; hinweis?: string; platzhalter: string; fehler: string; land: string; gueltig: string }
+export interface TelefonTexte { label: string; optional?: string; hinweis?: string; platzhalter: string; fehler: string; land: string; gueltig: string; /** Sprache der Ländernamen */ sprache?: 'de' | 'en' | 'fr' | 'it' }
 
 export const TELEFON_TEXTE: TelefonTexte = {
   label: 'Telefon',
@@ -72,7 +72,7 @@ export function TelefonFeld({ id, t = TELEFON_TEXTE, wert, setWert, fehlerAktiv,
       <label className="feld__label" htmlFor={id}>{t.label}{t.optional ? <> <i>{t.optional}</i></> : null}</label>
       <div ref={huelle} className={`feld__huelle feld__huelle--praefix ${intl ? 'feld__huelle--intl' : ''} ${gueltig ? 'feld__huelle--ok' : ''}`}>
         <button type="button" className="tel-land" aria-haspopup="listbox" aria-expanded={offen} aria-controls={offen ? listeId : undefined}
-          aria-label={`${t.land}: ${land.name.de} +${land.vorwahl}`} onClick={() => (offen ? setOffen(false) : oeffnen())}>
+          aria-label={`${t.land}: ${land.name[t.sprache ?? 'de']} +${land.vorwahl}`} onClick={() => (offen ? setOffen(false) : oeffnen())}>
           <span className="tel-land__code">{land.code}</span>
           {/* Steht die Vorwahl schon in der Eingabe («+41 79 …»), zeigt das Präfix nur das Land (keine doppelte Vorwahl) */}
           {!intl && <span className="tel-land__vorwahl">+{land.vorwahl}</span>}
@@ -93,7 +93,7 @@ export function TelefonFeld({ id, t = TELEFON_TEXTE, wert, setWert, fehlerAktiv,
               <li key={l.code} id={`${listeId}-${l.code}`} role="option" aria-selected={l.code === land.code}
                 className={i === aktiv ? 'aktiv' : undefined} onPointerEnter={() => setAktiv(i)} onClick={() => waehlen(l)}>
                 <span className="tel-laender__code">{l.code}</span>
-                <span className="tel-laender__name">{l.name.de}</span>
+                <span className="tel-laender__name">{l.name[t.sprache ?? 'de']}</span>
                 <span className="tel-laender__vorwahl">+{l.vorwahl}</span>
               </li>
             ))}

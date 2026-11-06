@@ -5,8 +5,18 @@ import Link from 'next/link';
 import { useCart } from './CartProvider';
 import { chf } from '@/lib/shop/format';
 import type { ShopVariant } from '@/lib/shop/catalog';
+import type { Woerterbuch } from '@/lib/i18n/de';
 
-export default function BuyBox({ variants }: { variants: ShopVariant[] }) {
+/** Kaufbox; Texte und Termin-Link kommen in der Seitensprache vom Server. */
+export default function BuyBox({
+  variants,
+  t,
+  terminHref,
+}: {
+  variants: ShopVariant[];
+  t: Woerterbuch['shop']['buybox'];
+  terminHref: string;
+}) {
   const { add } = useCart();
   const single = variants.length === 1 && !variants[0].size;
   const [sel, setSel] = useState<string | null>(single ? variants[0].id : null);
@@ -29,9 +39,9 @@ export default function BuyBox({ variants }: { variants: ShopVariant[] }) {
       {!single && (
         <fieldset className="size-pick">
           <legend className="size-legend">
-            Grösse wählen{state === 'pick' && <span className="size-hint"> — bitte zuerst eine Grösse antippen</span>}
+            {t.groesseWaehlen}{state === 'pick' && <span className="size-hint">{t.groesseHinweis}</span>}
           </legend>
-          <div className="size-chips" role="radiogroup" aria-label="Grösse">
+          <div className="size-chips" role="radiogroup" aria-label={t.groesseAria}>
             {variants.map((x) => (
               <button
                 key={x.id}
@@ -55,13 +65,13 @@ export default function BuyBox({ variants }: { variants: ShopVariant[] }) {
       {v && v.price !== variants[0].price && <p className="buybox-price num">{chf(v.price)}</p>}
 
       <button type="button" className="btn btn--wide buybox-add" onClick={onAdd} disabled={!anyAvailable || state === 'busy'}>
-        {!anyAvailable ? 'Ausverkauft' : state === 'busy' ? 'Wird hinzugefügt …' : state === 'done' ? 'Im Warenkorb ✓' : 'In den Warenkorb'}
+        {!anyAvailable ? t.ausverkauft : state === 'busy' ? t.busy : state === 'done' ? t.fertig : t.hinzufuegen}
       </button>
       {state === 'error' && (
-        <p className="buybox-error">Das hat nicht geklappt. Bitte nochmals versuchen oder uns anrufen.</p>
+        <p className="buybox-error">{t.fehler}</p>
       )}
-      <Link href="/termin/" className="btn btn--ghost btn--wide">
-        Im Showroom anprobieren
+      <Link href={terminHref} className="btn btn--ghost btn--wide">
+        {t.anprobieren}
       </Link>
     </div>
   );

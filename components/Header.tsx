@@ -3,31 +3,21 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { BRANDS } from '@/lib/brands';
 import { SITE } from '@/lib/site';
+import { pfad } from '@/lib/i18n/routen';
+import { useSprache } from './i18n/SprachKontext';
+import Sprachwahl from './i18n/Sprachwahl';
 import Wordmark from './Wordmark';
 import CartButton from './shop/CartButton';
 
 // Reihenfolge laut Kunde: Styles & Options, Stoffe, Massanzug | Hochzeitsanzug, Shop, Brands, Kontakt
 // «Stoffe» führt extern auf die Stoffkollektion von Holland & Sherry.
+// Texte und Links kommen aus der Sprache des Layouts (SprachKontext), die Marken als Props
+// (vom Server in die Seitensprache gebracht), damit keine Markentexte im Browser-Bundle landen.
 const STOFFE_URL = 'https://apparel.hollandandsherry.com/en/fabric';
-const NAV_LEFT = [
-  { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
-  { label: 'Stoffe', href: STOFFE_URL },
-  { label: 'Massanzug', href: '/massanzug-zuerich/' },
-];
 
-const NAV_RIGHT = [
-  { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
-  { label: 'Shop', href: '/shop/' },
-  { label: 'Brands', href: '/category/brand/' },
-  { label: 'Kontakt', href: '/kontakt/' },
-];
-
-const SUB_BRANDS = [
-  ...BRANDS.map((b) => ({ label: b.name, href: `/${b.slug}/` })),
-  { label: 'Alle Brands', href: '/category/brand/' },
-];
+/** Marke im Mega-Menü, bereits in der Seitensprache */
+export type MenueMarke = { href: string; name: string; claim: string; origin: string; hero: string };
 
 function IconArrow() {
   return (
@@ -44,7 +34,32 @@ function IconBack() {
   );
 }
 
-export default function Header() {
+export default function Header({ marken }: { marken: MenueMarke[] }) {
+  const { lang, t } = useSprache();
+  const nav = t.nav;
+  const p = {
+    start: pfad(lang, 'start'),
+    konfigurator: pfad(lang, 'konfigurator'),
+    massanzug: pfad(lang, 'massanzug'),
+    hochzeitsanzug: pfad(lang, 'hochzeitsanzug'),
+    shop: pfad(lang, 'shop'),
+    brands: pfad(lang, 'brands'),
+    kontakt: pfad(lang, 'kontakt'),
+    termin: pfad(lang, 'termin'),
+  };
+  const NAV_LEFT = [
+    { label: nav.stylesOptions, href: p.konfigurator },
+    { label: nav.stoffe, href: STOFFE_URL },
+    { label: nav.massanzug, href: p.massanzug },
+  ];
+  const NAV_RIGHT = [
+    { label: nav.hochzeitsanzug, href: p.hochzeitsanzug },
+    { label: nav.shop, href: p.shop },
+    { label: nav.brands, href: p.brands },
+    { label: nav.kontakt, href: p.kontakt },
+  ];
+  const SUB_BRANDS = [...marken.map((b) => ({ label: b.name, href: b.href })), { label: t.header.alleBrands, href: p.brands }];
+
   const [open, setOpen] = useState(false);
   const [sub, setSub] = useState<null | 'brands'>(null);
   const pathname = usePathname();
@@ -102,39 +117,40 @@ export default function Header() {
     <Link
       key={item.href}
       href={item.href}
-      aria-current={pathname === item.href || (item.href === '/shop/' && pathname.startsWith('/shop')) ? 'page' : undefined}
+      aria-current={pathname === item.href || (item.href === p.shop && pathname.startsWith(p.shop)) ? 'page' : undefined}
     >
       {item.label}
     </Link>
   );
 
   const subItems = SUB_BRANDS;
-  const subTitle = 'Brands';
+  const subTitle = nav.brands;
 
   return (
     <>
       <div className="announce">
-        Besuchen Sie unseren Showroom an der Kuttelgasse 7, Zürich.
-        <Link href="/termin/">Termin buchen</Link>
+        {t.ankuendigung.text}
+        <Link href={p.termin}>{t.ankuendigung.link}</Link>
+        <Sprachwahl variante="leiste" />
       </div>
 
       <header className="header">
         <div className="header-inner">
-          <nav className="header-nav header-nav--left" aria-label="Hauptnavigation links">
+          <nav className="header-nav header-nav--left" aria-label={t.header.navLinks}>
             {NAV_LEFT.map(navLink)}
           </nav>
 
           <Link
-            href="/"
+            href={p.start}
             className="header-logo"
-            aria-label="The Sartorialist Zürich — Startseite"
+            aria-label={t.startseiteAria}
           >
-            <Wordmark />
+            <Wordmark alt={t.logoAlt} />
           </Link>
 
-          <nav className="header-nav header-nav--right" aria-label="Hauptnavigation rechts">
+          <nav className="header-nav header-nav--right" aria-label={t.header.navRechts}>
             {NAV_RIGHT.map((item) =>
-              item.href === '/category/brand/' ? (
+              item.href === p.brands ? (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -161,7 +177,7 @@ export default function Header() {
 
           <button
             className="menu-toggle"
-            aria-label="Menü öffnen"
+            aria-label={t.header.menueOeffnen}
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen(true)}
@@ -186,26 +202,23 @@ export default function Header() {
         >
           <div className="mega-inner">
             <div className="mega-intro">
-              <span className="eyebrow">Brands</span>
-              <p className="mega-title">Familiengeführte Manufakturen, persönlich ausgewählt.</p>
-              <p className="mega-text">
-                Wir arbeiten nur mit Häusern, die wir persönlich kennen — von der neapolitanischen Schneiderei bis zur
-                Weberei mit über 200 Jahren Tradition.
-              </p>
-              <Link href="/category/brand/" className="text-link" tabIndex={mega ? 0 : -1}>
-                Alle Brands
+              <span className="eyebrow">{nav.brands}</span>
+              <p className="mega-title">{t.header.megaTitel}</p>
+              <p className="mega-text">{t.header.megaText}</p>
+              <Link href={p.brands} className="text-link" tabIndex={mega ? 0 : -1}>
+                {t.header.alleBrands}
               </Link>
               <div className="mega-shop">
-                <span>Im Shop</span>
-                <Link href="/shop/woolrich/" tabIndex={mega ? 0 : -1}>Woolrich</Link>
-                <Link href="/shop/gran-sasso/" tabIndex={mega ? 0 : -1}>Gran Sasso</Link>
-                <Link href="/shop/tramarossa/" tabIndex={mega ? 0 : -1}>Tramarossa</Link>
+                <span>{t.header.imShop}</span>
+                <Link href={pfad(lang, 'shop', 'woolrich/')} tabIndex={mega ? 0 : -1}>Woolrich</Link>
+                <Link href={pfad(lang, 'shop', 'gran-sasso/')} tabIndex={mega ? 0 : -1}>Gran Sasso</Link>
+                <Link href={pfad(lang, 'shop', 'tramarossa/')} tabIndex={mega ? 0 : -1}>Tramarossa</Link>
               </div>
             </div>
             <ul className="mega-grid">
-              {BRANDS.map((b, i) => (
-                <li key={b.slug} style={{ '--i': i } as React.CSSProperties}>
-                  <Link href={`/${b.slug}/`} className="mega-card" tabIndex={mega ? 0 : -1}>
+              {marken.map((b, i) => (
+                <li key={b.href} style={{ '--i': i } as React.CSSProperties}>
+                  <Link href={b.href} className="mega-card" tabIndex={mega ? 0 : -1}>
                     <span className="mega-img">
                       <img src={b.hero} alt="" width={320} height={200} loading="lazy" />
                     </span>
@@ -226,13 +239,13 @@ export default function Header() {
         className={`fs-menu${open ? ' is-open' : ''}${sub ? ' show-sub' : ''}`}
         id="mobile-menu"
         aria-hidden={!open}
-        aria-label="Mobile Navigation"
+        aria-label={t.header.mobileNav}
       >
         <div className="fs-top">
-          <Link href="/" className="fs-logo" aria-label="The Sartorialist Zürich — Startseite" onClick={close}>
-            <Wordmark light />
+          <Link href={p.start} className="fs-logo" aria-label={t.startseiteAria} onClick={close}>
+            <Wordmark light alt={t.logoAlt} />
           </Link>
-          <button className="fs-close" type="button" aria-label="Menü schliessen" onClick={close}>
+          <button className="fs-close" type="button" aria-label={t.header.menueSchliessen} onClick={close}>
             <span />
             <span />
           </button>
@@ -241,22 +254,22 @@ export default function Header() {
         <div className="fs-track">
           {/* Hauptpanel */}
           <div className="fs-panel fs-panel--main">
-            <span className="fs-kicker">Menü</span>
+            <span className="fs-kicker">{t.header.menue}</span>
             <div className="fs-list">
-              <Link className="fs-row" href="/massanzug-konfigurator/" onClick={close}>
-                <span className="fs-lbl">Styles & Options</span>
+              <Link className="fs-row" href={p.konfigurator} onClick={close}>
+                <span className="fs-lbl">{nav.stylesOptions}</span>
               </Link>
               <a className="fs-row" href={STOFFE_URL} target="_blank" rel="noopener" onClick={close}>
-                <span className="fs-lbl">Stoffe</span>
+                <span className="fs-lbl">{nav.stoffe}</span>
               </a>
-              <Link className="fs-row" href="/massanzug-zuerich/" onClick={close}>
-                <span className="fs-lbl">Massanzug</span>
+              <Link className="fs-row" href={p.massanzug} onClick={close}>
+                <span className="fs-lbl">{nav.massanzug}</span>
               </Link>
-              <Link className="fs-row" href="/hochzeitsanzug-zuerich/" onClick={close}>
-                <span className="fs-lbl">Hochzeitsanzug</span>
+              <Link className="fs-row" href={p.hochzeitsanzug} onClick={close}>
+                <span className="fs-lbl">{nav.hochzeitsanzug}</span>
               </Link>
-              <Link className="fs-row" href="/shop/" onClick={close}>
-                <span className="fs-lbl">Shop</span>
+              <Link className="fs-row" href={p.shop} onClick={close}>
+                <span className="fs-lbl">{nav.shop}</span>
               </Link>
               <button
                 type="button"
@@ -264,17 +277,18 @@ export default function Header() {
                 aria-haspopup="true"
                 onClick={() => setSub('brands')}
               >
-                <span className="fs-lbl">Brands</span>
+                <span className="fs-lbl">{nav.brands}</span>
                 <span className="fs-arr"><IconArrow /></span>
               </button>
-              <Link className="fs-row" href="/kontakt/" onClick={close}>
-                <span className="fs-lbl">Kontakt</span>
+              <Link className="fs-row" href={p.kontakt} onClick={close}>
+                <span className="fs-lbl">{nav.kontakt}</span>
               </Link>
             </div>
 
             <div className="fs-foot">
-              <Link href="/termin/" className="btn btn--light btn--wide" onClick={close}>
-                Termin buchen
+              <Sprachwahl variante="menue" tabIndex={open ? 0 : -1} />
+              <Link href={p.termin} className="btn btn--light btn--wide" onClick={close}>
+                {t.header.terminBuchen}
               </Link>
               <div className="fs-contact">
                 <a href={SITE.phoneHref}>{SITE.phone}</a>
@@ -290,7 +304,7 @@ export default function Header() {
           <div className="fs-panel fs-panel--sub">
             <button type="button" className="fs-back" onClick={() => setSub(null)}>
               <span className="fs-arr"><IconBack /></span>
-              Zurück
+              {t.header.zurueck}
             </button>
             <span className="fs-kicker">{subTitle}</span>
             <div className="fs-list">

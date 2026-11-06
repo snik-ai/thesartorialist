@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 import type { ShopImage } from '@/lib/shop/catalog';
+import { fmt } from '@/lib/i18n/fmt';
+import type { Woerterbuch } from '@/lib/i18n/de';
 
 function src(url: string, w: number) {
   const u = new URL(url);
@@ -10,7 +12,7 @@ function src(url: string, w: number) {
 }
 
 /** Produktbilder: Desktop gross mit Thumbnails, mobil wischbar (Scroll-Snap). */
-export default function Gallery({ images, title }: { images: ShopImage[]; title: string }) {
+export default function Gallery({ images, title, t }: { images: ShopImage[]; title: string; t: Woerterbuch['shop']['galerie'] }) {
   const [i, setI] = useState(0);
   const track = useRef<HTMLDivElement>(null);
 
@@ -37,7 +39,7 @@ export default function Gallery({ images, title }: { images: ShopImage[]; title:
               src={src(im.url, 1000)}
               srcSet={`${src(im.url, 480)} 480w, ${src(im.url, 720)} 720w, ${src(im.url, 1000)} 1000w, ${src(im.url, 1400)} 1400w`}
               sizes="(max-width: 900px) 100vw, 55vw"
-              alt={n === 0 ? im.alt : `${title} — Ansicht ${n + 1}`}
+              alt={n === 0 ? im.alt : fmt(t.ansicht, { titel: title, n: n + 1 })}
               width={im.width}
               height={im.height}
               loading={n === 0 ? 'eager' : 'lazy'}
@@ -47,14 +49,14 @@ export default function Gallery({ images, title }: { images: ShopImage[]; title:
         ))}
       </div>
       {images.length > 1 && (
-        <div className="spdp-thumbs" role="tablist" aria-label="Bilder">
+        <div className="spdp-thumbs" role="tablist" aria-label={t.bilderAria}>
           {images.map((im, n) => (
             <button
               key={im.url}
               type="button"
               role="tab"
               aria-selected={i === n}
-              aria-label={`Bild ${n + 1}`}
+              aria-label={fmt(t.bild, { n: n + 1 })}
               className={i === n ? 'is-on' : ''}
               onClick={() => go(n)}
             >

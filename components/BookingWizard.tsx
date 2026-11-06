@@ -10,19 +10,19 @@ import { MarkenChip, MarkenLogo, useMarke } from '@/components/formular/Marke';
 import { Einwilligung } from '@/components/formular/Einwilligung';
 import { emailGueltig, emailVorschlag } from '@/lib/formular/email';
 import { telefonFormatieren, telefonGueltig } from '@/lib/formular/telefon';
+import type { Woerterbuch } from '@/lib/i18n/de';
+import { pfad } from '@/lib/i18n/routen';
+import { fmt, mz } from '@/lib/i18n/fmt';
+import { SPRACH_INFO, type Sprache } from '@/lib/i18n/sprachen';
 
-const EINWILLIGUNG_TEXT = 'Ich möchte Terminbestätigung und Erinnerung auch per WhatsApp/SMS erhalten.';
+export type WizardTexte = Woerterbuch['termin']['wizard'];
 
 // Moderner Buchungs-Wizard in 3 Schritten: Wunschtermin (Kalender) → Uhrzeit →
 // persönliche Angaben. Regeln: Sonntag geschlossen, Samstag nur 10:00–16:00,
-// Mo–Fr 10:00–18:00 (letzter Beratungsstart). Statische Site: Der Abschluss
-// öffnet eine vorbefüllte E-Mail an den Store.
+// Mo–Fr 10:00–18:00 (letzter Beratungsstart). Versand über /api/anfrage/ (mit Sprache
+// für die Kundenmail); ohne Server öffnet sich eine vorbefüllte E-Mail an den Store.
+// Texte kommen als Prop in der Seitensprache; ans Atelier geht der Wunschtermin immer auf Deutsch.
 
-const MONTHS = [
-  'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-  'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
-];
-const WEEKDAYS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 const MAX_DAYS_AHEAD = 70;
 
 function slotsFor(date: Date): string[] {
@@ -54,7 +54,11 @@ function sameDay(a: Date, b: Date) {
   );
 }
 
-export default function BookingWizard() {
+export default function BookingWizard({ lang, t }: { lang: Sprache; t: WizardTexte }) {
+  const MONTHS = t.monate;
+  const WEEKDAYS = t.wochentage;
+  const EINWILLIGUNG_TEXT = t.einwilligung;
+  const uhr = (z: string) => fmt(t.uhr, { zeit: z });
   const today = useMemo(() => {
     const t = new Date();
     t.setHours(0, 0, 0, 0);
@@ -120,14 +124,11 @@ export default function BookingWizard() {
     return d >= today && d <= maxDate && d.getDay() !== 0 && slotsFor(d).length > 0;
   }
 
-  const dateLong = date
-    ? date.toLocaleDateString('de-CH', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      })
-    : '';
+  const datumLang = (locale: string) =>
+    date ? date.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  const dateLong = datumLang(SPRACH_INFO[lang].intl);
+  /** Für das Atelier (Mail, Backend) immer Deutsch */
+  const wunschDe = `${datumLang('de-CH')}, ${time} Uhr`;
 
   const [busy, setBusy] = useState(false);
   const [fehler, setFehler] = useState('');
@@ -141,7 +142,7 @@ export default function BookingWizard() {
     setFehlerFeld(feld);
     if (feld) {
       // E-Mail und Telefon zeigen ihren Hinweis direkt am Feld
-      if (feld === 'name') setFehler('Bitte Vorname und Name angeben.');
+      if (feld === 'name') setFehler(t.fehlerName);
       document.getElementById(feld === 'name' ? (vorname.trim() ? 'bw-name' : 'bw-vorname') : feld === 'email' ? 'bw-email' : 'bw-tel')?.focus();
       return;
     }
@@ -162,12 +163,17 @@ export default function BookingWizard() {
           brandDomain: suche.domain ?? undefined,
           einwilligung,
           einwilligungText: EINWILLIGUNG_TEXT,
-          wunsch: `${dateLong}, ${time} Uhr`,
+          wunsch: wunschDe,
           datum: date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : undefined,
           zeit: time,
-          stil: stilMit ? stil.map((g) => ({ kategorie: g.kategorie, untergruppe: g.untergruppe, option: optionText(g) })) : [],
+          // Deutsche Bezeichnungen fürs Atelier, IDs für die Kundenmail in der Kundensprache
+          stil: stilMit
+            ? stil.map((g) => ({ kategorie: g.kategorie, untergruppe: g.untergruppe, option: optionText(g), kategorieId: g.kategorieId, untergruppeId: g.untergruppeId, optionId: g.option.id }))
+            : [],
           stoffe: stilMit ? stoffe : [],
           website: honig,
+          sprache: SPRACH_INFO[lang].mail,
+          pfad: window.location.pathname,
           _dlmsid: (window as Window & { dlmPx?: { sid?: () => string } }).dlmPx?.sid?.(),
         }),
       });
@@ -178,7 +184,7 @@ export default function BookingWizard() {
       }
       if (res.status === 400 || res.status === 429) {
         const j = await res.json().catch(() => ({}));
-        setFehler(j.fehler || 'Bitte Angaben prüfen.');
+        setFehler(lang === 'de' ? j.fehler || t.fehlerPruefen : t.fehlerPruefen);
         setBusy(false);
         return;
       }
@@ -186,9 +192,9 @@ export default function BookingWizard() {
       /* weiter mit Mailprogramm */
     }
     setBusy(false);
-    const subject = `Terminanfrage — Wunschtermin ${dateLong}, ${time} Uhr`;
+    const subject = `Terminanfrage — Wunschtermin ${wunschDe}`;
     const body = [
-      `Wunschtermin: ${dateLong}, ${time} Uhr`,
+      `Wunschtermin: ${wunschDe}`,
       '',
       `Vorname: ${vorname}`,
       `Name: ${name}`,
@@ -210,15 +216,13 @@ export default function BookingWizard() {
     return (
       <div className="wizard">
         <div className="wizard-done">
-          <span className="eyebrow">Anfrage unterwegs</span>
-          <p className="serif wizard-done-title">Vielen Dank, {vorname}.</p>
+          <span className="eyebrow">{t.gesendetEyebrow}</span>
+          <p className="serif wizard-done-title">{fmt(t.danke, { vorname })}</p>
           <p>
-            Ihr Wunschtermin: <strong>{dateLong}, {time} Uhr</strong> — genau dann
-            nehmen wir uns Zeit für Sie. Wir bestätigen Ihnen den Termin so rasch wie
-            möglich per Telefon oder E-Mail.
+            {t.gesendetText1} <strong>{dateLong}, {uhr(time)}</strong> {t.gesendetText2}
           </p>
           <p className="muted" style={{ fontSize: '0.85rem' }}>
-            Keine E-Mail-App geöffnet? Rufen Sie uns an:{' '}
+            {t.keineMailApp}{' '}
             <a href={SITE.phoneHref} style={{ textDecoration: 'underline' }}>{SITE.phone}</a>
           </p>
         </div>
@@ -232,24 +236,24 @@ export default function BookingWizard() {
         <div className="wizard-stil">
           <div>
             <strong>
-              {stilMit ? 'Ihre Stil-Auswahl wird mitgeschickt' : 'Stil-Auswahl wird nicht mitgeschickt'}
+              {stilMit ? t.stilMit : t.stilOhne}
             </strong>
             <p>
-              {stil.length} {stil.length === 1 ? 'Detail' : 'Details'} aus dem Massanzug-Konfigurator
-              {stoffe.length > 0 && <> · Stoff {stoffe.join(', ')}</>}
+              {mz(stil.length, t.stilDetail, t.stilDetails)}
+              {stoffe.length > 0 && <> · {t.stilStoff} {stoffe.join(', ')}</>}
             </p>
           </div>
           <div className="wizard-stil-actions">
-            <Link href="/massanzug-konfigurator/#uebersicht">Ansehen</Link>
+            <Link href={`${pfad(lang, 'konfigurator')}#uebersicht`}>{t.ansehen}</Link>
             <button type="button" onClick={() => setStilMit((v) => !v)}>
-              {stilMit ? 'Weglassen' : 'Doch mitschicken'}
+              {stilMit ? t.weglassen : t.dochMit}
             </button>
           </div>
         </div>
       )}
       {/* Schritt-Anzeige */}
       <ol className="wizard-steps">
-        {['Wunschtermin', 'Uhrzeit', 'Ihre Angaben'].map((label, i) => (
+        {t.schritte.map((label, i) => (
           <li
             key={label}
             className={i === step ? 'active' : i < step ? 'done' : ''}
@@ -272,16 +276,15 @@ export default function BookingWizard() {
       {/* Zusammenfassung */}
       {date && (
         <p className="wizard-summary">
-          Ihr Wunschtermin: <strong>{dateLong}{time ? `, ${time} Uhr` : ''}</strong>
-          {time && ' — genau dann sind wir ganz für Sie da.'}
+          {t.zusammenfassung} <strong>{dateLong}{time ? `, ${uhr(time)}` : ''}</strong>
+          {time && t.zusammenfassungZeit}
         </p>
       )}
 
       {step === 0 && (
         <div>
           <p className="muted wizard-hint">
-            Wählen Sie Datum und Uhrzeit — auf die Minute genau. Sonntags geschlossen,
-            samstags Beratung von 10:00 bis 16:00 Uhr.
+            {t.hinweisDatum}
           </p>
           <div className="cal">
             <div className="cal-head">
@@ -289,7 +292,7 @@ export default function BookingWizard() {
                 type="button"
                 onClick={() => setMonthCursor(new Date(monthCursor.getFullYear(), monthCursor.getMonth() - 1, 1))}
                 disabled={!canPrev}
-                aria-label="Vorheriger Monat"
+                aria-label={t.vorherigerMonat}
               >
                 ←
               </button>
@@ -300,12 +303,12 @@ export default function BookingWizard() {
                 type="button"
                 onClick={() => setMonthCursor(new Date(monthCursor.getFullYear(), monthCursor.getMonth() + 1, 1))}
                 disabled={!canNext}
-                aria-label="Nächster Monat"
+                aria-label={t.naechsterMonat}
               >
                 →
               </button>
             </div>
-            <div className="cal-grid" role="group" aria-label="Datum wählen">
+            <div className="cal-grid" role="group" aria-label={t.datumWaehlen}>
               {WEEKDAYS.map((w) => (
                 <span key={w} className="cal-wd">{w}</span>
               ))}
@@ -332,8 +335,8 @@ export default function BookingWizard() {
       {step === 1 && date && (
         <div>
           <p className="muted wizard-hint">
-            Freie Beratungszeiten am {dateLong}
-            {date.getDay() === 6 ? ' — samstags von 10:00 bis 16:00 Uhr.' : '.'}
+            {fmt(t.freieZeiten, { datum: dateLong })}
+            {date.getDay() === 6 ? t.samstag : '.'}
           </p>
           <div className="slot-grid">
             {slotsFor(date).map((t) => (
@@ -343,7 +346,7 @@ export default function BookingWizard() {
             ))}
           </div>
           <button type="button" className="text-link wizard-back" onClick={() => setDate(null)}>
-            Anderes Datum wählen
+            {t.anderesDatum}
           </button>
         </div>
       )}
@@ -352,7 +355,7 @@ export default function BookingWizard() {
         <form className="form-grid" onSubmit={submit} noValidate>
           <div className="grid-2" style={{ gap: '1.1rem' }}>
             <div>
-              <label htmlFor="bw-vorname">Vorname</label>
+              <label htmlFor="bw-vorname">{t.vorname}</label>
               <input
                 id="bw-vorname"
                 className="feld__eingabe"
@@ -364,7 +367,7 @@ export default function BookingWizard() {
               />
             </div>
             <div>
-              <label htmlFor="bw-name">Name</label>
+              <label htmlFor="bw-name">{t.name}</label>
               <input
                 id="bw-name"
                 className="feld__eingabe"
@@ -377,11 +380,11 @@ export default function BookingWizard() {
             </div>
           </div>
           <EmailFeld id="bw-email" wert={email} setWert={(v) => { setEmail(v); if (fehlerFeld === 'email') setFehlerFeld(''); }}
-            fehlerAktiv={fehlerFeld === 'email'} kinder={<MarkenChip suche={suche} />} />
+            fehlerAktiv={fehlerFeld === 'email'} t={t.email} kinder={<MarkenChip suche={suche} t={t.marke} />} />
           <TelefonFeld id="bw-tel" wert={tel} setWert={(v) => { setTel(v); if (fehlerFeld === 'tel') setFehlerFeld(''); }}
-            fehlerAktiv={fehlerFeld === 'tel'} />
+            fehlerAktiv={fehlerFeld === 'tel'} t={t.telefon} />
           <div className="feld">
-            <label className="feld__label" htmlFor="bw-firma">Firma <i>(optional)</i></label>
+            <label className="feld__label" htmlFor="bw-firma">{t.firma} <i>{t.optional}</i></label>
             <div className={`feld__huelle ${suche.marke && firma.trim() ? 'feld__huelle--marke' : ''}`}>
               {suche.marke && firma.trim() && <MarkenLogo marke={suche.marke} groesse={34} />}
               <input id="bw-firma" className="feld__eingabe" type="text" autoComplete="organization" value={firma}
@@ -390,20 +393,20 @@ export default function BookingWizard() {
             {suche.marke?.name && !firmaSelbst && firma === suche.marke.name && (
               <span className="feld__vorgeschlagen">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-                Aus Ihrer E-Mail-Adresse übernommen, gerne anpassen.
+                {t.firmaUebernommen}
               </span>
             )}
           </div>
           <Einwilligung id="bw-einwilligung" an={einwilligung} setAn={setEinwilligung} text={EINWILLIGUNG_TEXT}
-            hinweis="Freiwillig. Sie können das jederzeit widerrufen." />
+            hinweis={t.einwilligungHinweis} />
           {/* Honeypot gegen Bots (unsichtbar) */}
           <input type="text" name="website" value={honig} onChange={(e) => setHonig(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1 }} />
           {fehler && <p className="buybox-error">{fehler}</p>}
           <button type="submit" className="btn btn--wide" disabled={busy}>
-            {busy ? 'Wird gesendet …' : 'Wunschtermin anfragen'}
+            {busy ? t.sendet : t.senden}
           </button>
           <button type="button" className="text-link wizard-back" onClick={() => setTime('')}>
-            Andere Uhrzeit wählen
+            {t.andereZeit}
           </button>
         </form>
       )}

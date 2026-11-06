@@ -46,6 +46,12 @@ export function terminLang(d: Date) {
   return `${tag}, ${zuerichTeile(d).zeit} Uhr`;
 }
 
+/** Wie terminLang, aber in einer anderen Sprache: «Monday, 10 November 2026, 14:30» (en-GB). */
+export function terminLangIn(d: Date, locale: string, uhrVorlage = '{zeit} Uhr') {
+  const tag = d.toLocaleDateString(locale, { timeZone: TZ, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  return `${tag}, ${uhrVorlage.replace('{zeit}', zuerichTeile(d).zeit)}`;
+}
+
 /** «Mo, 10. Nov., 14:30» */
 export function terminKurz(d: Date) {
   const tag = d.toLocaleDateString('de-CH', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'short' });

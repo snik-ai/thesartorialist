@@ -1,5 +1,11 @@
 import Link from 'next/link';
 import { chf } from '@/lib/shop/format';
+import { pfad } from '@/lib/i18n/routen';
+import type { Sprache } from '@/lib/i18n/sprachen';
+import type { Woerterbuch } from '@/lib/i18n/de';
+
+/** Texte der Produktkarte (aus dem Wörterbuch der Seitensprache) */
+export type KartenTexte = Woerterbuch['shop']['karte'];
 
 export type CardData = {
   handle: string;
@@ -26,9 +32,9 @@ function src(url: string, w: number) {
   return u.toString();
 }
 
-export default function ShopCard({ p, eager = false }: { p: CardData; eager?: boolean }) {
+export default function ShopCard({ p, lang, t, eager = false }: { p: CardData; lang: Sprache; t: KartenTexte; eager?: boolean }) {
   return (
-    <Link href={`/shop/products/${p.handle}/`} className="shop-card">
+    <Link href={pfad(lang, 'shop', `products/${p.handle}/`)} className="shop-card">
       <div className="shop-media">
         <img
           src={src(p.image, 600)}
@@ -40,8 +46,8 @@ export default function ShopCard({ p, eager = false }: { p: CardData; eager?: bo
           loading={eager ? 'eager' : 'lazy'}
         />
         {p.hover && <img className="shop-hover" src={src(p.hover, 600)} alt="" width={600} height={800} loading="lazy" aria-hidden="true" />}
-        {!p.available && <span className="shop-badge">Ausverkauft</span>}
-        {p.compareAt && p.available && <span className="shop-badge shop-badge--sale">Sale</span>}
+        {!p.available && <span className="shop-badge">{t.ausverkauft}</span>}
+        {p.compareAt && p.available && <span className="shop-badge shop-badge--sale">{t.sale}</span>}
         {p.sizes.length > 0 && <span className="shop-sizes">{p.sizes.join(' · ')}</span>}
       </div>
       <div className="shop-info">

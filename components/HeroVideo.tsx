@@ -12,7 +12,9 @@ const ID = '459093662';
 const BG = `https://player.vimeo.com/video/${ID}?background=1&autoplay=1&muted=1&loop=1&autopause=0&dnt=1&quality=1080p`;
 const FULL = `https://player.vimeo.com/video/${ID}?autoplay=1&dnt=1&title=0&byline=0&portrait=0&color=ffffff`;
 
-export default function HeroVideo() {
+export type FilmTexte = { bildAlt: string; hintergrund: string; ansehen: string; dialog: string; schliessen: string };
+
+export default function HeroVideo({ t }: { t: FilmTexte }) {
   const [load, setLoad] = useState(false);
   const [ready, setReady] = useState(false);
   const [full, setFull] = useState(false);
@@ -72,7 +74,7 @@ export default function HeroVideo() {
     <>
       <img
         src="/images/hero-film.webp"
-        alt="Uhr als Sinnbild für zeitlosen Stil — aus dem Film von The Sartorialist Zürich"
+        alt={t.bildAlt}
         className="hero-img hero-img--film"
         width={1920}
         height={1080}
@@ -82,7 +84,7 @@ export default function HeroVideo() {
         <div className={`hero-video${ready ? ' is-ready' : ''}`} aria-hidden="true">
           <iframe
             src={BG}
-            title="Hintergrundfilm The Sartorialist"
+            title={t.hintergrund}
             allow="autoplay; fullscreen; picture-in-picture"
             tabIndex={-1}
             ref={frame}
@@ -95,11 +97,11 @@ export default function HeroVideo() {
             <path d="M1 1l10 6-10 6z" fill="currentColor" />
           </svg>
         </span>
-        Film ansehen <span className="hero-film-len">2:15</span>
+        {t.ansehen} <span className="hero-film-len">2:15</span>
       </button>
       {full && (
-        <div className="film-modal" role="dialog" aria-modal="true" aria-label="Film «Create your own Style!»" onClick={() => setFull(false)}>
-          <button type="button" className="film-close" onClick={() => setFull(false)} aria-label="Film schliessen">
+        <div className="film-modal" role="dialog" aria-modal="true" aria-label={t.dialog} onClick={() => setFull(false)}>
+          <button type="button" className="film-close" onClick={() => setFull(false)} aria-label={t.schliessen}>
             <span />
             <span />
           </button>

@@ -1,6 +1,8 @@
 // Auswahl des Stil-Konfigurators: liegt im Browser (localStorage), damit sie beim
 // Termin, im PDF und beim nächsten Besuch wieder da ist. Kein Server, kein Konto.
-import { KONFIG_KATEGORIEN, type KonfigOption } from './daten';
+import { KONFIG_KATEGORIEN, type KonfigKategorie, type KonfigOption } from './daten';
+import { fmt } from '@/lib/i18n/fmt';
+import { AUSWAHL_TEXTE_DE, type AuswahlTexte } from './texte';
 
 import { CHANGE_EVENT, STOFF_KEY, STORAGE_KEY, type Auswahl } from './konst';
 export { CHANGE_EVENT, STORAGE_KEY, type Auswahl };
@@ -42,10 +44,11 @@ export function speichereAuswahl(a: Auswahl) {
   } catch {}
 }
 
-/** IDs → vollständige Einträge, in der Reihenfolge des Katalogs (unbekannte IDs fallen weg). */
-export function aufloesen(a: Auswahl): Gewaehlt[] {
+/** IDs → vollständige Einträge, in der Reihenfolge des Katalogs (unbekannte IDs fallen weg).
+ * Mit übersetztem Katalog (uebersetzeKatalog) kommen Bezeichnungen in der Seitensprache. */
+export function aufloesen(a: Auswahl, kategorien: KonfigKategorie[] = KONFIG_KATEGORIEN): Gewaehlt[] {
   const out: Gewaehlt[] = [];
-  for (const k of KONFIG_KATEGORIEN) {
+  for (const k of kategorien) {
     for (const u of k.subCategories) {
       const ids = a[u.id] ?? [];
       for (const o of u.options) {
@@ -66,16 +69,16 @@ export const zeigeCode = (code?: string, label?: string) => {
   return !(label && norm(label).includes(norm(c)));
 };
 
-const optionText = (g: Gewaehlt) =>
+const optionText = (g: Gewaehlt, t: AuswahlTexte = AUSWAHL_TEXTE_DE) =>
   g.option.pocketSpec
-    ? `Brust ${g.option.pocketSpec.chest}, Seite ${g.option.pocketSpec.side}`
+    ? fmt(t.taschen, { brust: g.option.pocketSpec.chest, seite: g.option.pocketSpec.side })
     : // Code nur anhängen, wenn er nicht schon in der Bezeichnung steckt (S/R/L bei Revers-Breiten)
       `${g.option.label}${zeigeCode(g.option.code, g.option.label) ? ` (${g.option.code})` : ''}`;
 
 /** Lesbare Zusammenfassung für E-Mail und Terminanfrage. */
-export function alsText(items: Gewaehlt[], stoffe: string[] = []): string {
+export function alsText(items: Gewaehlt[], stoffe: string[] = [], t: AuswahlTexte = AUSWAHL_TEXTE_DE): string {
   const lines: string[] = [];
-  if (stoffe.length) lines.push('STOFF (HOLLAND & SHERRY)', `– Stoffnummer${stoffe.length > 1 ? 'n' : ''}: ${stoffe.join(', ')}`, '');
+  if (stoffe.length) lines.push(t.stoffKopf, `– ${stoffe.length > 1 ? t.stoffnummern : t.stoffnummer}: ${stoffe.join(', ')}`, '');
   let kat = '';
   for (const g of items) {
     if (g.kategorie !== kat) {
@@ -83,9 +86,9 @@ export function alsText(items: Gewaehlt[], stoffe: string[] = []): string {
       kat = g.kategorie;
       lines.push(kat.toUpperCase());
     }
-    lines.push(`– ${g.untergruppe}: ${optionText(g)}`);
+    lines.push(`– ${g.untergruppe}: ${optionText(g, t)}`);
   }
   return lines.join('\n');
 }
 
-export { optionText };
+export { optionText, AUSWAHL_TEXTE_DE, type AuswahlTexte };
