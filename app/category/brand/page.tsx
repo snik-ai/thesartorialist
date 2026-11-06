@@ -9,7 +9,7 @@ import { JsonLd, itemListSchema } from '@/components/JsonLd';
 export const metadata: Metadata = {
   title: 'Brands — Unsere Manufakturen',
   description:
-    'Die Brands von The Sartorialist Zürich: Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso, Jacob Cohën, Paul & Shark und Woolrich — familiengeführte Manufakturen, persönlich ausgewählt.',
+    'Die Brands von The Sartorialist Zürich: Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso und Woolrich — familiengeführte Manufakturen, persönlich ausgewählt.',
   alternates: { canonical: '/category/brand/' },
   openGraph: {
     title: 'Brands — The Sartorialist Zürich',

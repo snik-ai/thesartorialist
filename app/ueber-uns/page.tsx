@@ -44,25 +44,29 @@ export default function UeberUnsPage() {
           />
         </div>
         <div className="split-body">
-          <h2 className="h2">Eine Vision, verwirklicht in Zürich</h2>
+          <span className="eyebrow">Der Gründer</span>
+          <h2 className="h2">Von Tom Ford Zürich zum persönlichen Herrenausstatter</h2>
           <p>
-            Exklusive Anzüge, Sakkos, Hosen, Jeans, Hemden, stilvolle Accessoires und
-            feinste Cashmere-Mode in höchster handgemachter Schneiderkunstqualität — jetzt
-            für jeden in der Schweiz erhältlich.
+            Ich bin Alexander Shubin, Gründer von «The Sartorialist» in Zürich — Modemacher
+            mit Leidenschaft, Erfahrung und besten Kontakten zu traditionellen italienischen
+            Textil-Manufakturen. Als langjähriger Geschäftsführer des ersten Tom Ford Stores
+            Europas in Zürich habe ich mich mit Haut und Haaren feinster Herrenmode
+            verschrieben und schliesslich den Wunsch verspürt, im Herzen von Zürich mein
+            eigenes exklusives Bekleidungsgeschäft für Herren zu eröffnen.
           </p>
           <p>
-            Eine Vision, die wir nach über 15 Jahren Erfahrung in führenden Positionen bei
-            den Weltmarken Tom Ford und Prada mit The Sartorialist in Zürich verwirklicht
-            haben.
+            Die besondere «italienische Note» war mir bei der Anfertigung und dem Verkauf der
+            Anzüge und weiterer Produkte wie Hemden, Jeans und Accessoires von Beginn an ein
+            echtes Herzensanliegen, ebenso wie ein wacher Blick auf neue Trends. Bei «The
+            Sartorialist» profitieren Sie von meiner langjährigen und breitgefächerten
+            Erfahrung als Geschäftsführer des Tom Ford Stores in Zürich.
           </p>
           <p>
-            Wir arbeiten ausschliesslich mit familiengeführten Unternehmen zusammen, die
-            wir persönlich kennen. Qualität und perfekter Service sind unser oberstes
-            Gebot.
-          </p>
-          <p>
-            Lassen Sie sich bei einem unverbindlichen Espresso von uns beraten und
-            begeistern.
+            Jede der von mir ausgewählten Manufakturen wird von Meistern ihres Fachs geführt
+            und kann auf eine jahrzehntelange Tradition zurückblicken. So lernen Sie bei mir
+            die echten Gesichter hinter den Brands kennen — und dementsprechend fair und
+            angemessen sind meine Preise, sodass Ihr hochwertiger Luxus-Anzug kein ferner
+            Traum bleiben muss.
           </p>
           <Link href="/termin/" className="btn">
             Termin buchen

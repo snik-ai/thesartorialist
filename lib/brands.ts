@@ -163,50 +163,6 @@ export const BRANDS: Brand[] = [
     ],
   },
   {
-    slug: 'jacob-cohen',
-    name: 'Jacob Cohën',
-    claim: 'Luxus-Denim aus Italien',
-    metaDescription:
-      'Jacob Cohën bei The Sartorialist Zürich: das luxuriöse Jeans-Label aus Italien — Handarbeit, edelste Materialien, sportliche Eleganz.',
-    origin: 'Pontelongo, Italien',
-    hero: '/images/jacob-cohen.webp',
-    gallery: STORE_GALLERY.slice(0, 6),
-    sections: [
-      {
-        title: 'Das luxuriöse Jeans-Label',
-        text: 'Jacob Cohën zeichnet sich durch einen einzigartigen Stil und exzellente Designs aus. Mit Liebe zum Detail kreiert die Lifestyle-Marke innovative Kollektionen aus edelsten Materialien in Handarbeit. Das Label hat sich weltweit einen Namen gemacht und setzt seine Qualitätsansprüche mit «Made in Italy» weit nach oben.',
-      },
-      {
-        title: 'Sportliche Lässigkeit trifft Eleganz',
-        text: 'Durch das Gespür für Innovation werden sportliche Lässigkeit und Eleganz vereint. Jacob-Cohën-Jeans sind nicht nur aussergewöhnlich komfortabel — sie gelten in der Modewelt als Symbol für luxuriösen Denim.',
-      },
-    ],
-  },
-  {
-    slug: 'paul-and-shark',
-    name: 'Paul & Shark',
-    claim: 'Italienische Premium-Mode, maritime Wurzeln',
-    metaDescription:
-      'Paul & Shark bei The Sartorialist Zürich: italienische Premium-Mode mit maritimem Flair — luxuriöse Freizeit- und Sportbekleidung seit 1975.',
-    origin: 'Varese, Italien · seit 1975',
-    hero: '/images/paul-shark-look.webp',
-    gallery: STORE_GALLERY.slice(0, 6),
-    sections: [
-      {
-        title: 'Premium-Mode mit maritimen Wurzeln',
-        text: 'Paul & Shark steht für erstklassige italienische Mode mit unverkennbar maritimem Flair. Die 1975 gegründete Marke hat sich durch hochwertige Materialien und innovative Designs weltweit einen Namen gemacht — besonders bekannt für luxuriöse Freizeit- und Sportbekleidung, die stilvolle Eleganz mit Funktionalität verbindet.',
-      },
-      {
-        title: 'Qualität und Nachhaltigkeit',
-        text: 'Die Philosophie von Paul & Shark basiert auf Qualität und Nachhaltigkeit. Jedes Kleidungsstück wird mit höchster Präzision aus den besten Materialien gefertigt. Die Marke legt grossen Wert auf umweltfreundliche Produktionstechniken — für stilvolle Mode, die langlebig und verantwortungsbewusst ist.',
-      },
-      {
-        title: 'Maritimer Stil für jede Gelegenheit',
-        text: 'Von eleganten Jacken und Poloshirts bis zu luxuriösen Strickwaren: Die Kollektion eignet sich für den Alltag wie für besondere Anlässe. Erleben Sie Paul & Shark direkt bei uns im Store in Zürich.',
-      },
-    ],
-  },
-  {
     slug: 'woolrich',
     name: 'Woolrich',
     claim: 'Outdoor-Ikone seit 1830',
