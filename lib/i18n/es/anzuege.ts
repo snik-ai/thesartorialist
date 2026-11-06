@@ -1,44 +1,43 @@
-// TODO übersetzen (Spanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suits Zurich
+// Trajes en Zúrich
 export const anzuege: Woerterbuch['anzuege'] = {
   meta: {
-    titel: 'Suits Zurich — Exclusive Suits & Expert Advice',
+    titel: 'Trajes en Zúrich — Trajes exclusivos y asesoramiento experto',
     beschreibung:
-      'Suits in Zurich: exclusive suits, jackets, shirts and trousers from The Sartorialist — handcrafted Italian tailoring meets contemporary style. Visit us at Kuttelgasse 7.',
-    ogTitel: 'Suits Zurich — The Sartorialist',
-    ogBeschreibung: 'What may well be the finest suits in Zurich — with advice of the highest standard.',
+      'Trajes en Zúrich: trajes, americanas, camisas y pantalones exclusivos de The Sartorialist, donde la sastrería artesanal italiana se une al estilo contemporáneo. Visítenos en Kuttelgasse 7.',
+    ogTitel: 'Trajes en Zúrich — The Sartorialist',
+    ogBeschreibung: 'Probablemente los trajes más finos de Zúrich, con un asesoramiento del más alto nivel.',
   },
-  breadcrumb: 'Suits Zurich',
+  breadcrumb: 'Trajes en Zúrich',
   hero: {
-    eyebrow: 'Gentlemen’s outfitter in the heart of Zurich',
-    h1: 'Suits Zurich',
-    lead: 'At The Sartorialist you will find what may well be the finest suits in Zurich. Our advice is expert, personal and of the highest standard — handcrafted Italian tailoring meets contemporary style.',
-    gestalten: 'Design your suit',
-    termin: 'Book an appointment',
+    eyebrow: 'Sastrería para caballeros en el corazón de Zúrich',
+    h1: 'Trajes en Zúrich',
+    lead: 'En The Sartorialist encontrará probablemente los trajes más finos de Zúrich. Nuestro asesoramiento es experto, personal y del más alto nivel: la sastrería artesanal italiana se une al estilo contemporáneo.',
+    gestalten: 'Diseñe su traje',
+    termin: 'Reservar una cita',
   },
   abschnitte: [
     {
-      titel: 'Genuine brand expertise',
-      text: 'We offer exclusive suits, jackets, denim shirts and trousers — complemented by elegant accessories and cashmere of the finest quality. Our carefully selected exclusive brands guarantee the best materials and cuts. Fifteen years of experience in fashion, including at the menswear powerhouse Tom Ford, are your guarantee of the finest suits in Zurich.',
+      titel: 'Auténtico conocimiento de las marcas',
+      text: 'Ofrecemos trajes, americanas, camisas vaqueras y pantalones exclusivos, complementados con accesorios elegantes y cachemir de la máxima calidad. Nuestras marcas exclusivas, cuidadosamente seleccionadas, garantizan los mejores materiales y cortes. Quince años de experiencia en la moda, entre otros en la gran casa de moda masculina Tom Ford, son su garantía de los trajes más finos de Zúrich.',
     },
     {
-      titel: 'How a quality suit comes to life',
-      text: 'First, you tell us what you have in mind and we take your exact measurements. Our tailoring team designs and sews the suit to fit you precisely — on average this takes just 15 to 20 days. After a final fitting we make any adjustments needed until the suit fits perfectly and meets every wish.',
+      titel: 'Así nace un traje de calidad',
+      text: 'Primero nos cuenta lo que tiene en mente y le tomamos las medidas exactas. Nuestro equipo de sastrería diseña y cose el traje para que le siente con precisión; de media, solo se necesitan entre 15 y 20 días. Tras una prueba final, realizamos los ajustes necesarios hasta que el traje sienta a la perfección y cumpla todos sus deseos.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Whether a modern double-breasted or a single-breasted suit, for business, a wedding or the opera: a suit is like a second skin. Beyond the style of the suit, fit, cloth and colour play a decisive role. We watch every detail closely to ensure you receive the perfect suit for your personal style.',
+      titel: '¿Qué traje es el adecuado para mí?',
+      text: 'Ya sea un moderno traje cruzado o uno de una fila, para el trabajo, una boda o la ópera: un traje es como una segunda piel. Además del estilo, el ajuste, el tejido y el color desempeñan un papel decisivo. Cuidamos cada detalle para que reciba el traje perfecto para su estilo personal.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'An exclusive suit has its price — and we make sure the investment pays off. We advise against cheap off-the-peg suits: they never achieve the comfort and quality of a made-to-measure suit. Our prices are always fair and transparent.',
+      titel: 'Precios y condiciones',
+      text: 'Un traje exclusivo tiene su precio, y nos aseguramos de que la inversión merezca la pena. Desaconsejamos los trajes de confección baratos: nunca alcanzan la comodidad ni la calidad de un traje a medida. Nuestros precios son siempre justos y transparentes.',
     },
   ],
   schema: {
-    name: 'Suits Zurich',
+    name: 'Trajes en Zúrich',
     beschreibung:
-      'Exclusive suits, jackets, shirts and trousers in Zurich — advice of the highest standard at The Sartorialist.',
+      'Trajes, americanas, camisas y pantalones exclusivos en Zúrich: asesoramiento del más alto nivel en The Sartorialist.',
   },
 };

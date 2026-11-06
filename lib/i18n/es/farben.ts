@@ -1,92 +1,91 @@
-// TODO übersetzen (Spanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suit colour pages — English overlay of lib/suitColors.ts (sections: same number and order).
+// Páginas de colores de traje — capa en español sobre lib/suitColors.ts (secciones: mismo número y orden).
 export const farben: Woerterbuch['farben'] = {
   'anzug-blau': {
-    name: 'Blue suit',
-    title: 'Blue Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Classic elegance redefined',
+    name: 'Traje azul',
+    title: 'Traje azul — Elegancia a medida en Zúrich',
+    claim: 'La elegancia clásica, redefinida',
     metaDescription:
-      'Made-to-measure blue suit in Zurich: from sky blue to navy — tailored by The Sartorialist. Book your appointment now.',
+      'Traje azul a medida en Zúrich: del azul cielo al azul marino, confeccionado por The Sartorialist. Reserve ahora su cita.',
     sections: [
       {
-        title: 'Classic elegance redefined',
-        text: 'The blue suit is one of the timeless classics of menswear and an elegant alternative to black and grey. In its many shades — from light sky blue to deep navy — a blue suit suits almost every occasion, whether at work or at social events. It combines classic elegance with a modern touch.',
+        title: 'La elegancia clásica, redefinida',
+        text: 'El traje azul es uno de los clásicos atemporales de la moda masculina y una alternativa elegante al negro y al gris. En sus múltiples tonalidades —del azul cielo claro al azul marino profundo— un traje azul resulta apropiado para casi cualquier ocasión, ya sea en el trabajo o en actos sociales. Une la elegancia clásica con un toque moderno.',
       },
       {
-        title: 'Why choose a blue suit',
-        text: 'A blue suit is remarkably versatile and lends you a confident, well-groomed look. Blue feels calm and professional while bringing freshness and energy to your wardrobe. Ideal for the office, business meetings or special occasions — and easy to pair with classic and contemporary accessories alike.',
+        title: 'Por qué elegir un traje azul',
+        text: 'Un traje azul es extraordinariamente versátil y le confiere una imagen segura y cuidada. El azul transmite calma y profesionalidad y, a la vez, aporta frescura y energía a su vestuario. Ideal para la oficina, las reuniones de negocios o las ocasiones especiales, y fácil de combinar tanto con accesorios clásicos como contemporáneos.',
       },
       {
-        title: 'Made-to-measure excellence',
-        text: 'With us, your blue suit is made individually — fitting perfectly and tailored to your personal style. Our experienced team helps you choose the ideal shade of blue, the right cloth and the perfect cut.',
+        title: 'Excelencia a medida',
+        text: 'Con nosotros, su traje azul se confecciona de forma individual: con un ajuste perfecto y adaptado a su estilo personal. Nuestro experimentado equipo le ayuda a elegir el tono de azul ideal, el tejido adecuado y el corte perfecto.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'We use fine cloths known for their longevity and comfort: from luxurious wool and fine linen to noble cashmere. The choice of cloth shapes not only the look but also the comfort of your suit.',
+        title: 'Tejidos y acabados',
+        text: 'Empleamos tejidos nobles, reconocidos por su durabilidad y su comodidad: desde la lana más lujosa y el lino fino hasta el noble cachemir. La elección del tejido define no solo el aspecto, sino también la comodidad de su traje.',
       },
       {
-        title: 'Individual design',
-        text: 'Design your blue suit exactly as you envisage it: cloths, cuts and details of your choice — a one-of-a-kind piece that underlines your personality.',
+        title: 'Diseño individual',
+        text: 'Diseñe su traje azul exactamente como lo imagina: tejidos, cortes y detalles a su elección. Una pieza única que subraya su personalidad.',
       },
     ],
   },
   'anzug-gruen': {
-    name: 'Green suit',
-    title: 'Green Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Fresh accents for your look',
+    name: 'Traje verde',
+    title: 'Traje verde — Elegancia a medida en Zúrich',
+    claim: 'Acentos frescos para su estilo',
     metaDescription:
-      'Made-to-measure green suit in Zurich: from pastel to deep green — tailored by The Sartorialist. Book your appointment now.',
+      'Traje verde a medida en Zúrich: del tono pastel al verde profundo, confeccionado por The Sartorialist. Reserve ahora su cita.',
     sections: [
       {
-        title: 'Fresh accents for your look',
-        text: 'The green suit is a fashionable choice for anyone who wants to lift their look with a touch of colour. Shades of green range from soft pastels to rich, deep tones and offer a modern alternative to the classic colours. A green suit adds fresh accents and makes a distinctive impression.',
+        title: 'Acentos frescos para su estilo',
+        text: 'El traje verde es una elección a la moda para quien desea realzar su imagen con un toque de color. Los tonos de verde van desde suaves pasteles hasta matices intensos y profundos, y ofrecen una alternativa moderna a los colores clásicos. Un traje verde aporta acentos frescos y deja una impresión inconfundible.',
       },
       {
-        title: 'Why choose a green suit',
-        text: 'A green suit brings colour to your wardrobe and stands out through its unique character. It is versatile — elegant with neutral colours, fashionable with bold accents. In spring and summer especially, it makes for a lively, dynamic look.',
+        title: 'Por qué elegir un traje verde',
+        text: 'Un traje verde da color a su vestuario y destaca por su carácter singular. Es versátil: elegante con colores neutros, a la moda con acentos atrevidos. Sobre todo en primavera y verano, crea una imagen viva y dinámica.',
       },
       {
-        title: 'Made-to-measure exclusivity',
-        text: 'We make your green suit individually, to your wishes and measurements. Our team advises you on the perfect shade of green, the right cloth and the appropriate details of the cut.',
+        title: 'Exclusividad a medida',
+        text: 'Confeccionamos su traje verde de forma individual, según sus deseos y sus medidas. Nuestro equipo le asesora sobre el tono de verde perfecto, el tejido adecuado y los detalles de corte apropiados.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Fine wool, noble linen or luxurious cashmere: the choice of cloth determines comfort and longevity. We pay attention to the details that underline the unique character of your green suit.',
+        title: 'Tejidos y acabados',
+        text: 'Lana fina, lino noble o cachemir lujoso: la elección del tejido determina la comodidad y la durabilidad. Cuidamos los detalles que subrayan el carácter único de su traje verde.',
       },
       {
-        title: 'Individual design',
-        text: 'A green suit from us is more than a garment — it is an expression of your personality. Choose from a range of cloths, cuts and details.',
+        title: 'Diseño individual',
+        text: 'Un traje verde de nuestra casa es más que una prenda: es una expresión de su personalidad. Elija entre una amplia selección de tejidos, cortes y detalles.',
       },
     ],
   },
   'anzug-beige': {
-    name: 'Beige suit',
-    title: 'Beige Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Timeless refinement in beige',
+    name: 'Traje beige',
+    title: 'Traje beige — Elegancia a medida en Zúrich',
+    claim: 'Refinamiento atemporal en beige',
     metaDescription:
-      'Made-to-measure beige suit in Zurich: light, bright and elegant — ideal for summer and weddings. Tailored by The Sartorialist.',
+      'Traje beige a medida en Zúrich: ligero, luminoso y elegante, ideal para el verano y las bodas. Confeccionado por The Sartorialist.',
     sections: [
       {
-        title: 'Timeless refinement in beige',
-        text: 'The beige suit is a classic that impresses with its versatility and elegance. It unites timeless refinement with a neutral tone suited to formal and informal occasions alike — ideal for spring and summer, as it looks light and bright.',
+        title: 'Refinamiento atemporal en beige',
+        text: 'El traje beige es un clásico que convence por su versatilidad y su elegancia. Une un refinamiento atemporal con un tono neutro, apropiado tanto para ocasiones formales como informales; ideal para la primavera y el verano, porque resulta ligero y luminoso.',
       },
       {
-        title: 'Why choose a beige suit',
-        text: 'A beige suit pairs effortlessly with a wide range of colours and patterns. Whether a wedding, a business event or a relaxed get-together — it always gives you a stylish, well-groomed look. The light colour reflects sunlight and is particularly pleasant to wear.',
+        title: 'Por qué elegir un traje beige',
+        text: 'Un traje beige se combina sin esfuerzo con una gran variedad de colores y dibujos. Ya sea en una boda, un evento de negocios o un encuentro distendido, siempre le aporta una imagen elegante y cuidada. Su color claro refleja la luz del sol y resulta especialmente agradable de llevar.',
       },
       {
-        title: 'Made-to-measure perfection',
-        text: 'With us, you design your beige suit exactly as you wish: tailored individually to your measurements and your style, with advice on cloth, fit and details.',
+        title: 'Perfección a medida',
+        text: 'Con nosotros, usted diseña su traje beige exactamente como desea: confeccionado de forma individual según sus medidas y su estilo, con asesoramiento sobre tejido, ajuste y detalles.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Only fine cloths that guarantee comfort and longevity — from fine wool and noble linen to luxurious cashmere. Every detail is right, so that you feel entirely at ease.',
+        title: 'Tejidos y acabados',
+        text: 'Solo tejidos nobles que garantizan comodidad y durabilidad, desde la lana fina y el lino noble hasta el cachemir más lujoso. Cada detalle está cuidado para que usted se sienta plenamente a gusto.',
       },
       {
-        title: 'Individual design',
-        text: 'Choose the cloth, the cut and special details such as buttons and lining — creating a suit that fits perfectly and reflects your personal touch.',
+        title: 'Diseño individual',
+        text: 'Elija el tejido, el corte y detalles especiales como los botones y el forro: así nace un traje de ajuste perfecto que refleja su sello personal.',
       },
     ],
   },
