@@ -4,10 +4,12 @@ import { TEIL_1 } from './teil-1';
 import { TEIL_2 } from './teil-2';
 import { TEIL_3 } from './teil-3';
 import { TEIL_4 } from './teil-4';
+import { TEIL_5 } from './teil-5';
+import { TEIL_6 } from './teil-6';
 
 export type { GlossarBegriff, GlossarGruppe };
 
-export const GLOSSAR: GlossarBegriff[] = [...TEIL_1, ...TEIL_2, ...TEIL_3, ...TEIL_4].sort((a, b) =>
+export const GLOSSAR: GlossarBegriff[] = [...TEIL_1, ...TEIL_2, ...TEIL_3, ...TEIL_4, ...TEIL_5, ...TEIL_6].sort((a, b) =>
   a.begriff.localeCompare(b.begriff, 'de'),
 );
 
