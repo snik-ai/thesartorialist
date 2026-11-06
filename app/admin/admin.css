@@ -32,7 +32,8 @@
 }
 .adm *, .adm *::before, .adm *::after { box-sizing: border-box; }
 .adm a { color: inherit; text-decoration: none; }
-.adm button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; }
+/* :where() → Reset ohne Spezifität, sonst überschreibt er .a-knopf/.a-chip auf <button> (weisse Schrift auf weiss) */
+:where(.adm) button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; }
 .adm .zahl, .adm time, .adm .num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
 .adm h1, .adm h2, .adm h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; }
 
@@ -379,6 +380,73 @@ textarea.a-input { min-height: 110px; resize: vertical; line-height: 1.55; }
 
 .a-toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); background: var(--a-ink); color: #fff; padding: 12px 20px; font-size: 14px; z-index: 50; border-radius: 2px; }
 @media (max-width: 900px) { .a-toast { bottom: calc(84px + env(safe-area-inset-bottom)); } }
+/* ---------- Benachrichtigungen: Bottom-Sheet nach der Anmeldung ---------- */
+body.a-sheet-offen { overflow: hidden; }
+.a-sheet-hg {
+  position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: rgba(16, 16, 16, 0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  animation: a-sheet-hg 0.35s ease both;
+}
+.a-sheet {
+  position: relative; width: min(460px, 100%); max-height: calc(100dvh - 48px); overflow-y: auto;
+  background: var(--a-card); color: var(--a-ink); padding: 40px 36px 30px; border-top: 2px solid var(--a-gold);
+  text-align: center; animation: a-sheet-ein 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+}
+.a-sheet-griff { display: none; }
+.a-sheet-symbol {
+  width: 76px; height: 76px; margin: 0 auto 20px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--a-ink); color: var(--a-gold); position: relative;
+}
+.a-sheet-symbol::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(176, 141, 87, 0.35); animation: a-sheet-ring 2.4s ease-out infinite; }
+.a-sheet-symbol svg { width: 34px; height: 34px; }
+.a-sheet-symbol.ok { background: var(--a-ok); color: #fff; }
+.a-sheet-symbol.ok::after { border-color: rgba(47, 125, 91, 0.35); }
+.a-sheet h2 { font-size: clamp(26px, 6.6vw, 32px); margin: 2px 0 12px; }
+.a-sheet > p { color: var(--a-soft); font-size: 15.5px; line-height: 1.55; margin: 0 auto 22px; max-width: 360px; }
+.a-sheet .a-hinweis { text-align: left; margin-bottom: 16px; }
+.a-sheet-knoepfe { display: grid; gap: 8px; }
+.a-knopf.gross { min-height: 56px; font-size: 13.5px; letter-spacing: 0.16em; }
+.a-sheet-vorschau {
+  display: flex; gap: 12px; align-items: flex-start; text-align: left; margin: 0 0 26px; padding: 12px 14px;
+  background: #f1efea; border: 1px solid var(--a-line); border-radius: 16px; animation: a-sheet-push 0.7s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.a-sheet-vorschau img { width: 38px; height: 38px; border-radius: 9px; flex: none; background: var(--a-ink); }
+.a-sheet-vorschau div { min-width: 0; flex: 1; }
+.a-sheet-vorschau small { display: flex; justify-content: space-between; font-size: 10.5px; letter-spacing: 0.08em; color: var(--a-muted); margin-bottom: 2px; }
+.a-sheet-vorschau b { display: block; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.a-sheet-vorschau div > span { display: block; font-size: 13px; color: var(--a-soft); }
+.a-sheet-schritte { list-style: none; text-align: left; margin: 0 0 24px; padding: 0; display: grid; gap: 10px; }
+.a-sheet-schritte li { display: flex; gap: 14px; align-items: center; padding: 14px 16px; background: #f6f5f2; border: 1px solid var(--a-line); font-size: 15px; line-height: 1.4; }
+.a-sheet-schritte i { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--a-ink); color: #fff; font-style: normal; font-size: 13px; font-weight: 600; }
+.a-inline-icon { width: 20px; height: 20px; vertical-align: -4px; margin-left: 4px; color: var(--a-blue); }
+@media (max-width: 640px) {
+  .a-sheet-hg { align-items: flex-end; padding: 0; }
+  .a-sheet {
+    width: 100%; max-height: 92dvh; padding: 14px 22px calc(22px + env(safe-area-inset-bottom));
+    border-top: 0; border-radius: 22px 22px 0 0; animation-name: a-sheet-hoch;
+  }
+  .a-sheet-griff { display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--a-line-2); margin: 0 auto 26px; }
+}
+@keyframes a-sheet-hg { from { opacity: 0; } }
+@keyframes a-sheet-ein { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
+@keyframes a-sheet-hoch { from { transform: translateY(100%); } }
+@keyframes a-sheet-push { from { opacity: 0; transform: translateY(-14px) scale(0.96); } }
+@keyframes a-sheet-ring { from { transform: scale(0.9); opacity: 1; } to { transform: scale(1.35); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .a-sheet-hg, .a-sheet, .a-sheet-vorschau, .a-sheet-symbol::after { animation: none; }
+}
+.a-push-status { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; background: #f6f5f2; border: 1px solid var(--a-line); font-size: 14px; color: var(--a-soft); }
+.a-geraete { list-style: none; margin: 0; padding: 0; }
+.a-geraete li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--a-line); font-size: 13.5px; }
+.a-geraete li:last-child { border-bottom: 0; }
+.a-geraete li > div { min-width: 0; }
+.a-geraete b { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-weight: 600; }
+.a-geraete small { display: block; margin-top: 3px; font-size: 12px; color: var(--a-muted); font-variant-numeric: tabular-nums; }
+.a-geraete small.rot { color: var(--a-bad); }
+.a-sheet:focus { outline: none; }
+.a-push-status svg { width: 20px; height: 20px; flex: none; color: var(--a-gold); margin-top: 1px; }
+
 .a-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Termin-/Kontakt-Detail: Aktionen rechts (Desktop), auf dem Handy direkt unter dem Kopfblock */

@@ -4,7 +4,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 const COOKIES = ['__Host-ts_admin', 'ts_admin'];
-const OFFEN = ['/admin/login/', '/admin/login', '/admin/sw.js', '/admin/offline.html', '/admin/manifest.webmanifest'];
+const OFFEN = ['/admin/login/', '/admin/login', '/admin/sw.js', '/admin/offline.html', '/admin/manifest.webmanifest', '/admin/badge-96.png'];
 
 export function middleware(req: NextRequest) {
   const pfad = req.nextUrl.pathname;

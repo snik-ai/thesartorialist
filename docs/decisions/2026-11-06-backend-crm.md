@@ -45,6 +45,32 @@ Anfragen auf einem Dashboard. Muster und Sicherheit nach VoxCRM (Login, Passkey,
   Besucher-ID = sha256(IP|UA|Tag|Secret) gekürzt, IP nie gespeichert, Referrer nur als Host, Bots
   und angemeldete Admins verworfen, Rate-Limit. Datenschutzerklärung ergänzt. DLM-Pixel bleibt.
 
+## Push-Benachrichtigungen (Admin-App)
+- **Web Push (VAPID)** mit `web-push`. Schlüssel werden beim ersten Bedarf erzeugt und in der Tabelle
+  `einstellung` (Schlüssel `vapid`) gespeichert — keine Env-Variable. Der Privatschlüssel verlässt den
+  Server nie; Subject `mailto:store@thesartorialist.ch`. Wird die Zeile gelöscht, entstehen neue Schlüssel
+  und alle Geräte müssen einmal neu aktivieren (die App macht das beim nächsten Öffnen von selbst).
+- **Abos:** Tabelle `push_abo` (je Gerät, Endpoint unique, nur https). 404/410 vom Push-Dienst → Abo
+  gelöscht; besteht das Abo im Gerät noch, meldet die App es beim nächsten Öffnen still nach.
+  Endpunkte `/api/admin/push/` (GET Schlüssel + eigene Geräte, POST anmelden, DELETE abmelden) und
+  `/api/admin/push/test/` — nur mit Admin-Sitzung + Origin-Prüfung.
+- **Aktivierung:** Direkt nach der Anmeldung erscheint ein Bottom-Sheet «Benachrichtigungen aktivieren»,
+  solange das Gerät kein Abo hat (Knopf nötig: iOS verlangt eine Nutzer-Geste für die Erlaubnis).
+  «Später» gilt bis zur nächsten Anmeldung. Danach (nicht gleichzeitig) das Angebot «Face ID einrichten?».
+  iPhone im Safari-Tab: Anleitung «Teilen → Zum Home-Bildschirm» (Web-Push gibt es auf iOS nur in der
+  installierten App, ab iOS 16.4). Nach Erfolg sofort eine Test-Mitteilung. Verwaltung unter
+  /admin/einstellungen (Karte «Benachrichtigungen»: Status, Aktivieren/Deaktivieren, Test, Geräte).
+- **Auslöser:** jede neue Terminanfrage und Rückrufbitte aus `/api/anfrage` an alle Geräte aller aktiven
+  Admins, nach der Antwort (`after()`), mit Timeout — blockiert die Anfrage nie. WhatsApp-/Anruf-Klicks
+  aus dem Tracking werden bewusst nicht gepusht. Antippen öffnet `/admin/termine/<id>/`.
+- **Service-Worker** (`public/admin/sw.js`, Scope /admin/): `push` zeigt die Mitteilung (Icon, Badge
+  `public/admin/badge-96.png`, tag je Termin), `notificationclick` holt ein offenes Admin-Fenster nach vorne
+  oder öffnet die Seite, `pushsubscriptionchange` meldet erneuerte Abos. Weiterhin kein Daten-Cache.
+- **Datenschutz:** betrifft nur Admins, nicht die öffentliche Website. Gespeichert werden je Gerät nur die
+  Push-Adresse des Browser-Herstellers (Apple/Google/Mozilla/Microsoft), deren Schlüssel und ein Gerätename.
+  Die Mitteilung enthält nur Art und Name der anfragenden Person (verschlüsselt übertragen, der Push-Dienst
+  kann den Inhalt nicht lesen); Telefon, E-Mail und Stil-Details stehen nur im Backend.
+
 ## Env-Variablen (Coolify)
 | Variable | Zweck |
 |---|---|

@@ -2,7 +2,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import { brauchtAdmin } from '@/lib/admin/zugang';
 import Shell from '@/components/admin/Shell';
-import PasskeyAngebot from '@/components/admin/PasskeyAngebot';
+import NachLogin from '@/components/admin/NachLogin';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +18,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     .where(eq(schema.passkey.adminUserId, s.user.id));
   return (
     <Shell email={s.user.email} offen={offen}>
-      <PasskeyAngebot anzahl={passkeys} frisch={Date.now() - s.erstelltAm.getTime() < 10 * 60_000} />
+      <NachLogin sitzung={s.sitzungId.slice(0, 8)} passkeys={passkeys} frisch={Date.now() - s.erstelltAm.getTime() < 10 * 60_000} />
       {children}
     </Shell>
   );
