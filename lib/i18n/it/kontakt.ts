@@ -1,36 +1,35 @@
-// TODO übersetzen (Italienisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Contact & directions
+// Contatto e come raggiungerci
 export const kontakt: Woerterbuch['kontakt'] = {
   meta: {
-    titel: 'Contact & Directions — Kuttelgasse 7, Zurich',
+    titel: 'Contatto e come raggiungerci — Kuttelgasse 7, Zurigo',
     beschreibung:
-      'The Sartorialist Zurich: Kuttelgasse 7, 8001 Zürich. Telephone +41 43 243 02 77, store@thesartorialist.ch. Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
-    ogTitel: 'Contact — The Sartorialist Zurich',
-    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — our showroom in the heart of Zurich.',
+      'The Sartorialist Zurigo: Kuttelgasse 7, 8001 Zürich. Telefono +41 43 243 02 77, store@thesartorialist.ch. Lun–ven 10–19, sab 10–17.',
+    ogTitel: 'Contatto — The Sartorialist Zurigo',
+    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — il nostro showroom nel cuore di Zurigo.',
   },
-  breadcrumb: 'Contact',
+  breadcrumb: 'Contatto',
   hero: {
-    eyebrow: 'Contact & directions',
-    h1: 'Your menswear boutique, style adviser & tailor',
-    lead: 'Visit our boutique and, over a fine coffee, let us show you what we mean — with no obligation. Ideally, book an appointment so that we can devote our full attention to you.',
+    eyebrow: 'Contatto e come raggiungerci',
+    h1: 'La Sua boutique maschile, consulente di stile e sarto',
+    lead: 'Venga a trovarci nella nostra boutique e, davanti a un buon caffè, Le mostreremo senza impegno di che cosa parliamo. Le consigliamo di fissare un appuntamento — così potremo dedicarci interamente a Lei.',
   },
-  bildAlt: 'The Sartorialist boutique at Kuttelgasse 7 in Zurich',
+  bildAlt: 'La boutique di The Sartorialist in Kuttelgasse 7 a Zurigo',
   info: {
-    adresse: 'Address',
-    route: 'Directions on Google Maps',
-    telefon: 'Telephone',
-    email: 'Email',
+    adresse: 'Indirizzo',
+    route: 'Itinerario su Google Maps',
+    telefon: 'Telefono',
+    email: 'E-mail',
     instagram: 'Instagram',
-    oeffnungszeiten: 'Opening hours',
+    oeffnungszeiten: 'Orari di apertura',
   },
-  wunschtermin: 'Your preferred appointment',
-  ablauf: 'More about the consultation',
+  wunschtermin: 'Il Suo appuntamento preferito',
+  ablauf: 'Scopra come si svolge la consulenza',
   alternativ: {
-    frage: 'No suitable time available?',
-    rueckruf: 'Request a call back',
+    frage: 'Nessun orario adatto?',
+    rueckruf: 'Richieda di essere richiamato',
     whatsapp: 'WhatsApp',
-    waText: 'Hello, I would like to book a consultation.',
+    waText: 'Buongiorno, desidererei fissare un appuntamento per una consulenza.',
   },
 };

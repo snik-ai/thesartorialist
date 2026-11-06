@@ -1,51 +1,50 @@
-// TODO übersetzen (Italienisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Imprint
+// Note legali
 export const impressum: Woerterbuch['impressum'] = {
   meta: {
-    titel: 'Imprint',
-    beschreibung: 'Imprint of The Sartorialist Zurich — Swiss Art Partner AG.',
+    titel: 'Note legali',
+    beschreibung: 'Note legali di The Sartorialist Zurigo — Swiss Art Partner AG.',
   },
-  h1: 'Imprint',
+  h1: 'Note legali',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/impressum/).',
+    'La presente traduzione italiana è fornita unicamente a titolo informativo. Fa fede esclusivamente la versione tedesca: [leggi la versione tedesca](/impressum/).',
   unternehmen: {
-    titel: 'Company details',
-    land: 'Switzerland',
-    vertreten: 'Represented by: ',
+    titel: 'Dati societari',
+    land: 'Svizzera',
+    vertreten: 'Rappresentata da: ',
   },
   kontakt: {
-    titel: 'Contact',
-    telefon: 'Telephone: ',
-    email: 'Email: ',
+    titel: 'Contatto',
+    telefon: 'Telefono: ',
+    email: 'E-mail: ',
   },
   abschnitte: [
     {
-      titel: 'Consumer dispute resolution / universal arbitration board',
+      titel: 'Risoluzione delle controversie dei consumatori / organo di conciliazione',
       absaetze: [
-        'We are neither willing nor obliged to take part in dispute resolution proceedings before a consumer arbitration board.',
+        'Non siamo disposti né tenuti a partecipare a procedure di risoluzione delle controversie dinanzi a un organo di conciliazione per i consumatori.',
       ],
     },
     {
-      titel: 'Liability for content',
+      titel: 'Responsabilità per i contenuti',
       absaetze: [
-        'As a service provider, we are responsible for our own content on these pages in accordance with general law. However, we are not obliged to monitor third-party information that is transmitted or stored, or to investigate circumstances that indicate unlawful activity.',
-        'Obligations to remove or block the use of information under general law remain unaffected. Liability in this respect is, however, only possible from the moment we become aware of a specific infringement. As soon as we become aware of any such infringement, we will remove the content concerned without delay.',
+        'In qualità di fornitori di servizi, siamo responsabili dei nostri contenuti su queste pagine secondo le disposizioni di legge generali. Non siamo tuttavia tenuti a sorvegliare le informazioni di terzi trasmesse o memorizzate, né a ricercare circostanze che indichino un’attività illecita.',
+        'Restano impregiudicati gli obblighi di rimozione o di blocco dell’uso di informazioni secondo le disposizioni di legge generali. Una responsabilità in tal senso è tuttavia possibile solo a partire dal momento in cui veniamo a conoscenza di una violazione concreta. Non appena venissimo a conoscenza di tali violazioni, rimuoveremo senza indugio i contenuti in questione.',
       ],
     },
     {
-      titel: 'Liability for links',
+      titel: 'Responsabilità per i link',
       absaetze: [
-        'Our website contains links to external third-party websites over whose content we have no control. We therefore cannot accept any liability for such third-party content. The respective provider or operator of the linked pages is always responsible for their content. The linked pages were checked for possible legal infringements at the time the links were created.',
-        'Permanent monitoring of the content of linked pages is not reasonable without concrete evidence of an infringement. As soon as we become aware of any infringements, we will remove such links without delay.',
+        'Il nostro sito contiene link a siti web esterni di terzi, sui cui contenuti non abbiamo alcuna influenza. Non possiamo pertanto assumere alcuna responsabilità per tali contenuti di terzi. Dei contenuti delle pagine collegate è sempre responsabile il rispettivo fornitore o gestore. Al momento dell’inserimento dei link, le pagine collegate sono state verificate per eventuali violazioni di legge.',
+        'Un controllo permanente dei contenuti delle pagine collegate non è ragionevolmente esigibile senza indizi concreti di una violazione. Non appena venissimo a conoscenza di violazioni, rimuoveremo senza indugio tali link.',
       ],
     },
     {
-      titel: 'Copyright',
+      titel: 'Diritto d’autore',
       absaetze: [
-        'The content and works created by the site operators on these pages are subject to copyright. Reproduction, editing, distribution and any form of exploitation beyond the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this site are permitted for private, non-commercial use only.',
-        'Insofar as the content on this site was not created by the operator, the copyrights of third parties are respected. Should you nevertheless become aware of a copyright infringement, please notify us accordingly. As soon as we become aware of any infringements, we will remove such content without delay.',
+        'I contenuti e le opere create dai gestori del sito su queste pagine sono soggetti al diritto d’autore. La riproduzione, l’elaborazione, la diffusione e qualsiasi forma di utilizzo al di fuori dei limiti del diritto d’autore richiedono il consenso scritto del rispettivo autore o creatore. Download e copie di questo sito sono consentiti esclusivamente per uso privato e non commerciale.',
+        'Nella misura in cui i contenuti di questo sito non siano stati creati dal gestore, sono rispettati i diritti d’autore di terzi. Qualora dovesse comunque riscontrare una violazione del diritto d’autore, La preghiamo di segnalarcelo. Non appena venissimo a conoscenza di violazioni, rimuoveremo senza indugio tali contenuti.',
       ],
     },
   ],

@@ -1,43 +1,42 @@
-// TODO übersetzen (Italienisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Services (alterations)
+// Servizi (riparazioni e modifiche sartoriali)
 export const services: Woerterbuch['services'] = {
   meta: {
-    titel: 'Tailoring Alterations Zurich — Services',
+    titel: 'Modifiche sartoriali Zurigo — Servizi',
     beschreibung:
-      'Alterations at The Sartorialist Zurich: our long-standing partner tailor alters anything that fits under a sewing machine — jackets, coats, trousers and shirts at fair prices.',
-    ogTitel: 'Services — The Sartorialist Zurich',
-    ogBeschreibung: 'Alterations for jackets, coats, trousers and shirts.',
+      'Servizi di The Sartorialist Zurigo: la nostra sartoria partner di lunga data per le modifiche lavora tutto ciò che passa sotto una macchina da cucire — giacche, cappotti, pantaloni e camicie a prezzi equi.',
+    ogTitel: 'Servizi — The Sartorialist Zurigo',
+    ogBeschreibung: 'Modifiche sartoriali per giacche, cappotti, pantaloni e camicie.',
   },
-  breadcrumb: 'Services',
+  breadcrumb: 'Servizi',
   hero: {
-    eyebrow: 'Alterations & adjustments',
-    h1: 'Services',
-    lead: 'Our long-standing partner alterations tailor can handle anything that fits under a sewing machine — and at sensible prices.',
+    eyebrow: 'Modifiche e adattamenti',
+    h1: 'Servizi',
+    lead: 'La nostra sartoria partner di lunga data per le modifiche lavora tutto ciò che passa sotto una macchina da cucire — e a prezzi ragionevoli.',
   },
   leistungen: [
     {
-      titel: 'Jacket / coat',
-      text: 'Shortening or lengthening sleeves, taking in the waist, correcting the shoulders — after alteration, your jacket or coat fits as if made to measure.',
+      titel: 'Giacca / cappotto',
+      text: 'Accorciare o allungare le maniche, stringere in vita, correggere le spalle — dopo la modifica, la Sua giacca o il Suo cappotto vestono come fossero su misura.',
     },
     {
-      titel: 'Trousers',
-      text: 'Length, waist, turn-ups or a slimmer leg line — quick, precise adjustments for the perfect silhouette.',
+      titel: 'Pantaloni',
+      text: 'Lunghezza, girovita, risvolti o una gamba più affusolata — modifiche rapide e precise per una silhouette perfetta.',
     },
     {
-      titel: 'Shirt',
-      text: 'Tapering, shortening sleeves, renewing collars or cuffs — so that even your favourite shirt fits impeccably once again.',
+      titel: 'Camicia',
+      text: 'Sciancrare, accorciare le maniche, rinnovare colletto o polsini — perché anche la Sua camicia preferita torni a vestire in modo impeccabile.',
     },
   ],
-  hinweis: 'Simply bring your garment to our store — or [book an appointment](termin).',
+  hinweis: 'Porti semplicemente il Suo capo nel nostro negozio — oppure [prenoti un appuntamento](termin).',
   cta: {
-    titel: 'Need an alteration? We will take care of it.',
-    text: 'Kuttelgasse 7, 8001 Zurich — Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
+    titel: 'Serve una modifica? Ci pensiamo noi.',
+    text: 'Kuttelgasse 7, 8001 Zurigo — lun–ven 10–19, sab 10–17.',
   },
   schema: {
-    name: 'Tailoring alterations Zurich',
+    name: 'Modifiche sartoriali Zurigo',
     beschreibung:
-      'Alterations for jackets, coats, trousers and shirts — the partner alterations tailor of The Sartorialist Zurich.',
+      'Modifiche per giacche, cappotti, pantaloni e camicie — la sartoria partner di The Sartorialist Zurigo.',
   },
 };
