@@ -4,6 +4,8 @@ import { db, schema } from '@/lib/db';
 import { firma, logoDaten } from '@/lib/crm/firma';
 import { angebotPdf, massblattPdf, rechnungPdf, type Empfaenger } from '@/lib/pdf/dokument';
 import { SITE } from '@/lib/site';
+import { angebotDok, dokPdf, mahnungDok, rechnungDok } from '@/lib/beleg/laden';
+import { DOK } from '@/lib/beleg/texte';
 import { zuerich } from '@/lib/zeit';
 
 type Kontakt = typeof schema.kontakt.$inferSelect;
@@ -45,10 +47,14 @@ export function tagAus(v: unknown): Date | null | undefined {
   return jahre > 5 ? undefined : d;
 }
 
+/** Angebot als PDF: A4-Vorlage über Chrome (gleich wie das Papier im Editor), ohne Chrome die PDFKit-Fassung. */
 export async function angebotPdfFuer(id: string, link?: string | null) {
-  const [a] = await db().select().from(schema.angebot).where(eq(schema.angebot.id, id)).limit(1);
-  if (!a || !a.kontaktId) return null;
-  const [k] = await db().select().from(schema.kontakt).where(eq(schema.kontakt.id, a.kontaktId)).limit(1);
+  const x = await angebotDok(id, 'pdf');
+  if (!x) return null;
+  const { a, k } = x;
+  const datei = `${DOK[a.sprache].angebot}-${a.nummer}.pdf`;
+  const chrome = await dokPdf(x.dok);
+  if (chrome) return { buf: chrome, datei, a, k };
   const buf = await angebotPdf(
     {
       nummer: a.nummer ?? '',
@@ -70,13 +76,17 @@ export async function angebotPdfFuer(id: string, link?: string | null) {
     await firma(),
     await logoBuffer(),
   );
-  return { buf, datei: `Angebot-${a.nummer}.pdf`, a, k };
+  return { buf, datei, a, k };
 }
 
+/** Rechnung mit Swiss QR-Zahlteil als PDF (Chrome, sonst PDFKit) */
 export async function rechnungPdfFuer(id: string) {
-  const [r] = await db().select().from(schema.rechnung).where(eq(schema.rechnung.id, id)).limit(1);
-  if (!r || !r.kontaktId) return null;
-  const [k] = await db().select().from(schema.kontakt).where(eq(schema.kontakt.id, r.kontaktId)).limit(1);
+  const x = await rechnungDok(id, 'pdf');
+  if (!x) return null;
+  const { r, k } = x;
+  const datei = `${x.dok.dokTitel.replace(/\s+/g, '-')}-${r.nummer}.pdf`;
+  const chrome = await dokPdf(x.dok);
+  if (chrome) return { buf: chrome, datei, r, k };
   const [au] = r.auftragId ? await db().select({ nummer: schema.auftrag.nummer }).from(schema.auftrag).where(eq(schema.auftrag.id, r.auftragId)).limit(1) : [];
   const buf = await rechnungPdf(
     {
@@ -101,7 +111,15 @@ export async function rechnungPdfFuer(id: string) {
     await firma(),
     await logoBuffer(),
   );
-  return { buf, datei: `Rechnung-${r.nummer}.pdf`, r, k };
+  return { buf, datei, r, k };
+}
+
+/** Mahnung (Zahlungserinnerung, 1. und 2. Mahnung) mit QR-Zahlteil als PDF – nur über Chrome */
+export async function mahnungPdfFuer(id: string) {
+  const x = await mahnungDok(id, 'pdf');
+  if (!x) return null;
+  const buf = await dokPdf(x.dok);
+  return buf ? { buf, datei: `${x.dok.dokTitel.replace(/[\s.]+/g, '-')}-${x.m.nummer}.pdf`, ...x } : null;
 }
 
 export async function massblattPdfFuer(id: string) {

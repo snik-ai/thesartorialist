@@ -7,7 +7,8 @@ PORT = "3000"
 HOSTNAME = "0.0.0.0"
 
 [phases.setup]
-nixPkgs = ["nodejs_22"]
+# chromium: PDF-Belege (Angebot, Rechnung, Mahnung) werden aus der A4-Vorlage über Chrome erzeugt (lib/beleg/pdf.ts)
+nixPkgs = ["nodejs_22", "chromium"]
 
 [phases.install]
 cmds = ["npm ci"]

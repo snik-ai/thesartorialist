@@ -4,9 +4,10 @@ import { createHash } from 'node:crypto';
 import { and, asc, desc, eq, inArray, isNotNull, ne, sql } from 'drizzle-orm';
 import { calculateQRReferenceChecksum, calculateSCORReferenceChecksum } from 'swissqrbill/utils';
 import { db, schema } from '@/lib/db';
-import type { Abzug, AuftragStatus, LeadPhase, Position, RechnungArt } from '@/lib/db/schema';
+import type { Abzug, AuftragStatus, BelegSprache, LeadPhase, Position, RechnungArt } from '@/lib/db/schema';
+import { belegSprache } from '@/lib/beleg/texte';
 import { aktivitaetLoggen } from './kontakte';
-import { firma, mwstSatzVon, type Firma } from './firma';
+import { belegTexte, firma, mwstSatzVon, type Firma } from './firma';
 import { naechsteNummer, type Exec } from './nummern';
 import { rund5, summen } from './geld';
 import { AUFTRAG_LABEL, schrittIndex } from './belege';
@@ -52,6 +53,9 @@ export async function angebotErstellen(o: { kontaktId: string; terminId?: string
           .where(and(eq(schema.termin.kontaktId, o.kontaktId), sql`jsonb_array_length(${schema.termin.stil}) > 0`))
           .orderBy(desc(schema.termin.erstelltAm))
           .limit(1);
+    const [kk] = await tx.select({ sprache: schema.kontakt.sprache }).from(schema.kontakt).where(eq(schema.kontakt.id, o.kontaktId)).limit(1);
+    const sprache = belegSprache(kk?.sprache);
+    const texte = belegTexte(f, sprache);
     const nummer = await naechsteNummer(tx, 'AN');
     const [a] = await tx
       .insert(schema.angebot)
@@ -60,8 +64,9 @@ export async function angebotErstellen(o: { kontaktId: string; terminId?: string
         terminId: t?.id ?? null,
         nummer,
         titel: o.titel || (t?.stil.length ? 'Massanfertigung nach Ihrer Stil-Auswahl' : 'Massanfertigung'),
-        einleitung: f.texte.angebotEinleitung,
-        schluss: f.texte.angebotSchluss,
+        einleitung: texte.angebotEinleitung,
+        schluss: texte.angebotSchluss,
+        sprache,
         stil: t?.stil ?? [],
         stoffe: t?.stoffe ?? [],
         mwstSatz: mwstSatzVon(f),
@@ -237,13 +242,27 @@ export function referenzFuer(f: Firma, nummer: string): string | null {
   return null;
 }
 
-/** Rechnung zu einem Auftrag: Anzahlung (Prozent des Totals), Schlussrechnung (alles minus Anzahlungen) oder Einzelrechnung. */
-export async function rechnungErstellen(o: { auftragId?: string | null; kontaktId?: string; art: RechnungArt; prozent?: number; adminId: string }) {
+const AUF_AUFTRAG: Record<BelegSprache, { anzahlung: string; auf: string; total: string }> = {
+  de: { anzahlung: 'Anzahlung', auf: 'auf Auftrag', total: 'Total' },
+  en: { anzahlung: 'Deposit', auf: 'on order', total: 'total' },
+  fr: { anzahlung: 'Acompte', auf: 'sur la commande', total: 'total' },
+  it: { anzahlung: 'Acconto', auf: "sull'ordine", total: 'totale' },
+};
+
+/**
+ * Rechnung zu einem Auftrag: Anzahlung/Rate (Prozent ODER fester Betrag), Schlussrechnung (alles minus bisherige
+ * Anzahlungen bzw. Raten) oder Einzelrechnung. Sprache und Standardtexte nach der Sprache des Kunden.
+ */
+export async function rechnungErstellen(o: { auftragId?: string | null; kontaktId?: string; art: RechnungArt; prozent?: number; betragRp?: number; bezeichnung?: string; faelligAm?: Date | null; adminId: string }) {
   const f = await firma();
   return db().transaction(async (tx) => {
     const [au] = o.auftragId ? await tx.select().from(schema.auftrag).where(eq(schema.auftrag.id, o.auftragId)).for('update') : [];
     const kontaktId = au?.kontaktId ?? o.kontaktId;
     if (!kontaktId) throw new AblaufFehler('Kunde fehlt');
+    const [k] = await tx.select({ sprache: schema.kontakt.sprache }).from(schema.kontakt).where(eq(schema.kontakt.id, kontaktId)).limit(1);
+    const sprache = belegSprache(k?.sprache);
+    const texte = belegTexte(f, sprache);
+    const W = AUF_AUFTRAG[sprache];
     const jetzt = new Date();
     const nummer = await naechsteNummer(tx, 'RE');
     let positionen: Position[] = au?.positionen ?? [];
@@ -251,15 +270,20 @@ export async function rechnungErstellen(o: { auftragId?: string | null; kontaktI
     let rabattRp = au?.rabattRp ?? 0;
     let abzug: Abzug[] = [];
     let titel = au ? au.titel : 'Rechnung';
-    let einleitung = f.texte.rechnungEinleitung;
+    let einleitung = texte.rechnungEinleitung;
+    const mwstSatz = au?.mwstSatz ?? mwstSatzVon(f);
     if (o.art === 'anzahlung') {
       if (!au) throw new AblaufFehler('Anzahlung nur zu einem Auftrag');
+      const fest = o.betragRp !== undefined && Number.isFinite(o.betragRp) && o.betragRp > 0;
       const p = Math.min(100, Math.max(1, Math.round(o.prozent ?? f.anzahlungProzent)));
-      positionen = [{ id: 'anzahlung', kategorie: 'sonstiges', bezeichnung: `Anzahlung ${p} %`, beschreibung: `auf Auftrag ${au.nummer}${au.titel ? ` · ${au.titel}` : ''} (Total CHF ${(au.totalRp / 100).toFixed(2)})`, menge: 1, einzelpreisRp: rund5((au.totalRp * p) / 100) }];
+      const betrag = fest ? Math.round(o.betragRp!) : rund5((au.totalRp * p) / 100);
+      if (betrag > au.totalRp) throw new AblaufFehler('Der Betrag ist höher als das Total des Auftrags.');
+      const bezeichnung = o.bezeichnung?.trim() || (fest ? W.anzahlung : `${W.anzahlung} ${p} %`);
+      positionen = [{ id: 'anzahlung', art: 'position', kategorie: 'sonstiges', bezeichnung, beschreibung: `${W.auf} ${au.nummer}${au.titel ? ` · ${au.titel}` : ''} (${W.total} CHF ${(au.totalRp / 100).toFixed(2)})`, menge: 1, einheit: 'Stk.', einzelpreisRp: betrag, mwstSatz }];
       rabattProzent = 0;
       rabattRp = 0;
-      titel = `Anzahlung · ${au.titel || au.nummer}`;
-      einleitung = f.texte.anzahlungEinleitung;
+      titel = `${bezeichnung} · ${au.titel || au.nummer}`;
+      einleitung = texte.anzahlungEinleitung;
     } else if (o.art === 'schluss' && au) {
       const anz = await tx
         .select()
@@ -269,7 +293,6 @@ export async function rechnungErstellen(o: { auftragId?: string | null; kontaktI
       abzug = anz.map((r) => ({ rechnungId: r.id, nummer: r.nummer ?? '', datum: (r.rechnungsdatum ?? r.erstelltAm).toISOString(), betragRp: r.totalRp }));
       titel = au.titel || 'Schlussrechnung';
     }
-    const mwstSatz = au?.mwstSatz ?? mwstSatzVon(f);
     const s = summen(positionen, { rabattProzent, rabattRp, mwstSatz });
     const betragRp = Math.max(0, s.totalRp - abzug.reduce((x, a) => x + a.betragRp, 0));
     const [r] = await tx
@@ -282,7 +305,7 @@ export async function rechnungErstellen(o: { auftragId?: string | null; kontaktI
         status: 'entwurf',
         titel,
         einleitung,
-        schluss: f.texte.rechnungSchluss,
+        schluss: texte.rechnungSchluss,
         positionen,
         rabattProzent,
         rabattRp,
@@ -292,8 +315,9 @@ export async function rechnungErstellen(o: { auftragId?: string | null; kontaktI
         abzug,
         betragRp,
         rechnungsdatum: jetzt,
-        faelligAm: tageSpaeter(jetzt, f.zahlungsfristTage),
+        faelligAm: o.faelligAm ?? tageSpaeter(jetzt, f.zahlungsfristTage),
         referenz: referenzFuer(f, nummer),
+        sprache,
         erstelltVon: o.adminId,
       })
       .returning({ id: schema.rechnung.id });
@@ -309,7 +333,9 @@ export async function rechnungNachrechnen(x: Exec, rechnungId: string) {
   const [{ summe }] = await x.select({ summe: sql<number>`coalesce(sum(${schema.zahlung.betragRp}), 0)::int` }).from(schema.zahlung).where(eq(schema.zahlung.rechnungId, rechnungId));
   const [{ letzte }] = await x.select({ letzte: sql<Date | null>`max(${schema.zahlung.datum})` }).from(schema.zahlung).where(eq(schema.zahlung.rechnungId, rechnungId));
   let status = r.status;
-  if (r.status !== 'storniert' && r.status !== 'entwurf') status = summe >= r.betragRp && r.betragRp > 0 ? 'bezahlt' : summe > 0 ? 'teilbezahlt' : 'offen';
+  // Bezahlt erst, wenn auch die Mahngebühren beglichen sind
+  const soll = r.betragRp + (r.mahngebuehrenRp ?? 0);
+  if (r.status !== 'storniert' && r.status !== 'entwurf') status = summe >= soll && soll > 0 ? 'bezahlt' : summe > 0 ? 'teilbezahlt' : 'offen';
   if (r.status !== 'storniert' && r.status !== 'entwurf' && r.betragRp === 0) status = 'bezahlt';
   await x
     .update(schema.rechnung)

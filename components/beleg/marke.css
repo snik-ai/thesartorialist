@@ -1,0 +1,78 @@
+/* The Sartorialist auf dem VoxCRM-Editor (editor.css): Rahmen im Admin (Seitenleiste 252 px, Hauptbereich ohne Rundung),
+   Papier mit derselben Schrift und denselben Massen wie das PDF (lib/beleg/stil.ts): Inter für Text, Playfair Display für
+   Titel und Zwischentitel, Gold #c9a063 als Akzent. */
+.vx.dk{--fl:#ECEAE5;margin:-34px calc(-1 * clamp(18px, 3.4vw, 48px)) -80px;min-height:100dvh;border-radius:0;overflow-x:clip}
+.vx .dk-leiste{border-radius:0;background:rgba(250,249,246,.92)}
+.vx .dk-seite{top:60px;height:calc(100dvh - 60px)}
+.vx .dk-titel{font-family:var(--f-ui)}
+@media (max-width:1100px){.vx .dk-unten-wrap{left:262px}}
+@media (max-width:900px){
+  .vx.dk{margin:-20px -14px calc(-96px - env(safe-area-inset-bottom));min-height:calc(100dvh - 58px)}
+  .vx .dk-leiste{top:calc(58px + env(safe-area-inset-top))}
+  .vx .dk-unten-wrap{left:12px;right:12px;bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:820px){.vx.dk{margin:-20px -14px calc(-96px - env(safe-area-inset-bottom))}}
+
+/* Papier */
+.dk-papier{--farbe:#c9a063;font-family:"BL Sans",Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;font-variant-numeric:normal}
+.dk-papier .dk-zahl,.dk-papier .dk-tot>div>span:last-child,.dk-papier .dk-total,.dk-papier .dk-held b{font-variant-numeric:tabular-nums}
+.dk-papier .dk-tot,.dk-papier .dk-zahlinfo,.dk-papier .dk-angabe-w .num{font-variant-numeric:normal}
+.dk-logo{display:block}
+.dk-logo img{height:11mm;max-height:none;width:auto;max-width:78mm}
+.dk-logo .dk-wort{font-family:"BL Serif","Playfair Display",Georgia,serif;font-weight:600;font-size:17pt;letter-spacing:.04em;text-transform:uppercase}
+.dk-logo i.dk-goldlinie{display:block;width:12mm;height:.6mm;border-radius:0;background:var(--farbe);margin-top:3.2mm}
+.dk-abs-z{width:84mm;line-height:1.62}
+.dk-emp-adr b{font-weight:600}
+.dk-h1,.vx .dk-h1{font-family:"BL Serif","Playfair Display",Georgia,serif;font-size:21pt;line-height:1.1;letter-spacing:-.01em;font-weight:600}
+.dk-h1 .nr,.vx .dk-h1 .nr{font-family:"BL Sans",Inter,Helvetica,Arial,sans-serif;font-size:13pt;font-weight:300;margin-left:1.6mm;letter-spacing:0}
+.dk-held small,.dk-angabe small,.dk-pos-kopf,.dk-papier .dk-kicker{letter-spacing:.12em}
+.dk-held b{font-weight:600;letter-spacing:-.01em}
+.dk-fliess{font-size:9.5pt;line-height:1.6}
+.dk-z.titel{border-bottom-color:var(--farbe)}
+.dk-z.titel .dk-feld,.dk-z.titel .dk-titel-in{font-family:"BL Serif","Playfair Display",Georgia,serif;font-size:10.5pt;font-weight:600}
+.dk-tot{width:76mm}
+.dk-tot .g.haupt{border-top-color:var(--farbe)}
+.dk-tot .inkl{color:var(--grau);font-size:7.8pt;padding-top:.6mm}
+.dk-unterschrift{margin-top:14mm}
+.dk-angenommen{margin-top:8mm;border-left:.6mm solid #2f7d5b;padding:1mm 0 1mm 3mm;font-size:8.5pt;color:#2f7d5b}
+.dk-stempel{border-radius:0;letter-spacing:.08em}
+.dk-pos-leer kbd{margin:0 2px}
+
+/* Zweites Blatt (QR-Zahlteil, Stil-Anhang): exakt das HTML des PDF */
+.dk-zusatz{margin-top:22px;position:relative;min-height:0}
+.dk-zusatz-qr{padding:0;height:296mm;overflow:hidden}
+.dk-zusatz-qr .bl-qr-seite{margin-left:0;break-before:auto}
+.dk-zusatz-marke{position:absolute;top:-17px;left:0;display:inline-flex;align-items:center;gap:5px;font:600 10.5px var(--f-ui);color:#8B867E;letter-spacing:.02em}
+.dk-papier.bl{line-height:1.5}
+
+/* Seitenleiste: kleine Ergänzungen */
+.dk-sprachen{display:flex;flex-wrap:wrap;gap:6px}
+.dk-version{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:12.5px;border-bottom:1px solid var(--linie-weich)}
+.dk-version:last-child{border-bottom:0}
+.dk-version span{flex:1;min-width:0}
+.dk-version small{display:block;color:var(--mut);font-size:11.5px}
+.dk-version button{font-weight:600;font-size:12px;text-decoration:underline;text-underline-offset:2px}
+.dk-stil{display:flex;flex-direction:column;gap:4px;font-size:12.5px;max-height:220px;overflow:auto;margin:4px 0 10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.dk-stil div{display:flex;justify-content:space-between;gap:8px}
+.dk-stil span{color:var(--mut)}
+.dk-stil b{font-weight:500;text-align:right}
+.dk-zeile-k{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+
+/* Tablet und Handy: grosse Tippflächen, Blätter skaliert statt seitlich überlaufen */
+@media (max-width:1100px){
+  .dk-z .dk-feld,.dk-einf-in{min-height:34px}
+  .dk-pop-p > button{min-height:40px}
+}
+@media (max-width:900px){
+  .dk-zusatz{zoom:.52;margin-top:30px}
+  .dk-zusatz-marke{font-size:20px;top:-32px}
+  .dk-papier .dk-logo img{height:34px}
+  .dk-logo i.dk-goldlinie{width:28px;height:2px;margin-top:8px}
+  .dk-h1{font-size:24px}
+  .dk-h1 .nr{font-size:15px}
+  .dk-z.titel .dk-feld,.dk-z.titel .dk-titel-in{font-size:17px}
+}
+@media (max-width:480px){.dk-zusatz{zoom:.43}}
+
+/* Bedienelemente in der UI-Schrift (das Admin setzt Überschriften sonst in Playfair) */
+.vx .dk-ab h3,.vx .dk-titel,.vx .panel-kopf h2,.vx .dk-schublade header b{font-family:var(--f-ui)}

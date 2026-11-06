@@ -1,0 +1,81 @@
+/* Schnellablauf «Neues Angebot / Neue Rechnung» (NeuBeleg.tsx) und schwebender «+»-Knopf (Handy) */
+.nb-hg{position:fixed;inset:0;z-index:80;background:rgba(16,16,16,.42);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:8vh 16px 16px;min-height:0;animation:nb-ein .2s ease both}
+.nb{width:min(560px,100%);max-height:84vh;overflow:auto;background:var(--a-card);border:1px solid var(--a-line);border-radius:2px;box-shadow:0 30px 80px -20px rgba(0,0,0,.45);animation:nb-hoch .3s cubic-bezier(.16,1,.3,1) both}
+.nb-kopf{display:flex;justify-content:space-between;gap:12px;padding:24px 24px 14px;border-bottom:1px solid var(--a-line)}
+.nb-kopf h2{font-size:26px;margin:0}
+.nb-kopf p{margin:6px 0 0;color:var(--a-muted);font-size:14px}
+.nb-zu{width:40px;height:40px;display:grid;place-items:center;flex:none;border-radius:2px}
+.nb-zu:hover{background:var(--a-bg)}
+.nb-zu svg,.nb svg{width:18px;height:18px}
+.nb-inhalt{padding:18px 24px 22px}
+.nb-suche{position:relative;display:block}
+.nb-suche > svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--a-muted)}
+.nb-suche .a-input{padding-left:46px;min-height:54px;font-size:16px}
+.nb-liste{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.nb-leer{padding:12px 4px;color:var(--a-muted);font-size:13.5px}
+.nb-treffer{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;padding:9px 12px;border:1px solid transparent;border-radius:2px;text-align:left}
+.nb-treffer.an{background:var(--a-bg);border-color:var(--a-line)}
+.nb-treffer:disabled{opacity:.6}
+.nb-avatar{width:38px;height:38px;flex:none;display:grid;place-items:center;background:var(--a-ink);color:#fff;font-family:var(--serif);font-weight:600;font-size:15px}
+.nb-avatar.gold{background:var(--a-gold)}
+.nb-t{flex:1;min-width:0}
+.nb-t b{display:block;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb-t small{display:block;color:var(--a-muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb-neu{border:1px dashed var(--a-line-2);margin-top:6px}
+.nb-neu.an{border-style:solid;border-color:var(--a-gold);background:var(--a-gold-soft)}
+.nb-form{display:flex;flex-direction:column;gap:14px}
+.nb-feld{display:flex;flex-direction:column;gap:6px}
+.nb-feld .a-kicker{margin:0}
+.nb-feld .a-input{min-height:50px}
+.nb-zurueck{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--a-muted)}
+.nb-zurueck:hover{color:var(--a-ink)}
+.nb-klein{margin:0;font-size:12.5px;color:var(--a-muted)}
+.nb-los{min-height:52px;width:100%}
+.nb-los:disabled{opacity:.45;cursor:default}
+.nb-spinner{width:15px;height:15px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:nb-dreh .7s linear infinite;display:inline-block;flex:none}
+.nb-spinner.hell{color:#fff}
+.a-knopf.klein{min-height:38px;padding:0 14px;font-size:11.5px}
+@keyframes nb-dreh{to{transform:rotate(360deg)}}
+@keyframes nb-ein{from{opacity:0}}
+@keyframes nb-hoch{from{opacity:0;transform:translateY(14px)}}
+@media (max-width:640px){
+  .nb-hg{align-items:flex-end;padding:0}
+  .nb{width:100%;max-height:92dvh;border-radius:14px 14px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+  .nb-kopf h2{font-size:22px}
+}
+
+/* Seitenleiste: Schnellknopf oben */
+.a-side-neu{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 6px 18px;min-height:42px;border:1px solid rgba(201,160,99,.55);color:#f3e6cf;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:2px;transition:background .15s,border-color .15s}
+.a-side-neu:hover{background:rgba(201,160,99,.14);border-color:#c9a063}
+.a-side-neu svg{width:16px;height:16px}
+
+/* Kennzahlen-Leiste über den Verkaufslisten (VoxCRM verkauf.css .vk-kpis) */
+.a-vk-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px}
+.a-vk-kpis > div{padding:16px 20px;border-right:1px solid var(--a-line);min-width:0}
+.a-vk-kpis > div:last-child{border-right:0}
+.a-vk-kpis small{display:block;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--a-muted)}
+.a-vk-kpis b{display:block;font-family:var(--sans);font-variant-numeric:tabular-nums;font-size:24px;font-weight:600;letter-spacing:-.01em;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-vk-kpis span{display:block;font-size:12.5px;color:var(--a-muted);margin-top:2px}
+.a-vk-kpis .warn b{color:var(--a-bad)}
+@media (max-width:900px){.a-vk-kpis{grid-template-columns:1fr 1fr}.a-vk-kpis > div{border-bottom:1px solid var(--a-line);padding:12px 14px}.a-vk-kpis > div:nth-child(2n){border-right:0}.a-vk-kpis > div:nth-last-child(-n+2){border-bottom:0}.a-vk-kpis b{font-size:21px}}
+.a-filterleiste .a-chips{flex:0 1 auto}
+
+/* Schwebender «+» (nur Handy/Tablet hoch) */
+.nb-fab{display:none}
+@media (max-width:900px){
+  .nb-fab{display:block;position:fixed;right:16px;bottom:calc(82px + env(safe-area-inset-bottom));z-index:40}
+  .nb-fab-k{width:58px;height:58px;border-radius:50%;background:var(--a-ink);color:#fff;display:grid;place-items:center;box-shadow:0 12px 28px -8px rgba(0,0,0,.45);border:2px solid #c9a063;transition:transform .2s}
+  .nb-fab-k svg{width:26px;height:26px;transition:transform .2s}
+  .nb-fab-k.offen svg{transform:rotate(45deg)}
+  .nb-fab-menue{position:absolute;right:0;bottom:70px;min-width:220px;background:var(--a-card);border:1px solid var(--a-line);box-shadow:0 18px 40px -12px rgba(0,0,0,.3);padding:6px;display:flex;flex-direction:column;animation:nb-hoch .2s ease both}
+  .nb-fab-menue button{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 14px;font-size:15px;font-weight:500;text-align:left}
+  .nb-fab-menue button:hover{background:var(--a-bg)}
+  .nb-fab-menue svg{width:20px;height:20px;color:var(--a-gold)}
+  /* Im A4-Editor sitzt dort die Aktionsleiste */
+  body:has(.dk) .nb-fab{display:none}
+}
+
+/* Kundenakte: Knöpfe rechts im Kopf */
+.a-akte-kopf{flex-wrap:wrap}
+.a-akte-neu{margin-left:auto}
+@media (max-width:640px){.a-akte-neu{margin-left:0;width:100%}.a-akte-neu .a-knopf{flex:1}}

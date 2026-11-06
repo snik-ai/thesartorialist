@@ -20,6 +20,7 @@ export const NAV: { titel: string | null; eintraege: Eintrag[] }[] = [
       { href: '/admin/angebote/', label: 'Angebote', icon: 'dokument' },
       { href: '/admin/auftraege/', label: 'Aufträge', icon: 'auftrag', zahl: 'tasks' },
       { href: '/admin/rechnungen/', label: 'Rechnungen', icon: 'rechnung', zahl: 'ueberfaellig', warn: true },
+      { href: '/admin/produkte/', label: 'Produkte', icon: 'schere' },
       { href: '/admin/massblaetter/', label: 'Massblätter', icon: 'mass' },
     ],
   },

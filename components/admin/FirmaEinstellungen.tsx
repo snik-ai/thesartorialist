@@ -118,6 +118,23 @@ export function FirmaForm({ firma }: { firma: Firma }) {
             Läuft alle 5 Minuten im Server, nur wenn der Mailversand (Resend) eingerichtet ist. Die Mail kommt in der Sprache des Kunden.
           </p>
         </div>
+        <div className="a-einst-gruppe breit">
+          <span className="a-kicker">Mahnwesen</span>
+          <button type="button" className="a-toggle" aria-pressed={f.mahnVorschlagAktiv} onClick={() => s('mahnVorschlagAktiv')(!f.mahnVorschlagAktiv)}>
+            <i /> Mahnung automatisch vorschlagen (Liste «Zu mahnen») – versendet wird nur auf Klick
+          </button>
+          <div style={{ marginTop: 14, display: 'grid', gap: 4 }}>
+            <ZahlChips label="Zahlungserinnerung ab" wert={f.mahnTage1} optionen={[5, 7, 10]} onChange={s('mahnTage1')} einheit="Tage nach Fälligkeit" />
+            <ZahlChips label="1. Mahnung ab" wert={f.mahnTage2} optionen={[14, 21, 30]} onChange={s('mahnTage2')} einheit="Tage" />
+            <ZahlChips label="2. Mahnung ab" wert={f.mahnTage3} optionen={[30, 35, 45]} onChange={s('mahnTage3')} einheit="Tage" />
+            <ZahlChips label="Zahlungsfrist je Mahnung" wert={f.mahnFristTage} optionen={[7, 10, 14]} onChange={s('mahnFristTage')} einheit="Tage" />
+            <ZahlChips label="Mahngebühr 1. Mahnung" wert={f.mahnGebuehr2Rp / 100} optionen={[0, 20, 30]} onChange={(n) => s('mahnGebuehr2Rp')(Math.round(n * 100))} einheit="CHF" />
+            <ZahlChips label="Mahngebühr 2. Mahnung" wert={f.mahnGebuehr3Rp / 100} optionen={[0, 40, 50]} onChange={(n) => s('mahnGebuehr3Rp')(Math.round(n * 100))} einheit="CHF" />
+          </div>
+          <p className="a-sub" style={{ fontSize: 12.5 }}>
+            Die Zahlungserinnerung ist gebührenfrei. Jede Stufe kommt als A4-Brief mit QR-Zahlteil, per E-Mail in der Sprache des Kunden.
+          </p>
+        </div>
         <div className="a-einst-fuss">
           <MeldungZeile m={meldung} />
           <button type="button" className="a-knopf" disabled={laedt} onClick={async () => {

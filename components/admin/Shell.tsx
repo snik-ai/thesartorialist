@@ -2,8 +2,9 @@
 // Rahmen des Backends: Seitenleiste mit Monogramm (Desktop), Kopf- und Tab-Leiste (Mobil), Service-Worker, Abmelden.
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from './Icon';
+import { NeuBelegDialog, NeuBelegFab } from './NeuBeleg';
 
 import { NAV, type Eintrag, type Zaehler } from './navigation';
 
@@ -20,6 +21,7 @@ export default function Shell({ email, zaehler, children }: { email: string; zae
   const pfad = usePathname() ?? '';
   const router = useRouter();
   const aktiv = (href: string) => (pfad.startsWith(href) ? 'page' : undefined);
+  const [neu, setNeu] = useState(false);
 
   useEffect(() => {
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/admin/sw.js', { scope: '/admin/' }).catch(() => {});
@@ -47,6 +49,10 @@ export default function Shell({ email, zaehler, children }: { email: string; zae
           <img src="/images/marke/wortmarke-weiss.png" alt="The Sartorialist Zürich" className="a-brand-wort" width={168} height={25} />
           <span>Atelier · Backend</span>
         </Link>
+        <button type="button" className="a-side-neu" onClick={() => setNeu(true)}>
+          <Icon name="plus" />
+          Neues Angebot
+        </button>
         <nav className="a-nav" aria-label="Backend">
           {NAV.map((g, i) => (
             <div key={i} className="a-nav-gruppe">
@@ -84,6 +90,8 @@ export default function Shell({ email, zaehler, children }: { email: string; zae
       </header>
 
       <div className="a-main">{children}</div>
+      <NeuBelegFab />
+      <NeuBelegDialog art="angebot" offen={neu} onZu={() => setNeu(false)} />
 
       <nav className="a-tabbar" aria-label="Backend mobil">
         {TABS.map((n) => (

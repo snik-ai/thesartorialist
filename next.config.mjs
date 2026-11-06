@@ -63,7 +63,7 @@ const nextConfig = {
   experimental: { globalNotFound: true },
   // PDF-Belege (Angebot, Rechnung mit QR-Zahlteil, Massblatt): PDFKit liest seine Schriftmetriken zur Laufzeit
   // aus node_modules — nicht bündeln, Datendateien in den Standalone-Build aufnehmen.
-  serverExternalPackages: ['pdfkit', 'swissqrbill', 'fontkit'],
+  serverExternalPackages: ['pdfkit', 'swissqrbill', 'fontkit', 'puppeteer-core'],
   outputFileTracingIncludes: {
     '/api/admin/**': ['./node_modules/pdfkit/js/**'],
     '/api/angebot/**': ['./node_modules/pdfkit/js/**'],

@@ -1,0 +1,74 @@
+/* Kundenseite «Offerte annehmen» – nach prototype/src/overlays/61-kundenseiten.html (Präfix k-) */
+.k-seite{min-height:100vh;background:var(--fl-zart);color:var(--ink);padding:40px 0 80px}
+.k-wrap{max-width:860px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+.k-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 2px 8px rgba(20,18,15,.04)}
+.k-kopf{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.k-logo{max-height:40px;max-width:180px;object-fit:contain}
+.k-h1{font-size:clamp(26px,3.6vw,36px);letter-spacing:-1px;line-height:1.1;margin:0 0 6px;text-wrap:balance}
+.k-sub{color:var(--mut);margin:0 0 18px}
+.k-text p{margin:0 0 10px;line-height:1.55}
+.k-schluss{margin-top:18px;color:var(--mut)}
+.k-lbl{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);font-weight:600;margin:24px 0 10px}
+.k-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.k-opt{border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;text-align:left;background:var(--panel);transition:border-color .2s,box-shadow .2s;min-width:0}
+.k-opt:disabled{cursor:default}
+.k-opt b{display:block;font-size:15px}
+.k-opt b .k-empfohlen{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--kc);color:#fff;font-size:11px;font-weight:600;vertical-align:2px;letter-spacing:.02em}
+.k-opt span{display:block;font-size:12.5px;color:var(--mut)}
+.k-opt .p{display:block;margin-top:8px;font:600 16px var(--f-ui);font-variant-numeric:tabular-nums;color:var(--ink)}
+.k-opt.on{border-color:var(--kc,var(--ink));box-shadow:inset 0 0 0 1px var(--kc,var(--ink))}
+.k-inp{width:100%;height:54px;border:1.5px solid var(--line);border-radius:14px;padding:0 16px;font-size:16px;background:var(--panel);color:var(--ink)}
+.k-inp:focus{outline:none;border-color:var(--kc,var(--ink));box-shadow:0 0 0 4px rgba(11,11,12,.06)}
+.k-ta{height:auto;padding:14px 16px;resize:vertical;font:inherit;font-size:15px}
+.k-btn{height:54px;border-radius:15px;padding:0 22px;font-weight:600;font-size:15px;background:var(--kc,var(--ink));color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:14px;text-decoration:none}
+.k-btn:disabled{opacity:.4;cursor:not-allowed}
+.k-btn.line{background:var(--panel);color:var(--ink);border:1.5px solid var(--line)}
+.k-link{display:block;margin:14px auto 0;color:var(--mut);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.k-pos{width:100%;border-collapse:collapse;font-size:14px}
+.k-pos td{padding:10px 0;border-bottom:1px solid var(--linie-weich);font-variant-numeric:tabular-nums;white-space:normal;vertical-align:top;background:none}
+.k-pos td:last-child{text-align:right;white-space:nowrap;padding-left:12px}
+.k-pos tr.k-titel td{font-weight:700;padding-top:16px;border-bottom-color:var(--line)}
+.k-pos tr.k-textblock td{color:var(--mut);font-size:13px}
+.k-pos tr.k-textblock b{display:block;color:var(--ink);font-size:13.5px}
+.k-pos tr.k-sum td{color:var(--mut);border-bottom:0;padding:5px 0}
+.k-pos tr.aus .k-pos-t{color:var(--mut);text-decoration:line-through;text-decoration-color:rgba(0,0,0,.25)}
+.k-pos-t{display:inline}
+.k-pos-b{display:block;font-size:12.5px;color:var(--mut);margin-top:2px}
+.k-mut{color:var(--mut)}
+.k-opt-tg{display:inline-flex;align-items:center;gap:6px;margin-right:8px;vertical-align:-5px}
+.k-opt-tg.on .tg{background:var(--kc,var(--acc))}
+.k-opt-tg.on .tg:after{transform:translateX(14px)}
+.k-opt-tg:disabled{cursor:default}
+.k-opt-l{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:600}
+.k-tot{display:flex;justify-content:space-between;font-weight:700;font-size:20px;padding-top:14px;font-variant-numeric:tabular-nums;border-top:2px solid var(--ink);margin-top:6px}
+.k-tot-klein{max-width:320px;margin:22px auto 0;font-size:18px}
+.k-note{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--mut);margin-top:18px;flex-wrap:wrap}
+.k-note a,.k-note span{display:inline-flex;align-items:center;gap:6px;color:inherit}
+.k-note a{color:var(--ink);font-weight:600;text-decoration:none}
+.k-hinweis{display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:14px;padding:12px 14px;font-size:13.5px;margin-top:16px}
+.k-hinweis.bad{background:var(--bad-soft);color:var(--bad-ink)}
+.k-hinweis svg{flex:none;margin-top:1px}
+.k-done{text-align:center;padding:40px 22px}
+.k-done .ring{width:96px;height:96px;border-radius:50%;background:var(--ok);display:grid;place-items:center;margin:0 auto 18px;animation:kPop .6s cubic-bezier(.2,1.6,.4,1)}
+.k-done .ring svg{width:46px;height:46px;stroke:#fff;stroke-width:3;fill:none;stroke-dasharray:40;stroke-dashoffset:40;animation:kDraw .5s .35s forwards}
+.k-done .k-btn{max-width:320px}
+@keyframes kPop{from{transform:scale(.3);opacity:0}}
+@keyframes kDraw{to{stroke-dashoffset:0}}
+.k-tgl{display:flex;gap:12px;align-items:flex-start;text-align:left;margin-top:16px;font-size:13.5px;color:var(--mut);width:100%;line-height:1.45}
+.k-tgl .tg{margin-top:1px}
+.k-tgl.on{color:var(--ink)}
+.k-tgl.on .tg{background:var(--kc,var(--acc))}
+.k-tgl.on .tg:after{transform:translateX(14px)}
+.k-powered{text-align:center;color:var(--mut);font-size:12px;margin-top:18px}
+.k-fehlerseite{text-align:center;padding:50px 24px}
+.k-fehlerseite .k-h1{font-size:28px}
+@media (max-width:760px){.k-card{padding:20px}.k-seite{padding:16px 0 60px}.k-tot{font-size:18px}}
+.k-pos tr.k-titel td,.k-pos tr.k-textblock td{text-align:left;padding-left:0}
+.k-opt{display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start}
+/* Beschreibung mit Absätzen und Punkten (gleiche Struktur wie PDF und Editor) */
+.k-besch p,.k-besch ul{margin:0;padding:0}
+.k-besch > * + *{margin-top:6px}
+.k-besch ul{list-style:none}
+.k-besch li{position:relative;padding-left:14px}
+.k-besch li + li{margin-top:2px}
+.k-besch li::before{content:"";position:absolute;left:2px;top:calc(.75em - 2px);width:5px;height:5px;border-radius:50%;background:var(--farbe,currentColor)}

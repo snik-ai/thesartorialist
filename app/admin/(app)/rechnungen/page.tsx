@@ -8,6 +8,11 @@ import { RECHNUNG_ART, RECHNUNG_STATUS, rechnungAnzeigeStatus } from '@/lib/crm/
 import { chf, chfKurz } from '@/lib/crm/geld';
 import { faelligText, tagDatum } from '@/lib/zeit';
 import type { RechnungStatus } from '@/lib/db/schema';
+import { zuMahnen } from '@/lib/crm/mahnung';
+import { firma } from '@/lib/crm/firma';
+import { mailBereit } from '@/lib/mail';
+import { MahnKnopf } from '@/components/admin/MahnPanel';
+import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
 
 export const metadata: Metadata = { title: 'Rechnungen' };
 export const dynamic = 'force-dynamic';
@@ -15,6 +20,7 @@ export const dynamic = 'force-dynamic';
 const FILTER: Record<string, { label: string; status: RechnungStatus[] | null; ueber?: boolean }> = {
   offen: { label: 'Offen', status: ['offen', 'teilbezahlt'] },
   ueberfaellig: { label: 'Überfällig', status: ['offen', 'teilbezahlt'], ueber: true },
+  mahnen: { label: 'Zu mahnen', status: ['offen', 'teilbezahlt'], ueber: true },
   bezahlt: { label: 'Bezahlt', status: ['bezahlt'] },
   entwurf: { label: 'Entwürfe', status: ['entwurf'] },
   alle: { label: 'Alle', status: null },
@@ -28,7 +34,7 @@ export default async function RechnungenPage({ searchParams }: { searchParams: P
   const bed: SQL[] = [];
   if (FILTER[f].status) bed.push(inArray(R.status, FILTER[f].status!));
   if (FILTER[f].ueber) bed.push(lt(R.faelligAm, sql`now() - interval '1 day'`));
-  const [reihen, [z]] = await Promise.all([
+  const [reihen, [z], mahnListe, f0, mailOk] = await Promise.all([
     db()
       .select({ r: R, name: K.name, email: K.email, brandDomain: K.brandDomain })
       .from(R)
@@ -44,8 +50,12 @@ export default async function RechnungenPage({ searchParams }: { searchParams: P
       count(*) filter (where status = 'bezahlt')::int as bezahlt,
       count(*) filter (where status = 'entwurf')::int as entwurf,
       count(*)::int as alle from rechnung`),
+    zuMahnen(),
+    firma(),
+    Promise.resolve(mailBereit()),
   ]);
-  const zahl: Record<string, number> = { offen: z.offen, ueberfaellig: z.ueber, bezahlt: z.bezahlt, entwurf: z.entwurf, alle: z.alle };
+  const faelligMahnen = mahnListe.filter((x) => x.faellig);
+  const zahl: Record<string, number> = { offen: z.offen, ueberfaellig: z.ueber, mahnen: faelligMahnen.length, bezahlt: z.bezahlt, entwurf: z.entwurf, alle: z.alle };
 
   return (
     <>
@@ -53,28 +63,86 @@ export default async function RechnungenPage({ searchParams }: { searchParams: P
         <div>
           <span className="a-kicker">Atelier</span>
           <h1>Rechnungen</h1>
-          <p className="a-sub">
-            Offen <span className="zahl">{chfKurz(z.offen_rp)}</span>
-            {z.ueber > 0 && (
-              <>
-                {' '}
-                · davon überfällig <span className="zahl">{chfKurz(z.ueber_rp)}</span>
-              </>
-            )}{' '}
-            · Swiss QR-Rechnung, Anzahlung und Schlussrechnung aus dem Auftrag
-          </p>
+          <p className="a-sub">Swiss QR-Rechnung als A4-Blatt – aus dem Auftrag (Raten, Schlussrechnung) oder direkt für einen Verkauf im Store.</p>
+        </div>
+        <div className="a-knopfreihe">
+          <NeuBelegKnopf art="rechnung" label="Neue Rechnung" />
+        </div>
+      </div>
+
+      <div className="a-vk-kpis a-karte">
+        <div>
+          <small>Offen</small>
+          <b className="zahl">{chfKurz(z.offen_rp)}</b>
+          <span className="zahl">{z.offen} Rechnungen</span>
+        </div>
+        <div className={z.ueber ? 'warn' : ''}>
+          <small>Überfällig</small>
+          <b className="zahl">{chfKurz(z.ueber_rp)}</b>
+          <span className="zahl">{z.ueber} Rechnungen</span>
+        </div>
+        <div className={faelligMahnen.length ? 'warn' : ''}>
+          <small>Zu mahnen</small>
+          <b className="zahl">{faelligMahnen.length}</b>
+          <span>Vorschlag fällig</span>
+        </div>
+        <div>
+          <small>Entwürfe</small>
+          <b className="zahl">{z.entwurf}</b>
+          <span>noch nicht versendet</span>
         </div>
       </div>
 
       <div className="a-chips" style={{ marginBottom: 16 }} role="navigation" aria-label="Filter">
         {Object.entries(FILTER).map(([key, x]) => (
-          <Link key={key} href={key === 'offen' ? '/admin/rechnungen/' : `/admin/rechnungen/?f=${key}`} className={`a-chip${key === 'ueberfaellig' && z.ueber ? ' warn' : ''}`} aria-current={f === key ? 'page' : undefined}>
+          <Link key={key} href={key === 'offen' ? '/admin/rechnungen/' : `/admin/rechnungen/?f=${key}`} className={`a-chip${(key === 'ueberfaellig' && z.ueber) || (key === 'mahnen' && faelligMahnen.length && f !== 'mahnen') ? ' warn' : ''}`} aria-current={f === key ? 'page' : undefined}>
             {x.label}
             <span className="zahl">{zahl[key]}</span>
           </Link>
         ))}
       </div>
 
+      {f === 'mahnen' ? (
+        <div className="a-karte">
+          {mahnListe.length === 0 ? (
+            <div className="a-leer">
+              <Icon name="check" />
+              <h3>Nichts zu mahnen</h3>
+              <p>Überfällige Rechnungen erscheinen hier mit der nächsten Mahnstufe{f0.mahnVorschlagAktiv ? ` (vorgeschlagen ab ${f0.mahnTage1} Tagen nach Fälligkeit)` : ''}.</p>
+            </div>
+          ) : (
+            mahnListe.map(({ r, name, email, brandDomain, vorschlag, faellig }) => (
+              <div key={r.id} className="zm-zeile">
+                <Link href={`/admin/rechnungen/${r.id}/`} className="zm-kunde">
+                  <Avatar name={name || email || '?'} brandDomain={brandDomain} />
+                  <span style={{ minWidth: 0 }}>
+                    <b>{name || email}</b>
+                    <small className="zahl">
+                      {r.nummer} · {RECHNUNG_ART[r.art]} · fällig {tagDatum(r.faelligAm)}
+                    </small>
+                  </span>
+                </Link>
+                <span className="zm-stand">
+                  <span className="zahl">{chf(r.betragRp + r.mahngebuehrenRp - r.bezahltRp)} offen</span>
+                  <span>
+                    {r.mahnstufe > 0 && <span className="a-pill re-ueberfaellig">{['', 'Erinnerung', '1. Mahnung', '2. Mahnung'][r.mahnstufe]} verschickt</span>}{' '}
+                    <span className="a-sub" style={{ margin: 0 }}>{vorschlag ? `${vorschlag.tageUeberfaellig} Tage überfällig` : faelligText(r.faelligAm!)}</span>
+                  </span>
+                </span>
+                {vorschlag ? (
+                  faellig ? (
+                    <MahnKnopf rechnungId={r.id} stufe={vorschlag.stufe} label={['', 'Erinnerung', '1. Mahnung', '2. Mahnung'][vorschlag.stufe]} mail={Boolean(email) && mailOk} />
+                  ) : (
+                    <span className="a-sub" style={{ margin: 0 }}>{vorschlag.bezeichnung} ab {tagDatum(vorschlag.ab)}</span>
+                  )
+                ) : (
+                  <span className="a-sub" style={{ margin: 0 }}>2. Mahnung verschickt – Betreibung prüfen</span>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      ) : (
       <div className="a-karte">
         {reihen.length === 0 ? (
           <div className="a-leer">
@@ -108,6 +176,7 @@ export default async function RechnungenPage({ searchParams }: { searchParams: P
                   </span>
                   <span data-label="Status">
                     <span className={`a-pill re-${st}`}>{RECHNUNG_STATUS[st]}</span>
+                    {r.mahnstufe > 0 && r.status !== 'bezahlt' && <span className="a-pill re-ueberfaellig" style={{ marginLeft: 4 }}>{['', 'Erinnerung', '1. Mahnung', '2. Mahnung'][r.mahnstufe]}</span>}
                   </span>
                   <span className="r zahl" data-label="Betrag">
                     {chf(r.betragRp)}
@@ -122,6 +191,7 @@ export default async function RechnungenPage({ searchParams }: { searchParams: P
           </div>
         )}
       </div>
+      )}
     </>
   );
 }

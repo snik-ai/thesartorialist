@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation';
 import { and, desc, eq, gte, isNotNull, sql } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import Icon from '@/components/admin/Icon';
+import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
 import KontaktPanel from '@/components/admin/KontaktPanel';
 import KontaktSchnell, { AngebotNeuKnopf } from '@/components/admin/KontaktSchnell';
 import LeadStatus from '@/components/admin/LeadStatus';
@@ -17,6 +18,7 @@ import { telAnzeige } from '@/lib/crm/telefon';
 import { mailBereit } from '@/lib/mail';
 import { faelligText, tagDatum, terminKurz, terminLang } from '@/lib/zeit';
 import { UUID } from '@/lib/admin/zugang';
+import { mahnungenVon } from '@/lib/crm/mahnung';
 
 export const metadata: Metadata = { title: 'Kundenakte' };
 export const dynamic = 'force-dynamic';
@@ -54,7 +56,8 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
   ]);
 
   const kanal = { id: k.id, name: k.name, telefon: k.telefon, email: k.email, whatsappOk: Boolean(k.einwilligungWhatsapp), smsOk: Boolean(k.einwilligungSms), abgemeldet: Boolean(k.abgemeldet) };
-  const offenRp = rechnungen.filter((r) => r.status === 'offen' || r.status === 'teilbezahlt').reduce((a, r) => a + r.betragRp - r.bezahltRp, 0);
+  const offenRp = rechnungen.filter((r) => r.status === 'offen' || r.status === 'teilbezahlt').reduce((a, r) => a + r.betragRp + r.mahngebuehrenRp - r.bezahltRp, 0);
+  const mahnungen = await mahnungenVon(rechnungen.map((r) => r.id));
   const laufend = auftraege.filter((x) => !['abgeschlossen', 'storniert'].includes(x.a.status));
   const angeboteOffen = angebote.filter((a) => a.status === 'gesendet' || a.status === 'entwurf');
   const offeneAnfragen = termine.filter((t) => ['angefragt', 'vorgeschlagen'].includes(t.status) && t.zweck === 'beratung');
@@ -82,6 +85,10 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
               {k.abgemeldet ? ' · abgemeldet' : ''}
             </span>
           </p>
+        </div>
+        <div className="a-knopfreihe a-akte-neu">
+          <NeuBelegKnopf art="angebot" kontaktId={k.id} />
+          <NeuBelegKnopf art="rechnung" kontaktId={k.id} linie />
         </div>
       </div>
 
@@ -183,7 +190,7 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
           <section className="a-karte">
             <div className="a-karte-kopf">
               <h2>Angebote</h2>
-              <AngebotNeuKnopf kontaktId={k.id} klasse="a-knopf leise klein" text="Neu" />
+              <NeuBelegKnopf art="angebot" kontaktId={k.id} klein linie label="Neu" />
             </div>
             {angebote.length === 0 ? (
               <div className="a-leer klein"><Icon name="dokument" /><p>Noch kein Angebot.</p></div>
@@ -278,10 +285,25 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
                       <span className="a-zeile-rechts">
                         <b className="zahl">{chf(r.betragRp)}</b>
                         <span className={`a-pill re-${st}`}>{RECHNUNG_STATUS[st]}</span>
+                        {r.mahnstufe > 0 && r.status !== 'bezahlt' && <span className="a-pill re-ueberfaellig">{['', 'Erinnerung', '1. Mahnung', '2. Mahnung'][r.mahnstufe]}</span>}
                       </span>
                     </Link>
                   );
                 })}
+              </div>
+            )}
+            {mahnungen.length > 0 && (
+              <div className="a-karte-inhalt">
+                <span className="a-kicker">Mahnungen</span>
+                {mahnungen.map((m) => (
+                  <a key={m.id} href={`/api/admin/mahnungen/${m.id}/pdf/`} target="_blank" rel="noopener" className="a-gewaehlt-zeile">
+                    <Icon name="pdf" width={16} height={16} />
+                    <span>
+                      <strong>{m.bezeichnung}</strong> <span className="zahl">{m.nummer}</span> · Rechnung {rechnungen.find((r) => r.id === m.rechnungId)?.nummer} · {tagDatum(new Date(m.datum))} · <span className="zahl">{chf(m.offenRp)}</span>
+                      {m.versendetAm ? ' · per E-Mail' : ''}
+                    </span>
+                  </a>
+                ))}
               </div>
             )}
           </section>

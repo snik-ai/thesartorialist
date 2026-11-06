@@ -5,7 +5,10 @@ import { and, asc, desc, eq, gte, isNotNull } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import Icon from '@/components/admin/Icon';
 import { Avatar, StilAuswahl, Verlauf } from '@/components/admin/Bausteine';
-import { AuftragMassblatt, AuftragNotiz, AuftragPlanung, AuftragRechnungen, AuftragSchritte, AuftragTasks } from '@/components/admin/Auftrag';
+import { AuftragMassblatt, AuftragNotiz, AuftragPlanung, AuftragSchritte, AuftragTasks } from '@/components/admin/Auftrag';
+import Zahlungsplan, { type RateInfo } from '@/components/admin/Zahlungsplan';
+import { rateStatus } from '@/lib/crm/zahlungsplan';
+import { mahnungenVon } from '@/lib/crm/mahnung';
 import { AUFTRAG_LABEL, RECHNUNG_ART, RECHNUNG_STATUS, rechnungAnzeigeStatus } from '@/lib/crm/belege';
 import { chf, positionBetrag } from '@/lib/crm/geld';
 import { firma } from '@/lib/crm/firma';
@@ -43,7 +46,13 @@ export default async function AuftragSeite({ params, searchParams }: { params: P
   for (const t of tasks) if (!t.erledigtAm && t.schritt) offeneTasks[t.schritt] = (offeneTasks[t.schritt] ?? 0) + 1;
   const aktiv = rechnungen.filter((r) => r.status !== 'storniert');
   const bezahlt = aktiv.reduce((a, r) => a + r.bezahltRp, 0);
-  const offen = aktiv.filter((r) => r.status === 'offen' || r.status === 'teilbezahlt').reduce((a, r) => a + r.betragRp - r.bezahltRp, 0);
+  const offen = aktiv.filter((r) => r.status === 'offen' || r.status === 'teilbezahlt').reduce((a, r) => a + r.betragRp + r.mahngebuehrenRp - r.bezahltRp, 0);
+  const mahnungen = await mahnungenVon(rechnungen.map((r) => r.id));
+  const ratenInfo: Record<string, RateInfo> = {};
+  for (const rt of au.zahlungsplan?.raten ?? []) {
+    const r = rt.rechnungId ? rechnungen.find((x) => x.id === rt.rechnungId && x.status !== 'storniert') : undefined;
+    if (r) ratenInfo[rt.id] = { rechnungId: r.id, nummer: r.nummer, status: rateStatus(r), betragRp: r.betragRp, bezahltRp: r.bezahltRp, mahnstufe: r.mahnstufe, gesperrt: r.status !== 'entwurf' };
+  }
 
   return (
     <>
@@ -87,6 +96,8 @@ export default async function AuftragSeite({ params, searchParams }: { params: P
             admins={adminListe}
             tasks={tasks.map((t) => ({ id: t.id, titel: t.titel, schritt: t.schritt, faelligAm: isoVon(t.faelligAm), erledigt: Boolean(t.erledigtAm), zustaendigId: t.zustaendigId, spaet: Boolean(t.faelligAm && !t.erledigtAm && tageBis(t.faelligAm) < 0) }))}
           />
+
+          <Zahlungsplan auftragId={au.id} totalRp={au.totalRp} plan={au.zahlungsplan} raten={ratenInfo} anzahlungProzent={f.anzahlungProzent} bezahltRp={bezahlt} storniert={au.status === 'storniert'} />
 
           <section className="a-karte">
             <div className="a-karte-kopf">
@@ -175,15 +186,22 @@ export default async function AuftragSeite({ params, searchParams }: { params: P
               </div>
             )}
             <div className="a-karte-inhalt">
-              {offen > 0 && <div className="a-hinweis" style={{ marginBottom: 12 }}>Offen: {chf(offen)}</div>}
-              <AuftragRechnungen
-                id={au.id}
-                totalRp={au.totalRp}
-                verrechnetRp={aktiv.filter((r) => r.art !== 'anzahlung').reduce((a, r) => a + r.totalRp, 0)}
-                hatAnzahlung={aktiv.some((r) => r.art === 'anzahlung')}
-                hatSchluss={aktiv.some((r) => r.art === 'schluss' || r.art === 'rechnung')}
-                anzahlungProzent={f.anzahlungProzent}
-              />
+              {offen > 0 && <div className="a-hinweis" style={{ marginBottom: mahnungen.length ? 12 : 0 }}>Offen: {chf(offen)}</div>}
+              {rechnungen.length === 0 && <p className="a-sub" style={{ margin: 0 }}>Rechnungen entstehen aus dem Zahlungsplan.</p>}
+              {mahnungen.length > 0 && (
+                <div>
+                  <span className="a-kicker">Mahnungen</span>
+                  {mahnungen.map((m) => (
+                    <a key={m.id} href={`/api/admin/mahnungen/${m.id}/pdf/`} target="_blank" rel="noopener" className="a-gewaehlt-zeile">
+                      <Icon name="pdf" width={16} height={16} />
+                      <span>
+                        <strong>{m.bezeichnung}</strong> <span className="zahl">{m.nummer}</span> · {rechnungen.find((r) => r.id === m.rechnungId)?.nummer} · {tagDatum(new Date(m.datum))}
+                        {m.versendetAm ? ' · gesendet' : ''}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
