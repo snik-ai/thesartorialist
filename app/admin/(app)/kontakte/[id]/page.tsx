@@ -17,6 +17,7 @@ import { telAnzeige } from '@/lib/crm/telefon';
 import { mailBereit } from '@/lib/mail';
 import { faelligText, tagDatum, terminKurz, terminLang } from '@/lib/zeit';
 import { UUID } from '@/lib/admin/zugang';
+import { mahnungenVon } from '@/lib/crm/mahnung';
 
 export const metadata: Metadata = { title: 'Kundenakte' };
 export const dynamic = 'force-dynamic';
@@ -54,7 +55,8 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
   ]);
 
   const kanal = { id: k.id, name: k.name, telefon: k.telefon, email: k.email, whatsappOk: Boolean(k.einwilligungWhatsapp), smsOk: Boolean(k.einwilligungSms), abgemeldet: Boolean(k.abgemeldet) };
-  const offenRp = rechnungen.filter((r) => r.status === 'offen' || r.status === 'teilbezahlt').reduce((a, r) => a + r.betragRp - r.bezahltRp, 0);
+  const offenRp = rechnungen.filter((r) => r.status === 'offen' || r.status === 'teilbezahlt').reduce((a, r) => a + r.betragRp + r.mahngebuehrenRp - r.bezahltRp, 0);
+  const mahnungen = await mahnungenVon(rechnungen.map((r) => r.id));
   const laufend = auftraege.filter((x) => !['abgeschlossen', 'storniert'].includes(x.a.status));
   const angeboteOffen = angebote.filter((a) => a.status === 'gesendet' || a.status === 'entwurf');
   const offeneAnfragen = termine.filter((t) => ['angefragt', 'vorgeschlagen'].includes(t.status) && t.zweck === 'beratung');
@@ -278,10 +280,25 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
                       <span className="a-zeile-rechts">
                         <b className="zahl">{chf(r.betragRp)}</b>
                         <span className={`a-pill re-${st}`}>{RECHNUNG_STATUS[st]}</span>
+                        {r.mahnstufe > 0 && r.status !== 'bezahlt' && <span className="a-pill re-ueberfaellig">{['', 'Erinnerung', '1. Mahnung', '2. Mahnung'][r.mahnstufe]}</span>}
                       </span>
                     </Link>
                   );
                 })}
+              </div>
+            )}
+            {mahnungen.length > 0 && (
+              <div className="a-karte-inhalt">
+                <span className="a-kicker">Mahnungen</span>
+                {mahnungen.map((m) => (
+                  <a key={m.id} href={`/api/admin/mahnungen/${m.id}/pdf/`} target="_blank" rel="noopener" className="a-gewaehlt-zeile">
+                    <Icon name="pdf" width={16} height={16} />
+                    <span>
+                      <strong>{m.bezeichnung}</strong> <span className="zahl">{m.nummer}</span> · Rechnung {rechnungen.find((r) => r.id === m.rechnungId)?.nummer} · {tagDatum(new Date(m.datum))} · <span className="zahl">{chf(m.offenRp)}</span>
+                      {m.versendetAm ? ' · per E-Mail' : ''}
+                    </span>
+                  </a>
+                ))}
               </div>
             )}
           </section>

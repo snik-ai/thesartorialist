@@ -332,6 +332,20 @@ export const angebot = pgTable(
   (t) => [uniqueIndex('angebot_token_idx').on(t.tokenHash), index('angebot_kontakt_idx').on(t.kontaktId, t.erstelltAm)],
 );
 
+/** Zahlungsplan eines Auftrags: «ganz» (eine Rechnung) oder «teil» (Raten, die letzte ist die Schlussrechnung). */
+export type ZahlungsplanRate = {
+  id: string;
+  bezeichnung: string;
+  art: 'prozent' | 'betrag';
+  /** Prozent oder Rappen */
+  wert: number;
+  /** YYYY-MM-DD */
+  faelligAm: string | null;
+  anlass: string | null;
+  rechnungId: string | null;
+};
+export type Zahlungsplan = { modus: 'ganz' | 'teil'; raten: ZahlungsplanRate[] };
+
 export type AuftragStatus = 'mass' | 'bestellt' | 'produktion' | 'eingang' | 'anprobe' | 'aenderung' | 'fertig' | 'abgeholt' | 'abgeschlossen' | 'storniert';
 
 export const auftrag = pgTable(
@@ -359,6 +373,8 @@ export const auftrag = pgTable(
     abholungGeplant: zeit('abholung_geplant'),
     bestellnotiz: text('bestellnotiz'),
     massblattId: uuid('massblatt_id'),
+    /** Zahlungsplan (null = ganz, eine Rechnung) – lib/crm/zahlungsplan.ts */
+    zahlungsplan: jsonb('zahlungsplan').$type<Zahlungsplan | null>(),
     zustaendigId: uuid('zustaendig_id'),
     /** Zeitpunkt je erreichtem Status: { bestellt: ISO, … } */
     statusZeiten: jsonb('status_zeiten').$type<Partial<Record<AuftragStatus, string>>>().notNull().default({}),

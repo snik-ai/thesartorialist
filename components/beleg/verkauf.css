@@ -1,0 +1,264 @@
+/* Verkauf – nach prototype/src/parts/20-verkauf.html und OFFERTE in shell.html (.doc, .tot, .flow) */
+
+/* Auswahl ohne Wert hat die Klasse «leer», die mit dem Leer-Baustein kollidiert (ui.css) – hier neutralisiert */
+
+/* Kennzahlen */
+.vk-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-bottom:14px}
+.vk-kpi{padding:14px 16px;border-right:1px solid var(--line);min-width:0;text-align:left}
+.vk-kpi:last-child{border-right:0}
+.vk-kpi small{display:block;color:var(--mut);font-size:12px}
+.vk-kpi b{display:block;font-size:20px;font-weight:600;letter-spacing:-.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vk-kpi span{font-size:12px;color:var(--mut)}
+.vk-kpi span.up{color:var(--ok-ink)}
+.vk-kpi span.dn{color:var(--bad)}
+button.vk-kpi:hover{background:var(--fl-kopf)}
+.vk-sum{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;color:var(--mut);font-size:12.5px;flex-wrap:wrap}
+.vk-sum b{color:var(--ink)}
+.vk-nachfassen{color:var(--acc-ink);font-weight:600}
+.vk-tabelle tbody tr{cursor:pointer}
+.vk-tabelle tbody tr:hover td{background:var(--fl-kopf)}
+.vk-tabelle td b{font-weight:600}
+.vk-tabelle .vk-titel-z{max-width:320px;overflow:hidden;text-overflow:ellipsis}
+.vk-mut{color:var(--mut)}
+.vk-klein{font-size:12px;color:var(--mut)}
+.vk-hinweis{font-size:13px;color:var(--mut);margin:0;line-height:1.5}
+.vk-von{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:var(--flaeche,rgba(0,0,0,.035));font-size:13px;line-height:1.45}
+.vk-von>svg{flex:none;margin-top:2px;color:var(--mut)}
+.vk-von b{display:block;font-weight:600}
+.vk-von small{display:block;color:var(--mut);font-size:12px;margin-top:2px}
+.vk-warn-text{color:var(--warn-ink);font-size:12px}
+.vk-filter-auswahl{min-width:200px}
+.vk-filter-auswahl .auswahl-knopf{height:42px;border-radius:12px;font-size:14px}
+.vk .filterleiste .chips-reihe .chip-w{padding:6px 12px}
+.vk-verlauf{display:flex;align-items:flex-end;gap:10px;height:120px;padding:14px 16px 6px}
+.vk-verlauf div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;height:100%;justify-content:flex-end}
+.vk-verlauf i{display:block;width:100%;max-width:44px;border-radius:8px 8px 3px 3px;background:var(--ink);min-height:3px}
+.vk-verlauf i.b{background:var(--ok);opacity:.85}
+.vk-verlauf span{font-size:11px;color:var(--mut)}
+.vk-verlauf-legende{display:flex;gap:14px;padding:0 16px 14px;font-size:12px;color:var(--mut)}
+.vk-verlauf-legende span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;background:var(--ink);margin-right:6px}
+.vk-verlauf-legende span.b:before{background:var(--ok)}
+
+/* Offene Posten / Mahnwesen */
+.vk-mahn{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px}
+.vk-mahn > div{border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+.vk-mahn h4{margin:0 0 4px;font-size:13px}
+.vk-mahn b{font-size:20px;display:block;margin:6px 0}
+.vk-alter{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--line)}
+.vk-alter div{padding:12px 14px;border-right:1px solid var(--line);min-width:0}
+.vk-alter div:last-child{border-right:0}
+.vk-alter small{display:block;color:var(--mut);font-size:12px}
+.vk-alter b{font-size:15px}
+.vk-alter div.bad b{color:var(--bad)}
+.vk-wahl{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--linie-stark);display:grid;place-items:center;background:var(--panel);flex:none}
+.vk-wahl.an{background:var(--ink);border-color:var(--ink);color:var(--auf-ink)}
+
+/* Dokument (Offerte/Rechnung) */
+.vk-doc-wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+.vk-doc-wrap > *{min-width:0}
+.vk-doc .doc-top{margin-bottom:26px}
+.vk-addr{text-align:right}
+.vk-addr b{font-weight:600}
+.vk-doc-titel{display:flex;gap:8px;align-items:baseline;margin-bottom:4px}
+.vk-doc-titel h2{flex:none}
+.vk-doc-titel .vk-titel-in{flex:1}
+.vk-doc.doc{padding:32px 32px}
+.vk-doc-titel h2{margin:0}
+.vk-titel-in{font-size:22px;letter-spacing:-.5px;font-weight:700;border:0;border-bottom:1.5px dashed var(--line);background:transparent;padding:2px 0;width:100%;min-width:0}
+.vk-titel-in:focus{outline:none;border-bottom-color:var(--ink)}
+.vk-meta{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;color:var(--mut);font-size:12.5px;margin:8px 0 18px}
+.vk-meta .auswahl{min-width:170px}
+.vk-meta .auswahl-knopf{height:38px;font-size:13px;border-radius:10px}
+.vk-meta .feld-label{font-size:10px}
+.vk-text-in{field-sizing:content;min-height:64px;width:100%;border:1.5px solid transparent;border-radius:10px;padding:8px 10px;margin:0 -10px;font:inherit;font-size:13.5px;line-height:1.55;background:transparent;resize:vertical;color:var(--ink)}
+.vk-text-in:hover{border-color:var(--line)}
+.vk-text-in:focus{outline:none;border-color:var(--ink);background:var(--panel)}
+.vk-text-lesen{font-size:13.5px;line-height:1.55;white-space:pre-line;margin:0 0 14px}
+.vk-speichern{position:sticky;bottom:12px;z-index:20;display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--ink);color:var(--auf-ink);border-radius:14px;padding:10px 12px 10px 16px;margin-top:14px;box-shadow:0 12px 30px rgba(0,0,0,.2);flex-wrap:wrap}
+.vk-speichern span{font-size:13px}
+.vk-speichern .knopf-hell{background:#2a2a2e;border-color:#2a2a2e;color:#fff}
+.vk-voice{display:flex;align-items:center;gap:10px;background:var(--acc-soft);border-radius:12px;padding:10px 12px;margin-bottom:22px;font-size:12.5px;color:var(--acc-ink-tief)}
+.vk-stempel{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--ok);color:var(--ok-ink);border-radius:8px;padding:3px 9px;font-weight:700;font-size:12px;margin-bottom:14px}
+.vk-stempel.bad{border-color:var(--bad);color:var(--bad)}
+
+/* Positionen-Editor */
+.vk-pos{margin:6px -6px 0}
+.vk-pos-kopf,.vk-pos-z{display:grid;grid-template-columns:22px minmax(0,1fr) 54px 54px 84px 50px 62px 86px 28px;gap:4px;align-items:start}
+.vk-pos-kopf{font-size:11.5px;color:var(--mut);padding:8px 6px;border-bottom:1px solid var(--ink)}
+.vk-pos-kopf .r{text-align:right}
+.vk-pos-z{padding:7px 6px;border-bottom:1px solid var(--linie-weich)}
+.vk-pos-z.titel,.vk-pos-z.textblock{grid-template-columns:22px minmax(0,1fr) 28px}
+.vk-pos-z.titel{padding-top:14px;border-bottom-color:var(--line)}
+.vk-pos-z.aus .vk-in,.vk-pos-z.aus .vk-pos-total{color:var(--mut)}
+.vk-pos-nr{padding-top:8px;font-size:12.5px;color:var(--mut)}
+.vk-in{width:100%;min-width:0;border:1.5px solid transparent;border-radius:9px;padding:6px 5px;font:inherit;font-size:13.5px;background:transparent;color:var(--ink)}
+.vk-in:hover:not(:disabled){border-color:var(--line)}
+.vk-in:focus{outline:none;border-color:var(--ink);background:var(--panel)}
+.vk-in:disabled{color:var(--ink);opacity:1}
+.vk-in.fehler{border-color:var(--bad)}
+.vk-zahl{text-align:right;font-variant-numeric:tabular-nums}
+.vk-titel,.vk-fett{font-weight:700}
+.vk-ta{resize:vertical;line-height:1.45}
+.vk-ta.klein{font-size:12.5px;color:var(--mut)}
+.vk-textblock{display:flex;flex-direction:column;gap:2px}
+.vk-pos-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.vk-pos-total{text-align:right;padding-top:8px;font-weight:600}
+.vk-pos-total small,.vk-feld-m small{display:none}
+.vk-feld-m{min-width:0}
+.vk-mwst{display:inline-flex;align-items:center;gap:2px;font-size:12.5px;padding:7px 2px;justify-content:flex-end;width:100%;color:var(--ink);white-space:nowrap}
+.vk-pos-marken{display:flex;gap:6px;flex-wrap:wrap;padding:2px 7px 4px}
+.vk-marke{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;border-radius:999px;padding:2px 8px;background:var(--soft);color:var(--mut);font-weight:600}
+.vk-marke.an{background:var(--ok-soft);color:var(--ok-ink)}
+.vk-marke.paket{background:var(--info-soft);color:#3730a3}
+.vk-pos-leer{display:flex;gap:10px;align-items:center;color:var(--mut);font-size:13px;padding:18px 8px;border-bottom:1px solid var(--linie-weich)}
+.vk-pos-neu{display:flex;flex-direction:column;gap:10px;padding:14px 6px 4px}
+.vk-pos-knoepfe{display:flex;gap:8px;flex-wrap:wrap}
+.vk-pos-knoepfe .chip-w{padding:6px 12px;font-size:12.5px}
+.vk-mini{position:relative}
+.vk-mini-k{display:flex;align-items:center;justify-content:center;border-radius:8px;min-height:30px;min-width:30px;color:var(--mut)}
+.vk-mini-k:hover{background:var(--soft);color:var(--ink)}
+.vk-feld-m .vk-mini-k{width:100%}
+.vk-mini-p{position:absolute;right:0;top:calc(100% + 4px);z-index:35;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 40px rgba(20,18,15,.14);padding:6px;min-width:210px;display:flex;flex-direction:column}
+.vk-mini-p > button{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:13px;text-align:left;white-space:nowrap}
+.vk-mini-p > button:hover:not(:disabled){background:var(--soft)}
+.vk-mini-p > button:disabled{opacity:.4;cursor:default}
+.vk-mini-p > button.gefahr{color:var(--bad)}
+.vk-mini-neu{display:flex;gap:4px;border-top:1px solid var(--line);margin-top:4px;padding-top:6px}
+.vk-mini-neu input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px}
+.vk-mini-neu button{width:32px;border-radius:8px;background:var(--ink);color:var(--auf-ink);display:grid;place-items:center}
+.vk-pakete-tot{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;padding-top:8px}
+.vk-pakete-tot span{font-size:11.5px;background:var(--soft);border-radius:999px;padding:2px 8px;color:var(--mut)}
+.vk-pakete-tot span.an{background:var(--ink);color:var(--auf-ink)}
+.vk-suche{position:relative;max-width:520px}
+.vk-suche-feld{max-width:none}
+.vk-suche-p{min-width:min(460px,90vw)}
+.vk-suche-preis{font-size:12.5px;color:var(--mut);white-space:nowrap}
+
+/* Ablauf, Zeitleiste, Seitenkarten */
+.vk-flow-link{color:inherit;text-decoration:none;display:block}
+.vk-tl{list-style:none;margin:0;padding:6px 16px 16px;position:relative}
+.vk-tl-i{display:flex;gap:12px;position:relative;padding:8px 0}
+.vk-tl-i:not(:last-child):before{content:"";position:absolute;left:10px;top:30px;bottom:-8px;width:2px;background:var(--line)}
+.vk-tl-i .d{width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--auf-ink);display:grid;place-items:center;flex:none;position:relative;z-index:1}
+.vk-tl-i.ok .d{background:var(--ok)}
+.vk-tl-i.bad .d{background:var(--bad)}
+.vk-tl-i.acc .d{background:var(--acc)}
+.vk-tl-i b{display:flex;gap:6px;align-items:center;font-size:13px;font-weight:500}
+.vk-tl-i span{font-size:12px;color:var(--mut)}
+.vk-tl-q{font-size:10px!important;padding:0 6px!important}
+.vk-karte-inhalt{padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.vk-aktionen{padding:6px 6px 10px}
+.vk-aktionen .li{width:100%;text-align:left;cursor:pointer}
+.vk-aktionen .li:disabled{opacity:.45;cursor:not-allowed}
+.vk-aktionen .li.gefahr .t b{color:var(--bad)}
+.vk-link-box{display:flex;gap:6px;align-items:center;background:var(--soft);border-radius:10px;padding:8px 10px;font:12px var(--f-zahl);overflow:hidden}
+.vk-link-box span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vk-zeilen{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.vk-zeilen div{display:flex;justify-content:space-between;gap:10px}
+.vk-zeilen span{color:var(--mut)}
+.vk-camt{margin:0 16px 16px;background:var(--ok-soft);border-radius:12px;padding:10px 12px;font-size:12px;color:#0f6b3a}
+.vk-camt code{font:11px var(--f-zahl)}
+.vk-warnungen{background:var(--warn-soft);color:var(--warn-ink);border-radius:12px;padding:10px 12px;font-size:12.5px;display:flex;flex-direction:column;gap:4px}
+
+/* Zahlteil im Dokument (Prototyp #v-rechnung .zahlteil) */
+.vk-doc .zahlteil{display:grid;grid-template-columns:62mm 1fr;border-top:1px dashed #9a978f;margin:30px -32px -32px;font-size:11px;line-height:1.35;color:#111;font-family:Arial,Helvetica,sans-serif}
+.vk-doc .zahlteil h5{font-size:13px;margin:0 0 10px;font-weight:700}
+.vk-doc .zahlteil .lbl{font-size:8.5px;font-weight:700;margin-top:8px}
+.vk-doc .zt-emp{padding:18px 16px 22px 40px;border-right:1px dashed #9a978f;position:relative}
+.vk-doc .zt-zt{padding:18px 40px 22px 18px;display:grid;grid-template-columns:auto 1fr;gap:0 18px}
+.vk-doc .zt-zt .qr{width:46mm;max-width:100%;aspect-ratio:1;display:block;margin:6px 0 12px}
+.vk-doc .zt-amt{display:flex;gap:18px;margin-top:6px}
+.vk-doc .scissor{position:absolute;top:-9px;left:30px;background:var(--panel);padding:0 4px;font-size:12px;color:#777}
+.vk-zt-leer{width:52mm;max-width:100%;height:20mm;border:1px dashed #bbb;border-radius:4px;margin-top:3px}
+.vk-zt-fehlt{display:flex;gap:10px;margin-top:26px;background:var(--warn-soft);color:var(--warn-ink);border-radius:12px;padding:12px 14px;font-size:13px}
+.vk-zt-fehlt div{display:flex;flex-direction:column;gap:3px}
+
+/* Panel-Inhalte */
+.vk-panel-liste{display:flex;flex-direction:column;gap:8px}
+.vk-panel-zeile{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel)}
+.vk-panel-zeile .t{flex:1;min-width:0}
+.vk-panel-zeile .t b{display:block;font-size:13.5px;font-weight:500}
+.vk-panel-zeile .t span{font-size:12px;color:var(--mut)}
+.vk-panel-zeile .vk-in{width:90px;border-color:var(--line)}
+.vk-vorschau-hg{background:var(--fl-zart);border-radius:16px;padding:16px 0}
+
+@media (max-width:1180px){.vk-doc-wrap{grid-template-columns:1fr}}
+@media (max-width:1100px){.vk-kpis{grid-template-columns:repeat(3,1fr)}.vk-kpi:nth-child(3){border-right:0}.vk-alter{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:900px){
+  .vk-pos-kopf{display:none}
+  .vk-pos{margin:6px 0 0}
+  .vk-pos-z{grid-template-columns:repeat(3,minmax(0,1fr)) 30px;gap:6px 8px;padding:12px 0;align-items:end}
+  .vk-pos-z .vk-pos-nr{display:none}
+  .vk-pos-z .vk-pos-text{grid-column:1 / 4;grid-row:1}
+  .vk-pos-z > .vk-pos-menue{grid-column:4;grid-row:1}
+  .vk-pos-z.titel,.vk-pos-z.textblock{grid-template-columns:minmax(0,1fr) 30px}
+  .vk-pos-z.titel .vk-in,.vk-pos-z.textblock .vk-textblock{grid-column:1}
+  .vk-feld-m small,.vk-pos-total small{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:600;padding:0 7px}
+  .vk-feld-m .vk-in{border-color:var(--line);background:var(--panel)}
+  .vk-pos-total{grid-column:3 / 5;padding-top:0;font-size:15px;align-self:center}
+  .vk-pos-total small{padding:0}
+  .vk-mwst{justify-content:flex-start;border:1.5px solid var(--line);border-radius:9px;background:var(--panel);padding:6px 7px}
+}
+@media (max-width:820px){
+  .vk-kpis{grid-template-columns:1fr 1fr}.vk-kpi{border-right:0;border-bottom:1px solid var(--line)}.vk-kpi:nth-child(odd){border-right:1px solid var(--line)}
+  .vk-kpi b{font-size:17px}
+  .vk-mahn{grid-template-columns:1fr}
+  .vk-alter{grid-template-columns:1fr 1fr}
+  .vk .filterleiste .suchleiste{max-width:none;flex-basis:100%}
+  .vk .filterleiste .chips-reihe{flex-wrap:nowrap;overflow-x:auto;max-width:100%;padding-bottom:2px;scrollbar-width:none}
+  .vk .filterleiste .chips-reihe .chip-w{flex:none}
+  .vk-filter-auswahl{min-width:0;flex:1}
+  .vk-addr{text-align:left}
+  .vk-doc .zahlteil{grid-template-columns:1fr;margin:24px -18px -22px}.vk-doc .zt-emp{border-right:0;border-bottom:1px dashed #9a978f;padding-left:18px}.vk-doc .zt-zt{grid-template-columns:1fr;padding:18px}
+  .vk-titel-in{font-size:19px}
+  .vk-doc-titel{flex-wrap:wrap}
+  .vk-doc-titel .vk-titel-in{flex-basis:100%}
+  .pg-head .actions{width:100%}
+}
+
+a.li{text-decoration:none;color:inherit}
+.vk a.b-sm{text-decoration:none;color:var(--ink)}
+.vk-doc-titel h2+h2{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+
+/* Länder: Steuerfall, Leistungsdatum, Prüfung, EPC-Zahlteil (DE/AT) */
+.vk-steuer{display:flex;flex-direction:column;gap:4px}
+.vk-steuer .dk-chips{margin-top:8px}
+.vk-steuer-vorschlag{display:flex;align-items:flex-start;gap:8px;margin-top:10px;padding:9px 11px;border-radius:12px;background:var(--info-soft);color:#2b3270;font-size:12.5px;line-height:1.45}
+.vk-steuer-vorschlag svg{flex:none;margin-top:2px;color:#4f5bd5}
+.vk-steuer-vorschlag button{margin-left:auto;flex:none;font-weight:650;font-size:12px;border:1.5px solid currentColor;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.vk-steuer-hinweis{display:flex;gap:6px;align-items:flex-start}
+.vk-steuer-hinweis svg,.vk-steuer-warn svg{flex:none;margin-top:2px}
+.vk-steuer-warn{color:#9b241c;display:flex;gap:6px;align-items:flex-start}
+.vk-leistung{display:flex;flex-direction:column;gap:8px}
+.vk-leistung-felder{display:flex;flex-direction:column;gap:8px}
+.vk-pruefung .dk-banner{border-bottom:1px solid var(--line)}
+.dk-steuerhinweis{margin-top:10px;font-size:12px;color:#3b3935;text-align:right}
+.dk-pflicht{line-height:1.6}
+.dk-mini.ungueltig .dk-mwst{color:var(--bad)}
+.vk-epc{display:flex;gap:18px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.vk-epc-code{width:132px;flex:none;text-align:center;font-size:11px;color:var(--mut)}
+.vk-epc-code svg{display:block;width:124px;height:124px;margin:0 auto 4px}
+.vk-epc dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px}
+.vk-epc dt{color:var(--mut)} .vk-epc dd{margin:0;font-variant-numeric:tabular-nums;word-break:break-word}
+.vk-epc b{display:block;margin-bottom:8px}
+@media (max-width:600px){.vk-epc{flex-direction:column}}
+/* Beschreibung im Positionen-Editor (Abos): Knopf «Punkte» unter dem Feld, sichtbar beim Bearbeiten */
+.vk-besch-feld{position:relative;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.vk-besch-feld .vk-ta{align-self:stretch}
+.vk-punkte{display:none;align-items:center;gap:4px;height:24px;padding:0 9px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font:600 11.5px var(--f-ui);color:var(--ink)}
+.vk-besch-feld:focus-within .vk-punkte{display:inline-flex}
+.vk-punkte:hover{border-color:var(--ink)}
+.vk-mk-l{display:block;font-size:11px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:4px 0 -2px}
+/* Block-Editor der Beschreibung im Formular (Abo, Mobil): Rahmen wie .vk-in */
+.pe-formular{border:1.5px solid transparent;border-radius:9px;padding:6px 5px;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.pe-formular.klein{font-size:12.5px;color:var(--mut)}
+.pe-formular:hover:not(:focus-within){border-color:var(--line)}
+.pe-formular:focus-within{border-color:var(--ink);background:var(--panel)}
+.pe-formular .pe-z + .pe-z{margin-top:6px}
+.pe-formular .pe-z.punkt + .pe-z.punkt{margin-top:2px}
+.pe-formular .pe-z.punkt{padding-left:14px}
+.pe-formular .pe-z.punkt::before{left:3px;top:calc(.725em - 2.5px);width:5px;height:5px;background:var(--acc,var(--ink))}
+.pe-formular .pe-werkzeug{top:calc(100% + 4px)}
+.vk-liste-haken{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:10px}
+.vk-liste-haken li{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:var(--ink)}
+.vk-liste-haken svg{flex:none;margin-top:2px;color:var(--mut)}

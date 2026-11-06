@@ -40,6 +40,11 @@ export type Firma = {
   mahnGebuehr2Rp: number;
   mahnGebuehr3Rp: number;
   mahnFristTage: number;
+  /** Mahnung automatisch vorschlagen (versendet wird nur auf Klick), ab Tagen nach Fälligkeit je Stufe */
+  mahnVorschlagAktiv: boolean;
+  mahnTage1: number;
+  mahnTage2: number;
+  mahnTage3: number;
 };
 
 export type KatalogEintrag = { id: string; kategorie: string; bezeichnung: string; beschreibung?: string; preisRp: number };
@@ -77,6 +82,10 @@ export const FIRMA_STANDARD: Firma = {
   mahnGebuehr2Rp: 2000,
   mahnGebuehr3Rp: 4000,
   mahnFristTage: 10,
+  mahnVorschlagAktiv: true,
+  mahnTage1: 7,
+  mahnTage2: 21,
+  mahnTage3: 35,
 };
 
 /** Preisliste des Ateliers. Nur der Massanzug hat einen veröffentlichten Ab-Preis — die übrigen Preise trägt das Atelier ein. */

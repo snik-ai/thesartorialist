@@ -8,8 +8,10 @@ import { TZ } from '@/lib/zeit';
 import Passkeys from '@/components/admin/Passkeys';
 import Admins from '@/components/admin/Admins';
 import Benachrichtigungen from '@/components/admin/Benachrichtigungen';
-import { FirmaForm, KatalogForm, LogoForm } from '@/components/admin/FirmaEinstellungen';
-import { firma, katalog, logoDaten } from '@/lib/crm/firma';
+import Link from 'next/link';
+import Icon from '@/components/admin/Icon';
+import { FirmaForm, LogoForm } from '@/components/admin/FirmaEinstellungen';
+import { firma, logoDaten } from '@/lib/crm/firma';
 
 export const metadata: Metadata = { title: 'Einstellungen' };
 export const dynamic = 'force-dynamic';
@@ -21,7 +23,7 @@ export default async function EinstellungenPage() {
     .from(schema.passkey)
     .where(eq(schema.passkey.adminUserId, s.user.id))
     .orderBy(asc(schema.passkey.erstelltAm));
-  const [admins, f, kat, logo] = await Promise.all([db().select().from(schema.adminUser).orderBy(asc(schema.adminUser.erstelltAm)), firma(), katalog(), logoDaten()]);
+  const [admins, f, logo] = await Promise.all([db().select().from(schema.adminUser).orderBy(asc(schema.adminUser.erstelltAm)), firma(), logoDaten()]);
   const fmt = (d: Date | null) => (d ? d.toLocaleString('de-CH', { timeZone: TZ, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : null);
 
   return (
@@ -62,7 +64,19 @@ export default async function EinstellungenPage() {
         <FirmaForm firma={f} />
       </div>
       <div className="a-zwei" style={{ marginTop: 20 }}>
-        <KatalogForm katalog={kat} />
+        <div className="a-karte">
+          <div className="a-karte-kopf">
+            <h2>Preisliste</h2>
+          </div>
+          <div className="a-karte-inhalt">
+            <p className="a-sub" style={{ marginTop: 0, marginBottom: 14 }}>
+              Die Preisliste ist jetzt der Produktkatalog: Produkte mit Bild, Preis inkl. MWST, Einheit und Varianten (z. B. Stoffqualität Super 110–180). Sie erscheinen in der Positionssuche von Angebot und Rechnung.
+            </p>
+            <Link href="/admin/produkte/" className="a-knopf linie">
+              <Icon name="schere" /> Produkte verwalten
+            </Link>
+          </div>
+        </div>
         <LogoForm eigenes={Boolean(logo)} />
       </div>
       <div className="a-zwei" style={{ marginTop: 20 }}>

@@ -128,11 +128,15 @@ export type Mahnkandidat = { status: string; faelligAm: Date | null; mahnstufe: 
 export type Mahnvorschlag = { stufe: Mahnstufe; faellig: boolean; ab: Date; tageUeberfaellig: number; gebuehrRp: number; bezeichnung: string };
 
 /** Nächste Mahnstufe einer Rechnung; null = keine Mahnung möglich (Entwurf, bezahlt, storniert, Stufe 3 erreicht). */
-export function mahnvorschlag(r: Mahnkandidat, heute: Date, f?: { mahnGebuehr2Rp?: number; mahnGebuehr3Rp?: number }): Mahnvorschlag | null {
+export type MahnEinstellung = { mahnGebuehr2Rp?: number; mahnGebuehr3Rp?: number; mahnTage1?: number; mahnTage2?: number; mahnTage3?: number };
+/** Tage nach Fälligkeit je Stufe (Einstellungen, sonst ABTAGE) */
+export const mahnTage = (stufe: Mahnstufe, f?: MahnEinstellung) => (stufe === 1 ? f?.mahnTage1 : stufe === 2 ? f?.mahnTage2 : f?.mahnTage3) ?? ABTAGE[stufe];
+
+export function mahnvorschlag(r: Mahnkandidat, heute: Date, f?: MahnEinstellung): Mahnvorschlag | null {
   if (!['offen', 'teilbezahlt'].includes(r.status) || r.offenRp <= 0 || !r.faelligAm) return null;
   if (r.mahnstufe >= 3) return null;
   const stufe = (r.mahnstufe + 1) as Mahnstufe;
-  const nachAlter = tagePlus(r.faelligAm, ABTAGE[stufe]);
+  const nachAlter = tagePlus(r.faelligAm, mahnTage(stufe, f));
   const nachFrist = r.mahnfristBis ? tagePlus(r.mahnfristBis, 1) : nachAlter;
   const ab = nachAlter > nachFrist ? nachAlter : nachFrist;
   return {

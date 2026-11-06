@@ -4,13 +4,15 @@ import { eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import { apiAdmin, fehler, jsonBody, txt, UUID } from '@/lib/admin/zugang';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
-import { AblaufFehler, angebotAnnehmen, angebotLinkNeu, leadPhaseSetzen } from '@/lib/crm/ablauf';
+import { AblaufFehler, angebotAnnehmen, angebotLinkNeu, leadPhaseSetzen, rechnungErstellen } from '@/lib/crm/ablauf';
+import { versionSichern, versionWiederherstellen } from '@/lib/beleg/versionen';
+import { belegSprache, datumText } from '@/lib/beleg/texte';
+import { mailAngebotIn } from '@/lib/beleg/mails-beleg';
 import { naechsteNummer } from '@/lib/crm/nummern';
 import { positionenAus, summen } from '@/lib/crm/geld';
 import { angebotLink, angebotPdfFuer, basisUrl, tagAus } from '@/lib/admin/belege';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
-import { mailAngebot, mailAuftragBestaetigt } from '@/lib/mail-vorlagen';
-import { TZ } from '@/lib/zeit';
+import { mailAuftragBestaetigt } from '@/lib/mail-vorlagen';
 import type { StilZeileDb } from '@/lib/db/schema';
 
 export const runtime = 'nodejs';
@@ -45,8 +47,25 @@ export async function PATCH(req: Request, { params }: P) {
   if ('einleitung' in b) set.einleitung = txt(b.einleitung, 3000) || null;
   if ('schluss' in b) set.schluss = txt(b.schluss, 3000) || null;
   if ('notiz' in b) set.notiz = txt(b.notiz, 3000) || null;
+  if ('kontaktId' in b) {
+    const kid = txt(b.kontaktId, 40);
+    if (kid !== an.kontaktId) {
+      if (an.status !== 'entwurf') return fehler('Der Empfänger lässt sich nur im Entwurf ändern.', 409);
+      if (!UUID.test(kid)) return fehler('Kontakt ungültig');
+      const [k] = await db().select({ id: schema.kontakt.id }).from(schema.kontakt).where(eq(schema.kontakt.id, kid)).limit(1);
+      if (!k) return fehler('Kontakt nicht gefunden', 404);
+      set.kontaktId = kid;
+    }
+  }
+  if ('datum' in b) {
+    const d = tagAus(b.datum);
+    if (!d) return fehler('Datum ungültig');
+    set.datum = d;
+  }
+  if ('sprache' in b) set.sprache = belegSprache(txt(b.sprache, 5));
+  if ('stilAnhang' in b) set.stilAnhang = b.stilAnhang === true;
   if ('positionen' in b) {
-    const p = positionenAus(b.positionen);
+    const p = positionenAus(b.positionen, an.mwstSatz);
     if (!p) return fehler('Positionen ungültig (Bezeichnung, Menge > 0, Preis).');
     set.positionen = p;
   }
@@ -75,7 +94,13 @@ export async function PATCH(req: Request, { params }: P) {
   set.totalRp = s.totalRp;
   set.mwstRp = s.mwstRp;
   await db().update(schema.angebot).set(set).where(eq(schema.angebot.id, an.id));
-  return NextResponse.json({ ok: true, totalRp: s.totalRp, mwstRp: s.mwstRp });
+  let kontakt: Record<string, unknown> | undefined;
+  if (set.kontaktId) {
+    const [k] = await db().select().from(schema.kontakt).where(eq(schema.kontakt.id, set.kontaktId)).limit(1);
+    kontakt = { id: k.id, name: k.name, anrede: k.anrede, firma: k.firma, strasse: k.strasse, plz: k.plz, ort: k.ort, land: k.land, email: k.email, telefon: k.telefon, whatsappOk: Boolean(k.einwilligungWhatsapp) && !k.abgemeldet };
+    await aktivitaetLoggen(db(), { kontaktId: k.id, kanal: 'system', titel: `Angebot ${an.nummer}: Empfänger gewechselt`, angebotId: an.id, adminUserId: a.s.user.id });
+  }
+  return NextResponse.json({ ok: true, totalRp: s.totalRp, mwstRp: s.mwstRp, kontakt });
 }
 
 export async function DELETE(req: Request, { params }: P) {
@@ -114,11 +139,12 @@ export async function POST(req: Request, { params }: P) {
         const token = await angebotLinkNeu(db(), an.id);
         const link = angebotLink(basisUrl(req), token);
         const jetzt = new Date();
+        await versionSichern(db(), 'angebot', an, 'gesendet', wer);
         await db().update(schema.angebot).set({ status: 'gesendet', gesendetAm: an.gesendetAm ?? jetzt, aktualisiertAm: jetzt }).where(eq(schema.angebot.id, an.id));
         await leadPhaseSetzen(db(), k.id, 'angebot');
         if (mitMail) {
           const pdf = await angebotPdfFuer(an.id, link);
-          const m = mailAngebot({ name: k.name, anrede: k.anrede, nummer: an.nummer ?? '', titel: an.titel, totalRp: an.totalRp, gueltigBis: an.gueltigBis?.toLocaleDateString('de-CH', { timeZone: TZ }), link, nachricht: txt(b.nachricht, 1500) || undefined });
+          const m = mailAngebotIn(an.sprache, { name: k.name, anrede: k.anrede, nummer: an.nummer ?? '', titel: an.titel, totalRp: an.totalRp, gueltigBis: datumText(an.gueltigBis, an.sprache), link, nachricht: txt(b.nachricht, 1500) || undefined });
           try {
             await sendeMail({ to: k.email!, subject: m.subject, text: m.text, html: m.html, replyTo: empfaenger(), anhaenge: pdf ? [{ filename: pdf.datei, content: pdf.buf.toString('base64') }] : undefined });
           } catch (err) {
@@ -175,10 +201,40 @@ export async function POST(req: Request, { params }: P) {
         void [_id, _n, _t, _g, _s, _a, _an, _w, _ab, _ag, _e, _u];
         const [neu] = await db()
           .insert(schema.angebot)
-          .values({ ...rest, nummer, status: 'entwurf', gueltigBis: new Date(Date.now() + 30 * 86400_000), erstelltVon: wer })
+          .values({ ...rest, nummer, status: 'entwurf', version: 1, angesehenAnzahl: 0, datum: new Date(), gueltigBis: new Date(Date.now() + 30 * 86400_000), erstelltVon: wer })
           .returning({ id: schema.angebot.id });
         await log(`Angebot ${nummer} als Kopie von ${an.nummer} erstellt`);
         return NextResponse.json({ ok: true, id: neu.id, meldung: `Kopie ${nummer} erstellt.` });
+      }
+
+      case 'version': {
+        const nr = await versionSichern(db(), 'angebot', an, 'manuell', wer);
+        await log(`Angebot ${an.nummer}: Version ${nr} gesichert`);
+        return NextResponse.json({ ok: true, meldung: `Version ${nr} gesichert.` });
+      }
+
+      case 'wiederherstellen': {
+        if (!['entwurf', 'gesendet'].includes(an.status)) return fehler('Angenommene, abgelehnte oder stornierte Angebote sind gesperrt.', 409);
+        const nr = await versionWiederherstellen('angebot', an, txt(b.versionId, 40), wer);
+        if (nr === null) return fehler('Version nicht gefunden', 404);
+        await log(`Angebot ${an.nummer}: Version ${nr} wiederhergestellt`);
+        return NextResponse.json({ ok: true, meldung: `Version ${nr} geladen – der vorherige Stand ist als Version gesichert.` });
+      }
+
+      case 'rechnung': {
+        // Angebot → Auftrag → Rechnung mit einem Klick
+        let auftragId: string | null = null;
+        if (an.status !== 'angenommen') {
+          if (!an.positionen.length || an.totalRp <= 0) return fehler('Bitte zuerst Positionen mit Preis erfassen.');
+          const r = await angebotAnnehmen(an.id, { name: k.name, weg: 'atelier', adminId: wer });
+          auftragId = r.auftragId;
+        } else {
+          const [au] = await db().select({ id: schema.auftrag.id }).from(schema.auftrag).where(eq(schema.auftrag.angebotId, an.id)).limit(1);
+          auftragId = au?.id ?? null;
+        }
+        if (!auftragId) return fehler('Kein Auftrag zum Angebot gefunden.', 404);
+        const re = await rechnungErstellen({ auftragId, art: 'rechnung', adminId: wer });
+        return NextResponse.json({ ok: true, auftragId, rechnungId: re.id, meldung: `Rechnung ${re.nummer} erstellt (Entwurf).` });
       }
 
       default:

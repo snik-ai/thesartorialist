@@ -36,6 +36,13 @@
       "when": 1793964477964,
       "tag": "0004_verkauf_wie_voxcrm",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793964478964,
+      "tag": "0005_zahlungsplan",
+      "breakpoints": true
     }
   ]
 }

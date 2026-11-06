@@ -10,6 +10,8 @@ import { tagAus } from '@/lib/admin/belege';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
 import { mailAbholbereit } from '@/lib/mail-vorlagen';
 import { terminLang } from '@/lib/zeit';
+import { planAus, planPruefen } from '@/lib/crm/zahlungsplan';
+import { rateRechnung, zahlungsplanSetzen } from '@/lib/crm/zahlungsplan-server';
 import type { AuftragStatus, TerminZweck } from '@/lib/db/schema';
 
 export const runtime = 'nodejs';
@@ -190,6 +192,21 @@ export async function POST(req: Request, { params }: P) {
         }
         if (zweck === 'abholung') await db().update(schema.auftrag).set({ abholungGeplant: start, aktualisiertAm: new Date() }).where(eq(schema.auftrag.id, au.id));
         return NextResponse.json({ ok: true, meldung: `${ZWECK[zweck]} eingetragen — der Kunde erhält 2 Stunden vorher eine Erinnerung per E-Mail.` });
+      }
+
+      case 'zahlungsplan': {
+        // { plan: Zahlungsplan, nurPruefen?: boolean } → { ok, plan, pruefung: { ok, fehler, summeRp, summeProzent, betraege } }
+        const plan = planAus(b.plan);
+        if (!plan) return fehler('Zahlungsplan ungültig (1–6 Raten, Betrag > 0, Prozent ≤ 100, Datum YYYY-MM-DD).');
+        if (b.nurPruefen === true) return NextResponse.json({ ok: true, plan, pruefung: planPruefen(plan, au.totalRp) });
+        const r = await zahlungsplanSetzen(au.id, plan, wer);
+        return NextResponse.json({ ok: true, plan: r.plan, pruefung: r.pruefung, meldung: `Zahlungsplan gespeichert${r.verworfen ? ` – ${r.verworfen} Rechnungsentwurf verworfen` : ''}.` });
+      }
+
+      case 'rate-rechnung': {
+        // { rateId } → { ok, id, nummer } (bestehende Rechnung der Rate oder neu als Entwurf)
+        const r = await rateRechnung(au.id, txt(b.rateId, 60), wer);
+        return NextResponse.json({ ok: true, id: r.id, nummer: r.nummer, meldung: r.schon ? `Rechnung ${r.nummer} besteht bereits.` : `Rechnung ${r.nummer} erstellt (Entwurf).` });
       }
 
       case 'notiz': {

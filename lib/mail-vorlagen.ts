@@ -442,3 +442,6 @@ export function mailAbholbereit(d: { name: string; anrede?: string | null; titel
   const text = [`Grüezi ${d.name}`, '', `Ihre Massanfertigung «${d.titel}» ist abholbereit. Wann passt es Ihnen?`, `Atelier: ${adresse()}`, `Telefon: ${SITE.phone}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
   return { html, text, subject: 'Ihre Massanfertigung ist abholbereit — The Sartorialist Zürich' };
 }
+
+/** Bausteine für weitere Kundenmails (lib/beleg/mails.ts: Mahnungen in der Kundensprache) */
+export const mailBausteine = { rahmen, titelZeile, kicker, knopf, zeilen, esc, chfMail, telHref, farben: { INK, SOFT, MUTED, LINE, WARM, GOLD } };

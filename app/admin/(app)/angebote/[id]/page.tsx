@@ -1,26 +1,25 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, or, sql } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
-import Icon from '@/components/admin/Icon';
-import AngebotEditor from '@/components/admin/AngebotEditor';
-import { Avatar } from '@/components/admin/Bausteine';
-import { ANGEBOT_STATUS, angebotAnzeigeStatus } from '@/lib/crm/belege';
-import { katalog } from '@/lib/crm/firma';
+import AngebotSeite from '@/components/beleg/AngebotSeite';
+import { angebotAnzeigeStatus } from '@/lib/crm/belege';
+import { belegTexte, firma } from '@/lib/crm/firma';
+import { logoFuer } from '@/lib/beleg/laden';
 import { mailBereit } from '@/lib/mail';
-import { isoVon, tagDatum, terminKurz } from '@/lib/zeit';
+import { isoVon, tagDatum } from '@/lib/zeit';
 import { UUID } from '@/lib/admin/zugang';
+import { BELEG_SPRACHEN } from '@/lib/beleg/texte';
 
 export const metadata: Metadata = { title: 'Angebot' };
 export const dynamic = 'force-dynamic';
 
-export default async function AngebotSeite({ params }: { params: Promise<{ id: string }> }) {
+export default async function AngebotDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!UUID.test(id)) notFound();
   const [a] = await db().select().from(schema.angebot).where(eq(schema.angebot.id, id)).limit(1);
   if (!a || !a.kontaktId) notFound();
-  const [[k], quellen, [au], kat] = await Promise.all([
+  const [[k], quellen, [au], f, logo, verlauf, versionen] = await Promise.all([
     db().select().from(schema.kontakt).where(eq(schema.kontakt.id, a.kontaktId)).limit(1),
     db()
       .select()
@@ -28,65 +27,65 @@ export default async function AngebotSeite({ params }: { params: Promise<{ id: s
       .where(and(eq(schema.termin.kontaktId, a.kontaktId), sql`jsonb_array_length(${schema.termin.stil}) > 0`))
       .orderBy(desc(schema.termin.erstelltAm))
       .limit(5),
-    db().select({ id: schema.auftrag.id }).from(schema.auftrag).where(eq(schema.auftrag.angebotId, a.id)).limit(1),
-    katalog(),
+    db().select({ id: schema.auftrag.id, nummer: schema.auftrag.nummer }).from(schema.auftrag).where(eq(schema.auftrag.angebotId, a.id)).limit(1),
+    firma(),
+    logoFuer('web'),
+    db().select().from(schema.aktivitaet).where(eq(schema.aktivitaet.angebotId, a.id)).orderBy(desc(schema.aktivitaet.erstelltAm)).limit(40),
+    db().select().from(schema.belegVersion).where(and(eq(schema.belegVersion.belegId, a.id), eq(schema.belegVersion.art, 'angebot'))).orderBy(desc(schema.belegVersion.version)).limit(20),
   ]);
-  const st = angebotAnzeigeStatus(a);
-  const zeitleiste = [
-    ['Erstellt', a.erstelltAm],
-    ['Gesendet', a.gesendetAm],
-    ['Vom Kunden angesehen', a.angesehenAm],
-    [a.angenommenWeg === 'online' ? 'Online angenommen' : 'Angenommen', a.angenommenAm],
-    ['Abgelehnt', a.abgelehntAm],
-  ].filter(([, d]) => d) as [string, Date][];
+  const [re] = au
+    ? await db()
+        .select({ id: schema.rechnung.id, nummer: schema.rechnung.nummer })
+        .from(schema.rechnung)
+        .where(and(eq(schema.rechnung.auftragId, au.id), inArray(schema.rechnung.status, ['entwurf', 'offen', 'teilbezahlt', 'bezahlt'])))
+        .orderBy(asc(schema.rechnung.erstelltAm))
+        .limit(1)
+    : [];
+  void or;
+  const texte = Object.fromEntries(BELEG_SPRACHEN.map((s) => [s.code, belegTexte(f, s.code)])) as Parameters<typeof AngebotSeite>[0]['texte'];
+  const tag = (d: Date | null) => isoVon(d) ?? '';
 
   return (
-    <>
-      <Link href="/admin/angebote/" className="a-zurueck">
-        <Icon name="zurueck" width={16} height={16} /> Alle Angebote
-      </Link>
-      <div className="a-kopf">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
-          <Avatar name={k.name || k.email || '?'} brandDomain={k.brandDomain} gross />
-          <div style={{ minWidth: 0 }}>
-            <span className="a-kicker zahl">Angebot {a.nummer}</span>
-            <h1>{k.name || k.email}</h1>
-            <p className="a-sub">
-              <span className={`a-pill an-${st}`}>{ANGEBOT_STATUS[st]}</span>{' '}
-              {zeitleiste.map(([l, d]) => `${l} ${terminKurz(d)}`).join(' · ')}
-              {a.angenommenName ? ` · von «${a.angenommenName}»` : ''}
-              {a.abgelehntGrund ? ` · ${a.abgelehntGrund}` : ''}
-            </p>
-          </div>
-        </div>
-        <Link href={`/admin/kontakte/${k.id}/`} className="a-knopf linie">
-          <Icon name="kunde" /> Kundenakte
-        </Link>
-      </div>
-      <AngebotEditor
-        a={{
-          id: a.id,
-          nummer: a.nummer ?? '',
-          status: a.status,
-          anzeigeStatus: st,
-          titel: a.titel,
-          einleitung: a.einleitung ?? '',
-          schluss: a.schluss ?? '',
-          positionen: a.positionen,
-          stil: a.stil,
-          stoffe: a.stoffe,
-          rabattProzent: a.rabattProzent,
-          rabattRp: a.rabattRp,
-          mwstSatz: a.mwstSatz,
-          gueltigBis: isoVon(a.gueltigBis),
-          notiz: a.notiz ?? '',
-        }}
-        kunde={{ name: k.name, email: k.email, telefon: k.telefon, whatsappOk: Boolean(k.einwilligungWhatsapp) && !k.abgemeldet }}
-        katalog={kat}
-        stilQuellen={quellen.map((t) => ({ terminId: t.id, datum: tagDatum(t.erstelltAm), stil: t.stil, stoffe: t.stoffe }))}
-        mailBereit={mailBereit()}
-        auftragId={au?.id ?? null}
-      />
-    </>
+    <AngebotSeite
+      a={{
+        id: a.id,
+        nummer: a.nummer,
+        status: a.status,
+        anzeigeStatus: angebotAnzeigeStatus(a),
+        kontaktId: a.kontaktId,
+        titel: a.titel,
+        datum: tag(a.datum),
+        gueltigBis: tag(a.gueltigBis),
+        einleitung: a.einleitung ?? '',
+        schluss: a.schluss ?? '',
+        positionen: a.positionen,
+        rabattProzent: a.rabattProzent,
+        rabattRp: a.rabattRp,
+        mwstSatz: a.mwstSatz,
+        sprache: a.sprache,
+        stil: a.stil,
+        stoffe: a.stoffe,
+        stilAnhang: a.stilAnhang,
+        notiz: a.notiz ?? '',
+        version: a.version,
+        gesendetAm: a.gesendetAm?.toISOString() ?? null,
+        angesehenAm: a.angesehenAm?.toISOString() ?? null,
+        angesehenAnzahl: a.angesehenAnzahl,
+        angenommenAm: a.angenommenAm?.toISOString() ?? null,
+        angenommenName: a.angenommenName,
+        abgelehntAm: a.abgelehntAm?.toISOString() ?? null,
+        abgelehntGrund: a.abgelehntGrund,
+      }}
+      kunde={{ id: k.id, name: k.name, anrede: k.anrede, firma: k.firma, strasse: k.strasse, plz: k.plz, ort: k.ort, land: k.land, email: k.email, telefon: k.telefon, whatsappOk: Boolean(k.einwilligungWhatsapp) && !k.abgemeldet }}
+      firma={f}
+      logo={logo}
+      texte={texte}
+      auftrag={au ?? null}
+      rechnung={re ?? null}
+      verlauf={verlauf.map((v) => ({ id: v.id, kanal: v.kanal, titel: v.titel, text: v.text, erstelltAm: v.erstelltAm.toISOString() }))}
+      versionen={versionen.map((v) => ({ id: v.id, version: v.version, grund: v.grund, totalRp: v.totalRp, erstelltAm: v.erstelltAm.toISOString() }))}
+      stilQuellen={quellen.map((t) => ({ terminId: t.id, datum: tagDatum(t.erstelltAm), stil: t.stil, stoffe: t.stoffe }))}
+      mailBereit={mailBereit()}
+    />
   );
 }

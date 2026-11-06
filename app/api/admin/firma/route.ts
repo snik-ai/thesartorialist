@@ -62,6 +62,13 @@ export async function PUT(req: Request) {
       produktionTage: Math.round(zahl(w.produktionTage ?? alt.produktionTage, 1, 120, 20)),
       erinnerungAktiv: typeof w.erinnerungAktiv === 'boolean' ? w.erinnerungAktiv : alt.erinnerungAktiv,
       erinnerungStunden: zahl(w.erinnerungStunden ?? alt.erinnerungStunden, 0.5, 48, 2),
+      mahnVorschlagAktiv: typeof w.mahnVorschlagAktiv === 'boolean' ? w.mahnVorschlagAktiv : alt.mahnVorschlagAktiv,
+      mahnTage1: Math.round(zahl(w.mahnTage1 ?? alt.mahnTage1, 0, 120, 7)),
+      mahnTage2: Math.round(zahl(w.mahnTage2 ?? alt.mahnTage2, 1, 180, 21)),
+      mahnTage3: Math.round(zahl(w.mahnTage3 ?? alt.mahnTage3, 1, 240, 35)),
+      mahnFristTage: Math.round(zahl(w.mahnFristTage ?? alt.mahnFristTage, 3, 60, 10)),
+      mahnGebuehr2Rp: Math.round(zahl(w.mahnGebuehr2Rp ?? alt.mahnGebuehr2Rp, 0, 50_000, 2000)),
+      mahnGebuehr3Rp: Math.round(zahl(w.mahnGebuehr3Rp ?? alt.mahnGebuehr3Rp, 0, 50_000, 4000)),
       texte: Object.fromEntries(Object.entries(alt.texte).map(([k, v]) => [k, k in texte ? txt(texte[k], 2000) : v])) as Firma['texte'],
     };
     await speichern('firma', neu);
