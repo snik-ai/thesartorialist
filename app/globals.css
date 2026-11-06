@@ -2502,3 +2502,50 @@ html, body { overflow-x: clip; }
 .sprachwahl--leiste a.is-on { background: transparent; color: var(--paper); border-color: rgba(255, 255, 255, 0.6); }
 .announce .sprachwahl--leiste a { margin-left: 0; border-radius: 999px; }
 @media (max-width: 700px) { .sprachwahl--leiste { display: none; } }
+
+/* ---------- Schwebende Leiste: Termin (auffällig) · Anzug gestalten · Kontakt (WhatsApp-Grün) ---------- */
+.fab-leiste {
+  position: fixed; z-index: 70;
+  right: calc(clamp(1rem, 2.5vw, 1.75rem) + 72px);
+  bottom: calc(clamp(1rem, 2.5vw, 1.75rem) + 2px);
+  display: flex; align-items: center; gap: 0.6rem;
+  opacity: 0; transform: translateY(24px); pointer-events: none;
+  transition: opacity 0.45s var(--easing), transform 0.45s var(--easing);
+}
+.fab-leiste.is-in { opacity: 1; transform: none; pointer-events: auto; }
+.fab-leiste .studio-fab { position: static; opacity: 1; transform: none; pointer-events: auto; right: auto; bottom: auto;
+  background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); }
+.fab-leiste .studio-fab:hover { background: var(--ink); color: var(--paper); }
+.fab-leiste .studio-fab-icon { background: var(--ink); color: var(--paper); width: 42px; height: 42px; }
+.fab-leiste .studio-fab-icon::after { border-color: rgba(16, 16, 16, 0.35); }
+.fab-termin {
+  display: inline-flex; align-items: center; gap: 0.6rem; height: 58px; padding: 0 1.5rem;
+  border-radius: 999px; background: #c9a063; color: #111; text-decoration: none;
+  font: 700 0.78rem var(--sans); letter-spacing: 0.14em; text-transform: uppercase;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3); transition: background 0.2s ease, transform 0.25s var(--easing);
+  animation: terminPuls 3.2s ease-in-out infinite;
+}
+.fab-termin:hover { background: #d6b27a; transform: translateY(-2px); }
+@keyframes terminPuls { 0%, 100% { box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(201, 160, 99, 0.55); } 50% { box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3), 0 0 0 10px rgba(201, 160, 99, 0); } }
+body.cart-open .fab-leiste, body.sheet-open .fab-leiste, body.menu-open .fab-leiste { opacity: 0; pointer-events: none; }
+/* Kontakt-Knopf rechts im WhatsApp-Grün */
+.kfab-toggle { background: #25d366; color: #fff; }
+.kfab-toggle:hover { background: #1ebe5b; }
+.kfab-badge { box-shadow: 0 0 0 2px #25d366; }
+@media (max-width: 700px) {
+  .fab-leiste { right: calc(1rem + 70px); gap: 0.45rem; }
+  .fab-termin { height: 54px; padding: 0 1.1rem; font-size: 0.7rem; letter-spacing: 0.1em; }
+  .fab-leiste .studio-fab { padding: 0.3rem; }
+  .fab-leiste .studio-fab-icon { width: 46px; height: 46px; }
+}
+@media (prefers-reduced-motion: reduce) { .fab-termin { animation: none; } }
+
+/* Einstiegstexte (Page-Hero) zentriert */
+.page-hero .container { text-align: center; }
+.page-hero h1, .page-hero .display { margin-left: auto; margin-right: auto; }
+.page-hero .lead { margin-left: auto; margin-right: auto; }
+.page-hero .konf-hints { justify-content: center; }
+
+/* Shop-Hero: Text bündig zum Seiteninhalt, nie angeschnitten */
+.wardrobe-copy { left: max(var(--pad), calc((100vw - var(--maxw)) / 2 + var(--pad))); }
+.page-hero .eyebrow { display: inline-flex; justify-content: center; }
