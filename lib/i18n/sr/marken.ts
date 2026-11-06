@@ -1,117 +1,116 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Brand pages — English overlay of lib/brands.ts (sections: same number and order).
+// Stranice brendova — srpski prevod (ćirilica) uz lib/brands.ts (sections: isti broj i redosled).
 export const marken: Woerterbuch['marken'] = {
   'orazio-luciano': {
-    claim: 'Neapolitan tailoring',
+    claim: 'Напуљско кројачко умеће',
     metaDescription:
-      'Orazio Luciano at The Sartorialist Zurich: handmade suits from Naples — refined classicism, unpadded shoulders and a celebrated fit.',
-    origin: 'Naples, Italy',
+      'Orazio Luciano у The Sartorialist Цирих: ручно рађена одела из Напуља — префињен класицизам, рамена без подметача и чувени крој.',
+    origin: 'Напуљ, Италија',
     sections: [
       {
-        title: 'Milan is the city of fashion. Naples is the city of tailors.',
-        text: 'Every man should own a handmade suit from Naples — a suit that embodies pride, style and success. Orazio Luciano is defined by refined classicism with a touch of technical virtuosity, inspired by Neapolitan tailoring. The models are cut along modern lines for light, unrestricted ease of wear.',
+        title: 'Милано је град моде. Напуљ је град кројача.',
+        text: 'Сваки мушкарац требало би да поседује ручно рађено одело из Напуља — одело које оличава понос, стил и успех. Orazio Luciano одликује префињен класицизам са дозом техничке виртуозности, надахнут напуљским кројачким умећем. Модели су скројени по модерним линијама, за лагано и неспутано ношење.',
       },
       {
-        title: 'The celebrated fit',
-        text: 'The Orazio Luciano fit offers complete freedom of movement and a perfectly sculpted silhouette. The shoulders are ideally accentuated, the waist flatteringly defined, the trousers taken to exactly the right length. Characteristic is the lapel of at least 10 cm, which together with the unpadded shoulders gives a confident yet “soft” presence. Neapolitan flair runs through every suit, every jacket, every coat and every detail.',
+        title: 'Чувени крој',
+        text: 'Крој Orazio Luciano пружа потпуну слободу покрета и савршено обликовану силуету. Рамена су идеално наглашена, струк ласкаво истакнут, а панталоне скраћене тачно на праву дужину. Карактеристичан је ревер од најмање 10 cm, који заједно са раменима без подметача даје самоуверен, а ипак „мек“ наступ. Напуљски шарм прожима свако одело, сваки сако, сваки капут и сваки детаљ.',
       },
     ],
   },
   'maria-santangelo': {
-    claim: 'Handmade shirts since 1953',
+    claim: 'Ручно рађене кошуље од 1953.',
     metaDescription:
-      'Maria Santangelo at The Sartorialist Zurich: hand-sewn shirts from Naples since 1953 — Australian mother-of-pearl buttons, made entirely in-house.',
-    origin: 'Naples, Italy · since 1953',
+      'Maria Santangelo у The Sartorialist Цирих: ручно шивене кошуље из Напуља од 1953. — дугмад од аустралијског седефа, у потпуности из сопствене производње.',
+    origin: 'Напуљ, Италија · од 1953.',
     sections: [
       {
-        title: 'The Neapolitan art of shirtmaking',
-        text: 'True to the Neapolitan school, every Maria Santangelo shirt is made and embroidered by hand — the only way to achieve perfection. Finished with Australian mother-of-pearl buttons, it is both a luxurious and a relaxed choice. To avoid seams and unevenness, every label is sewn on by hand — the hallmark of a genuine Santangelo shirt.',
+        title: 'Напуљска уметност израде кошуља',
+        text: 'Верна напуљској школи, свака кошуља Maria Santangelo ручно се шије и везе — једини пут до савршенства. Употпуњена дугмадима од аустралијског седефа, она је истовремено луксузан и опуштен избор. Да не би било шавова и неравнина, свака етикета се пришива ручно — препознатљив знак праве кошуље Santangelo.',
       },
       {
-        title: 'A family tradition since 1953',
-        text: 'Since 1953, Maria Santangelo shirts have expressed the Neapolitan tailoring tradition. The company is still run by the family and does not shy away from innovation. A particular source of pride is that production is 100 % in-house — quantities are deliberately limited, which makes every shirt all the more exclusive.',
+        title: 'Породична традиција од 1953.',
+        text: 'Од 1953. године кошуље Maria Santangelo изражавају напуљску кројачку традицију. Предузеће и данас води породица, која се не устручава од иновација. Посебан понос је производња у потпуности у сопственој режији — количине су намерно ограничене, што сваку кошуљу чини још ексклузивнијом.',
       },
     ],
   },
   'loro-piana': {
-    claim: 'The finest cloths in the world',
+    claim: 'Најфиније тканине на свету',
     metaDescription:
-      'Loro Piana at The Sartorialist Zurich: made-to-measure suits in the finest wool and cashmere cloths — over 200 years of textile expertise, uncompromising quality.',
-    origin: 'Quarona, Italy · over 200 years',
+      'Loro Piana у The Sartorialist Цирих: одела по мери од најфинијих вунених и кашмирских тканина — више од 200 година текстилног искуства, бескомпромисан квалитет.',
+    origin: 'Кварона, Италија · више од 200 година',
     sections: [
       {
-        title: 'Luxurious cloths for exceptional suits',
-        text: 'Loro Piana stands worldwide for the finest cloths and uncompromising quality. The Italian house specialises in the noblest materials and is renowned for its exceptional wool and cashmere. With more than 200 years of experience in textiles, Loro Piana offers cloths that combine elegance, comfort and longevity to perfection.',
+        title: 'Луксузне тканине за изузетна одела',
+        text: 'Loro Piana широм света оличава најфиније тканине и бескомпромисан квалитет. Италијанска кућа специјализована је за најплеменитије материјале и позната по изузетној вуни и кашмиру. Са више од 200 година искуства у текстилу, Loro Piana нуди тканине које савршено спајају елеганцију, удобност и дуговечност.',
       },
       {
-        title: 'Craftsmanship meets innovation',
-        text: 'Loro Piana unites traditional craftsmanship with the latest technology. From the finest cashmere and luxurious merino wool to rare natural fibres — every cloth is a masterpiece. The particular finishing guarantees not only an elegant appearance but also a functionality and durability without equal.',
+        title: 'Занат у сусрету са иновацијом',
+        text: 'Loro Piana спаја традиционално занатско умеће са најновијом технологијом. Од најфинијег кашмира и луксузне мерино вуне до ретких природних влакана — свака тканина је ремек-дело. Посебна обрада не гарантује само елегантан изглед, већ и функционалност и трајност без премца.',
       },
       {
-        title: 'Made-to-measure perfection in our boutique',
-        text: 'Our suits in exclusive Loro Piana cloths are tailored individually to your measurements and your style. The combination of first-class materials and precise made-to-measure work ensures a perfect fit and the greatest comfort. Experience the cloths for yourself in our Zurich boutique — our team will find the perfect suit for you.',
+        title: 'Савршенство по мери у нашем бутику',
+        text: 'Наша одела од ексклузивних тканина Loro Piana израђују се појединачно, према Вашим мерама и Вашем стилу. Спој првокласних материјала и прецизне израде по мери обезбеђује савршено пристајање и највећу удобност. Доживите тканине уживо у нашем бутику у Цириху — наш тим ће пронаћи савршено одело за Вас.',
       },
     ],
   },
   'holland-sherry': {
-    claim: 'British cloth heritage since 1836',
+    claim: 'Британска традиција тканина од 1836.',
     metaDescription:
-      'Holland & Sherry at The Sartorialist Zurich: the finest wool, cashmere and silk cloths for made-to-measure suits of the highest calibre.',
-    origin: 'London / Peebles, United Kingdom',
+      'Holland & Sherry у The Sartorialist Цирих: најфиније тканине од вуне, кашмира и свиле за одела по мери највишег ранга.',
+    origin: 'Лондон / Пиблс, Уједињено Краљевство',
     sections: [
       {
-        title: 'A tradition of excellence',
-        text: 'Since its foundation, Holland & Sherry has specialised in the finest wool, cashmere and silk cloths that meet the highest standards of quality and style. The house stands for timeless elegance and continuous innovation. Its cloths are known for their luxurious handle and exceptional resilience — the first choice for discerning made-to-measure suits.',
+        title: 'Традиција изврсности',
+        text: 'Од свог оснивања Holland & Sherry је специјализован за најфиније тканине од вуне, кашмира и свиле, које испуњавају највише захтеве у погледу квалитета и стила. Кућа оличава безвремену елеганцију и непрекидну иновацију. Њене тканине познате су по луксузном опипу и изузетној отпорности — први избор за захтевна одела по мери.',
       },
       {
-        title: 'Made-to-measure suits in Holland & Sherry cloths',
-        text: 'With us, you can have suits made in the exquisite cloths of Holland & Sherry. Whether a classic business suit, an elegant wedding suit or a stylish leisure suit — we offer a wide range of colours, patterns and textures with countless design options.',
+        title: 'Одела по мери од тканина Holland & Sherry',
+        text: 'Код нас можете наручити одела од изузетних тканина Holland & Sherry. Било да је реч о класичном пословном оделу, елегантном венчаном оделу или стилском оделу за слободно време — нудимо широк избор боја, узорака и текстура уз безброј могућности обликовања.',
       },
       {
-        title: 'Quality and style combined',
-        text: 'The cloths are distinguished by exceptional quality and precise finishing: light, breathable and remarkably durable — ideal for made-to-measure suits with an impeccable fit and a refined look that offer the greatest comfort for many years.',
+        title: 'Квалитет и стил у једном',
+        text: 'Тканине се одликују изузетним квалитетом и прецизном обрадом: лагане, прозрачне и изузетно трајне — идеалне за одела по мери беспрекорног кроја и префињеног изгледа, која годинама пружају највећу удобност.',
       },
     ],
   },
   'gran-sasso': {
-    claim: 'Italian knitwear artistry',
+    claim: 'Италијанско умеће плетенине',
     metaDescription:
-      'Gran Sasso at The Sartorialist Zurich: luxurious knitwear from Italy — cashmere, wool and cotton in timeless design.',
-    origin: 'Abruzzo, Italy · since the 1950s',
+      'Gran Sasso у The Sartorialist Цирих: луксузна плетенина из Италије — кашмир, вуна и памук у безвременом дизајну.',
+    origin: 'Абруцо, Италија · од 1950-их',
     sections: [
       {
-        title: 'Timeless Italian elegance',
-        text: 'For decades, Gran Sasso has stood for fine Italian fashion that unites elegance and craftsmanship. Founded in the 1950s, the house specialises in luxurious knitwear and impresses with timeless style and exquisite materials. Every garment is made in Italy and embodies the tradition of “Made in Italy”.',
+        title: 'Безвремена италијанска елеганција',
+        text: 'Gran Sasso деценијама оличава фину италијанску моду која спаја елеганцију и занатско умеће. Основана 1950-их, кућа је специјализована за луксузну плетенину и одушевљава безвременим стилом и одабраним материјалима. Сваки одевни предмет израђује се у Италији и оличава традицију „Made in Italy“.',
       },
       {
-        title: 'Quality and design',
-        text: 'At Gran Sasso, innovative design meets traditional handwork. The range extends from fine jumpers and cardigans to polo shirts and elegant leisure and business wear. Premium materials such as cashmere, wool and cotton ensure comfort and longevity.',
+        title: 'Квалитет и дизајн',
+        text: 'У кући Gran Sasso иновативни дизајн сусреће се са традиционалним ручним радом. Понуда се протеже од финих џемпера и кардигана до поло мајица и елегантне одеће за слободно време и посао. Врхунски материјали као што су кашмир, вуна и памук обезбеђују удобност и дуговечност.',
       },
       {
-        title: 'Gran Sasso in our Zurich boutique',
-        text: 'Discover the exclusive collection of Gran Sasso in our boutique in the heart of Zurich. We offer a carefully curated selection of this renowned house’s fine knitwear and elegant garments. Our team will be pleased to advise you.',
+        title: 'Gran Sasso у нашем бутику у Цириху',
+        text: 'Откријте ексклузивну колекцију Gran Sasso у нашем бутику у срцу Цириха. Нудимо пажљиво одабран избор фине плетенине и елегантних одевних предмета ове угледне куће. Наш тим ће Вас радо саветовати.',
       },
     ],
   },
   woolrich: {
-    claim: 'Outdoor icon since 1830',
+    claim: 'Икона одеће за природу од 1830.',
     metaDescription:
-      'Woolrich at The Sartorialist Zurich: iconic outerwear since 1830 — from the Arctic Parka to the elegant wool coat.',
-    origin: 'USA · since 1830',
+      'Woolrich у The Sartorialist Цирих: култна горња одећа од 1830. — од парке Arctic Parka до елегантног вуненог капута.',
+    origin: 'САД · од 1830.',
     sections: [
       {
-        title: 'Traditional outerwear with a modern flair',
-        text: 'Woolrich is an iconic brand, renowned for fine outdoor clothing since 1830. Founded in the United States, Woolrich unites traditional craftsmanship with innovative design and sets the standard for functional, stylish clothing — robust, weatherproof, classic.',
+        title: 'Традиционална горња одећа са модерним шармом',
+        text: 'Woolrich је култни бренд, познат по финој одећи за боравак у природи још од 1830. године. Основан у Сједињеним Државама, Woolrich спаја традиционално занатско умеће са иновативним дизајном и поставља мерила за функционалну, стилску одећу — чврсту, отпорну на временске услове, класичну.',
       },
       {
-        title: 'Timeless quality and functionality',
-        text: 'From the iconic Arctic Parka to elegant wool coats: every garment is made from first-class materials that protect against the elements and guarantee the greatest comfort — in the city as in the countryside.',
+        title: 'Безвремени квалитет и функционалност',
+        text: 'Од култне парке Arctic Parka до елегантних вунених капута: сваки одевни предмет израђен је од првокласних материјала који штите од временских услова и гарантују највећу удобност — у граду као и у природи.',
       },
       {
-        title: 'Woolrich in our boutique',
-        text: 'Experience the exclusive world of Woolrich in our Zurich boutique — with a carefully curated collection of fine outerwear and accessories.',
+        title: 'Woolrich у нашем бутику',
+        text: 'Доживите ексклузивни свет бренда Woolrich у нашем бутику у Цириху — уз пажљиво одабрану колекцију фине горње одеће и модних додатака.',
       },
     ],
   },

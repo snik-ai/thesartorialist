@@ -1,36 +1,35 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Contact & directions
+// Контакт и како до нас
 export const kontakt: Woerterbuch['kontakt'] = {
   meta: {
-    titel: 'Contact & Directions — Kuttelgasse 7, Zurich',
+    titel: 'Контакт и како до нас — Kuttelgasse 7, Цирих',
     beschreibung:
-      'The Sartorialist Zurich: Kuttelgasse 7, 8001 Zürich. Telephone +41 43 243 02 77, store@thesartorialist.ch. Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
-    ogTitel: 'Contact — The Sartorialist Zurich',
-    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — our showroom in the heart of Zurich.',
+      'The Sartorialist Цирих: Kuttelgasse 7, 8001 Zürich. Телефон +41 43 243 02 77, store@thesartorialist.ch. Пон–пет 10–19 ч, суб 10–17 ч.',
+    ogTitel: 'Контакт — The Sartorialist Цирих',
+    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — наш шоурум у срцу Цириха.',
   },
-  breadcrumb: 'Contact',
+  breadcrumb: 'Контакт',
   hero: {
-    eyebrow: 'Contact & directions',
-    h1: 'Your menswear boutique, style adviser & tailor',
-    lead: 'Visit our boutique and, over a fine coffee, let us show you what we mean — with no obligation. Ideally, book an appointment so that we can devote our full attention to you.',
+    eyebrow: 'Контакт и како до нас',
+    h1: 'Ваш бутик мушке моде, стилски саветник и кројач',
+    lead: 'Посетите наш бутик и, уз добру кафу, дозволите нам да Вам покажемо на шта мислимо — без икакве обавезе. Најбоље је да закажете термин, како бисмо Вам посветили пуну пажњу.',
   },
-  bildAlt: 'The Sartorialist boutique at Kuttelgasse 7 in Zurich',
+  bildAlt: 'Бутик The Sartorialist у улици Kuttelgasse 7 у Цириху',
   info: {
-    adresse: 'Address',
-    route: 'Directions on Google Maps',
-    telefon: 'Telephone',
-    email: 'Email',
+    adresse: 'Адреса',
+    route: 'Упутства на Google Maps',
+    telefon: 'Телефон',
+    email: 'Е-пошта',
     instagram: 'Instagram',
-    oeffnungszeiten: 'Opening hours',
+    oeffnungszeiten: 'Радно време',
   },
-  wunschtermin: 'Your preferred appointment',
-  ablauf: 'More about the consultation',
+  wunschtermin: 'Ваш жељени термин',
+  ablauf: 'Више о консултацији',
   alternativ: {
-    frage: 'No suitable time available?',
-    rueckruf: 'Request a call back',
+    frage: 'Нема одговарајућег термина?',
+    rueckruf: 'Затражите повратни позив',
     whatsapp: 'WhatsApp',
-    waText: 'Hello, I would like to book a consultation.',
+    waText: 'Добар дан, желео бих да закажем консултацију.',
   },
 };

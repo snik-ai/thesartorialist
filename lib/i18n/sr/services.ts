@@ -1,43 +1,42 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Services (alterations)
+// Услуге (преправке)
 export const services: Woerterbuch['services'] = {
   meta: {
-    titel: 'Tailoring Alterations Zurich — Services',
+    titel: 'Кројачке преправке Цирих — услуге',
     beschreibung:
-      'Alterations at The Sartorialist Zurich: our long-standing partner tailor alters anything that fits under a sewing machine — jackets, coats, trousers and shirts at fair prices.',
-    ogTitel: 'Services — The Sartorialist Zurich',
-    ogBeschreibung: 'Alterations for jackets, coats, trousers and shirts.',
+      'Преправке у The Sartorialist Цирих: наш дугогодишњи партнерски кројач преправља све што стане под шиваћу машину — сакое, капуте, панталоне и кошуље по поштеним ценама.',
+    ogTitel: 'Услуге — The Sartorialist Цирих',
+    ogBeschreibung: 'Преправке сакоа, капута, панталона и кошуља.',
   },
-  breadcrumb: 'Services',
+  breadcrumb: 'Услуге',
   hero: {
-    eyebrow: 'Alterations & adjustments',
-    h1: 'Services',
-    lead: 'Our long-standing partner alterations tailor can handle anything that fits under a sewing machine — and at sensible prices.',
+    eyebrow: 'Преправке и прилагођавања',
+    h1: 'Услуге',
+    lead: 'Наш дугогодишњи партнерски кројач за преправке може да уради све што стане под шиваћу машину — и то по разумним ценама.',
   },
   leistungen: [
     {
-      titel: 'Jacket / coat',
-      text: 'Shortening or lengthening sleeves, taking in the waist, correcting the shoulders — after alteration, your jacket or coat fits as if made to measure.',
+      titel: 'Сако / капут',
+      text: 'Скраћивање или продужавање рукава, сужавање у струку, корекција рамена — после преправке Ваш сако или капут пристаје као да је шивен по мери.',
     },
     {
-      titel: 'Trousers',
-      text: 'Length, waist, turn-ups or a slimmer leg line — quick, precise adjustments for the perfect silhouette.',
+      titel: 'Панталоне',
+      text: 'Дужина, појас, подврнуте ногавице или ужа линија ногавица — брза, прецизна прилагођавања за савршену силуету.',
     },
     {
-      titel: 'Shirt',
-      text: 'Tapering, shortening sleeves, renewing collars or cuffs — so that even your favourite shirt fits impeccably once again.',
+      titel: 'Кошуља',
+      text: 'Сужавање, скраћивање рукава, замена крагне или манжетни — како би и Ваша омиљена кошуља поново беспрекорно пристајала.',
     },
   ],
-  hinweis: 'Simply bring your garment to our store — or [book an appointment](termin).',
+  hinweis: 'Једноставно донесите свој одевни предмет у нашу радњу — или [закажите термин](termin).',
   cta: {
-    titel: 'Need an alteration? We will take care of it.',
-    text: 'Kuttelgasse 7, 8001 Zurich — Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
+    titel: 'Потребна Вам је преправка? Ми ћемо се побринути.',
+    text: 'Kuttelgasse 7, 8001 Zürich — пон–пет 10–19 ч, суб 10–17 ч.',
   },
   schema: {
-    name: 'Tailoring alterations Zurich',
+    name: 'Кројачке преправке Цирих',
     beschreibung:
-      'Alterations for jackets, coats, trousers and shirts — the partner alterations tailor of The Sartorialist Zurich.',
+      'Преправке сакоа, капута, панталона и кошуља — партнерски кројач за преправке The Sartorialist Цирих.',
   },
 };

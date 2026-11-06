@@ -1,23 +1,22 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Newsletter
+// Билтен
 export const newsletter: Woerterbuch['newsletter'] = {
   meta: {
-    titel: 'Newsletter — Offers & New Arrivals',
+    titel: 'Билтен — понуде и новитети',
     beschreibung:
-      'Subscribe to The Sartorialist Zurich newsletter and receive our latest offers — unsubscribe at any time.',
-    ogTitel: 'Newsletter — The Sartorialist Zurich',
-    ogBeschreibung: 'New arrivals, collections and offers delivered straight to your inbox.',
+      'Пријавите се на билтен The Sartorialist Цирих и примајте наше најновије понуде — одјава је могућа у сваком тренутку.',
+    ogTitel: 'Билтен — The Sartorialist Цирих',
+    ogBeschreibung: 'Новитети, колекције и понуде директно у Вашем сандучету.',
   },
-  breadcrumb: 'Newsletter',
-  eyebrow: 'Stay informed',
-  h1: 'Newsletter',
-  lead: 'Subscribe to our newsletter and receive our latest offers, collections and invitations. You can unsubscribe at any time.',
-  knopf: 'Subscribe now',
-  hinweis: 'Subscribing opens a pre-filled email to {email}.',
+  breadcrumb: 'Билтен',
+  eyebrow: 'Будите у току',
+  h1: 'Билтен',
+  lead: 'Пријавите се на наш билтен и примајте наше најновије понуде, колекције и позивнице. Одјава је могућа у сваком тренутку.',
+  knopf: 'Пријавите се сада',
+  hinweis: 'Пријава отвара унапред попуњену е-поруку на {email}.',
   mail: {
-    betreff: 'Newsletter subscription',
-    text: 'Hello\n\nI would like to subscribe to The Sartorialist newsletter.\n\nName:\nEmail:\n\nKind regards',
+    betreff: 'Пријава на билтен',
+    text: 'Добар дан,\n\nжелео бих да се пријавим на билтен The Sartorialist.\n\nИме:\nЕ-пошта:\n\nСрдачан поздрав',
   },
 };

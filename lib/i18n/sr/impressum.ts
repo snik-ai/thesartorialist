@@ -1,51 +1,50 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Imprint
+// Импресум
 export const impressum: Woerterbuch['impressum'] = {
   meta: {
-    titel: 'Imprint',
-    beschreibung: 'Imprint of The Sartorialist Zurich — Swiss Art Partner AG.',
+    titel: 'Импресум',
+    beschreibung: 'Импресум компаније The Sartorialist Цирих — Swiss Art Partner AG.',
   },
-  h1: 'Imprint',
+  h1: 'Импресум',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/impressum/).',
+    'Овај превод на српски језик служи искључиво ради лакшег сналажења. Правно обавезујућа је верзија на немачком језику: [прочитајте немачку верзију](/impressum/).',
   unternehmen: {
-    titel: 'Company details',
-    land: 'Switzerland',
-    vertreten: 'Represented by: ',
+    titel: 'Подаци о предузећу',
+    land: 'Швајцарска',
+    vertreten: 'Заступа: ',
   },
   kontakt: {
-    titel: 'Contact',
-    telefon: 'Telephone: ',
-    email: 'Email: ',
+    titel: 'Контакт',
+    telefon: 'Телефон: ',
+    email: 'Имејл: ',
   },
   abschnitte: [
     {
-      titel: 'Consumer dispute resolution / universal arbitration board',
+      titel: 'Решавање потрошачких спорова / општи арбитражни орган',
       absaetze: [
-        'We are neither willing nor obliged to take part in dispute resolution proceedings before a consumer arbitration board.',
+        'Нисмо спремни нити обавезни да учествујемо у поступку решавања спорова пред арбитражним органом за заштиту потрошача.',
       ],
     },
     {
-      titel: 'Liability for content',
+      titel: 'Одговорност за садржај',
       absaetze: [
-        'As a service provider, we are responsible for our own content on these pages in accordance with general law. However, we are not obliged to monitor third-party information that is transmitted or stored, or to investigate circumstances that indicate unlawful activity.',
-        'Obligations to remove or block the use of information under general law remain unaffected. Liability in this respect is, however, only possible from the moment we become aware of a specific infringement. As soon as we become aware of any such infringement, we will remove the content concerned without delay.',
+        'Као пружалац услуга одговорни смо за сопствени садржај на овим страницама у складу са општим прописима. Међутим, нисмо обавезни да надзиремо пренете или сачуване информације трећих лица нити да истражујемо околности које указују на противправну делатност.',
+        'Обавезе уклањања или блокирања коришћења информација према општим прописима остају нетакнуте. Одговорност у том погледу могућа је, међутим, тек од тренутка када сазнамо за конкретну повреду права. Чим сазнамо за такву повреду, без одлагања ћемо уклонити дотични садржај.',
       ],
     },
     {
-      titel: 'Liability for links',
+      titel: 'Одговорност за линкове',
       absaetze: [
-        'Our website contains links to external third-party websites over whose content we have no control. We therefore cannot accept any liability for such third-party content. The respective provider or operator of the linked pages is always responsible for their content. The linked pages were checked for possible legal infringements at the time the links were created.',
-        'Permanent monitoring of the content of linked pages is not reasonable without concrete evidence of an infringement. As soon as we become aware of any infringements, we will remove such links without delay.',
+        'Наша веб-страница садржи линкове ка спољним веб-страницама трећих лица, на чији садржај немамо утицаја. Стога за тај туђи садржај не можемо преузети никакву одговорност. За садржај повезаних страница увек је одговоран њихов пружалац или оператер. Повезане странице су у тренутку постављања линкова проверене на могуће повреде права.',
+        'Стални надзор садржаја повезаних страница без конкретних индиција о повреди права није разуман. Чим сазнамо за повреде права, без одлагања ћемо уклонити такве линкове.',
       ],
     },
     {
-      titel: 'Copyright',
+      titel: 'Ауторско право',
       absaetze: [
-        'The content and works created by the site operators on these pages are subject to copyright. Reproduction, editing, distribution and any form of exploitation beyond the limits of copyright law require the written consent of the respective author or creator. Downloads and copies of this site are permitted for private, non-commercial use only.',
-        'Insofar as the content on this site was not created by the operator, the copyrights of third parties are respected. Should you nevertheless become aware of a copyright infringement, please notify us accordingly. As soon as we become aware of any infringements, we will remove such content without delay.',
+        'Садржај и дела које су оператери ове веб-странице израдили на овим страницама подлежу ауторском праву. Умножавање, обрада, дистрибуција и било какав вид коришћења изван граница ауторског права захтевају писану сагласност дотичног аутора односно ствараоца. Преузимање и копирање ове странице дозвољено је искључиво за приватну, некомерцијалну употребу.',
+        'Уколико садржај на овој страници није израдио оператер, поштују се ауторска права трећих лица. Ако ипак приметите повреду ауторског права, молимо Вас да нас о томе обавестите. Чим сазнамо за повреде права, без одлагања ћемо уклонити такав садржај.',
       ],
     },
   ],

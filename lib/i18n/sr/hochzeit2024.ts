@@ -1,56 +1,55 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure wedding suit (page "wedding-suit-2024")
+// Венчано одело по мери (страница „венчано-одело-2024“)
 export const hochzeit2024: Woerterbuch['hochzeit2024'] = {
   meta: {
-    titel: 'Made-to-Measure Wedding Suit — Zurich',
+    titel: 'Венчано одело по мери — Цирих',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: classic design meets modern style — tailored for every celebration, venue and style. Complimentary measuring at The Sartorialist.',
-    ogTitel: 'Made-to-Measure Wedding Suit — The Sartorialist Zurich',
-    ogBeschreibung: 'Made-to-measure wedding suits in the heart of Zurich.',
+      'Венчана одела по мери у Цириху: класичан дизајн сусреће модеран стил — скројено за сваку прославу, место и стил. Бесплатно узимање мера у The Sartorialist.',
+    ogTitel: 'Венчано одело по мери — The Sartorialist Цирих',
+    ogBeschreibung: 'Венчана одела по мери у срцу Цириха.',
   },
-  breadcrumb: 'Wedding suit',
+  breadcrumb: 'Венчано одело',
   hero: {
-    eyebrow: 'Weddings · Made to measure',
-    h1: 'Made-to-Measure Wedding Suits',
-    lead: 'At The Sartorialist you will find what may well be the finest wedding suits in Zurich — with expert, personal advice of the highest standard.',
-    knopf: 'Book a complimentary measuring',
+    eyebrow: 'Венчања · По мери',
+    h1: 'Венчана одела по мери',
+    lead: 'У The Sartorialist ћете пронаћи можда најфинија венчана одела у Цириху — уз стручан, личан савет највишег нивоа.',
+    knopf: 'Закажите бесплатно узимање мера',
   },
-  bildAlt: 'Made-to-measure wedding suit — a groom at The Sartorialist Zurich',
+  bildAlt: 'Венчано одело по мери — младожења у The Sartorialist Цирих',
   abschnitte: [
     {
-      titel: 'Wedding suits by The Sartorialist in Zurich',
-      text: 'A wedding day is a unique occasion, and the perfect suit underlines the significance of the moment. Our collection unites classic design with modern style. A made-to-measure suit does not merely fit perfectly — it conveys a special sense of luxury and individuality, tailored to your build and your style so that it remains comfortable all day long.',
+      titel: 'Венчана одела The Sartorialist у Цириху',
+      text: 'Дан венчања је јединствена прилика, а савршено одело наглашава значај тренутка. Наша колекција спаја класичан дизајн са модерним стилом. Одело по мери не само да савршено пристаје — оно преноси посебан осећај луксуза и индивидуалности, скројено према Вашој грађи и Вашем стилу, тако да остаје удобно током целог дана.',
     },
     {
-      titel: 'Made for every celebration',
-      text: 'Whether an intimate gathering or a grand wedding, an elegant ballroom, a rustic barn or a ceremony in the open air — our suits ensure you always look your best. Our wedding suits are made from the finest cloths such as noble wool, silk or linen: light and breathable for summer weddings, warmer and more structured for the cooler seasons.',
+      titel: 'Створено за сваку прославу',
+      text: 'Било да је реч о интимном окупљању или великом венчању, елегантној балској сали, рустичној штали или церемонији на отвореном — наша одела обезбеђују да увек изгледате најбоље. Наша венчана одела израђују се од најфинијих тканина као што су племенита вуна, свила или лан: лагана и прозрачна за летња венчања, топлија и структуриранија за хладније годишње доба.',
     },
     {
-      titel: 'Individual design',
-      text: 'Every wedding is unique — and so should your suit be. From the choice of cloth and the cut to personal details such as embroidery or special buttons, the result is an unmistakable garment that reflects exactly what you have in mind.',
+      titel: 'Индивидуални дизајн',
+      text: 'Свако венчање је јединствено — а такво треба да буде и Ваше одело. Од избора тканине и кроја до личних детаља као што су вез или посебна дугмад, настаје непогрешив одевни предмет који одражава тачно оно што замишљате.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Choosing the perfect suit depends on your style, your build and the occasion. Whether classically elegant or modern and contemporary — our team helps you select the cut, cloth and details that best express your personality.',
+      titel: 'Које одело је право за мене?',
+      text: 'Избор савршеног одела зависи од Вашег стила, грађе и прилике. Било класично елегантно или модерно и савремено — наш тим Вам помаже да изаберете крој, тканину и детаље који најбоље изражавају Вашу личност.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'Our prices depend on the cloth you choose, the details and the individual design — every suit is a one-off. The service includes comprehensive advice, made-to-measure tailoring and all necessary alterations. For a personal quotation, visit us at our atelier in Zurich.',
+      titel: 'Цене и услови',
+      text: 'Наше цене зависе од изабране тканине, детаља и индивидуалног дизајна — свако одело је уникат. Услуга обухвата свеобухватан савет, кројење по мери и све потребне преправке. За личну понуду посетите нас у нашем атељеу у Цириху.',
     },
     {
-      titel: 'We love suits!',
-      text: 'A perfectly fitting suit leaves a lasting impression. It is our passion to advise our clients attentively and thoroughly — in our store at Kuttelgasse 7 in Zurich. The finest selection, warm and personal advice, and fair prices.',
+      titel: 'Волимо одела!',
+      text: 'Савршено скројено одело оставља трајан утисак. Наша страст је да своје клијенте саветујемо пажљиво и темељно — у нашој радњи у улици Kuttelgasse 7 у Цириху. Најфинији избор, топао и личан савет и поштене цене.',
     },
   ],
   cta: {
-    titel: 'Have your measurements taken — complimentary.',
-    text: 'No-obligation measuring and advice at our atelier, Kuttelgasse 7, Zurich.',
+    titel: 'Дајте да Вам узмемо мере — бесплатно.',
+    text: 'Необавезно узимање мера и савет у нашем атељеу, Kuttelgasse 7, Цирих.',
   },
   schema: {
-    name: 'Made-to-measure wedding suits',
+    name: 'Венчана одела по мери',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich — classic design, modern style, complimentary measuring.',
+      'Венчана одела по мери у Цириху — класичан дизајн, модеран стил, бесплатно узимање мера.',
   },
 };
