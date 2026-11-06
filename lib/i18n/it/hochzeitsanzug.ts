@@ -1,92 +1,91 @@
-// TODO übersetzen (Italienisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Wedding suit Zurich
+// Abito da sposo Zurigo
 export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
   meta: {
-    titel: 'Men’s Wedding Suit Zurich — Made to Measure',
+    titel: 'Abito da sposo uomo Zurigo — su misura',
     beschreibung:
-      'Men’s wedding suits made to measure in Zurich: a perfect fit, breathable natural cloths and personal details down to embroidery in the lining. For the groom from CHF 1’690.',
-    ogTitel: 'Wedding Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'The perfect look for the most beautiful day of your life.',
+      'Abiti da sposo per uomo su misura a Zurigo: vestibilità perfetta, tessuti naturali traspiranti e dettagli personali fino al ricamo nella fodera. Per lo sposo a partire da CHF 1’690.',
+    ogTitel: 'Abito da sposo Zurigo — The Sartorialist',
+    ogBeschreibung: 'L’eleganza perfetta per il giorno più bello della Sua vita.',
   },
-  breadcrumb: 'Wedding suit Zurich',
+  breadcrumb: 'Abito da sposo Zurigo',
   hero: {
-    eyebrow: 'Wedding suits for men',
-    h1: 'Wedding Suits Zurich',
-    lead: 'The perfect look for the most beautiful day of your life: a suit that fits impeccably, lets your personality shine and moves with you every step of the way.',
+    eyebrow: 'Abiti da sposo per uomo',
+    h1: 'Abiti da sposo Zurigo',
+    lead: 'L’eleganza perfetta per il giorno più bello della Sua vita: un abito che veste in modo impeccabile, fa risaltare la Sua personalità e La accompagna in ogni movimento.',
   },
   warum: {
-    bildAlt: 'Made-to-measure wedding suit by The Sartorialist Zurich',
-    titel: 'Why choose The Sartorialist for your wedding suit?',
+    bildAlt: 'Abito da sposo su misura di The Sartorialist Zurigo',
+    titel: 'Perché scegliere The Sartorialist per il Suo abito da sposo?',
     liste: [
-      '15 years of experience — your guarantee of the finest wedding suits in Zurich and beyond',
-      'We love fashion — and we love advising our clients in person',
-      'Current trends, exclusive materials and fair terms',
-      'Full canvas for made-to-measure suits that fit perfectly',
+      '15 anni di esperienza — la Sua garanzia per i più begli abiti da sposo a Zurigo e dintorni',
+      'Amiamo la moda — e amiamo consigliare personalmente i nostri clienti',
+      'Tendenze attuali, materiali esclusivi e condizioni eque',
+      'Intelatura completa per abiti su misura dalla vestibilità perfetta',
     ],
-    text: 'At The Sartorialist, your made-to-measure wedding suit fulfils every wish, is crafted from the finest cloths and, thanks to its distinctive details, is a true one-off — at a fair price.',
-    knopf: 'Arrange a no-obligation consultation',
+    text: 'Da The Sartorialist il Suo abito da sposo su misura esaudisce ogni desiderio, è confezionato con i tessuti più pregiati e, grazie a dettagli inconfondibili, è un vero pezzo unico — a un prezzo equo.',
+    knopf: 'Fissi una consulenza senza impegno',
   },
   bloecke: [
     {
-      eyebrow: 'Fit',
-      titel: 'Fit and comfort — essential for every wedding',
+      eyebrow: 'Vestibilità',
+      titel: 'Vestibilità e comfort — indispensabili per ogni matrimonio',
       absaetze: [
-        'On your wedding day, your body is on the move from morning to night: the nervous wait before the ceremony, kneeling in church, the photo shoot, the first dance, the long wedding breakfast, the party that follows. Off-the-peg suits rarely keep up — they crease, bag and constrict.',
-        'A made-to-measure wedding suit from The Sartorialist accompanies you perfectly through every moment: thanks to an impeccable fit and exceptionally fine natural cloths, your suit breathes with you and reliably wicks away heat and moisture.',
+        'Il giorno delle nozze il Suo corpo è in movimento dalla mattina alla sera: l’attesa emozionata prima della cerimonia, l’inginocchiarsi in chiesa, il servizio fotografico, il primo ballo, il lungo banchetto, la festa che segue. Gli abiti confezionati raramente reggono il ritmo — si sgualciscono, si deformano, stringono.',
+        'Un abito da sposo su misura di The Sartorialist La accompagna alla perfezione in ogni istante: grazie a una vestibilità impeccabile e a tessuti naturali di qualità eccezionale, il Suo abito respira con Lei e allontana in modo affidabile calore e umidità.',
       ],
     },
     {
-      eyebrow: 'Details',
-      titel: 'You choose the details — and create a one-off',
+      eyebrow: 'Dettagli',
+      titel: 'Lei sceglie i dettagli — e crea un pezzo unico',
       absaetze: [
-        'Choose from a range of button shapes and finishes, and have your bride’s name, a motto or your wedding date embroidered into the lining. Luxurious cufflinks add a touch of brilliance to the moment you exchange rings.',
-        'Complete the look with a wide selection of ties, braces and bow ties — and, if you wish, a made-to-measure shirt cut to your exact measurements.',
+        'Scelga tra diverse forme e lavorazioni dei bottoni e faccia ricamare nella fodera interna il nome della sposa, un motto o la data delle nozze. Gemelli preziosi regalano un tocco di luce al momento dello scambio degli anelli.',
+        'A completare il look, un’ampia scelta di cravatte, bretelle e papillon — e, su richiesta, una camicia su misura confezionata sulle Sue misure esatte.',
       ],
     },
   ],
-  faqTitel: 'Frequently asked questions about wedding suits',
+  faqTitel: 'Domande frequenti sull’abito da sposo',
   faq: [
     {
-      q: 'What is the difference between a wedding suit and a business suit?',
+      q: 'Qual è la differenza tra un abito da sposo e un abito da lavoro?',
       a: [
-        'A wedding suit is not simply an ordinary suit — it is a statement. While a business suit is functional and understated, a wedding suit takes centre stage on one of the most emotional days of your life. It must fit perfectly, reflect your character, suit the style of the wedding and stand the test of time, both in photographs and in memory.',
+        'Un abito da sposo non è semplicemente un abito qualsiasi — è una dichiarazione. Mentre l’abito da lavoro è funzionale e discreto, l’abito da sposo è al centro di uno dei giorni più emozionanti della Sua vita. Deve vestire alla perfezione, rispecchiare il Suo carattere, armonizzarsi con lo stile del matrimonio e resistere al tempo, nelle fotografie come nei ricordi.',
       ],
     },
     {
-      q: 'How far in advance should I have my wedding suit made?',
+      q: 'Con quanto anticipo dovrei far confezionare il mio abito da sposo?',
       a: [
-        'We recommend booking your appointment at least 8 to 10 weeks before the wedding — earlier is better. That leaves ample time for choosing the cloth, taking measurements, the first fitting, any alterations and the final personal touches. Short-notice requests are possible in exceptional cases — just ask us.',
+        'Consigliamo di prenotare l’appuntamento almeno 8–10 settimane prima delle nozze — meglio ancora prima. Così resta tempo a sufficienza per la scelta del tessuto, la presa delle misure, la prima prova, eventuali modifiche e le rifiniture personali. In casi eccezionali sono possibili anche richieste a breve termine — non esiti a contattarci.',
       ],
     },
     {
-      q: 'Which suit styles are popular for weddings?',
+      q: 'Quali stili di abito sono apprezzati per i matrimoni?',
       a: [
-        'The classic three-piece suit with waistcoat (timelessly elegant), the modern slim-fit suit (a sleek silhouette), the Italian linen suit (ideal for summer weddings), the dinner suit or dinner jacket (black tie), the vintage suit in tweed or checks (for rustic settings), as well as coloured suits in dark green, burgundy or beige.',
-        'You set the direction — we make sure it is executed to perfection.',
+        'Il classico tre pezzi con gilet (di un’eleganza senza tempo), l’abito slim fit moderno (silhouette snella), l’abito in lino all’italiana (ideale per i matrimoni estivi), lo smoking o la dinner jacket (black tie), l’abito vintage in tweed o a quadri (per ambientazioni rustiche) e gli abiti colorati in verde scuro, bordeaux o beige.',
+        'Lei indica la direzione — noi ci assicuriamo che venga realizzata alla perfezione.',
       ],
     },
     {
-      q: 'Can I still wear my made-to-measure suit after the wedding?',
+      q: 'Potrò indossare il mio abito su misura anche dopo il matrimonio?',
       a: [
-        'Yes — that is precisely one of its advantages. From the very first consultation we make sure your suit stays versatile: classic colours such as navy, charcoal or dark green, understated cloths, and the option to wear the waistcoat or accessories separately. Italian cloths keep their shape and elegance for years to come.',
+        'Sì — ed è proprio uno dei suoi vantaggi. Fin dalla prima consulenza facciamo in modo che il Suo abito resti versatile: colori classici come blu navy, antracite o verde scuro, tessuti discreti e la possibilità di indossare il gilet o gli accessori separatamente. I tessuti italiani mantengono forma ed eleganza per molti anni.',
       ],
     },
     {
-      q: 'Which accessories go with a wedding suit?',
+      q: 'Quali accessori si abbinano all’abito da sposo?',
       a: [
-        'We offer a carefully curated selection of bow ties, ties, pocket squares, cufflinks, waistcoats and leather belts, all perfectly matched to your suit. We are also happy to coordinate colours with the bridal gown or the décor.',
+        'Offriamo una selezione accuratamente curata di papillon, cravatte, pochette, gemelli, gilet e cinture in pelle, perfettamente abbinati al Suo abito. Saremo lieti anche di coordinare i colori con l’abito della sposa o con l’allestimento.',
       ],
     },
   ],
   cta: {
-    titel: 'Your wedding suit — book 8–10 weeks before the big day.',
+    titel: 'Il Suo abito da sposo — prenoti 8–10 settimane prima del grande giorno.',
     text: '',
   },
   schema: {
-    name: 'Wedding suits Zurich',
+    name: 'Abiti da sposo Zurigo',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: a perfect fit, fine natural cloths and individual details — The Sartorialist.',
+      'Abiti da sposo su misura a Zurigo: vestibilità perfetta, pregiati tessuti naturali e dettagli personalizzati — The Sartorialist.',
   },
 };

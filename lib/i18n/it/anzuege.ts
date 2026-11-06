@@ -1,44 +1,43 @@
-// TODO übersetzen (Italienisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suits Zurich
+// Abiti Zurigo
 export const anzuege: Woerterbuch['anzuege'] = {
   meta: {
-    titel: 'Suits Zurich — Exclusive Suits & Expert Advice',
+    titel: 'Abiti Zurigo — Abiti esclusivi e consulenza esperta',
     beschreibung:
-      'Suits in Zurich: exclusive suits, jackets, shirts and trousers from The Sartorialist — handcrafted Italian tailoring meets contemporary style. Visit us at Kuttelgasse 7.',
-    ogTitel: 'Suits Zurich — The Sartorialist',
-    ogBeschreibung: 'What may well be the finest suits in Zurich — with advice of the highest standard.',
+      'Abiti a Zurigo: abiti, giacche, camicie e pantaloni esclusivi di The Sartorialist — la sartoria italiana artigianale incontra lo stile contemporaneo. Ci trova in Kuttelgasse 7.',
+    ogTitel: 'Abiti Zurigo — The Sartorialist',
+    ogBeschreibung: 'Forse i più begli abiti di Zurigo — con una consulenza ai massimi livelli.',
   },
-  breadcrumb: 'Suits Zurich',
+  breadcrumb: 'Abiti Zurigo',
   hero: {
-    eyebrow: 'Gentlemen’s outfitter in the heart of Zurich',
-    h1: 'Suits Zurich',
-    lead: 'At The Sartorialist you will find what may well be the finest suits in Zurich. Our advice is expert, personal and of the highest standard — handcrafted Italian tailoring meets contemporary style.',
-    gestalten: 'Design your suit',
-    termin: 'Book an appointment',
+    eyebrow: 'Abbigliamento maschile nel cuore di Zurigo',
+    h1: 'Abiti Zurigo',
+    lead: 'Da The Sartorialist trova forse i più begli abiti di Zurigo. La nostra consulenza è competente, personale e ai massimi livelli — la sartoria italiana artigianale incontra lo stile contemporaneo.',
+    gestalten: 'Crei il Suo abito',
+    termin: 'Prenoti un appuntamento',
   },
   abschnitte: [
     {
-      titel: 'Genuine brand expertise',
-      text: 'We offer exclusive suits, jackets, denim shirts and trousers — complemented by elegant accessories and cashmere of the finest quality. Our carefully selected exclusive brands guarantee the best materials and cuts. Fifteen years of experience in fashion, including at the menswear powerhouse Tom Ford, are your guarantee of the finest suits in Zurich.',
+      titel: 'Vera competenza sui marchi',
+      text: 'Proponiamo abiti, giacche, camicie in denim e pantaloni esclusivi — completati da accessori eleganti e da cashmere della migliore qualità. I marchi esclusivi, selezionati con cura, garantiscono i materiali e i tagli migliori. Quindici anni di esperienza nella moda, anche presso la grande maison di moda maschile Tom Ford, sono la Sua garanzia per i più begli abiti di Zurigo.',
     },
     {
-      titel: 'How a quality suit comes to life',
-      text: 'First, you tell us what you have in mind and we take your exact measurements. Our tailoring team designs and sews the suit to fit you precisely — on average this takes just 15 to 20 days. After a final fitting we make any adjustments needed until the suit fits perfectly and meets every wish.',
+      titel: 'Come nasce un abito di qualità',
+      text: 'Per prima cosa ci racconta che cosa desidera e prendiamo le Sue misure con precisione. Il nostro team sartoriale disegna e confeziona l’abito perché Le calzi alla perfezione — in media bastano dai 15 ai 20 giorni. Dopo una prova finale eseguiamo gli eventuali ritocchi, finché l’abito non veste in modo impeccabile e risponde a ogni Suo desiderio.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Whether a modern double-breasted or a single-breasted suit, for business, a wedding or the opera: a suit is like a second skin. Beyond the style of the suit, fit, cloth and colour play a decisive role. We watch every detail closely to ensure you receive the perfect suit for your personal style.',
+      titel: 'Quale abito fa per me?',
+      text: 'Un moderno doppiopetto o un monopetto, per il lavoro, un matrimonio o una serata all’opera: un abito è come una seconda pelle. Oltre allo stile, sono decisivi la vestibilità, il tessuto e il colore. Curiamo ogni dettaglio con attenzione, perché Lei riceva l’abito perfetto per il Suo stile personale.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'An exclusive suit has its price — and we make sure the investment pays off. We advise against cheap off-the-peg suits: they never achieve the comfort and quality of a made-to-measure suit. Our prices are always fair and transparent.',
+      titel: 'Prezzi e condizioni',
+      text: 'Un abito esclusivo ha il suo prezzo — e facciamo in modo che l’investimento valga la pena. Sconsigliamo gli abiti confezionati a basso prezzo: non raggiungono mai il comfort e la qualità di un abito su misura. I nostri prezzi sono sempre equi e trasparenti.',
     },
   ],
   schema: {
-    name: 'Suits Zurich',
+    name: 'Abiti Zurigo',
     beschreibung:
-      'Exclusive suits, jackets, shirts and trousers in Zurich — advice of the highest standard at The Sartorialist.',
+      'Abiti, giacche, camicie e pantaloni esclusivi a Zurigo — una consulenza ai massimi livelli da The Sartorialist.',
   },
 };

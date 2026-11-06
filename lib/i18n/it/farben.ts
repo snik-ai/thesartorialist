@@ -1,92 +1,91 @@
-// TODO übersetzen (Italienisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suit colour pages — English overlay of lib/suitColors.ts (sections: same number and order).
+// Pagine colore — sovrapposizione italiana di lib/suitColors.ts (sezioni: stesso numero e ordine).
 export const farben: Woerterbuch['farben'] = {
   'anzug-blau': {
-    name: 'Blue suit',
-    title: 'Blue Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Classic elegance redefined',
+    name: 'Abito blu',
+    title: 'Abito blu — Eleganza su misura a Zurigo',
+    claim: 'L’eleganza classica, reinterpretata',
     metaDescription:
-      'Made-to-measure blue suit in Zurich: from sky blue to navy — tailored by The Sartorialist. Book your appointment now.',
+      'Abito blu su misura a Zurigo: dall’azzurro cielo al blu navy — confezionato da The Sartorialist. Prenoti ora il Suo appuntamento.',
     sections: [
       {
-        title: 'Classic elegance redefined',
-        text: 'The blue suit is one of the timeless classics of menswear and an elegant alternative to black and grey. In its many shades — from light sky blue to deep navy — a blue suit suits almost every occasion, whether at work or at social events. It combines classic elegance with a modern touch.',
+        title: 'L’eleganza classica, reinterpretata',
+        text: 'L’abito blu è uno dei grandi classici senza tempo dell’abbigliamento maschile e un’alternativa elegante al nero e al grigio. Nelle sue molte sfumature — dal tenue azzurro cielo al profondo blu navy — un abito blu si addice a quasi ogni occasione, in ufficio come agli eventi mondani. Unisce l’eleganza classica a un tocco moderno.',
       },
       {
-        title: 'Why choose a blue suit',
-        text: 'A blue suit is remarkably versatile and lends you a confident, well-groomed look. Blue feels calm and professional while bringing freshness and energy to your wardrobe. Ideal for the office, business meetings or special occasions — and easy to pair with classic and contemporary accessories alike.',
+        title: 'Perché scegliere un abito blu',
+        text: 'Un abito blu è straordinariamente versatile e Le conferisce un’immagine sicura e curata. Il blu trasmette calma e professionalità e, al tempo stesso, porta freschezza ed energia nel Suo guardaroba. Ideale per l’ufficio, le riunioni d’affari o le occasioni speciali — e facile da abbinare ad accessori classici e contemporanei.',
       },
       {
-        title: 'Made-to-measure excellence',
-        text: 'With us, your blue suit is made individually — fitting perfectly and tailored to your personal style. Our experienced team helps you choose the ideal shade of blue, the right cloth and the perfect cut.',
+        title: 'L’eccellenza del su misura',
+        text: 'Da noi il Suo abito blu viene confezionato individualmente — con una vestibilità perfetta e su misura del Suo stile personale. Il nostro team esperto La aiuta a scegliere la tonalità di blu ideale, il tessuto giusto e il taglio perfetto.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'We use fine cloths known for their longevity and comfort: from luxurious wool and fine linen to noble cashmere. The choice of cloth shapes not only the look but also the comfort of your suit.',
+        title: 'Tessuti e lavorazioni',
+        text: 'Utilizziamo tessuti pregiati, noti per la loro durata e il loro comfort: dalla lana lussuosa al lino fine fino al nobile cashmere. La scelta del tessuto determina non solo l’aspetto, ma anche il comfort del Suo abito.',
       },
       {
-        title: 'Individual design',
-        text: 'Design your blue suit exactly as you envisage it: cloths, cuts and details of your choice — a one-of-a-kind piece that underlines your personality.',
+        title: 'Un design personale',
+        text: 'Crei il Suo abito blu esattamente come lo immagina: tessuti, tagli e dettagli a Sua scelta — un pezzo unico che sottolinea la Sua personalità.',
       },
     ],
   },
   'anzug-gruen': {
-    name: 'Green suit',
-    title: 'Green Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Fresh accents for your look',
+    name: 'Abito verde',
+    title: 'Abito verde — Eleganza su misura a Zurigo',
+    claim: 'Accenti freschi per il Suo stile',
     metaDescription:
-      'Made-to-measure green suit in Zurich: from pastel to deep green — tailored by The Sartorialist. Book your appointment now.',
+      'Abito verde su misura a Zurigo: dai toni pastello al verde profondo — confezionato da The Sartorialist. Prenoti ora il Suo appuntamento.',
     sections: [
       {
-        title: 'Fresh accents for your look',
-        text: 'The green suit is a fashionable choice for anyone who wants to lift their look with a touch of colour. Shades of green range from soft pastels to rich, deep tones and offer a modern alternative to the classic colours. A green suit adds fresh accents and makes a distinctive impression.',
+        title: 'Accenti freschi per il Suo stile',
+        text: 'L’abito verde è una scelta di tendenza per chi desidera ravvivare il proprio stile con un tocco di colore. Le sfumature di verde spaziano dai delicati toni pastello alle tonalità piene e profonde e offrono un’alternativa moderna ai colori classici. Un abito verde regala accenti freschi e lascia un’impressione inconfondibile.',
       },
       {
-        title: 'Why choose a green suit',
-        text: 'A green suit brings colour to your wardrobe and stands out through its unique character. It is versatile — elegant with neutral colours, fashionable with bold accents. In spring and summer especially, it makes for a lively, dynamic look.',
+        title: 'Perché scegliere un abito verde',
+        text: 'Un abito verde porta colore nel Suo guardaroba e si distingue per il suo carattere unico. È versatile — elegante con colori neutri, alla moda con accenti decisi. Soprattutto in primavera e in estate crea un’immagine vivace e dinamica.',
       },
       {
-        title: 'Made-to-measure exclusivity',
-        text: 'We make your green suit individually, to your wishes and measurements. Our team advises you on the perfect shade of green, the right cloth and the appropriate details of the cut.',
+        title: 'L’esclusività del su misura',
+        text: 'Confezioniamo il Suo abito verde individualmente, secondo i Suoi desideri e le Sue misure. Il nostro team La consiglia sulla tonalità di verde perfetta, sul tessuto giusto e sui dettagli di taglio più adatti.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Fine wool, noble linen or luxurious cashmere: the choice of cloth determines comfort and longevity. We pay attention to the details that underline the unique character of your green suit.',
+        title: 'Tessuti e lavorazioni',
+        text: 'Lana fine, lino pregiato o cashmere lussuoso: la scelta del tessuto determina comfort e durata. Curiamo i dettagli che sottolineano il carattere unico del Suo abito verde.',
       },
       {
-        title: 'Individual design',
-        text: 'A green suit from us is more than a garment — it is an expression of your personality. Choose from a range of cloths, cuts and details.',
+        title: 'Un design personale',
+        text: 'Un abito verde firmato da noi è più di un capo d’abbigliamento — è l’espressione della Sua personalità. Scelga tra un’ampia varietà di tessuti, tagli e dettagli.',
       },
     ],
   },
   'anzug-beige': {
-    name: 'Beige suit',
-    title: 'Beige Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Timeless refinement in beige',
+    name: 'Abito beige',
+    title: 'Abito beige — Eleganza su misura a Zurigo',
+    claim: 'Raffinatezza senza tempo in beige',
     metaDescription:
-      'Made-to-measure beige suit in Zurich: light, bright and elegant — ideal for summer and weddings. Tailored by The Sartorialist.',
+      'Abito beige su misura a Zurigo: leggero, luminoso ed elegante — ideale per l’estate e per i matrimoni. Confezionato da The Sartorialist.',
     sections: [
       {
-        title: 'Timeless refinement in beige',
-        text: 'The beige suit is a classic that impresses with its versatility and elegance. It unites timeless refinement with a neutral tone suited to formal and informal occasions alike — ideal for spring and summer, as it looks light and bright.',
+        title: 'Raffinatezza senza tempo in beige',
+        text: 'L’abito beige è un classico che convince per versatilità ed eleganza. Unisce una raffinatezza senza tempo a una tonalità neutra, adatta tanto alle occasioni formali quanto a quelle informali — ideale per la primavera e l’estate, perché appare leggero e luminoso.',
       },
       {
-        title: 'Why choose a beige suit',
-        text: 'A beige suit pairs effortlessly with a wide range of colours and patterns. Whether a wedding, a business event or a relaxed get-together — it always gives you a stylish, well-groomed look. The light colour reflects sunlight and is particularly pleasant to wear.',
+        title: 'Perché scegliere un abito beige',
+        text: 'Un abito beige si abbina con naturalezza a un’ampia gamma di colori e fantasie. Per un matrimonio, un evento d’affari o un incontro informale — Le dona sempre un’immagine elegante e curata. Il colore chiaro riflette la luce del sole ed è particolarmente piacevole da indossare.',
       },
       {
-        title: 'Made-to-measure perfection',
-        text: 'With us, you design your beige suit exactly as you wish: tailored individually to your measurements and your style, with advice on cloth, fit and details.',
+        title: 'La perfezione del su misura',
+        text: 'Da noi crea il Suo abito beige esattamente come lo desidera: confezionato individualmente secondo le Sue misure e il Suo stile, con una consulenza su tessuto, vestibilità e dettagli.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Only fine cloths that guarantee comfort and longevity — from fine wool and noble linen to luxurious cashmere. Every detail is right, so that you feel entirely at ease.',
+        title: 'Tessuti e lavorazioni',
+        text: 'Solo tessuti pregiati che garantiscono comfort e durata — dalla lana fine al lino pregiato fino al cashmere lussuoso. Ogni dettaglio è curato, perché Lei si senta perfettamente a Suo agio.',
       },
       {
-        title: 'Individual design',
-        text: 'Choose the cloth, the cut and special details such as buttons and lining — creating a suit that fits perfectly and reflects your personal touch.',
+        title: 'Un design personale',
+        text: 'Scelga il tessuto, il taglio e i dettagli particolari come bottoni e fodera — per un abito che veste alla perfezione e rispecchia il Suo tocco personale.',
       },
     ],
   },
