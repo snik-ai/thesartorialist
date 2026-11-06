@@ -40,3 +40,32 @@ Nur Fotos ohne Model; beige Chino auf hellem Grund lässt sich so nicht freistel
   Produkt-/Kollektionsseiten per Weiterleitung auf `thesartorialist.ch/shop/…` schicken, Checkout bleibt dort.
 - Shopify-Analysen (Hydrogen `ShopifyScripts`, Ereignisse, Pixel) wie racher noch nicht eingebaut.
 - Woolrich-Produkte ohne Bilder (GTX Jacket, Madison Long Coat) erscheinen erst mit Bild.
+
+---
+
+# Massanzug-Konfigurator, Stil-Studio & Film-Hero (06.11.2026)
+
+Wunsch: Startseite mit Fokus Massanzug, «Styles & Options»-Konfigurator aus dem gelieferten Quellcode
+(`sartorialist SourceCode.zip`, Next 16 + Tailwind) extrem benutzerfreundlich ins eigene Design integriert,
+schwebender Knopf für den Vollbild-Konfigurator, Shop nur sekundär, Film von thesartorialist.ch auf die Startseite.
+
+- **Daten:** `lib/konfigurator/daten.ts` – 4 Kategorien (Sakko, Hose, Weste, Smoking), 36 Untergruppen,
+  118 Optionen, auf Deutsch übersetzt, IDs wie im Original. Illustrationen als WebP in `public/konfigurator/`
+  (117 Bilder, 2.4 MB → 0.55 MB). Nicht übernommen: PDF-Seitenansicht (`pdf-pages-data`, ungenutzt im Original),
+  Tailwind, Cloudinary-Upload und Calendly (Test-Account des Entwicklers, keine Zugangsdaten).
+- **Zustand:** `lib/konfigurator/useAuswahl.ts` (localStorage + Ereignis, `useSyncExternalStore`), geteilt von
+  allen Ansichten. Regeln in `lib/konfigurator/regeln.ts`: Einreiher/Zweireiher und Revers-Arten schliessen
+  sich aus; das Studio blendet unpassende Schritte aus.
+- **Stil-Studio** (`components/konfigurator/StilStudio.tsx`): eine Entscheidung pro Schritt, grosse
+  Illustration, Antippen wählt und springt weiter, Zurück/Überspringen/Fortschrittspunkte, Übersicht mit
+  Termin, PDF, Kopieren. Inline auf der Startseite (`#stil-studio`) und im Vollbild über `StudioFab`
+  (schwebender Knopf auf allen Seiten ausser Konfigurator und Termin; Studio lädt erst beim Öffnen).
+- **Konfigurator-Seite** `/massanzug-konfigurator/`: alle Details auf einen Blick, klebende Kategorie-Leiste
+  mit Fortschritt, Detail-Dialog, Übersicht. PDF mit jsPDF im Browser (ohne Schatten).
+- **Termin:** `/termin/` zeigt die Auswahl und schickt sie in der Anfrage-E-Mail mit (abwählbar).
+- **Film-Hero:** Vimeo 459093662 («Create your own Style!») als Hintergrund, `dnt=1`, stumm, Loop; Standbild
+  `public/images/hero-film.webp` als LCP; Einblenden erst, wenn Vimeo `play`/`timeupdate` meldet.
+  «Film ansehen» öffnet ihn mit Ton. Datenschutz um Vimeo und Konfigurator ergänzt.
+- **Shop sekundär:** Shop-Hinweis von der Startseite entfernt, «Shop» in der Navigation zuletzt.
+- **Offen:** Im gelieferten Code steht als Atelier «Beethovenstrasse 24, 8002 Zürich», auf der Website
+  «Kuttelgasse 7, 8001 Zürich» (`lib/site.ts`). Verwendet wird `lib/site.ts`; Adresse vom Kunden bestätigen lassen.

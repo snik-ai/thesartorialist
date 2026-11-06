@@ -54,6 +54,7 @@ export const FOOTER_NAV: { title: string; items: NavItem[] }[] = [
     title: 'Atelier',
     items: [
       { label: 'Massanzug Zürich', href: '/massanzug-zuerich/' },
+      { label: 'Massanzug-Konfigurator', href: '/massanzug-konfigurator/' },
       { label: 'Hochzeitsanzug Zürich', href: '/hochzeitsanzug-zuerich/' },
       { label: 'Hochzeit Anzug 2024', href: '/hochzeit-anzug-2024/' },
       { label: 'Anzüge Zürich', href: '/anzuege-zuerich/' },

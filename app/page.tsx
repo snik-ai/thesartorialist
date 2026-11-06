@@ -6,6 +6,9 @@ import ProductCard from '@/components/ProductCard';
 import CtaBand from '@/components/CtaBand';
 import Faq from '@/components/Faq';
 import { SITE } from '@/lib/site';
+import HeroVideo from '@/components/HeroVideo';
+import StilStudio from '@/components/konfigurator/StilStudio';
+import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
   title: 'Massanzug & Hochzeitsanzug Zürich — The Sartorialist',
@@ -79,15 +82,8 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="hero">
-        <img
-          src="/images/the-sartorialist-zuerich.webp"
-          alt="Massanzug auf Schneiderbüste im Atelier von The Sartorialist Zürich"
-          className="hero-img"
-          width={1500}
-          height={1000}
-          fetchPriority="high"
-        />
+      <section className="hero hero--film">
+        <HeroVideo />
         <div className="hero-content">
           <span className="eyebrow">Herrenausstatter · Zürich</span>
           <h1 className="display">
@@ -101,13 +97,13 @@ export default function HomePage() {
             <Link href="/termin/" className="btn btn--light">
               Termin buchen
             </Link>
-            <Link
-              href="/kollektion/"
+            <a
+              href="#stil-studio"
               className="btn btn--ghost"
               style={{ color: '#fff', borderColor: 'rgba(255,255,255,.5)' }}
             >
-              Kollektion entdecken
-            </Link>
+              Anzug gestalten
+            </a>
           </div>
         </div>
         <span className="hero-scrollcue" aria-hidden="true" />
@@ -145,6 +141,21 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Stil-Studio: den Massanzug Detail für Detail gestalten */}
+      <section className="section studio-section" id="stil-studio">
+        <div className="container">
+          <div className="section-head studio-head">
+            <span className="eyebrow">Stil-Studio</span>
+            <h2 className="h2">Gestalten Sie Ihren Massanzug — Detail für Detail.</h2>
+            <p className="lead">
+              Knöpfe, Revers, Taschen, Schulter, Futter: Tippen Sie an, was Ihnen gefällt, und wir gehen Schritt für Schritt
+              weiter. Ihre Auswahl bleibt gespeichert und kommt mit zum Termin — Stoff und Masse wählen wir gemeinsam im Atelier.
+            </p>
+          </div>
+          <StilStudio mode="inline" />
+        </div>
+      </section>
 
       {/* Kollektion */}
       <section className="section">
@@ -263,28 +274,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Shop-Hinweis: bewusst schlicht, der Fokus der Startseite bleibt der Anzug */}
-      <section className="section shop-teaser">
-        <div className="container split-cta">
-          <div>
-            <span className="eyebrow">Der Shop</span>
-            <h2 className="h2">Was zum Anzug passt, gibt es auch online.</h2>
-            <p className="lead">
-              Parkas von Woolrich, Strick von Gran Sasso, Sakkos von Tramarossa — bestellen Sie online oder probieren Sie
-              im Showroom an.
-            </p>
-          </div>
-          <div className="split-cta-actions">
-            <Link href="/shop/" className="btn btn--ghost">
-              Zum Kleiderschrank
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <Faq items={HOME_FAQ} title="Alles rund um Massanzug & Hochzeitsanzug in Zürich" />
 
       <CtaBand />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'VideoObject',
+          name: 'Create your own Style! — The Sartorialist Zürich',
+          description: 'Massanzüge mit italienischer Eleganz aus dem Atelier von The Sartorialist in Zürich.',
+          thumbnailUrl: `${SITE.url}/images/hero-film.webp`,
+          uploadDate: '2020-09-17',
+          duration: 'PT2M15S',
+          embedUrl: 'https://player.vimeo.com/video/459093662',
+        }}
+      />
     </>
   );
 }

@@ -14,16 +14,18 @@ const NAV_LEFT = [
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
 ];
 
+// Shop bewusst zuletzt: Fokus der Website ist der Massanzug
 const NAV_RIGHT = [
-  { label: 'Shop', href: '/shop/' },
   { label: 'Brands', href: '/category/brand/' },
   { label: 'Über uns', href: '/ueber-uns/' },
+  { label: 'Shop', href: '/shop/' },
 ];
 
 // Untermenüs für das mobile Fullscreen-Menü (seitlich slidend).
 const SUB_KOLLEKTION = [
   { label: 'Alle Anzüge', href: '/kollektion/' },
   { label: 'Massanzug Zürich', href: '/massanzug-zuerich/' },
+  { label: 'Massanzug-Konfigurator', href: '/massanzug-konfigurator/' },
   { label: 'Hochzeitsanzug Zürich', href: '/hochzeitsanzug-zuerich/' },
   { label: 'Anzug blau', href: '/anzug-blau/' },
   { label: 'Anzug grün', href: '/anzug-gruen/' },

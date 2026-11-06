@@ -45,6 +45,18 @@ Stoffpartner: Loro Piana, Vitale Barberis Canonico, Drago, Reda, Cerruti,
 Scabal, Solbiati, Zegna, Holland & Sherry; Hemden: Canclini, Albini,
 Thomas Mason.
 
+## Massanzug-Konfigurator & Stil-Studio
+
+Auf der Startseite führt das Stil-Studio Schritt für Schritt durch die Details
+des Massanzugs (eine Entscheidung pro Schritt, mit Illustration); ein schwebender
+Knopf «Anzug gestalten» öffnet es auf jeder Seite im Vollbild.
+Alle Details auf einer Seite: https://thesartorialist.ch/massanzug-konfigurator/
+Sakko (Knopfung, Revers, Taschen, Schlitze, Schulter, Canvas, Futter, Ärmelknöpfe,
+Handstich, Knopfloch, Monogramm), Hose (Bundfalten, Verschluss, Bund, Taschen,
+Saum), Weste und Smoking. Die Auswahl bleibt im Browser, lässt sich als PDF
+speichern und wird bei der Terminanfrage mitgeschickt. Stoff und Masse werden
+im Atelier gewählt.
+
 ## Online-Shop
 
 Ergänzend zum Massanzug verkauft The Sartorialist ausgewählte Konfektion online

@@ -1,7 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { SITE } from '@/lib/site';
+import { alsText, aufloesen, ladeAuswahl, type Gewaehlt } from '@/lib/konfigurator/auswahl';
 
 // Moderner Buchungs-Wizard in 3 Schritten: Wunschtermin (Kalender) → Uhrzeit →
 // persönliche Angaben. Regeln: Sonntag geschlossen, Samstag nur 10:00–16:00,
@@ -52,6 +54,12 @@ export default function BookingWizard() {
   const [tel, setTel] = useState('');
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
+  // Stil-Auswahl aus dem Massanzug-Konfigurator (liegt im Browser) geht mit der Anfrage mit
+  const [stil, setStil] = useState<Gewaehlt[]>([]);
+  const [stilMit, setStilMit] = useState(true);
+  useEffect(() => {
+    setStil(aufloesen(ladeAuswahl()));
+  }, []);
 
   const step = !date ? 0 : !time ? 1 : 2;
 
@@ -101,6 +109,9 @@ export default function BookingWizard() {
       `Name: ${name}`,
       `Telefon: ${tel}`,
       `E-Mail: ${email}`,
+      ...(stil.length && stilMit
+        ? ['', `Meine Stil-Auswahl aus dem Konfigurator (${stil.length} Details):`, '', alsText(stil)]
+        : []),
     ].join('\n');
     window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(
       subject
@@ -130,6 +141,25 @@ export default function BookingWizard() {
 
   return (
     <div className="wizard">
+      {stil.length > 0 && (
+        <div className="wizard-stil">
+          <div>
+            <strong>
+              {stilMit ? 'Ihre Stil-Auswahl wird mitgeschickt' : 'Stil-Auswahl wird nicht mitgeschickt'}
+            </strong>
+            <p>
+              {stil.length} {stil.length === 1 ? 'Detail' : 'Details'} aus dem Massanzug-Konfigurator, z. B.{' '}
+              {stil.slice(0, 2).map((g) => g.option.label).join(', ')}
+            </p>
+          </div>
+          <div className="wizard-stil-actions">
+            <Link href="/massanzug-konfigurator/#uebersicht">Ansehen</Link>
+            <button type="button" onClick={() => setStilMit((v) => !v)}>
+              {stilMit ? 'Weglassen' : 'Doch mitschicken'}
+            </button>
+          </div>
+        </div>
+      )}
       {/* Schritt-Anzeige */}
       <ol className="wizard-steps">
         {['Wunschtermin', 'Uhrzeit', 'Ihre Angaben'].map((label, i) => (

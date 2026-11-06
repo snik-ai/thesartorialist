@@ -123,6 +123,24 @@ export default function MassanzugPage() {
         </div>
       </section>
 
+      <section className="section">
+        <div className="container split-cta">
+          <div>
+            <span className="eyebrow">Stil-Konfigurator</span>
+            <h2 className="h2">Stellen Sie Ihren Anzug schon zu Hause zusammen.</h2>
+            <p className="lead">
+              Revers, Knöpfe, Taschen, Schulter, Futter, Hosenbund und Saum: Wählen Sie online in Ruhe, was Ihnen gefällt,
+              speichern Sie die Auswahl als PDF und bringen Sie sie zum Termin mit.
+            </p>
+          </div>
+          <div className="split-cta-actions">
+            <Link href="/massanzug-konfigurator/" className="btn">
+              Zum Konfigurator
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Faq items={FAQ} title="Der massgeschneiderte MTM-Prozess" />
       <CtaBand
         title="Ihr Massanzug — ab CHF 1’690, in 20 Arbeitstagen abholbereit."

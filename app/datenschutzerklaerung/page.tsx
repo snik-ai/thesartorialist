@@ -36,8 +36,9 @@ export default function DatenschutzPage() {
           Seiten ausserhalb des Shops werden keine Cookies gesetzt und keine Inhalte von
           Drittanbietern (z.&nbsp;B. Videos oder externe Schriften) nachgeladen. Ausnahmen
           sind die anonyme Reichweitenmessung durch unsere Webagentur (siehe Abschnitt 4,
-          «Reichweitenmessung») und der Online-Shop unter /shop, der mit Shopify betrieben
-          wird (siehe Abschnitt 4, «Online-Shop»).
+          «Reichweitenmessung»), der Film auf der Startseite (Vimeo, siehe Abschnitt 4,
+          «Film auf der Startseite») und der Online-Shop unter /shop, der mit Shopify
+          betrieben wird (siehe Abschnitt 4, «Online-Shop»).
         </p>
         <p>
           Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen — z.&nbsp;B.
@@ -135,6 +136,20 @@ export default function DatenschutzPage() {
           den Tag hinaus ist nicht möglich. Inhalte von Formularen (z.&nbsp;B. Name, E-Mail,
           Nachricht) werden nicht an DLM Digital übermittelt. Die Daten werden in der
           Schweiz bzw. EU verarbeitet.
+        </p>
+        <h3>Film auf der Startseite (Vimeo)</h3>
+        <p>
+          Auf der Startseite zeigen wir unseren Film über den Videodienst Vimeo (Vimeo.com
+          Inc., New York, USA). Wir binden ihn mit der Einstellung «Do Not Track» ein: Vimeo
+          setzt dabei keine Cookies und erstellt keine Nutzungsprofile. Beim Laden des Films
+          erhält Vimeo technisch bedingt Ihre IP-Adresse und Angaben zu Ihrem Browser.
+        </p>
+        <h3>Stil-Konfigurator</h3>
+        <p>
+          Ihre Auswahl im Massanzug-Konfigurator und im Stil-Studio wird ausschliesslich in
+          Ihrem Browser gespeichert (localStorage) und nicht an uns übertragen. Sie erhalten
+          wir erst, wenn Sie sie mit einer Terminanfrage mitschicken oder uns das PDF senden.
+          Sie können die Auswahl jederzeit über «Alles zurücksetzen» löschen.
         </p>
         <h3>Online-Shop (Shopify)</h3>
         <p>

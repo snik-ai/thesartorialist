@@ -28,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry('/kollektion/', 0.9, 'weekly'),
     entry('/termin/', 0.9),
     entry('/massanzug-zuerich/', 0.9),
+    entry('/massanzug-konfigurator/', 0.8),
     entry('/hochzeitsanzug-zuerich/', 0.9),
     entry('/hochzeit-anzug-2024/', 0.8),
     entry('/anzuege-zuerich/', 0.8),
