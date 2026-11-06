@@ -4,7 +4,7 @@
 // schwebender Knopf, Terminbuchung).
 // Quelle ist localStorage; Änderungen gehen per Ereignis an alle Ansichten.
 import { useCallback, useSyncExternalStore } from 'react';
-import { CHANGE_EVENT, STORAGE_KEY, type Auswahl } from './konst';
+import { CHANGE_EVENT, STOFF_KEY, STORAGE_KEY, type Auswahl } from './konst';
 import type { KonfigOption, KonfigUntergruppe } from './daten';
 import { mitRegeln } from './regeln';
 
@@ -72,4 +72,34 @@ export function useAuswahl() {
   }, []);
   const reset = useCallback(() => setAuswahl({}), []);
   return { auswahl, waehle, entferne, reset };
+}
+
+// Stoffnummern: gleiche Mechanik (localStorage + Ereignis), eigener Schlüssel
+let stoffRaw = '[]';
+let stoffVal: string[] = [];
+function readStoffe(): string[] {
+  let raw = '[]';
+  try {
+    raw = localStorage.getItem(STOFF_KEY) || '[]';
+  } catch {}
+  if (raw !== stoffRaw) {
+    stoffRaw = raw;
+    try {
+      const v = JSON.parse(raw);
+      stoffVal = Array.isArray(v) ? v.filter((x) => typeof x === 'string') : [];
+    } catch {
+      stoffVal = [];
+    }
+  }
+  return stoffVal;
+}
+const NO_STOFF: string[] = [];
+export function setStoffe(next: string[]) {
+  try {
+    localStorage.setItem(STOFF_KEY, JSON.stringify(next));
+  } catch {}
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+export function useStoffe() {
+  return useSyncExternalStore(subscribe, readStoffe, () => NO_STOFF);
 }

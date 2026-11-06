@@ -2235,3 +2235,52 @@ body.cart-open .studio-fab, body.sheet-open .studio-fab { opacity: 0; pointer-ev
 .konf-hints li { counter-increment: hint; }
 .konf-hints li::before { content: counter(hint); }
 .konf-card-text { justify-content: center; }
+
+/* Konfigurator: Stoff (Holland & Sherry) */
+.konf-stoff { border-top: 1px solid var(--line); }
+.konf-tab-img--stoff img { object-fit: cover; }
+.konf-stoff-box { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.25rem, 3vw, 2.5rem); max-width: 1080px; margin: 0 auto; align-items: stretch; }
+@media (max-width: 800px) { .konf-stoff-box { grid-template-columns: 1fr; } }
+.konf-stoff-link { display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--paper); transition: border-color 0.2s ease; }
+.konf-stoff-link:hover { border-color: var(--ink); }
+.konf-stoff-img { display: block; aspect-ratio: 3 / 2; overflow: hidden; }
+.konf-stoff-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--easing); }
+.konf-stoff-link:hover .konf-stoff-img img { transform: scale(1.04); }
+.konf-stoff-cta { display: grid; gap: 0.3rem; padding: 1.1rem 1.25rem 1.3rem; }
+.konf-stoff-title { font-family: var(--serif); font-size: 1.45rem; }
+.konf-stoff-go { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; color: var(--muted); }
+.konf-stoff-form { display: flex; flex-direction: column; gap: 0.9rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--paper-warm); border: 1px solid var(--line); justify-content: center; }
+.konf-stoff-field { display: grid; gap: 0.6rem; }
+.konf-stoff-kicker { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.konf-stoff-row { display: flex; gap: 0.5rem; }
+.konf-stoff-row input { flex: 1; min-width: 0; height: 56px; padding: 0 1.1rem; border: 1px solid #cfcac1; background: var(--paper); font: 500 1.1rem var(--sans); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; color: var(--ink); border-radius: 0; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.konf-stoff-row input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.35); }
+.konf-stoff-row .btn { height: 56px; padding: 0 1.4rem; }
+.konf-stoff-row .btn:disabled { opacity: 0.45; cursor: default; }
+.konf-stoff-hint { font-size: 0.84rem; color: var(--muted); }
+.konf-stoff-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.konf-stoff-chips li { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.4rem 0.35rem 0.85rem; background: var(--ink); color: var(--paper); font-size: 0.9rem; letter-spacing: 0.05em; animation: tileIn 0.3s var(--easing); }
+.konf-stoff-chips button { width: 28px; height: 28px; border: 0; background: none; color: var(--paper); cursor: pointer; display: grid; place-items: center; }
+.konf-sum-img--stoff img { object-fit: cover; }
+
+/* Übersicht: Termin + PDF klebend am unteren Rand */
+.konf-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin: 2rem calc(-1 * clamp(1.5rem, 4vw, 3rem)) calc(-1 * clamp(1.5rem, 4vw, 3rem));
+  padding: 1rem clamp(1.5rem, 4vw, 3rem) calc(1rem + env(safe-area-inset-bottom));
+  background: var(--ink);
+  border-top: 0;
+}
+.konf-actions .btn { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.konf-actions .btn:hover { background: #c9a063; border-color: #c9a063; color: var(--ink); }
+.konf-actions .btn--ghost { background: transparent; color: var(--paper); border-color: rgba(255, 255, 255, 0.45); }
+.konf-actions .btn--ghost:hover { background: rgba(255, 255, 255, 0.1); color: var(--paper); border-color: var(--paper); }
+.konf-actions .konf-status { color: rgba(255, 255, 255, 0.7); }
+@media (max-width: 560px) { .konf-actions { display: grid; grid-template-columns: 1fr; gap: 0.5rem; } }
+@media (max-width: 760px) {
+  .konf-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.25rem; }
+  .konf-tab { font-size: 0.56rem; letter-spacing: 0.05em; padding: 0.3rem 0.1rem 0.4rem; }
+  .konf-tab-img, .konf-tab-img img { width: 30px; height: 36px; }
+}

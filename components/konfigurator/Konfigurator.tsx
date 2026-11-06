@@ -7,8 +7,9 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { KONFIG_KATEGORIEN, type KonfigOption, type KonfigUntergruppe } from '@/lib/konfigurator/daten';
-import { aufloesen, alsText, optionText, zeigeCode, type Gewaehlt } from '@/lib/konfigurator/auswahl';
-import { useAuswahl } from '@/lib/konfigurator/useAuswahl';
+import { aufloesen, optionText, zeigeCode, type Gewaehlt } from '@/lib/konfigurator/auswahl';
+import { setStoffe, useAuswahl, useStoffe } from '@/lib/konfigurator/useAuswahl';
+import { STOFF_LINK } from '@/lib/konfigurator/konst';
 
 type Detail = { kategorieId: string; u: KonfigUntergruppe; o: KonfigOption };
 
@@ -38,6 +39,15 @@ export default function Konfigurator() {
   const [pop, setPop] = useState<string | null>(null);
   const [glow, setGlow] = useState(false);
   const bar = useRef<HTMLDivElement>(null);
+  const stoffe = useStoffe();
+  const [stoffEingabe, setStoffEingabe] = useState('');
+  const stoffDazu = () => {
+    // mehrere Nummern auf einmal möglich (Komma, Leerzeichen); Doppelte ignorieren
+    const neu = stoffEingabe.split(/[\s,;]+/).map((x) => x.trim().toUpperCase()).filter((x) => /^[A-Z0-9-]{3,14}$/.test(x));
+    if (!neu.length) return;
+    setStoffe([...new Set([...stoffe, ...neu])].slice(0, 12));
+    setStoffEingabe('');
+  };
 
 
   // Aktive Kategorie in der Leiste mitführen; Übersicht sichtbar → Schwebeleiste aus
@@ -48,8 +58,8 @@ export default function Konfigurator() {
       },
       { rootMargin: '-40% 0px -55% 0px' },
     );
-    KONFIG_KATEGORIEN.forEach((k) => {
-      const el = document.getElementById(k.id);
+    [...KONFIG_KATEGORIEN.map((k) => k.id), 'stoff'].forEach((id) => {
+      const el = document.getElementById(id);
       if (el) io.observe(el);
     });
     const sum = document.getElementById('uebersicht');
@@ -87,7 +97,7 @@ export default function Konfigurator() {
     setStatus('PDF wird erstellt …');
     try {
       const { stilPdf } = await import('@/lib/konfigurator/pdf');
-      await stilPdf(items);
+      await stilPdf(items, stoffe);
       setStatus('PDF heruntergeladen');
     } catch {
       setStatus('PDF konnte nicht erstellt werden');
@@ -103,16 +113,6 @@ export default function Konfigurator() {
     setAktiv(id);
     history.replaceState(history.state, '', `#${id}`);
   };
-  const kopieren = async () => {
-    try {
-      await navigator.clipboard.writeText(`Meine Stil-Auswahl — The Sartorialist Zürich\n\n${alsText(items)}\n`);
-      setStatus('In die Zwischenablage kopiert');
-    } catch {
-      setStatus('Kopieren nicht möglich');
-    }
-    setTimeout(() => setStatus(null), 2500);
-  };
-
   return (
     <>
       <div className="konf-bar" ref={bar}>
@@ -147,6 +147,21 @@ export default function Konfigurator() {
                 </a>
               );
             })}
+            <a
+              href="#stoff"
+              data-k="stoff"
+              className={`konf-tab${aktiv === 'stoff' ? ' is-on' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                springe('stoff');
+              }}
+            >
+              <span className="konf-tab-img konf-tab-img--stoff" aria-hidden="true">
+                <img src="/images/Holland-Sherry-8-scaled.webp" alt="" width={40} height={48} />
+              </span>
+              <span className="konf-tab-label">Stoff</span>
+              {stoffe.length > 0 && <span className="konf-tab-prog num">{stoffe.length}</span>}
+            </a>
           </nav>
           <a href="#uebersicht" className="konf-sum-link">
             <span className="konf-count num" key={items.length}>{items.length}</span>
@@ -194,7 +209,7 @@ export default function Konfigurator() {
                                 </>
                               ) : (
                                 <>
-                                  {zeigeCode(o.code) && <span className="konf-code">{o.code}</span>}
+                                  {zeigeCode(o.code, o.label) && <span className="konf-code">{o.code}</span>}
                                   <span className="konf-label">{o.label}</span>
                                 </>
                               )}
@@ -216,13 +231,85 @@ export default function Konfigurator() {
           </section>
         ))}
 
+        <section id="stoff" className="konf-cat konf-stoff">
+          <header className="konf-cat-head">
+            <div>
+              <h2 className="h2">Stoff</h2>
+              <p className="konf-cat-sub">Die Stoffkollektion von Holland &amp; Sherry</p>
+              <p className="konf-cat-desc">
+                Seit 1836 webt Holland &amp; Sherry Stoffe für die besten Schneider der Welt. Stöbern Sie in der Kollektion
+                und notieren Sie die Nummern Ihrer Favoriten — wir legen die Muster zu Ihrem Termin im Atelier bereit.
+              </p>
+            </div>
+          </header>
+          <div className="konf-stoff-box">
+            <a href={STOFF_LINK} target="_blank" rel="noopener" className="konf-stoff-link">
+              <span className="konf-stoff-img">
+                <img src="/images/Holland-Sherry-8-scaled.webp" alt="Stoffe von Holland & Sherry" width={480} height={320} loading="lazy" />
+              </span>
+              <span className="konf-stoff-cta">
+                <span className="konf-code">apparel.hollandandsherry.com</span>
+                <span className="konf-stoff-title">Stoffkollektion ansehen</span>
+                <span className="konf-stoff-go">
+                  Öffnet in neuem Fenster
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M5 3h6v6M11 3L3 11" stroke="currentColor" strokeWidth="1.4" />
+                  </svg>
+                </span>
+              </span>
+            </a>
+            <div className="konf-stoff-form">
+              <label className="konf-stoff-field">
+                <span className="konf-stoff-kicker">Stoffnummer (optional)</span>
+                <span className="konf-stoff-row">
+                  <input
+                    value={stoffEingabe}
+                    onChange={(e) => setStoffEingabe(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ',') {
+                        e.preventDefault();
+                        stoffDazu();
+                      }
+                    }}
+                    placeholder="z. B. 9722022"
+                    inputMode="text"
+                    autoComplete="off"
+                    autoCapitalize="characters"
+                    spellCheck={false}
+                    aria-label="Stoffnummer"
+                  />
+                  <button type="button" className="btn" onClick={stoffDazu} disabled={!stoffEingabe.trim()}>
+                    Hinzufügen
+                  </button>
+                </span>
+              </label>
+              <p className="konf-stoff-hint">
+                Die Nummer steht auf der Stoffseite unter «Product Code». Mehrere Nummern sind möglich — oder Sie wählen
+                den Stoff einfach im Atelier.
+              </p>
+              {stoffe.length > 0 && (
+                <ul className="konf-stoff-chips">
+                  {stoffe.map((n) => (
+                    <li key={n}>
+                      <span className="num">{n}</span>
+                      <button type="button" aria-label={`Stoff ${n} entfernen`} onClick={() => setStoffe(stoffe.filter((x) => x !== n))}>
+                        <Close />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </section>
+
         <section id="uebersicht" className="konf-summary">
           <div className="konf-summary-head">
             <div>
               <span className="eyebrow">Übersicht</span>
               <h2 className="h2">Ihr Massanzug in {items.length} Details</h2>
               <p className="muted">
-                Gespeichert in diesem Browser. Stoff und Masse wählen wir gemeinsam im Atelier — dort verfeinern wir jedes Detail.
+                Gespeichert in diesem Browser. Mass nehmen wir gemeinsam im Atelier — dort verfeinern wir jedes Detail.
               </p>
             </div>
             {items.length > 0 && (
@@ -231,6 +318,30 @@ export default function Konfigurator() {
               </button>
             )}
           </div>
+
+          {stoffe.length > 0 && (
+            <div className="konf-sum-group">
+              <p className="konf-sum-cat">Stoff · Holland &amp; Sherry</p>
+              <ul className="konf-sum-list">
+                {stoffe.map((n) => (
+                  <li key={n} className="konf-sum-item">
+                    <a className="konf-sum-open" href={STOFF_LINK} target="_blank" rel="noopener">
+                      <span className="konf-sum-img konf-sum-img--stoff">
+                        <img src="/images/Holland-Sherry-8-scaled.webp" alt="" width={56} height={70} loading="lazy" />
+                      </span>
+                      <span>
+                        <span className="konf-sum-u">Stoffnummer</span>
+                        <span className="konf-sum-o num">{n}</span>
+                      </span>
+                    </a>
+                    <button type="button" className="konf-sum-x" aria-label={`Stoff ${n} entfernen`} onClick={() => setStoffe(stoffe.filter((x) => x !== n))}>
+                      <Close />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {items.length === 0 ? (
             <div className="konf-empty">
@@ -274,10 +385,10 @@ export default function Konfigurator() {
                   Termin mit dieser Auswahl buchen
                 </Link>
                 <button type="button" className="btn btn--ghost" onClick={pdf}>
-                  Als PDF speichern
-                </button>
-                <button type="button" className="btn btn--ghost" onClick={kopieren}>
-                  Text kopieren
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" strokeWidth="1.4" />
+                  </svg>
+                  PDF herunterladen
                 </button>
                 <span className="konf-status" aria-live="polite">
                   {status}
@@ -349,7 +460,7 @@ function DetailDialog({ d, on, onToggle, onClose }: { d: Detail; on: boolean; on
           <h3 id="konf-modal-title" className="serif">
             {o.label}
           </h3>
-          {zeigeCode(o.code) && <p className="konf-code">Code {o.code}</p>}
+          {zeigeCode(o.code, o.label) && <p className="konf-code">Code {o.code}</p>}
           {o.subLabel && <p className="konf-modal-sub">{o.subLabel}</p>}
           {o.pocketSpec && (
             <p className="konf-modal-sub">

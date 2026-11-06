@@ -20,5 +20,8 @@ export function mitRegeln(a: Auswahl, gruppe: string): Auswahl {
   // Wechsel Einreiher ↔ Zweireiher: unpassendes Revers entfernen
   if (gruppe === 'jacket-front-sb') delete copy['jacket-lapel-db-peak'];
   if (gruppe === 'jacket-front-db') SB_REVERS.forEach((g) => delete copy[g]);
+  // Revers bestimmt die Knopfung: Einreiher-Revers ↔ Zweireiher-Vorderteil schliessen sich aus
+  if (SB_REVERS.includes(gruppe)) delete copy['jacket-front-db'];
+  if (gruppe === 'jacket-lapel-db-peak') delete copy['jacket-front-sb'];
   return copy;
 }

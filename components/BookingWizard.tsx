@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { SITE } from '@/lib/site';
-import { alsText, aufloesen, ladeAuswahl, type Gewaehlt } from '@/lib/konfigurator/auswahl';
+import { alsText, aufloesen, ladeAuswahl, ladeStoffe, type Gewaehlt } from '@/lib/konfigurator/auswahl';
 
 // Moderner Buchungs-Wizard in 3 Schritten: Wunschtermin (Kalender) → Uhrzeit →
 // persönliche Angaben. Regeln: Sonntag geschlossen, Samstag nur 10:00–16:00,
@@ -57,8 +57,10 @@ export default function BookingWizard() {
   // Stil-Auswahl aus dem Massanzug-Konfigurator (liegt im Browser) geht mit der Anfrage mit
   const [stil, setStil] = useState<Gewaehlt[]>([]);
   const [stilMit, setStilMit] = useState(true);
+  const [stoffe, setStoffeW] = useState<string[]>([]);
   useEffect(() => {
     setStil(aufloesen(ladeAuswahl()));
+    setStoffeW(ladeStoffe());
   }, []);
 
   const step = !date ? 0 : !time ? 1 : 2;
@@ -109,8 +111,8 @@ export default function BookingWizard() {
       `Name: ${name}`,
       `Telefon: ${tel}`,
       `E-Mail: ${email}`,
-      ...(stil.length && stilMit
-        ? ['', `Meine Stil-Auswahl aus dem Konfigurator (${stil.length} Details):`, '', alsText(stil)]
+      ...((stil.length || stoffe.length) && stilMit
+        ? ['', `Meine Stil-Auswahl aus dem Konfigurator (${stil.length} Details):`, '', alsText(stil, stoffe)]
         : []),
     ].join('\n');
     window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(
@@ -141,15 +143,15 @@ export default function BookingWizard() {
 
   return (
     <div className="wizard">
-      {stil.length > 0 && (
+      {(stil.length > 0 || stoffe.length > 0) && (
         <div className="wizard-stil">
           <div>
             <strong>
               {stilMit ? 'Ihre Stil-Auswahl wird mitgeschickt' : 'Stil-Auswahl wird nicht mitgeschickt'}
             </strong>
             <p>
-              {stil.length} {stil.length === 1 ? 'Detail' : 'Details'} aus dem Massanzug-Konfigurator, z. B.{' '}
-              {stil.slice(0, 2).map((g) => g.option.label).join(', ')}
+              {stil.length} {stil.length === 1 ? 'Detail' : 'Details'} aus dem Massanzug-Konfigurator
+              {stoffe.length > 0 && <> · Stoff {stoffe.join(', ')}</>}
             </p>
           </div>
           <div className="wizard-stil-actions">
