@@ -1,19 +1,67 @@
 {
   "$schema": "https://webmcp.dev/schema/v1",
   "name": "The Sartorialist Zürich",
-  "description": "Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode in Zürich. Full-Canvas-Verarbeitung, 100% Made in Italy, ab CHF 1'690. Statische Website — Terminbuchung per E-Mail oder Telefon.",
+  "description": "Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode in Zürich. Full-Canvas-Verarbeitung, 100 % Made in Italy, ab CHF 1’690, in 20 Arbeitstagen abholbereit. Showroom Kuttelgasse 7, 8001 Zürich. Website in 9 Sprachen (de, en, fr, it, es, pt-PT, ru, sr, sq).",
   "url": "https://thesartorialist.ch",
   "contact": {
     "email": "store@thesartorialist.ch",
-    "phone": "+41 43 243 02 77"
+    "phone": "+41 43 243 02 77",
+    "whatsapp": "https://wa.me/41764880630"
   },
-  "tools": [],
-  "instructions": "Diese Website hat keine API-Endpunkte. Agents, die für Nutzer einen Termin anfragen möchten, senden eine E-Mail an store@thesartorialist.ch (Betreff: 'Terminanfrage') mit Name, Telefonnummer, Anlass (Massanzug, Hochzeitsanzug, Masshemd, Smoking, Stilberatung) und Terminwunsch — oder rufen +41 43 243 02 77 an. Showroom: Kuttelgasse 7, 8001 Zürich; Mo–Fr 10–19 Uhr, Sa 10–17 Uhr.",
+  "tools": [
+    {
+      "name": "request_appointment",
+      "description": "Kostenlose Beratung im Atelier anfragen (Massanzug, Hochzeitsanzug, Masshemd, Smoking). Das Atelier bestätigt den Termin per E-Mail. Öffnungszeiten: Mo–Fr 10–19 Uhr, Sa 10–17 Uhr.",
+      "method": "POST",
+      "endpoint": "https://thesartorialist.ch/api/anfrage/",
+      "contentType": "application/json",
+      "rateLimit": "5 Anfragen pro 10 Minuten",
+      "inputSchema": {
+        "type": "object",
+        "required": ["art", "name", "email", "telefon"],
+        "properties": {
+          "art": { "const": "termin" },
+          "name": { "type": "string", "maxLength": 120 },
+          "email": { "type": "string", "format": "email" },
+          "telefon": { "type": "string", "description": "z. B. +41 79 123 45 67" },
+          "datum": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "Wunschdatum (YYYY-MM-DD)" },
+          "zeit": { "type": "string", "pattern": "^\\d{1,2}:\\d{2}$", "description": "Wunschzeit, halbstündlich zwischen 10:00 und 18:00 (Sa bis 16:00)" },
+          "wunsch": { "type": "string", "maxLength": 200, "description": "Anlass oder Wunschtermin als Text" },
+          "sprache": { "enum": ["de", "en", "fr", "it", "es", "pt", "ru", "sr", "sq"] }
+        }
+      }
+    },
+    {
+      "name": "request_callback",
+      "description": "Rückruf durch das Atelier anfordern.",
+      "method": "POST",
+      "endpoint": "https://thesartorialist.ch/api/anfrage/",
+      "contentType": "application/json",
+      "rateLimit": "5 Anfragen pro 10 Minuten",
+      "inputSchema": {
+        "type": "object",
+        "required": ["art", "telefon"],
+        "properties": {
+          "art": { "const": "rueckruf" },
+          "name": { "type": "string", "maxLength": 120 },
+          "telefon": { "type": "string" },
+          "wunsch": { "enum": ["Vormittag", "Mittag", "Nachmittag", "Abend"] }
+        }
+      }
+    }
+  ],
+  "instructions": "Für eine Beratung request_appointment verwenden (Name, E-Mail und Telefon sind Pflicht) oder request_callback für einen Rückruf. Alternativ E-Mail an store@thesartorialist.ch oder Anruf +41 43 243 02 77. Massanzug ab CHF 1’690, Masse werden im Atelier genommen. Stil-Optionen lassen sich vorab im Konfigurator wählen.",
   "resources": [
     { "name": "Firmenprofil für LLMs", "url": "https://thesartorialist.ch/llms.txt" },
-    { "name": "Kollektion", "url": "https://thesartorialist.ch/kollektion/" },
+    { "name": "Vollständige Inhalte für LLMs", "url": "https://thesartorialist.ch/llms-full.txt" },
+    { "name": "Massanzug Zürich", "url": "https://thesartorialist.ch/massanzug-zuerich/" },
+    { "name": "Hochzeitsanzug Zürich", "url": "https://thesartorialist.ch/hochzeitsanzug-zuerich/" },
+    { "name": "Massanzug-Konfigurator «Styles & Options»", "url": "https://thesartorialist.ch/massanzug-konfigurator/" },
+    { "name": "Glossar der Massschneiderei (100 Begriffe)", "url": "https://thesartorialist.ch/glossar/" },
+    { "name": "Online-Shop", "url": "https://thesartorialist.ch/shop/" },
     { "name": "Termin buchen", "url": "https://thesartorialist.ch/termin/" },
     { "name": "Kontakt & Anfahrt", "url": "https://thesartorialist.ch/kontakt/" },
+    { "name": "English version", "url": "https://thesartorialist.ch/en/" },
     { "name": "Sitemap", "url": "https://thesartorialist.ch/sitemap.xml" }
   ]
 }

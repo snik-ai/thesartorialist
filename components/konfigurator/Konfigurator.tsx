@@ -219,7 +219,7 @@ export default function Konfigurator({
                         <div key={o.id} className={`konf-card${on ? ' is-on' : ''}${pop === o.id ? ' is-pop' : ''}`}>
                           <button type="button" className="konf-card-main" aria-pressed={on} onClick={() => waehle(u, o)}>
                             <span className="konf-card-img">
-                              <img src={o.image} alt="" width={240} height={300} loading="lazy" />
+                              <img src={o.image} alt={`${u.title}: ${o.label}`} width={240} height={300} loading="lazy" />
                             </span>
                             <span className="konf-card-text">
                               {o.pocketSpec ? (

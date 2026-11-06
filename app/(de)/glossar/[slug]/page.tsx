@@ -6,6 +6,7 @@ import CtaBand from '@/components/CtaBand';
 import { JsonLd, faqSchema } from '@/components/JsonLd';
 import { GLOSSAR, getBegriff } from '@/lib/glossar';
 import { SITE } from '@/lib/site';
+import { suchBeschreibung, suchTitel } from '@/lib/i18n/seo';
 
 export const dynamicParams = false;
 
@@ -22,9 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = `/glossar/${b.slug}/`;
   const og = `/glossar/og/${b.slug}.jpg`;
   return {
-    title: b.metaTitle,
-    description: b.metaDescription,
-    alternates: { canonical: url },
+    title: { absolute: suchTitel('de', b.metaTitle) },
+    description: suchBeschreibung(b.metaDescription),
+    alternates: { canonical: url, languages: { de: url, 'x-default': url } },
     openGraph: {
       type: 'article',
       locale: SITE.locale,

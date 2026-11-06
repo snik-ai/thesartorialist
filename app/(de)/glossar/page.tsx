@@ -8,9 +8,9 @@ import { GLOSSAR, GRUPPEN, buchstabe } from '@/lib/glossar';
 import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: `Glossar Massanzug — ${GLOSSAR.length} Begriffe der Schneiderei erklärt`,
+  title: { absolute: `Glossar Massanzug: ${GLOSSAR.length} Begriffe erklärt | The Sartorialist` },
   description: `Vom Revers bis zur Super-Zahl: ${GLOSSAR.length} Begriffe rund um Massanzug, Stoffe, Smoking und Accessoires — verständlich erklärt vom Atelier The Sartorialist in Zürich.`,
-  alternates: { canonical: '/glossar/' },
+  alternates: { canonical: '/glossar/', languages: { de: '/glossar/', 'x-default': '/glossar/' } },
   openGraph: {
     type: 'website',
     locale: SITE.locale,

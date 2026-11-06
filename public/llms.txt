@@ -2,7 +2,7 @@
 
 > The Sartorialist ist der persönliche Herrenausstatter im Herzen von Zürich
 > (Kuttelgasse 7, 8001 Zürich). Massanzüge und Hochzeitsanzüge in
-> Full-Canvas-Verarbeitung, 100% Made in Italy, ab CHF 1'690 — in 20
+> Full-Canvas-Verarbeitung, 100% Made in Italy, ab CHF 1’690 — in 20
 > Arbeitstagen abholbereit. Gegründet von Alexander Shubin, ehemals
 > Geschäftsführer des ersten Tom Ford Stores Europas.
 
@@ -15,7 +15,14 @@
   - Suit configurator: https://thesartorialist.ch/en/suit-configurator/
   - Book an appointment: https://thesartorialist.ch/en/appointment/
   - Contact: https://thesartorialist.ch/en/contact/
-- Weitere Sprachen (fr, it, es, pt-pt, ru, sr, sq) folgen; jede Seite verweist per hreflang auf ihre Sprachfassungen. Das Glossar gibt es nur auf Deutsch.
+- Français: https://thesartorialist.ch/fr/ — costume sur mesure: https://thesartorialist.ch/fr/costume-sur-mesure-zurich/
+- Italiano: https://thesartorialist.ch/it/ — abito su misura: https://thesartorialist.ch/it/abito-su-misura-zurigo/
+- Español: https://thesartorialist.ch/es/ — traje a medida: https://thesartorialist.ch/es/traje-a-medida-zurich/
+- Português (PT): https://thesartorialist.ch/pt-pt/ — fato por medida: https://thesartorialist.ch/pt-pt/fato-por-medida-zurique/
+- Русский: https://thesartorialist.ch/ru/
+- Српски (ћирилица): https://thesartorialist.ch/sr/
+- Shqip: https://thesartorialist.ch/sq/ — kostum me porosi: https://thesartorialist.ch/sq/kostum-me-porosi-cyrih/
+- Jede Seite verweist per hreflang auf alle 9 Sprachfassungen. Das Glossar (100 Begriffe) gibt es auf Deutsch.
 
 ## Über
 
@@ -93,7 +100,7 @@ Massanzüge gibt es nicht im Shop — sie beginnen mit einem Termin im Showroom.
 
 ## Preise
 
-- Massanzug: ab CHF 1'690 (Endpreis je nach Stoff- und Designwahl,
+- Massanzug: ab CHF 1’690 (Endpreis je nach Stoff- und Designwahl,
   typisch bis ca. CHF 2'500)
 - Masshemd: Preis auf Anfrage, Auswahl aus über 400 Hemdenstoffen
 - Zahlung auf Raten: 0% Zinsen via HeidiPay
@@ -119,3 +126,8 @@ Massanzüge gibt es nicht im Shop — sie beginnen mit einem Termin im Showroom.
 Next.js (App Router, ISR), Shopify Storefront API (headless), three.js,
 semantisches HTML, JSON-LD (ClothingStore, Product, ProductGroup, Service,
 FAQPage, BreadcrumbList, ItemList), WCAG 2.1 AA.
+
+## Vollständige Inhalte
+
+- [llms-full.txt](https://thesartorialist.ch/llms-full.txt): Firmenprofil plus alle 100 Glossar-Begriffe im Volltext
+- [WebMCP](https://thesartorialist.ch/.well-known/webmcp.json): Termin- und Rückruf-Anfrage für Agents (POST /api/anfrage/)

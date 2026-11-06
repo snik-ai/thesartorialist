@@ -46,6 +46,20 @@ export function organizationSchema(beschreibung: string = SITE.description) {
     openingHours: SITE.openingHoursSchema,
     areaServed: SITE.areaServed,
     sameAs: [SITE.socials.instagram],
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${SITE.name}, ${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`,
+    paymentAccepted: 'Bar, Kreditkarte, TWINT, Rechnung',
+    knowsLanguage: ['de', 'en', 'fr', 'it', 'es', 'pt', 'ru', 'sr', 'sq'],
+    knowsAbout: ['Massanzug', 'Hochzeitsanzug', 'Smoking', 'Masshemd', 'Full-Canvas-Verarbeitung', 'Holland & Sherry', 'Loro Piana', 'Italienische Herrenmode'],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Massanfertigung',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Massanzug nach Mass (Full Canvas, Made in Italy)', url: `${SITE.url}/massanzug-zuerich/` }, priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'CHF', minPrice: 1690, valueAddedTaxIncluded: true } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Hochzeitsanzug nach Mass', url: `${SITE.url}/hochzeitsanzug-zuerich/` }, priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'CHF', minPrice: 1690, valueAddedTaxIncluded: true } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Kostenlose Stilberatung im Atelier', url: `${SITE.url}/termin/` }, price: 0, priceCurrency: 'CHF' },
+      ],
+    },
+    potentialAction: { '@type': 'ReserveAction', target: { '@type': 'EntryPoint', urlTemplate: `${SITE.url}/termin/`, actionPlatform: ['https://schema.org/DesktopWebPlatform', 'https://schema.org/MobileWebPlatform'] }, result: { '@type': 'Reservation', name: 'Beratungstermin' } },
   };
 }
 

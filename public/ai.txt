@@ -58,6 +58,7 @@ Allow: /
 # Maschinenlesbare Verweise
 Sitemap: https://thesartorialist.ch/sitemap.xml
 LLMs: https://thesartorialist.ch/llms.txt
+LLMs-Full: https://thesartorialist.ch/llms-full.txt
 WebMCP: https://thesartorialist.ch/.well-known/webmcp.json
 Organization: The Sartorialist Zürich (Swiss Art Partner AG)
 Location: Kuttelgasse 7, 8001 Zürich, Schweiz

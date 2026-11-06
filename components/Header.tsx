@@ -220,7 +220,7 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
                 <li key={b.href} style={{ '--i': i } as React.CSSProperties}>
                   <Link href={b.href} className="mega-card" tabIndex={mega ? 0 : -1}>
                     <span className="mega-img">
-                      <img src={b.hero} alt="" width={320} height={200} loading="lazy" />
+                      <img src={b.hero} alt={b.name} width={320} height={200} loading="lazy" />
                     </span>
                     <span className="mega-name">{b.name}</span>
                     <span className="mega-claim">{b.claim}</span>
