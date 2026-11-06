@@ -30,6 +30,18 @@ const TEASER_IDS = ['jacket-sb-2b', 'jacket-db-6x2', 'jacket-lapel-peak-r', 'jac
 
 const STOFFPARTNER = ['Loro Piana', 'Vitale Barberis Canonico', 'Drago', 'Reda', 'Cerruti', 'Scabal', 'Solbiati', 'Holland & Sherry', 'Zegna', 'Thomas Mason'];
 
+const FILM_LABEL: Partial<Record<Sprache, string>> = {
+  de: 'Konfigurator öffnen',
+  en: 'Open the configurator',
+  fr: 'Ouvrir le configurateur',
+  it: 'Apri il configuratore',
+  es: 'Abrir el configurador',
+  'pt-pt': 'Abrir o configurador',
+  ru: 'Открыть конфигуратор',
+  sr: 'Otvorite konfigurator',
+  sq: 'Hapni konfiguruesin',
+};
+
 export default function Startseite({ lang }: { lang: Sprache }) {
   const t = woerterbuch(lang).start;
   const kats = konfigKategorienFuer(lang);
@@ -99,7 +111,7 @@ export default function Startseite({ lang }: { lang: Sprache }) {
             <h2 className="h2">{t.styles.titel}</h2>
             <p className="lead">{t.styles.lead}</p>
           </div>
-          <KonfiguratorFilm href={konfig} label={lang === 'de' ? 'Konfigurator öffnen' : 'Open the configurator'} />
+          <KonfiguratorFilm href={konfig} label={FILM_LABEL[lang] ?? FILM_LABEL.en} />
           <div className="styles-row">
             {teaser.map((x) => (
               <Link key={x.id} href={`${konfig}#${x.kat}`} className="styles-card">
