@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { BRANDS } from '@/lib/brands';
 import { SITE } from '@/lib/site';
 import Wordmark from './Wordmark';
+import CartButton from './shop/CartButton';
 
 const NAV_LEFT = [
   { label: 'Kollektion', href: '/kollektion/' },
@@ -14,6 +15,7 @@ const NAV_LEFT = [
 ];
 
 const NAV_RIGHT = [
+  { label: 'Shop', href: '/shop/' },
   { label: 'Brands', href: '/category/brand/' },
   { label: 'Über uns', href: '/ueber-uns/' },
 ];
@@ -81,7 +83,7 @@ export default function Header() {
     <Link
       key={item.href}
       href={item.href}
-      aria-current={pathname === item.href ? 'page' : undefined}
+      aria-current={pathname === item.href || (item.href === '/shop/' && pathname.startsWith('/shop')) ? 'page' : undefined}
     >
       {item.label}
     </Link>
@@ -113,10 +115,15 @@ export default function Header() {
 
           <nav className="header-nav header-nav--right" aria-label="Hauptnavigation rechts">
             {NAV_RIGHT.map(navLink)}
+            <CartButton />
             <Link href="/termin/" className="btn">
               Termin buchen
             </Link>
           </nav>
+
+          <div className="header-cart-m">
+            <CartButton />
+          </div>
 
           <button
             className="menu-toggle"
@@ -174,26 +181,30 @@ export default function Header() {
                 <span className="fs-num">03</span>
                 <span className="fs-lbl">Hochzeitsanzug</span>
               </Link>
+              <Link className="fs-row" href="/shop/" onClick={close}>
+                <span className="fs-num">04</span>
+                <span className="fs-lbl">Shop</span>
+              </Link>
               <button
                 type="button"
                 className="fs-row"
                 aria-haspopup="true"
                 onClick={() => setSub('brands')}
               >
-                <span className="fs-num">04</span>
+                <span className="fs-num">05</span>
                 <span className="fs-lbl">Brands</span>
                 <span className="fs-arr"><IconArrow /></span>
               </button>
               <Link className="fs-row" href="/ueber-uns/" onClick={close}>
-                <span className="fs-num">05</span>
+                <span className="fs-num">06</span>
                 <span className="fs-lbl">Über uns</span>
               </Link>
               <Link className="fs-row" href="/services/" onClick={close}>
-                <span className="fs-num">06</span>
+                <span className="fs-num">07</span>
                 <span className="fs-lbl">Services</span>
               </Link>
               <Link className="fs-row" href="/kontakt/" onClick={close}>
-                <span className="fs-num">07</span>
+                <span className="fs-num">08</span>
                 <span className="fs-lbl">Kontakt</span>
               </Link>
             </div>
