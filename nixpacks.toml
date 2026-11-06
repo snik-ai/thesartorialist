@@ -11,7 +11,7 @@ HOSTNAME = "0.0.0.0"
 nixPkgs = ["nodejs_22", "chromium"]
 
 [phases.install]
-cmds = ["npm ci"]
+cmds = ["npm ci --include=dev"]
 
 [phases.build]
 cmds = [
