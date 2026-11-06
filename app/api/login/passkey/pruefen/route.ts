@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     .where(eq(schema.passkey.credentialId, antwort.id))
     .limit(1);
   if (!p) return nein('Dieser Passkey ist nicht (mehr) registriert.');
-  if (!istAdminEmail(p.email)) return nein('Kein Zugang (mehr) für diese Person.', 403);
+  if (!(await istAdminEmail(p.email))) return nein('Kein Zugang (mehr) für diese Person.', 403);
   if (gesperrt(p)) return nein('Zugang vorübergehend gesperrt.', 429);
 
   let v;

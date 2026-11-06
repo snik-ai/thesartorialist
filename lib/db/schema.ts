@@ -23,11 +23,12 @@ const erstellt = () => zeit('erstellt_am').notNull().defaultNow();
 
 /* ---------- Zugang ---------- */
 
-/** Admin-Personen. Wer sich anmelden darf, bestimmt allein ADMIN_EMAILS; die Zeile entsteht beim ersten Login. */
+/** Admin-Personen. Wer sich anmelden darf, steht hier (aktiv = true); verwaltet unter /admin/einstellungen. */
 export const adminUser = pgTable('admin_user', {
   id: id(),
   email: text('email').notNull().unique(),
   name: text('name'),
+  aktiv: boolean('aktiv').notNull().default(true),
   fehlversuche: integer('fehlversuche').notNull().default(0),
   gesperrtBis: zeit('gesperrt_bis'),
   letzteAnmeldung: zeit('letzte_anmeldung'),

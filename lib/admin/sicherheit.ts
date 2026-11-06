@@ -31,14 +31,17 @@ export const SITZUNG_COOKIE_NAMEN = ['__Host-ts_admin', 'ts_admin'];
 /** Login-Code in der API-Antwort nur lokal: nicht in Produktion und nur ohne Mailversand. */
 export const devCodeErlaubt = () => !produktiv() && !process.env.RESEND_API_KEY;
 
-/** Erlaubte Admin-E-Mails aus ADMIN_EMAILS (kommagetrennt, Gross-/Kleinschreibung egal). */
-export function adminEmails(): string[] {
-  return (process.env.ADMIN_EMAILS ?? '')
-    .split(',')
-    .map((e) => e.trim().toLowerCase())
-    .filter((e) => e.includes('@'));
+/** Darf sich diese E-Mail anmelden? Nur aktive Einträge in admin_user (keine Umgebungsvariable). */
+export async function istAdminEmail(email: string): Promise<boolean> {
+  const { db, schema } = await import('@/lib/db');
+  const { and, eq } = await import('drizzle-orm');
+  const [u] = await db()
+    .select({ id: schema.adminUser.id })
+    .from(schema.adminUser)
+    .where(and(eq(schema.adminUser.email, email.trim().toLowerCase()), eq(schema.adminUser.aktiv, true)))
+    .limit(1);
+  return Boolean(u);
 }
-export const istAdminEmail = (email: string) => adminEmails().includes(email.trim().toLowerCase());
 
 /**
  * CSRF-Schutz für schreibende Admin-Anfragen (zusätzlich zu SameSite=Lax): Origin muss die eigene Seite sein.

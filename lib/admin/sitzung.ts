@@ -57,7 +57,7 @@ export async function aktuelleSitzung(): Promise<AdminSitzung | null> {
     .where(and(eq(schema.sitzung.tokenHash, hmac(token)), gt(schema.sitzung.gueltigBis, jetzt)))
     .limit(1);
   if (!z) return null;
-  if (jetzt.getTime() - z.zuletztAm.getTime() > LEERLAUF_MS || !istAdminEmail(z.email)) {
+  if (jetzt.getTime() - z.zuletztAm.getTime() > LEERLAUF_MS || !(await istAdminEmail(z.email))) {
     await db().delete(schema.sitzung).where(eq(schema.sitzung.id, z.sitzungId));
     return null;
   }

@@ -17,9 +17,8 @@ export async function mindestens<T>(ms: number, arbeit: Promise<T>): Promise<T> 
 
 async function adminZeile(email: string) {
   const [u] = await db().select().from(schema.adminUser).where(eq(schema.adminUser.email, email)).limit(1);
-  if (u) return u;
-  const [neu] = await db().insert(schema.adminUser).values({ email }).onConflictDoNothing().returning();
-  return neu ?? (await db().select().from(schema.adminUser).where(eq(schema.adminUser.email, email)).limit(1))[0];
+  if (!u) throw new Error('Admin nicht gefunden');
+  return u;
 }
 
 export const gesperrt = (u: { gesperrtBis: Date | null }) => Boolean(u.gesperrtBis && u.gesperrtBis > new Date());
@@ -28,7 +27,7 @@ export const gesperrt = (u: { gesperrtBis: Date | null }) => Boolean(u.gesperrtB
 export async function codeAnfordern(email: string): Promise<{ devCode?: string; gesperrt?: boolean }> {
   const lc = schema.loginCode;
   await db().delete(lc).where(lt(lc.erstelltAm, new Date(Date.now() - 2 * 86400_000)));
-  if (!istAdminEmail(email)) {
+  if (!(await istAdminEmail(email))) {
     // Platzhalter, der nie passt — gleiches Verhalten wie für echte Konten
     await db().insert(lc).values({ email, codeHash: hmac(`platzhalter:${zufallsToken()}`), gueltigBis: new Date(Date.now() + 10 * 60_000) });
     return {};
@@ -60,7 +59,7 @@ export type PruefErgebnis = { ok: true; adminUserId: string } | { ok: false; sta
 export async function codePruefen(email: string, code: string): Promise<PruefErgebnis> {
   const lc = schema.loginCode;
   const falsch: PruefErgebnis = { ok: false, status: 400, fehler: 'Der Code stimmt nicht oder ist abgelaufen.' };
-  if (!istAdminEmail(email)) return falsch;
+  if (!(await istAdminEmail(email))) return falsch;
   const u = await adminZeile(email);
   if (gesperrt(u)) return { ok: false, status: 429, fehler: 'Zu viele falsche Versuche. Warten Sie 15 Minuten und fordern Sie dann einen neuen Code an.' };
   const [c] = await db()

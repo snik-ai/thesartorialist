@@ -6,6 +6,7 @@ import { istFrisch } from '@/lib/admin/sitzung';
 import { mailBereit } from '@/lib/mail';
 import { TZ } from '@/lib/zeit';
 import Passkeys from '@/components/admin/Passkeys';
+import Admins from '@/components/admin/Admins';
 
 export const metadata: Metadata = { title: 'Einstellungen' };
 export const dynamic = 'force-dynamic';
@@ -17,6 +18,7 @@ export default async function EinstellungenPage() {
     .from(schema.passkey)
     .where(eq(schema.passkey.adminUserId, s.user.id))
     .orderBy(asc(schema.passkey.erstelltAm));
+  const admins = await db().select().from(schema.adminUser).orderBy(asc(schema.adminUser.erstelltAm));
   const fmt = (d: Date | null) => (d ? d.toLocaleString('de-CH', { timeZone: TZ, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : null);
 
   return (
@@ -43,11 +45,16 @@ export default async function EinstellungenPage() {
               <dd>{mailBereit() ? 'Resend aktiv' : 'Nicht konfiguriert (RESEND_API_KEY / MAIL_FROM)'}</dd>
               <dt>Anmeldung</dt>
               <dd>{s.methode === 'passkey' ? 'mit Passkey' : 'mit E-Mail-Code'}</dd>
+              <dt>Admins</dt>
+              <dd>werden in der Datenbank verwaltet (Karte «Admins»)</dd>
               <dt>Weitere Module</dt>
               <dd>Angebote, Aufträge, Rechnungen und Massblätter folgen.</dd>
             </dl>
           </div>
         </div>
+      </div>
+      <div className="a-zwei" style={{ marginTop: 20 }}>
+        <Admins liste={admins.map((a) => ({ id: a.id, email: a.email, name: a.name, aktiv: a.aktiv, zuletzt: fmt(a.letzteAnmeldung), ich: a.id === s.user.id }))} />
       </div>
     </>
   );

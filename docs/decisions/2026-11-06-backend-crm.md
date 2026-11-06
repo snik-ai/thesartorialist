@@ -49,7 +49,7 @@ Anfragen auf einem Dashboard. Muster und Sicherheit nach VoxCRM (Login, Passkey,
 | Variable | Zweck |
 |---|---|
 | `DATABASE_URL` | Postgres-Verbindung (nur hier, nie im Code) |
-| `ADMIN_EMAILS` | Allowlist, kommagetrennt (z. B. `store@thesartorialist.ch`) |
+| (entfällt) | Admins stehen in der Tabelle `admin_user` (Migration 0001 legt store@thesartorialist.ch und s.nikolic@dlm-digital.ch an), Verwaltung unter /admin/einstellungen |
 | `SESSION_SECRET` | ≥ 32 Zeichen, HMAC für Codes/Sitzungen (Pflicht in Produktion) |
 | `TRACKING_SECRET` | Salz für die Besucher-ID (sonst SESSION_SECRET) |
 | `WEBAUTHN_RP_ID` | `thesartorialist.ch` |
@@ -66,7 +66,7 @@ in der API-Antwort und im Server-Log.
    Passwort**, das im Chat gepostete gilt als kompromittiert.
 2. Env-Variablen oben setzen (`SESSION_SECRET`/`TRACKING_SECRET` z. B. `openssl rand -hex 32`).
 3. Deployen — Migrationen laufen beim Start (Log: `[db] Migrationen: ok`).
-4. /admin/login mit einer Adresse aus `ADMIN_EMAILS` aufrufen, Code aus der Mail, Face ID einrichten.
+4. /admin/login mit store@thesartorialist.ch oder s.nikolic@dlm-digital.ch aufrufen, Code aus der Mail, Face ID einrichten.
 5. Testanfrage über /termin/ → erscheint unter Termine.
 
 ## Offen
