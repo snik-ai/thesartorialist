@@ -4,12 +4,23 @@
 // Detail wählen. Klebende Leiste mit Fortschritt je Kategorie, Karten mit
 // Illustration, Details im Dialog, Übersicht mit PDF, Kopieren und Termin.
 // Die Auswahl bleibt im Browser gespeichert und geht mit der Terminanfrage mit.
+// Texte kommen als Props (t) aus dem Wörterbuch; in Fremdsprachen zusätzlich die
+// Überlagerung des Katalogs (uebersetzung) — Deutsch nutzt den Katalog unverändert.
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { KONFIG_KATEGORIEN, type KonfigOption, type KonfigUntergruppe } from '@/lib/konfigurator/daten';
 import { aufloesen, optionText, zeigeCode, type Gewaehlt } from '@/lib/konfigurator/auswahl';
 import { setStoffe, useAuswahl, useStoffe } from '@/lib/konfigurator/useAuswahl';
 import { STOFF_LINK } from '@/lib/konfigurator/konst';
+import { uebersetzeKatalog } from '@/lib/konfigurator/uebersetzen';
+import { fmt, mz } from '@/lib/i18n/fmt';
+import { pfad } from '@/lib/i18n/routen';
+import type { Sprache } from '@/lib/i18n/sprachen';
+import type { Woerterbuch } from '@/lib/i18n/de';
+import type { KonfigUebersetzung } from '@/lib/i18n/de/konfigDaten';
+
+export type KonfigTexte = { ui: Woerterbuch['konfigurator']['ui']; pdf: Woerterbuch['konfigurator']['pdf'] };
+type UiTexte = KonfigTexte['ui'];
 
 type Detail = { kategorieId: string; u: KonfigUntergruppe; o: KonfigOption };
 
@@ -30,7 +41,18 @@ const Info = () => (
   </svg>
 );
 
-export default function Konfigurator() {
+export default function Konfigurator({
+  lang,
+  t,
+  uebersetzung,
+}: {
+  lang: Sprache;
+  t: KonfigTexte;
+  /** Nur in Fremdsprachen: übersetzte Texte je Kategorie/Untergruppe/Option */
+  uebersetzung?: KonfigUebersetzung;
+}) {
+  const ui = t.ui;
+  const kats = useMemo(() => uebersetzeKatalog(KONFIG_KATEGORIEN, uebersetzung), [uebersetzung]);
   const { auswahl, waehle: setze, entferne: weg, reset } = useAuswahl();
   const [aktiv, setAktiv] = useState(KONFIG_KATEGORIEN[0].id);
   const [detail, setDetail] = useState<Detail | null>(null);
@@ -86,21 +108,21 @@ export default function Konfigurator() {
   const istGewaehlt = (u: string, o: string) => (auswahl[u] ?? []).includes(o);
   const entferne = (g: Gewaehlt) => weg(g.untergruppeId, g.option.id);
 
-  const items = useMemo(() => aufloesen(auswahl), [auswahl]);
+  const items = useMemo(() => aufloesen(auswahl, kats), [auswahl, kats]);
   const fortschritt = (kid: string) => {
-    const k = KONFIG_KATEGORIEN.find((x) => x.id === kid)!;
+    const k = kats.find((x) => x.id === kid)!;
     const done = k.subCategories.filter((u) => (auswahl[u.id] ?? []).length > 0).length;
     return { done, total: k.subCategories.length };
   };
 
   const pdf = async () => {
-    setStatus('PDF wird erstellt …');
+    setStatus(ui.pdfLaeuft);
     try {
       const { stilPdf } = await import('@/lib/konfigurator/pdf');
-      await stilPdf(items, stoffe);
-      setStatus('PDF heruntergeladen');
+      await stilPdf(items, stoffe, t.pdf, ui.auswahl);
+      setStatus(ui.pdfFertig);
     } catch {
-      setStatus('PDF konnte nicht erstellt werden');
+      setStatus(ui.pdfFehler);
     }
     setTimeout(() => setStatus(null), 3000);
   };
@@ -117,8 +139,8 @@ export default function Konfigurator() {
     <>
       <div className="konf-bar" ref={bar}>
         <div className="container konf-bar-row">
-          <nav className="konf-tabs" aria-label="Kategorien">
-            {KONFIG_KATEGORIEN.map((k) => {
+          <nav className="konf-tabs" aria-label={ui.kategorienAria}>
+            {kats.map((k) => {
               const f = fortschritt(k.id);
               return (
                 <a
@@ -140,7 +162,7 @@ export default function Konfigurator() {
                     {k.title}
                   </span>
                   {f.done > 0 && (
-                    <span className="konf-tab-prog num" aria-label={`${f.done} gewählt`}>
+                    <span className="konf-tab-prog num" aria-label={fmt(ui.gewaehltAria, { n: f.done })}>
                       {f.done}
                     </span>
                   )}
@@ -159,19 +181,19 @@ export default function Konfigurator() {
               <span className="konf-tab-img konf-tab-img--stoff" aria-hidden="true">
                 <img src="/images/Holland-Sherry-8-scaled.webp" alt="" width={40} height={48} />
               </span>
-              <span className="konf-tab-label">Stoff</span>
+              <span className="konf-tab-label">{ui.stoff}</span>
               {stoffe.length > 0 && <span className="konf-tab-prog num">{stoffe.length}</span>}
             </a>
           </nav>
           <a href="#uebersicht" className="konf-sum-link">
             <span className="konf-count num" key={items.length}>{items.length}</span>
-            <span className="konf-sum-label">Meine Auswahl</span>
+            <span className="konf-sum-label">{ui.meineAuswahl}</span>
           </a>
         </div>
       </div>
 
       <div className="container konf-body">
-        {KONFIG_KATEGORIEN.map((k) => (
+        {kats.map((k) => (
           <section key={k.id} id={k.id} className="konf-cat">
             <header className="konf-cat-head">
               <div>
@@ -202,7 +224,7 @@ export default function Konfigurator() {
                             <span className="konf-card-text">
                               {o.pocketSpec ? (
                                 <>
-                                  <span className="konf-code">Brust · Seite</span>
+                                  <span className="konf-code">{ui.brustSeite}</span>
                                   <span className="konf-label">
                                     {o.pocketSpec.chest} · {o.pocketSpec.side}
                                   </span>
@@ -218,7 +240,7 @@ export default function Konfigurator() {
                               <Check />
                             </span>
                           </button>
-                          <button type="button" className="konf-info" aria-label={`Details zu ${o.label}`} onClick={() => setDetail({ kategorieId: k.id, u, o })}>
+                          <button type="button" className="konf-info" aria-label={fmt(ui.detailsZu, { label: o.label })} onClick={() => setDetail({ kategorieId: k.id, u, o })}>
                             <Info />
                           </button>
                         </div>
@@ -234,24 +256,21 @@ export default function Konfigurator() {
         <section id="stoff" className="konf-cat konf-stoff">
           <header className="konf-cat-head">
             <div>
-              <h2 className="h2">Stoff</h2>
-              <p className="konf-cat-sub">Die Stoffkollektion von Holland &amp; Sherry</p>
-              <p className="konf-cat-desc">
-                Seit 1836 webt Holland &amp; Sherry Stoffe für die besten Schneider der Welt. Stöbern Sie in der Kollektion
-                und notieren Sie die Nummern Ihrer Favoriten — wir legen die Muster zu Ihrem Termin im Atelier bereit.
-              </p>
+              <h2 className="h2">{ui.stoff}</h2>
+              <p className="konf-cat-sub">{ui.stoffSub}</p>
+              <p className="konf-cat-desc">{ui.stoffText}</p>
             </div>
           </header>
           <div className="konf-stoff-box">
             <a href={STOFF_LINK} target="_blank" rel="noopener" className="konf-stoff-link">
               <span className="konf-stoff-img">
-                <img src="/images/Holland-Sherry-8-scaled.webp" alt="Stoffe von Holland & Sherry" width={480} height={320} loading="lazy" />
+                <img src="/images/Holland-Sherry-8-scaled.webp" alt={ui.stoffBildAlt} width={480} height={320} loading="lazy" />
               </span>
               <span className="konf-stoff-cta">
                 <span className="konf-code">apparel.hollandandsherry.com</span>
-                <span className="konf-stoff-title">Stoffkollektion ansehen</span>
+                <span className="konf-stoff-title">{ui.stoffAnsehen}</span>
                 <span className="konf-stoff-go">
-                  Öffnet in neuem Fenster
+                  {ui.neuesFenster}
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path d="M5 3h6v6M11 3L3 11" stroke="currentColor" strokeWidth="1.4" />
                   </svg>
@@ -260,7 +279,7 @@ export default function Konfigurator() {
             </a>
             <div className="konf-stoff-form">
               <label className="konf-stoff-field">
-                <span className="konf-stoff-kicker">Stoffnummer (optional)</span>
+                <span className="konf-stoff-kicker">{ui.stoffKicker}</span>
                 <span className="konf-stoff-row">
                   <input
                     value={stoffEingabe}
@@ -271,28 +290,25 @@ export default function Konfigurator() {
                         stoffDazu();
                       }
                     }}
-                    placeholder="z. B. 9722022"
+                    placeholder={ui.stoffPlatzhalter}
                     inputMode="text"
                     autoComplete="off"
                     autoCapitalize="characters"
                     spellCheck={false}
-                    aria-label="Stoffnummer"
+                    aria-label={ui.stoffAria}
                   />
                   <button type="button" className="btn" onClick={stoffDazu} disabled={!stoffEingabe.trim()}>
-                    Hinzufügen
+                    {ui.hinzufuegen}
                   </button>
                 </span>
               </label>
-              <p className="konf-stoff-hint">
-                Die Nummer steht auf der Stoffseite unter «Product Code». Mehrere Nummern sind möglich — oder Sie wählen
-                den Stoff einfach im Atelier.
-              </p>
+              <p className="konf-stoff-hint">{ui.stoffHinweis}</p>
               {stoffe.length > 0 && (
                 <ul className="konf-stoff-chips">
                   {stoffe.map((n) => (
                     <li key={n}>
                       <span className="num">{n}</span>
-                      <button type="button" aria-label={`Stoff ${n} entfernen`} onClick={() => setStoffe(stoffe.filter((x) => x !== n))}>
+                      <button type="button" aria-label={fmt(ui.stoffEntfernen, { n })} onClick={() => setStoffe(stoffe.filter((x) => x !== n))}>
                         <Close />
                       </button>
                     </li>
@@ -306,22 +322,20 @@ export default function Konfigurator() {
         <section id="uebersicht" className="konf-summary">
           <div className="konf-summary-head">
             <div>
-              <span className="eyebrow">Übersicht</span>
-              <h2 className="h2">Ihr Massanzug in {items.length} Details</h2>
-              <p className="muted">
-                Gespeichert in diesem Browser. Mass nehmen wir gemeinsam im Atelier — dort verfeinern wir jedes Detail.
-              </p>
+              <span className="eyebrow">{ui.uebersicht}</span>
+              <h2 className="h2">{mz(items.length, ui.summaryTitelEins, ui.summaryTitelMehr)}</h2>
+              <p className="muted">{ui.summaryText}</p>
             </div>
             {items.length > 0 && (
               <button type="button" className="linkbtn" onClick={reset}>
-                Alles zurücksetzen
+                {ui.reset}
               </button>
             )}
           </div>
 
           {stoffe.length > 0 && (
             <div className="konf-sum-group">
-              <p className="konf-sum-cat">Stoff · Holland &amp; Sherry</p>
+              <p className="konf-sum-cat">{ui.stoffGruppe}</p>
               <ul className="konf-sum-list">
                 {stoffe.map((n) => (
                   <li key={n} className="konf-sum-item">
@@ -330,11 +344,11 @@ export default function Konfigurator() {
                         <img src="/images/Holland-Sherry-8-scaled.webp" alt="" width={56} height={70} loading="lazy" />
                       </span>
                       <span>
-                        <span className="konf-sum-u">Stoffnummer</span>
+                        <span className="konf-sum-u">{ui.stoffnummer}</span>
                         <span className="konf-sum-o num">{n}</span>
                       </span>
                     </a>
-                    <button type="button" className="konf-sum-x" aria-label={`Stoff ${n} entfernen`} onClick={() => setStoffe(stoffe.filter((x) => x !== n))}>
+                    <button type="button" className="konf-sum-x" aria-label={fmt(ui.stoffEntfernen, { n })} onClick={() => setStoffe(stoffe.filter((x) => x !== n))}>
                       <Close />
                     </button>
                   </li>
@@ -345,15 +359,15 @@ export default function Konfigurator() {
 
           {items.length === 0 ? (
             <div className="konf-empty">
-              <p className="serif">Noch nichts gewählt.</p>
-              <p className="muted">Tippen Sie oben auf Revers, Taschen, Knöpfe und Futter — Ihre Auswahl erscheint hier.</p>
-              <a href={`#${KONFIG_KATEGORIEN[0].id}`} className="btn btn--ghost">
-                Mit dem Sakko beginnen
+              <p className="serif">{ui.leerTitel}</p>
+              <p className="muted">{ui.leerText}</p>
+              <a href={`#${kats[0].id}`} className="btn btn--ghost">
+                {ui.leerKnopf}
               </a>
             </div>
           ) : (
             <>
-              {KONFIG_KATEGORIEN.map((k) => {
+              {kats.map((k) => {
                 const gs = items.filter((g) => g.kategorieId === k.id);
                 if (!gs.length) return null;
                 return (
@@ -362,16 +376,16 @@ export default function Konfigurator() {
                     <ul className="konf-sum-list">
                       {gs.map((g) => (
                         <li key={g.untergruppeId + g.option.id} className="konf-sum-item">
-                          <button type="button" className="konf-sum-open" onClick={() => setDetail({ kategorieId: g.kategorieId, u: KONFIG_KATEGORIEN.find((x) => x.id === g.kategorieId)!.subCategories.find((x) => x.id === g.untergruppeId)!, o: g.option })}>
+                          <button type="button" className="konf-sum-open" onClick={() => setDetail({ kategorieId: g.kategorieId, u: kats.find((x) => x.id === g.kategorieId)!.subCategories.find((x) => x.id === g.untergruppeId)!, o: g.option })}>
                             <span className="konf-sum-img">
                               <img src={g.option.image} alt="" width={56} height={70} loading="lazy" />
                             </span>
                             <span>
                               <span className="konf-sum-u">{g.untergruppe}</span>
-                              <span className="konf-sum-o">{optionText(g)}</span>
+                              <span className="konf-sum-o">{optionText(g, ui.auswahl)}</span>
                             </span>
                           </button>
-                          <button type="button" className="konf-sum-x" aria-label={`${g.option.label} entfernen`} onClick={() => entferne(g)}>
+                          <button type="button" className="konf-sum-x" aria-label={fmt(ui.entfernen, { label: g.option.label })} onClick={() => entferne(g)}>
                             <Close />
                           </button>
                         </li>
@@ -381,14 +395,14 @@ export default function Konfigurator() {
                 );
               })}
               <div className="konf-actions">
-                <Link href="/termin/?stil=1" className="btn">
-                  Termin mit dieser Auswahl buchen
+                <Link href={`${pfad(lang, 'termin')}?stil=1`} className="btn">
+                  {ui.terminKnopf}
                 </Link>
                 <button type="button" className="btn btn--ghost" onClick={pdf}>
                   <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" strokeWidth="1.4" />
                   </svg>
-                  PDF herunterladen
+                  {ui.pdfKnopf}
                 </button>
                 <span className="konf-status" aria-live="polite">
                   {status}
@@ -410,11 +424,11 @@ export default function Konfigurator() {
           ))}
         </span>
         <span className="konf-dock-text">
-          <strong>{items.length === 0 ? 'Ihre Übersicht' : items.length === 1 ? '1 Detail gewählt' : `${items.length} Details gewählt`}</strong>
-          <span>Sie müssen nicht alles wählen — den Rest besprechen wir im Atelier.</span>
+          <strong>{items.length === 0 ? ui.dockLeer : mz(items.length, ui.dockEins, ui.dockMehr)}</strong>
+          <span>{ui.dockText}</span>
         </span>
         <span className="konf-dock-go">
-          Zur Übersicht
+          {ui.dockGo}
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M7 2v10m0 0l-4-4m4 4l4-4" stroke="currentColor" strokeWidth="1.4" />
           </svg>
@@ -424,6 +438,7 @@ export default function Konfigurator() {
       {detail && (
         <DetailDialog
           d={detail}
+          ui={ui}
           on={istGewaehlt(detail.u.id, detail.o.id)}
           onToggle={() => waehle(detail.u, detail.o)}
           onClose={() => setDetail(null)}
@@ -433,7 +448,7 @@ export default function Konfigurator() {
   );
 }
 
-function DetailDialog({ d, on, onToggle, onClose }: { d: Detail; on: boolean; onToggle: () => void; onClose: () => void }) {
+function DetailDialog({ d, ui, on, onToggle, onClose }: { d: Detail; ui: UiTexte; on: boolean; onToggle: () => void; onClose: () => void }) {
   const ref = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     ref.current?.focus();
@@ -449,7 +464,7 @@ function DetailDialog({ d, on, onToggle, onClose }: { d: Detail; on: boolean; on
   return (
     <div className="konf-modal" role="dialog" aria-modal="true" aria-labelledby="konf-modal-title" onClick={onClose}>
       <div className="konf-modal-box" onClick={(e) => e.stopPropagation()}>
-        <button type="button" className="konf-modal-x" onClick={onClose} aria-label="Schliessen" ref={ref}>
+        <button type="button" className="konf-modal-x" onClick={onClose} aria-label={ui.schliessen} ref={ref}>
           <Close />
         </button>
         <div className="konf-modal-img">
@@ -460,18 +475,18 @@ function DetailDialog({ d, on, onToggle, onClose }: { d: Detail; on: boolean; on
           <h3 id="konf-modal-title" className="serif">
             {o.label}
           </h3>
-          {zeigeCode(o.code, o.label) && <p className="konf-code">Code {o.code}</p>}
+          {zeigeCode(o.code, o.label) && <p className="konf-code">{fmt(ui.code, { code: o.code ?? '' })}</p>}
           {o.subLabel && <p className="konf-modal-sub">{o.subLabel}</p>}
           {o.pocketSpec && (
             <p className="konf-modal-sub">
-              Brusttasche: {o.pocketSpec.chest}
+              {ui.brusttasche} {o.pocketSpec.chest}
               <br />
-              Seitentaschen: {o.pocketSpec.side}
+              {ui.seitentaschen} {o.pocketSpec.side}
             </p>
           )}
           {o.description && <p className="konf-modal-desc">{o.description}</p>}
           <button type="button" className={`btn btn--wide${on ? ' btn--ghost' : ''}`} onClick={onToggle}>
-            {on ? 'Auswahl entfernen' : 'Dieses Detail wählen'}
+            {on ? ui.abwaehlen : ui.waehlen}
           </button>
         </div>
       </div>

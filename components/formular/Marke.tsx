@@ -91,7 +91,14 @@ export function MarkenLogo({ marke, groesse = 32 }: { marke: Marke; groesse?: nu
  * «Erkannt: Firma · firma.ch» mit Logo und dezentem Gruss – blendet sich weich ein (Logo wird scharf, goldener Lichtstreif).
  * Während der Suche nur ein dezenter Platzhalter, damit nichts springt. Ohne Treffer: nichts.
  */
-export function MarkenChip({ suche }: { suche: MarkenSuche }) {
+export type MarkenTexte = { erkannt: string; gruss: string; sucht: string };
+export const MARKEN_TEXTE: MarkenTexte = {
+  erkannt: 'Erkannt',
+  gruss: 'Schön, dass Sie von {name} zu uns finden.',
+  sucht: 'Firma wird erkannt …',
+};
+
+export function MarkenChip({ suche, t = MARKEN_TEXTE }: { suche: MarkenSuche; t?: MarkenTexte }) {
   const { marke } = suche;
   if (marke) {
     const name = marke.name ?? marke.domain;
@@ -101,13 +108,13 @@ export function MarkenChip({ suche }: { suche: MarkenSuche }) {
         <span className="marke-chip__text">
           <span className="marke-chip__kicker">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-            Erkannt<span className="sr">:</span>
+            {t.erkannt}<span className="sr">:</span>
           </span>
           <span className="marke-chip__zeile">
             {marke.name && <b>{marke.name}</b>}
             <span className="marke-chip__domain">{marke.domain}</span>
           </span>
-          <span className="marke-chip__gruss">Schön, dass Sie von {name} zu uns finden.</span>
+          <span className="marke-chip__gruss">{t.gruss.replace('{name}', name)}</span>
         </span>
       </div>
     );
@@ -116,7 +123,7 @@ export function MarkenChip({ suche }: { suche: MarkenSuche }) {
     return (
       <div className="marke-chip marke-chip--sucht" aria-hidden="true">
         <span className="marke-logo marke-logo--leer" />
-        <span className="marke-chip__text"><span className="marke-chip__domain">Firma wird erkannt …</span></span>
+        <span className="marke-chip__text"><span className="marke-chip__domain">{t.sucht}</span></span>
       </div>
     );
   }

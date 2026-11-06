@@ -1,7 +1,14 @@
 // Gebrandete E-Mails (Termin, Rückruf) — Tabellen-Layout für alle Mailprogramme,
 // keine externen Schriften/Bilder, Dunkelmodus-tauglich durch feste Flächenfarben.
 // Termine bekommen einen Kalendereintrag (.ics) und einen Google-Kalender-Link.
+// Kundenmails in der Sprache des Kunden (Texte: lib/i18n/<sprache>/mail.ts, Standard Deutsch);
+// Mails ans Atelier bleiben Deutsch.
 import { SITE } from './site';
+import { mail as MAIL_DE } from './i18n/de/mail';
+
+export type MailTexte = typeof MAIL_DE;
+const f = (s: string, w: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (m, k: string) => (k in w ? String(w[k]) : m));
+const adresse = () => `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`;
 
 export type StilZeile = { kategorie: string; untergruppe: string; option: string };
 export type TerminDaten = {
@@ -44,14 +51,15 @@ function zeitraum(d: TerminDaten) {
   return { start, ende };
 }
 
-export function icsDatei(d: TerminDaten, fuer: 'kunde' | 'atelier', status: 'TENTATIVE' | 'CONFIRMED' = 'TENTATIVE') {
+export function icsDatei(d: TerminDaten, fuer: 'kunde' | 'atelier', status: 'TENTATIVE' | 'CONFIRMED' = 'TENTATIVE', t: MailTexte = MAIL_DE) {
   const z = zeitraum(d);
   if (!z) return null;
-  const titel = fuer === 'kunde' ? 'Beratung Massanzug — The Sartorialist Zürich' : `Beratung: ${d.name}`;
+  const tt = fuer === 'kunde' ? t : MAIL_DE;
+  const titel = fuer === 'kunde' ? t.kalenderTitel : `Beratung: ${d.name}`;
   const beschr = [
-    fuer === 'atelier' ? `Telefon: ${d.telefon || '–'}\\nE-Mail: ${d.email || '–'}` : `Telefon Atelier: ${SITE.phone}`,
-    d.stoffe.length ? `Stoff: ${d.stoffe.join(', ')}` : '',
-    d.stil.length ? `Stil-Auswahl: ${d.stil.length} Details` : '',
+    fuer === 'atelier' ? `Telefon: ${d.telefon || '–'}\\nE-Mail: ${d.email || '–'}` : f(t.icsTelefon, { telefon: SITE.phone }),
+    d.stoffe.length ? f(tt.icsStoff, { stoffe: d.stoffe.join(', ') }) : '',
+    d.stil.length ? f(tt.icsStil, { n: d.stil.length }) : '',
   ]
     .filter(Boolean)
     .join('\\n');
@@ -93,16 +101,16 @@ export function icsDatei(d: TerminDaten, fuer: 'kunde' | 'atelier', status: 'TEN
   return Buffer.from(ics, 'utf8').toString('base64');
 }
 
-function googleKalender(d: TerminDaten) {
+function googleKalender(d: TerminDaten, t: MailTexte) {
   const z = zeitraum(d);
   if (!z) return null;
   const p = new URLSearchParams({
     action: 'TEMPLATE',
-    text: 'Beratung Massanzug — The Sartorialist Zürich',
+    text: t.kalenderTitel,
     dates: `${z.start}/${z.ende}`,
     ctz: 'Europe/Zurich',
-    location: `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`,
-    details: `Ihre Beratung im Atelier. Telefon ${SITE.phone}`,
+    location: adresse(),
+    details: f(t.kalenderDetails, { telefon: SITE.phone }),
   });
   return `https://calendar.google.com/calendar/render?${p}`;
 }
@@ -128,7 +136,7 @@ const zeilen = (rows: [string, string][]) =>
     )
     .join('')}</table>`;
 
-function stilBlock(d: TerminDaten) {
+function stilBlock(d: TerminDaten, t: MailTexte = MAIL_DE) {
   if (!d.stil.length && !d.stoffe.length) return '';
   const gruppen = [...new Set(d.stil.map((s) => s.kategorie))];
   const teile = gruppen
@@ -145,13 +153,13 @@ function stilBlock(d: TerminDaten) {
     )
     .join('');
   const stoff = d.stoffe.length
-    ? `<tr><td colspan="2" style="padding:18px 0 6px;font:700 11px/1 Helvetica,Arial,sans-serif;letter-spacing:2.5px;text-transform:uppercase;color:${INK}">Stoff · Holland &amp; Sherry</td></tr><tr><td colspan="2" style="padding:10px 14px;background:${WARM};font:700 17px/1.4 Helvetica,Arial,sans-serif;letter-spacing:1px;color:${INK}">${d.stoffe.map(esc).join(' &nbsp;·&nbsp; ')}</td></tr>`
+    ? `<tr><td colspan="2" style="padding:18px 0 6px;font:700 11px/1 Helvetica,Arial,sans-serif;letter-spacing:2.5px;text-transform:uppercase;color:${INK}">${esc(t.stoffKicker)}</td></tr><tr><td colspan="2" style="padding:10px 14px;background:${WARM};font:700 17px/1.4 Helvetica,Arial,sans-serif;letter-spacing:1px;color:${INK}">${d.stoffe.map(esc).join(' &nbsp;·&nbsp; ')}</td></tr>`
     : '';
-  return `<tr><td style="padding:8px 36px 28px">${kicker(`Stil-Auswahl · ${d.stil.length} Details`)}<table width="100%" cellpadding="0" cellspacing="0" role="presentation">${stoff}${teile}</table></td></tr>`;
+  return `<tr><td style="padding:8px 36px 28px">${kicker(f(t.stilKicker, { n: d.stil.length }))}<table width="100%" cellpadding="0" cellspacing="0" role="presentation">${stoff}${teile}</table></td></tr>`;
 }
 
-function rahmen(vorschau: string, inhalt: string) {
-  return `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><title>${esc(vorschau)}</title></head>
+function rahmen(vorschau: string, inhalt: string, t: MailTexte = MAIL_DE) {
+  return `<!doctype html><html lang="${t.htmlLang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><title>${esc(vorschau)}</title></head>
 <body style="margin:0;padding:0;background:${WARM}">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">${esc(vorschau)}</div>
 <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:${WARM}"><tr><td align="center" style="padding:28px 12px">
@@ -164,7 +172,7 @@ ${inhalt}
 <tr><td style="padding:24px 36px;background:${WARM};border-top:1px solid ${LINE};font:12px/1.7 Helvetica,Arial,sans-serif;color:${MUTED}">
 <strong style="color:${INK}">${esc(SITE.name)}</strong><br>${esc(SITE.address.street)}, ${esc(SITE.address.postalCode)} ${esc(SITE.address.city)}<br>
 <a href="${telHref(SITE.phone)}" style="color:${MUTED}">${esc(SITE.phone)}</a> · <a href="mailto:${SITE.email}" style="color:${MUTED}">${esc(SITE.email)}</a> · <a href="${SITE.url}" style="color:${MUTED}">thesartorialist.ch</a><br>
-Mo–Fr 10–19 Uhr · Sa 10–17 Uhr</td></tr>
+${esc(t.fussZeiten)}</td></tr>
 </table></td></tr></table></body></html>`;
 }
 
@@ -216,46 +224,45 @@ export function mailTerminAtelier(d: TerminDaten) {
   return { html, text, subject: `Terminanfrage — ${d.wunschText} — ${d.name}` };
 }
 
-/** An den Kunden: Bestätigung der Anfrage */
-export function mailTerminKunde(d: TerminDaten) {
+/** An den Kunden: Bestätigung der Anfrage (in der Sprache des Kunden, Standard Deutsch) */
+export function mailTerminKunde(d: TerminDaten, t: MailTexte = MAIL_DE) {
+  const e = t.eingang;
   const vorname = d.name.split(' ')[0];
-  const gcal = googleKalender(d);
-  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(`Grüezi, ich möchte meinen Termin vom ${d.wunschText} verschieben.`)}`;
+  const gcal = googleKalender(d, t);
+  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(f(t.waVerschieben, { termin: d.wunschText ?? '' }))}`;
   const html = rahmen(
-    `Ihre Terminanfrage für ${d.wunschText}`,
-    titelZeile(
-      `Vielen Dank, ${vorname}.`,
-      'Wir haben Ihre Terminanfrage erhalten und bestätigen Ihnen den Termin so rasch wie möglich — persönlich per Telefon oder E-Mail.',
-    ) +
-      `<tr><td style="padding:18px 36px 6px">${kicker('Ihr Wunschtermin')}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(
-        d.wunschText || 'nach Absprache',
-      )}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">Persönliche Beratung · 60–90 Minuten · kostenlos</div></div></td></tr>` +
-      `<tr><td style="padding:22px 36px 6px">${gcal ? knopf(gcal, 'In Google Kalender', 'ink') : ''}${knopf(MAPS, 'Route planen', 'line')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">Für Apple- und Outlook-Kalender: Anhang «Termin.ics» öffnen.</div></td></tr>` +
-      `<tr><td style="padding:24px 36px 6px">${kicker('So läuft Ihre Beratung')}${zeilen([
-        ['Ort', `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`],
-        ['Ablauf', 'Gespräch, Stoffauswahl, Schnitt und Details, Massnehmen mit über 30 Parametern'],
-        ['Mitbringen', 'Wenn möglich Schuhe und Hemd, die Sie zum Anzug tragen möchten'],
-        ['Preis', 'Massanzüge ab CHF 1’690, in 20 Arbeitstagen abholbereit'],
+    f(e.vorschau, { termin: d.wunschText ?? '' }),
+    titelZeile(f(e.titel, { vorname }), e.text) +
+      `<tr><td style="padding:18px 36px 6px">${kicker(e.kicker)}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(
+        d.wunschText || t.nachAbsprache,
+      )}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">${esc(e.unterzeile)}</div></div></td></tr>` +
+      `<tr><td style="padding:22px 36px 6px">${gcal ? knopf(gcal, t.inGoogleKalender, 'ink') : ''}${knopf(MAPS, t.routePlanen, 'line')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">${esc(t.icsHinweis)}</div></td></tr>` +
+      `<tr><td style="padding:24px 36px 6px">${kicker(e.ablaufKicker)}${zeilen([
+        [e.zeilen.ort, adresse()],
+        [e.zeilen.ablauf, e.zeilen.ablaufText],
+        [e.zeilen.mitbringen, e.zeilen.mitbringenText],
+        [e.zeilen.preis, e.zeilen.preisText],
       ])}</td></tr>` +
-      stilBlock(d) +
-      `<tr><td style="padding:6px 36px 32px">${kicker('Termin verschieben?')}<p style="margin:0 0 14px;font:14px/1.6 Helvetica,Arial,sans-serif;color:${SOFT}">Kein Problem — schreiben Sie uns kurz oder rufen Sie an.</p>${knopf(wa, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+      stilBlock(d, t) +
+      `<tr><td style="padding:6px 36px 32px">${kicker(t.verschiebenKicker)}<p style="margin:0 0 14px;font:14px/1.6 Helvetica,Arial,sans-serif;color:${SOFT}">${esc(t.verschiebenText)}</p>${knopf(wa, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+    t,
   );
   const text = [
-    `Grüezi ${d.name}`,
+    f(t.gruss, { name: d.name }),
     '',
-    `Vielen Dank für Ihre Terminanfrage für ${d.wunschText}. Wir bestätigen Ihnen den Termin so rasch wie möglich.`,
+    f(e.textDanke, { termin: d.wunschText ?? '' }),
     '',
-    `Atelier: ${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`,
-    `Telefon: ${SITE.phone}`,
-    d.stoffe.length ? `\nStoff: ${d.stoffe.join(', ')}` : '',
+    f(e.textAtelier, { adresse: adresse() }),
+    f(e.textTelefon, { telefon: SITE.phone }),
+    d.stoffe.length ? `\n${f(e.textStoff, { stoffe: d.stoffe.join(', ') })}` : '',
     ...d.stil.map((s) => `${s.kategorie} · ${s.untergruppe}: ${s.option}`),
     '',
-    'Freundliche Grüsse',
-    'The Sartorialist Zürich',
+    t.grussFormel,
+    t.signatur,
   ]
     .filter((x) => x !== '')
     .join('\n');
-  return { html, text, subject: 'Ihre Terminanfrage bei The Sartorialist Zürich' };
+  return { html, text, subject: e.betreff };
 }
 
 /** Ans Atelier: Rückrufbitte */
@@ -288,52 +295,53 @@ export function mailLoginCode(code: string) {
 }
 
 /** An den Kunden: Termin verbindlich bestätigt (mit .ics, STATUS:CONFIRMED) */
-export function mailTerminBestaetigt(d: TerminDaten & { nachricht?: string }) {
+export function mailTerminBestaetigt(d: TerminDaten & { nachricht?: string }, t: MailTexte = MAIL_DE) {
+  const b = t.bestaetigt;
   const vorname = d.name.split(' ')[0];
-  const gcal = googleKalender(d);
-  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(`Grüezi, ich möchte meinen Termin vom ${d.wunschText} verschieben.`)}`;
+  const gcal = googleKalender(d, t);
+  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(f(t.waVerschieben, { termin: d.wunschText ?? '' }))}`;
   const html = rahmen(
-    `Ihr Termin am ${d.wunschText} ist bestätigt`,
-    titelZeile(`Ihr Termin ist bestätigt, ${vorname}.`, d.nachricht || 'Wir freuen uns auf Ihren Besuch im Atelier.') +
-      `<tr><td style="padding:18px 36px 6px">${kicker('Ihr Termin')}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(
+    f(b.vorschau, { termin: d.wunschText ?? '' }),
+    titelZeile(f(b.titel, { vorname }), d.nachricht || b.text) +
+      `<tr><td style="padding:18px 36px 6px">${kicker(b.kicker)}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(
         d.wunschText || '',
-      )}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">Persönliche Beratung · 60–90 Minuten · ${esc(SITE.address.street)}, ${esc(SITE.address.city)}</div></div></td></tr>` +
-      `<tr><td style="padding:22px 36px 6px">${gcal ? knopf(gcal, 'In Google Kalender', 'ink') : ''}${knopf(MAPS, 'Route planen', 'line')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">Für Apple- und Outlook-Kalender: Anhang «Termin.ics» öffnen.</div></td></tr>` +
-      stilBlock(d) +
-      `<tr><td style="padding:6px 36px 32px">${kicker('Termin verschieben?')}<p style="margin:0 0 14px;font:14px/1.6 Helvetica,Arial,sans-serif;color:${SOFT}">Kein Problem — schreiben Sie uns kurz oder rufen Sie an.</p>${knopf(wa, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+      )}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">${esc(f(b.unterzeile, { adresse: `${SITE.address.street}, ${SITE.address.city}` }))}</div></div></td></tr>` +
+      `<tr><td style="padding:22px 36px 6px">${gcal ? knopf(gcal, t.inGoogleKalender, 'ink') : ''}${knopf(MAPS, t.routePlanen, 'line')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">${esc(t.icsHinweis)}</div></td></tr>` +
+      stilBlock(d, t) +
+      `<tr><td style="padding:6px 36px 32px">${kicker(t.verschiebenKicker)}<p style="margin:0 0 14px;font:14px/1.6 Helvetica,Arial,sans-serif;color:${SOFT}">${esc(t.verschiebenText)}</p>${knopf(wa, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+    t,
   );
   const text = [
-    `Grüezi ${d.name}`,
+    f(t.gruss, { name: d.name }),
     '',
-    `Ihr Termin ist bestätigt: ${d.wunschText}.`,
+    f(b.textBestaetigt, { termin: d.wunschText ?? '' }),
     d.nachricht || '',
     '',
-    `Atelier: ${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`,
-    `Telefon: ${SITE.phone}`,
+    f(t.eingang.textAtelier, { adresse: adresse() }),
+    f(t.eingang.textTelefon, { telefon: SITE.phone }),
     '',
-    'Freundliche Grüsse',
-    'The Sartorialist Zürich',
+    t.grussFormel,
+    t.signatur,
   ].join('\n');
-  return { html, text, subject: `Termin bestätigt — ${d.wunschText}` };
+  return { html, text, subject: f(b.betreff, { termin: d.wunschText ?? '' }) };
 }
 
 /** An den Kunden: neue Terminvorschläge (1–3) */
-export function mailTerminVorschlag(d: { name: string; vorschlaege: string[]; nachricht?: string }) {
+export function mailTerminVorschlag(d: { name: string; vorschlaege: string[]; nachricht?: string }, t: MailTexte = MAIL_DE) {
+  const v = t.vorschlag;
   const vorname = d.name.split(' ')[0];
   const html = rahmen(
-    'Neue Terminvorschläge',
-    titelZeile(
-      `Grüezi ${vorname}`,
-      d.nachricht || 'Leider passt Ihr Wunschtermin nicht ganz. Gerne schlagen wir Ihnen folgende Termine vor — antworten Sie einfach mit Ihrer Wahl.',
-    ) +
-      `<tr><td style="padding:18px 36px 10px">${kicker('Unsere Vorschläge')}${d.vorschlaege
+    v.vorschau,
+    titelZeile(f(t.gruss, { name: vorname }), d.nachricht || v.text) +
+      `<tr><td style="padding:18px 36px 10px">${kicker(v.kicker)}${d.vorschlaege
         .map(
           (v, i) =>
             `<div style="padding:16px 20px;margin:0 0 8px;background:${i === 0 ? INK : WARM};color:${i === 0 ? '#ffffff' : INK};font:700 18px/1.35 Georgia,'Times New Roman',serif">${esc(v)}</div>`,
         )
         .join('')}</td></tr>` +
-      `<tr><td style="padding:14px 36px 32px">${knopf(`mailto:${SITE.email}?subject=${encodeURIComponent('Terminwahl')}`, 'Per E-Mail antworten')}${knopf(SITE.whatsapp, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+      `<tr><td style="padding:14px 36px 32px">${knopf(`mailto:${SITE.email}?subject=${encodeURIComponent(v.antwortBetreff)}`, v.perMail)}${knopf(SITE.whatsapp, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+    t,
   );
-  const text = [`Grüezi ${d.name}`, '', d.nachricht || 'Gerne schlagen wir Ihnen folgende Termine vor:', '', ...d.vorschlaege.map((v) => `– ${v}`), '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
-  return { html, text, subject: 'Terminvorschläge — The Sartorialist Zürich' };
+  const text = [f(t.gruss, { name: d.name }), '', d.nachricht || v.textKurz, '', ...d.vorschlaege.map((x) => `– ${x}`), '', t.grussFormel, t.signatur].join('\n');
+  return { html, text, subject: v.betreff };
 }

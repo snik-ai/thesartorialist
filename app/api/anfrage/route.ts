@@ -13,6 +13,7 @@ import { zuerich } from '@/lib/zeit';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
 import { icsDatei, mailRueckruf, mailTerminAtelier, mailTerminKunde, type StilZeile } from '@/lib/mail-vorlagen';
 import { reportDlmLead } from '@/lib/dlm-px';
+import { kundenTexte, stilFuer, terminTextFuer } from '@/lib/i18n/kundenmail';
 
 export const runtime = 'nodejs';
 
@@ -52,12 +53,15 @@ export async function POST(req: Request) {
   const wunsch = text(b.wunsch, 200); // lesbarer Wunschtermin bzw. Zeitfenster
   const datum = /^\d{4}-\d{2}-\d{2}$/.test(text(b.datum, 10)) ? text(b.datum, 10) : undefined;
   const zeit = /^\d{1,2}:\d{2}$/.test(text(b.zeit, 5)) ? text(b.zeit, 5).padStart(5, '0') : undefined;
-  const stil: StilZeile[] = Array.isArray(b.stil)
+  // Stil-Auswahl: deutsche Bezeichnungen (Atelier, Backend) plus IDs (Kundenmail in Kundensprache)
+  const id = (v: unknown) => (/^[a-z0-9-]{1,80}$/.test(text(v, 80)) ? text(v, 80) : undefined);
+  const stilRoh = Array.isArray(b.stil)
     ? (b.stil as unknown[]).slice(0, 80).map((x) => {
         const o = (x ?? {}) as Record<string, unknown>;
-        return { kategorie: text(o.kategorie, 60), untergruppe: text(o.untergruppe, 120), option: text(o.option, 160) };
+        return { kategorie: text(o.kategorie, 60), untergruppe: text(o.untergruppe, 120), option: text(o.option, 160), kategorieId: id(o.kategorieId), untergruppeId: id(o.untergruppeId), optionId: id(o.optionId) };
       }).filter((x) => x.kategorie && x.option)
     : [];
+  const stil: StilZeile[] = stilRoh.map(({ kategorie, untergruppe, option }) => ({ kategorie, untergruppe, option }));
   const stoffe = Array.isArray(b.stoffe) ? (b.stoffe as unknown[]).map((x) => text(x, 20)).filter((x) => /^[A-Z0-9-]{3,20}$/i.test(x)).slice(0, 12) : [];
   const sid = text(b._dlmsid, 80) || undefined;
   if (art === 'termin' && (!name || !emailOk(email) || !telOk(tel))) {
@@ -138,8 +142,11 @@ export async function POST(req: Request) {
       await sendeMail({ to: empfaenger(), subject: atelier.subject, text: atelier.text, html: atelier.html, replyTo: d.email, anhaenge: icsA ? [{ filename: 'Termin.ics', content: icsA }] : undefined });
       await markiere('atelierMailAm');
       if (d.email) {
-        const kunde = mailTerminKunde(d);
-        const icsK = icsDatei(d, 'kunde');
+        // Bestätigung in der Sprache des Kunden (Website-Sprache des Formulars)
+        const k = kundenTexte(sprache);
+        const dk = { ...d, wunschText: terminTextFuer(sprache, datum && zeit ? zuerich(datum, zeit) : null, d.wunschText), stil: stilFuer(sprache, stilRoh) };
+        const kunde = mailTerminKunde(dk, k.t);
+        const icsK = icsDatei(dk, 'kunde', 'TENTATIVE', k.t);
         // Bestätigung: Fehler hier blockieren die Anfrage nicht
         await sendeMail({ to: d.email, subject: kunde.subject, text: kunde.text, html: kunde.html, replyTo: empfaenger(), anhaenge: icsK ? [{ filename: 'Termin.ics', content: icsK }] : undefined })
           .then(() => markiere('eingangMailAm'))

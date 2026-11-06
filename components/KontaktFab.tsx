@@ -8,8 +8,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { SITE } from '@/lib/site';
+import { pfad } from '@/lib/i18n/routen';
+import { fmt } from '@/lib/i18n/fmt';
+import { useSprache, type ClientTexte } from './i18n/SprachKontext';
 
-const TAGE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+const ZEITEN_DE = ['Vormittag', 'Mittag', 'Nachmittag', 'Abend'];
+// Nur zum Lesen der Zürcher Uhrzeit (Intl de-CH), nicht zur Anzeige
 const KURZ = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
 /** Jetzt in Zürich: Wochentag und Minuten seit Mitternacht. */
@@ -21,27 +25,25 @@ function jetztZuerich() {
 }
 const zuMin = (hhmm: string) => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3));
 
-export type Status = { offen: boolean; text: string };
-export function oeffnungsStatus(): Status {
+export type Status = { offen: boolean; text: string; morgen?: boolean };
+export function oeffnungsStatus(t: ClientTexte['fab']): Status {
   const { tag, min } = jetztZuerich();
   const heute = SITE.hours[tag];
   if (heute && min >= zuMin(heute[0]) && min < zuMin(heute[1])) {
     const rest = zuMin(heute[1]) - min;
-    return { offen: true, text: rest <= 30 ? `Geöffnet · schliesst um ${heute[1]}` : `Jetzt geöffnet · bis ${heute[1]} Uhr` };
+    return { offen: true, text: fmt(rest <= 30 ? t.offenBald : t.offenBis, { zeit: heute[1] }) };
   }
   // nächste Öffnung suchen
   for (let i = 0; i < 8; i++) {
-    const t = (tag + i) % 7;
-    const h = SITE.hours[t];
+    const tg = (tag + i) % 7;
+    const h = SITE.hours[tg];
     if (!h) continue;
     if (i === 0 && min >= zuMin(h[0])) continue;
-    const wann = i === 0 ? 'heute' : i === 1 ? 'morgen' : TAGE[t];
-    return { offen: false, text: `Geschlossen · öffnet ${wann} um ${h[0]} Uhr` };
+    const wann = i === 0 ? t.heute : i === 1 ? t.morgen : t.tage[tg];
+    return { offen: false, text: fmt(t.geschlossenBis, { wann, zeit: h[0] }), morgen: i === 1 };
   }
-  return { offen: false, text: 'Geschlossen' };
+  return { offen: false, text: t.geschlossen };
 }
-
-const WA_TEXT = 'Grüezi, ich interessiere mich für einen Massanzug und hätte gerne eine Beratung.';
 
 const IconChat = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -67,6 +69,8 @@ const IconTel = () => (
 );
 
 export default function KontaktFab() {
+  const { lang, t: alle } = useSprache();
+  const t = alle.fab;
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<Status | null>(null);
@@ -78,11 +82,11 @@ export default function KontaktFab() {
   const box = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const t = () => setStatus(oeffnungsStatus());
-    t();
-    const id = setInterval(t, 60_000);
+    const tick = () => setStatus(oeffnungsStatus(t));
+    tick();
+    const id = setInterval(tick, 60_000);
     return () => clearInterval(id);
-  }, []);
+  }, [t]);
   useEffect(() => setOpen(false), [path]);
   // Rückruf-Knöpfe auf der Seite öffnen das Panel direkt im Formular
   useEffect(() => {
@@ -123,8 +127,10 @@ export default function KontaktFab() {
           art: 'rueckruf',
           name,
           telefon: tel,
-          wunsch: zeit,
+          // Mails ans Atelier bleiben Deutsch: Zeitfenster auf Deutsch mitsenden
+          wunsch: ZEITEN_DE[t.zeiten.indexOf(zeit)] ?? zeit,
           pfad: window.location.pathname,
+          sprache: lang === 'pt-pt' ? 'pt' : lang,
           _dlmsid: (window as Window & { dlmPx?: { sid?: () => string } }).dlmPx?.sid?.(),
         }),
       });
@@ -141,13 +147,14 @@ export default function KontaktFab() {
   };
 
   const offen = status?.offen ?? false;
-  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(WA_TEXT)}`;
+  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(t.waText)}`;
+  const terminPfad = pfad(lang, 'termin');
 
   return (
-    <div className={`kfab${open ? ' is-open' : ''}${path.startsWith('/massanzug-konfigurator') ? ' kfab--hoch' : ''}`} ref={box}>
-      <div className="kfab-panel" role="dialog" aria-label="Kontakt" aria-hidden={!open}>
+    <div className={`kfab${open ? ' is-open' : ''}${path.startsWith(pfad(lang, 'konfigurator')) ? ' kfab--hoch' : ''}`} ref={box}>
+      <div className="kfab-panel" role="dialog" aria-label={t.kontakt} aria-hidden={!open}>
         <div className="kfab-head">
-          <p className="kfab-title">The Sartorialist Zürich</p>
+          <p className="kfab-title">{alle.logoAlt}</p>
           {status && (
             <p className={`kfab-status${offen ? ' is-open' : ''}`}>
               <span className="kfab-dot" aria-hidden="true" />
@@ -162,14 +169,14 @@ export default function KontaktFab() {
               <IconWa />
               <span>
                 <strong>WhatsApp</strong>
-                <small>{offen ? 'Wir antworten sofort' : 'Wir antworten zu den Öffnungszeiten'}</small>
+                <small>{offen ? t.waSofort : t.waSpaeter}</small>
               </span>
             </a>
             {offen ? (
               <a className="kfab-btn" href={SITE.phoneHref} tabIndex={open ? 0 : -1}>
                 <IconTel />
                 <span>
-                  <strong>Anrufen</strong>
+                  <strong>{t.anrufen}</strong>
                   <small>{SITE.phone}</small>
                 </span>
               </a>
@@ -177,40 +184,40 @@ export default function KontaktFab() {
               <button type="button" className="kfab-btn" onClick={() => setRueckruf(true)} tabIndex={open ? 0 : -1}>
                 <IconTel />
                 <span>
-                  <strong>Rückruf anfordern</strong>
-                  <small>Wir rufen Sie zurück</small>
+                  <strong>{t.rueckruf}</strong>
+                  <small>{t.rueckrufKurz}</small>
                 </span>
               </button>
             )}
-            <Link className="kfab-btn kfab-btn--ink" href="/termin/" tabIndex={open ? 0 : -1}>
+            <Link className="kfab-btn kfab-btn--ink" href={terminPfad} tabIndex={open ? 0 : -1}>
               <IconCal />
               <span>
-                <strong>{offen ? 'Termin buchen' : 'Terminanfrage'}</strong>
-                <small>Beratung im Atelier, 60–90 Minuten</small>
+                <strong>{offen ? t.terminBuchen : t.terminanfrage}</strong>
+                <small>{t.terminText}</small>
               </span>
             </Link>
           </div>
         ) : gesendet ? (
           <div className="kfab-done">
             <p>
-              <strong>Danke{name ? `, ${name}` : ''}.</strong> Wir rufen Sie {status?.text.includes('morgen') ? 'morgen' : 'so rasch wie möglich'} zurück.
+              <strong>{t.danke}{name ? `, ${name}` : ''}.</strong> {status?.morgen ? t.zurueckRufenMorgen : t.zurueckRufenBald}
             </p>
             <button type="button" className="linkbtn" onClick={() => { setRueckruf(false); setGesendet(false); }}>
-              Zurück
+              {t.zurueck}
             </button>
           </div>
         ) : (
           <form className="kfab-form" onSubmit={sendeRueckruf}>
             <label className="kfab-field">
-              <span>Name</span>
+              <span>{t.name}</span>
               <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
             </label>
             <label className="kfab-field">
-              <span>Telefon</span>
+              <span>{t.telefon}</span>
               <input value={tel} onChange={(e) => setTel(e.target.value)} type="tel" inputMode="tel" autoComplete="tel" placeholder="079 123 45 67" required />
             </label>
-            <div className="kfab-chips" role="radiogroup" aria-label="Wunschzeit">
-              {['Vormittag', 'Mittag', 'Nachmittag', 'Abend'].map((z) => (
+            <div className="kfab-chips" role="radiogroup" aria-label={t.wunschzeit}>
+              {t.zeiten.map((z) => (
                 <button key={z} type="button" role="radio" aria-checked={zeit === z} className={zeit === z ? 'is-on' : ''} onClick={() => setZeit(zeit === z ? '' : z)}>
                   {z}
                 </button>
@@ -218,22 +225,22 @@ export default function KontaktFab() {
             </div>
             <div className="kfab-form-row">
               <button type="button" className="linkbtn" onClick={() => setRueckruf(false)}>
-                Zurück
+                {t.zurueck}
               </button>
               <button type="submit" className="btn" disabled={!telOk}>
-                Rückruf anfordern
+                {t.rueckruf}
               </button>
             </div>
           </form>
         )}
 
         <details className="kfab-hours">
-          <summary>Öffnungszeiten</summary>
+          <summary>{t.oeffnungszeiten}</summary>
           <ul>
-            {SITE.openingHours.map((h) => (
-              <li key={h.days}>
-                <span>{h.days}</span>
-                <span className="num">{h.time}</span>
+            {alle.oeffnungszeiten.map((h) => (
+              <li key={h.tage}>
+                <span>{h.tage}</span>
+                <span className="num">{h.zeit}</span>
               </li>
             ))}
           </ul>
@@ -243,7 +250,7 @@ export default function KontaktFab() {
         </details>
       </div>
 
-      <button type="button" className="kfab-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? 'Kontakt schliessen' : 'Kontakt: WhatsApp, Anruf, Termin'}>
+      <button type="button" className="kfab-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? t.schliessen : t.oeffnen}>
         <span className="kfab-icon">{open ? <span className="kfab-x" aria-hidden="true" /> : <IconChat />}</span>
         {status && <span className={`kfab-badge${offen ? ' is-open' : ''}`} aria-hidden="true" />}
       </button>

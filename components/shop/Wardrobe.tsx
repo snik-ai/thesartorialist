@@ -8,6 +8,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { chf } from '@/lib/shop/format';
+import { fmt } from '@/lib/i18n/fmt';
+import { pfad } from '@/lib/i18n/routen';
+import type { Sprache } from '@/lib/i18n/sprachen';
+import type { Woerterbuch } from '@/lib/i18n/de';
 import type { Control, Piece } from './WardrobeScene';
 
 const Scene = dynamic(() => import('./WardrobeScene'), { ssr: false });
@@ -21,7 +25,18 @@ function webgl() {
   }
 }
 
-export default function Wardrobe({ pieces, count }: { pieces: Piece[]; count: number }) {
+export default function Wardrobe({
+  pieces,
+  count,
+  lang,
+  t,
+}: {
+  pieces: Piece[];
+  count: number;
+  lang: Sprache;
+  t: Woerterbuch['shop']['schrank'];
+}) {
+  const produkt = (handle: string) => pfad(lang, 'shop', `products/${handle}/`);
   const router = useRouter();
   const box = useRef<HTMLDivElement>(null);
   const ctl = useRef<Control>({ target: 0, pos: 0, touched: 0, dragging: false });
@@ -54,7 +69,7 @@ export default function Wardrobe({ pieces, count }: { pieces: Piece[]; count: nu
     const c = ctl.current;
     const cur = ((Math.round(c.pos) % n) + n) % n;
     if (i === cur) {
-      router.push(`/shop/products/${pieces[i].handle}/`);
+      router.push(produkt(pieces[i].handle));
       return;
     }
     let d = i - cur;
@@ -98,8 +113,8 @@ export default function Wardrobe({ pieces, count }: { pieces: Piece[]; count: nu
     <section
       className={`wardrobe${ready ? ' is-ready' : ''}${opened ? ' is-open' : ''}`}
       ref={box}
-      aria-roledescription="Karussell"
-      aria-label="Der Kleiderschrank — ausgewählte Stücke"
+      aria-roledescription={t.rolle}
+      aria-label={t.aria}
       onKeyDown={(e) => {
         if (e.key === 'ArrowRight') step(1);
         if (e.key === 'ArrowLeft') step(-1);
@@ -121,26 +136,24 @@ export default function Wardrobe({ pieces, count }: { pieces: Piece[]; count: nu
       </div>
 
       <div className="wardrobe-copy">
-        <span className="eyebrow">Shop · The Sartorialist Zürich</span>
-        <h1 className="display">Der Kleiderschrank</h1>
-        <p>
-          {count} ausgewählte Stücke von Woolrich, Gran Sasso und Tramarossa — online bestellen oder im Showroom anprobieren.
-        </p>
+        <span className="eyebrow">{t.eyebrow}</span>
+        <h1 className="display">{t.h1}</h1>
+        <p>{fmt(t.text, { n: count })}</p>
       </div>
 
       {p && (
         <div className="wardrobe-card" aria-live="polite">
-          <button type="button" className="wardrobe-arrow" onClick={() => step(-1)} aria-label="Vorheriges Stück">
+          <button type="button" className="wardrobe-arrow" onClick={() => step(-1)} aria-label={t.zurueck}>
             <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M11 7H3m0 0l4-4M3 7l4 4" stroke="currentColor" strokeWidth="1.4" />
             </svg>
           </button>
-          <Link href={`/shop/products/${p.handle}/`} className="wardrobe-info">
+          <Link href={produkt(p.handle)} className="wardrobe-info">
             <span className="wardrobe-brand">{p.brand}</span>
             <span className="wardrobe-title">{p.title}</span>
-            <span className="wardrobe-price num">{chf(p.price)} · Ansehen →</span>
+            <span className="wardrobe-price num">{chf(p.price)} · {t.ansehen}</span>
           </Link>
-          <button type="button" className="wardrobe-arrow" onClick={() => step(1)} aria-label="Nächstes Stück">
+          <button type="button" className="wardrobe-arrow" onClick={() => step(1)} aria-label={t.weiter}>
             <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M3 7h8m0 0L7 3m4 4l-4 4" stroke="currentColor" strokeWidth="1.4" />
             </svg>
@@ -148,7 +161,7 @@ export default function Wardrobe({ pieces, count }: { pieces: Piece[]; count: nu
         </div>
       )}
       <a href="#sortiment" className="wardrobe-down">
-        Alle {count} Artikel
+        {fmt(t.alleArtikel, { n: count })}
       </a>
     </section>
   );

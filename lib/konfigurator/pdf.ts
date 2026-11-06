@@ -6,6 +6,8 @@
 import { SITE } from '@/lib/site';
 import { STOFF_LINK } from './konst';
 import { optionText, type Gewaehlt } from './auswahl';
+import { fmt, mz } from '@/lib/i18n/fmt';
+import { AUSWAHL_TEXTE_DE, PDF_TEXTE_DE, type AuswahlTexte, type PdfTexte } from './texte';
 
 type RGB = [number, number, number];
 const INK: RGB = [16, 16, 16];
@@ -37,7 +39,9 @@ async function jpeg(src: string): Promise<{ data: string; w: number; h: number }
   }
 }
 
-export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
+/** Stil-PDF erzeugen und herunterladen. Texte aus dem Wörterbuch (konfigurator.pdf bzw.
+ * konfigurator.ui.auswahl); ohne Angabe Deutsch. */
+export async function stilPdf(items: Gewaehlt[], stoffe: string[] = [], t: PdfTexte = PDF_TEXTE_DE, ta: AuswahlTexte = AUSWAHL_TEXTE_DE) {
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
   const W = doc.internal.pageSize.getWidth(); // 210
@@ -45,8 +49,8 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
   const M = 16;
   const CW = W - 2 * M;
   const FOOT = H - 18; // ab hier Fusszeile
-  const datum = new Date().toLocaleDateString('de-CH', { day: 'numeric', month: 'long', year: 'numeric' });
-  doc.setProperties({ title: 'Stil-Auswahl Massanzug — The Sartorialist Zürich', author: SITE.name, subject: 'Massanzug Styles & Options' });
+  const datum = new Date().toLocaleDateString(t.locale, { day: 'numeric', month: 'long', year: 'numeric' });
+  doc.setProperties({ title: t.dokTitel, author: SITE.name, subject: t.dokThema });
 
   const color = (c: RGB, kind: 'text' | 'draw' | 'fill' = 'text') =>
     kind === 'text' ? doc.setTextColor(...c) : kind === 'draw' ? doc.setDrawColor(...c) : doc.setFillColor(...c);
@@ -61,7 +65,7 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
       doc.setCharSpace(2.6);
-      doc.text('ZÜRICH', W / 2, 27.5, { align: 'center' });
+      doc.text(t.ort, W / 2, 27.5, { align: 'center' });
       doc.setCharSpace(0);
       color(INK, 'draw');
       doc.setLineWidth(0.35);
@@ -76,7 +80,7 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     color(MUTED);
-    doc.text(`Stil-Auswahl · ${datum}`, W - M, 14, { align: 'right' });
+    doc.text(fmt(t.kopfFolge, { datum }), W - M, 14, { align: 'right' });
     color(LINE, 'draw');
     doc.setLineWidth(0.25);
     doc.line(M, 17.5, W - M, 17.5);
@@ -89,18 +93,18 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
   color(INK);
   doc.setFont('times', 'bold');
   doc.setFontSize(24);
-  doc.text('Meine Stil-Auswahl', M, y);
+  doc.text(t.titel, M, y);
   y += 7.5;
   doc.setFont('times', 'italic');
   doc.setFontSize(12);
   color(SOFT);
-  doc.text('für den Massanzug — Styles & Options', M, y);
+  doc.text(t.untertitel, M, y);
   // Meta rechts
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   color(MUTED);
   doc.text(datum, W - M, y - 7.5, { align: 'right' });
-  doc.text(`${items.length} ${items.length === 1 ? 'Detail' : 'Details'}${stoffe.length ? ` · ${stoffe.length} ${stoffe.length === 1 ? 'Stoff' : 'Stoffe'}` : ''}`, W - M, y, { align: 'right' });
+  doc.text(`${mz(items.length, t.detailEins, t.detailMehr)}${stoffe.length ? ` · ${mz(stoffe.length, t.stoffEins, t.stoffMehr)}` : ''}`, W - M, y, { align: 'right' });
   y += 9;
 
   const neueSeite = () => {
@@ -129,7 +133,7 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
 
   // Stoff zuerst (wenn notiert)
   if (stoffe.length) {
-    abschnitt('Stoff · Holland & Sherry');
+    abschnitt(t.stoffAbschnitt);
     const h = 16;
     color(WARM, 'fill');
     color(LINE, 'draw');
@@ -138,7 +142,7 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
     color(MUTED);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
-    doc.text(stoffe.length > 1 ? 'STOFFNUMMERN' : 'STOFFNUMMER', M + 5, y + 6);
+    doc.text(stoffe.length > 1 ? t.stoffnummernKopf : t.stoffnummerKopf, M + 5, y + 6);
     color(INK);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
@@ -194,7 +198,7 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
         color(INK);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
-        const titel = doc.splitTextToSize(optionText(e.g), tw).slice(0, 2);
+        const titel = doc.splitTextToSize(optionText(e.g, ta), tw).slice(0, 2);
         doc.text(titel, tx, y + 12.5);
         const sub = e.g.option.subLabel;
         if (sub) {
@@ -212,7 +216,7 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
 
   // Notizen fürs Atelier
   platz(46);
-  abschnitt('Notizen fürs Atelier');
+  abschnitt(t.notizen);
   color(LINE, 'draw');
   doc.setLineWidth(0.25);
   for (let i = 0; i < 5; i++) doc.line(M, y + 6 + i * 7.5, W - M, y + 6 + i * 7.5);
@@ -234,9 +238,9 @@ export async function stilPdf(items: Gewaehlt[], stoffe: string[] = []) {
     doc.setFont('helvetica', 'normal');
     color(MUTED);
     doc.text(`${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}  ·  ${SITE.phone}  ·  ${SITE.email}  ·  thesartorialist.ch`, M, FOOT + 9);
-    doc.text('Masse nehmen wir im Atelier — bringen Sie diese Auswahl zu Ihrem Termin mit.', M, FOOT + 12.8);
-    doc.text(`Seite ${p} von ${pages}`, W - M, FOOT + 5, { align: 'right' });
+    doc.text(t.fussHinweis, M, FOOT + 12.8);
+    doc.text(fmt(t.seite, { p, n: pages }), W - M, FOOT + 5, { align: 'right' });
   }
 
-  doc.save('The-Sartorialist-Stil-Auswahl.pdf');
+  doc.save(t.dateiname);
 }
