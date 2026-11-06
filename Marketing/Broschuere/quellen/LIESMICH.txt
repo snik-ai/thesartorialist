@@ -1,0 +1,43 @@
+The Sartorialist Zürich — Unternehmensbroschüre A4
+====================================================
+
+Ergebnis:   ../The-Sartorialist-Broschuere-A4.pdf  (A4 hoch, 12 Seiten)
+
+Inhalt der Seiten
+  1  Titel («Mode ist vergänglich. Stil ist für die Ewigkeit.»)
+  2  Das Haus (Alexander Shubin, Tom Ford / Prada)
+  3  Massanzug — Create Your Own Style, Kennzahlen (ab CHF 1’690, 20 Arbeitstage, 1’000+ Stoffe, 30+ Masse)
+  4  Ablauf in vier Schritten: Beratung, Masse, Anprobe, Abholung
+  5  Full Canvas / 100 % Made in Italy
+  6  Styles & Options: Sakko (Illustrationen aus public/konfigurator)
+  7  Styles & Options: Hose, Weste, Smoking + Hinweis Konfigurator
+  8  Stoffe — Holland & Sherry, weitere Webereien
+  9  Hochzeitsanzug (Bildseite)
+ 10  Hochzeitsanzug — Details, Stile, 8–10 Wochen
+ 11  Brands (Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso, Woolrich)
+ 12  Kontakt, Öffnungszeiten, QR-Codes (Termin, Instagram)
+
+Quellen der Texte: lib/site.ts, app/page.tsx, app/massanzug-zuerich, app/hochzeitsanzug-zuerich,
+lib/brands.ts, lib/konfigurator/daten.ts, public/llms.txt. Keine Jacob-Cohën-Bilder.
+Gestaltung: Schwarz / Weiss / Warmweiss, Gold #c9a063, Playfair Display + Inter (lokal in fonts/).
+Druckregel: keine box-shadow, text-shadow oder filter:blur.
+
+Dateien
+  broschuere.html          Layout und Texte (alle 12 Seiten)
+  fonts/                   Inter und Playfair Display (woff2, lokal eingebettet)
+  img/                     vorbereitete Bilder (JPEG), Logo (weiss), QR-Codes (SVG)
+  bilder-vorbereiten.cjs   erzeugt img/ aus public/images und public/konfigurator neu
+  render.cjs               rendert das PDF (Puppeteer + Chrome) und prüft auf Überläufe
+  kontrolle.swift          rendert jede PDF-Seite mit PDFKit (wie macOS-Vorschau) als PNG
+  out/                     Zwischenrenders und Kontroll-PNGs (nicht in Git)
+
+Neu erzeugen (im Ordner quellen/)
+  node bilder-vorbereiten.cjs        # nur nötig, wenn Bilder geändert werden
+  node render.cjs                    # PDF → ../The-Sartorialist-Broschuere-A4.pdf
+  swift kontrolle.swift ../The-Sartorialist-Broschuere-A4.pdf out/kontrolle
+
+Voraussetzungen: Google Chrome unter /Applications, puppeteer-core aus
+/Users/strachi/_Claude/dlmdigital/node_modules.
+QR-Codes (einmalig erzeugt mit dem npm-Paket «qrcode»):
+  img/qr-termin.svg     → https://thesartorialist.ch/termin/
+  img/qr-instagram.svg  → https://www.instagram.com/the_sartorialist_zurich/

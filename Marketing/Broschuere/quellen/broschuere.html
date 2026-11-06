@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<title>The Sartorialist Zürich — Broschüre</title>
+<style>
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 800; src: url(fonts/inter-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 800; src: url(fonts/inter-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 900; src: url(fonts/playfair-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 900; src: url(fonts/playfair-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 400 900; src: url(fonts/playfair-italic-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 400 900; src: url(fonts/playfair-italic-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* Keine Schatten, kein Blur: Tiefe nur über Linien und Flächen (Druck-/PDF-Regel). */
+:root {
+  --ink: #111111;
+  --ink-2: #2a2724;
+  --muted: #6d665d;
+  --line: #d9d2c6;
+  --warm: #f4efe6;
+  --paper: #ffffff;
+  --gold: #c9a063;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; }
+body { font-family: var(--sans); color: var(--ink); font-size: 9.4pt; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-variant-numeric: lining-nums; }
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; break-after: page; background: var(--paper); }
+.page:last-child { page-break-after: auto; break-after: auto; }
+.warm { background: var(--warm); }
+.dark { background: var(--ink); color: #f1ece3; }
+img { display: block; }
+.cover-img { width: 100%; height: 100%; object-fit: cover; }
+
+.kicker { font-family: var(--sans); font-size: 7.2pt; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+.dark .kicker { color: var(--gold); }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -.01em; }
+h2 { font-size: 30pt; line-height: 1.08; margin-top: 4mm; }
+h2 em, h1 em { font-style: italic; color: var(--gold); }
+h3 { font-size: 13.5pt; line-height: 1.25; margin-bottom: 2mm; }
+p + p { margin-top: 2.6mm; }
+.lead { font-family: var(--serif); font-size: 13pt; line-height: 1.5; color: var(--ink-2); }
+.dark .lead { color: #e6dfd2; }
+.muted { color: var(--muted); }
+.dark .muted { color: #a79f92; }
+.rule { width: 18mm; height: .5mm; background: var(--gold); margin: 6mm 0; }
+
+/* Seitenfuss */
+.folio { position: absolute; left: 16mm; right: 16mm; bottom: 9mm; display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.dark .folio { color: #8d8579; }
+.folio.on-img { color: rgba(255,255,255,.85); }
+
+/* ---------- 1 Titel ---------- */
+.p-cover .img { position: absolute; left: 0; top: 0; width: 210mm; height: 182mm; }
+.p-cover .img img { object-position: 30% 30%; }
+.p-cover .logo { position: absolute; top: 14mm; left: 16mm; width: 70mm; }
+.p-cover .body { position: absolute; left: 16mm; right: 16mm; top: 196mm; }
+.p-cover h1 { font-size: 40pt; line-height: 1.04; margin-top: 6mm; color: #fff; }
+.p-cover .sub { margin-top: 7mm; font-size: 10.5pt; color: #cfc7b9; max-width: 150mm; line-height: 1.6; }
+.p-cover .bottom { position: absolute; left: 16mm; right: 16mm; bottom: 13mm; display: flex; justify-content: space-between; border-top: .25mm solid #3a3632; padding-top: 4mm; font-size: 7.2pt; letter-spacing: .22em; text-transform: uppercase; color: #b9b1a4; }
+
+/* ---------- 2 Haus ---------- */
+.p-haus .img { width: 210mm; height: 106mm; }
+.p-haus .wrap { padding: 13mm 16mm 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 11mm; }
+.p-haus .quote { grid-column: 1 / -1; font-family: var(--serif); font-style: italic; font-size: 21pt; line-height: 1.25; margin-bottom: 9mm; }
+.p-haus .quote span { color: var(--gold); }
+.p-haus h2 { font-size: 21pt; margin-top: 3mm; margin-bottom: 5mm; }
+.check { list-style: none; margin-top: 5mm; }
+.check li { position: relative; padding-left: 7mm; margin-top: 2.4mm; }
+.check li::before { content: ''; position: absolute; left: 0; top: 2.1mm; width: 3.6mm; height: .35mm; background: var(--gold); }
+.p-haus .sign { margin-top: 6mm; font-family: var(--serif); font-style: italic; font-size: 12pt; }
+.p-haus .sign small { display: block; font-family: var(--sans); font-style: normal; font-size: 7pt; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 1mm; }
+
+/* ---------- 3 Massanzug ---------- */
+.p-mass .top { display: grid; grid-template-columns: 1fr 86mm; column-gap: 11mm; padding: 18mm 16mm 0; }
+.p-mass .img { height: 162mm; }
+.p-mass h2 { font-size: 36pt; }
+.p-mass .lead { margin-top: 6mm; }
+.p-mass .txt { margin-top: 6mm; }
+.facts { position: absolute; left: 0; right: 0; bottom: 0; height: 80mm; background: var(--ink); color: #f1ece3; padding: 12mm 16mm 0; }
+.facts .grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: .25mm solid #3a3632; }
+.facts .f { padding: 6mm 4mm 0 0; border-right: .25mm solid #3a3632; padding-left: 4mm; }
+.facts .f:first-child { padding-left: 0; }
+.facts .f:last-child { border-right: 0; }
+.facts .num { font-family: var(--serif); font-size: 26pt; white-space: nowrap; line-height: 1.1; color: #fff; font-variant-numeric: lining-nums tabular-nums; }
+.facts .num small { font-size: 6.8pt; color: var(--gold); font-family: var(--sans); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 2mm; }
+.facts .lbl { margin-top: 3mm; font-size: 8pt; color: #b9b1a4; line-height: 1.5; }
+.facts .note { margin-top: 9mm; font-size: 8pt; color: #a79f92; max-width: 165mm; }
+
+/* ---------- 4 Ablauf ---------- */
+.p-ablauf .img { width: 210mm; height: 112mm; }
+.p-ablauf .img img { object-position: 50% 35%; }
+.p-ablauf .wrap { padding: 12mm 16mm 0; }
+.p-ablauf h2 { font-size: 28pt; }
+.steps { display: grid; grid-template-columns: 1fr 1fr; column-gap: 11mm; row-gap: 0; margin-top: 8mm; }
+.step { border-top: .25mm solid var(--line); padding: 5mm 0 6mm; }
+.step .n { font-family: var(--serif); font-style: italic; font-size: 26pt; line-height: 1; color: var(--gold); font-variant-numeric: lining-nums; }
+.step h3 { margin-top: 3mm; font-size: 15pt; }
+.step p { font-size: 9pt; color: var(--ink-2); }
+.step .meta { margin-top: 2mm; font-size: 6.8pt; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+/* ---------- 5 Full Canvas ---------- */
+.p-canvas .wrap { padding: 18mm 16mm 0; }
+.p-canvas h2 { font-size: 34pt; color: #fff; }
+.p-canvas .cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 11mm; margin-top: 9mm; }
+.p-canvas h3 { color: #fff; }
+.p-canvas p { color: #cfc7b9; }
+.p-canvas .gallery { position: absolute; left: 16mm; right: 16mm; bottom: 20mm; display: grid; grid-template-columns: 1.35fr 1fr; grid-template-rows: 58mm 58mm; gap: 3mm; }
+.p-canvas .gallery .big { grid-row: 1 / span 2; }
+.p-canvas .gallery img { width: 100%; height: 100%; object-fit: cover; }
+.p-canvas .cap { position: absolute; left: 16mm; bottom: 13mm; font-size: 6.6pt; letter-spacing: .2em; text-transform: uppercase; color: #8d8579; }
+
+/* ---------- 6/7 Styles & Options ---------- */
+.p-styles .wrap { padding: 16mm 16mm 0; }
+.p-styles h2 { font-size: 30pt; }
+.p-styles .intro { display: grid; grid-template-columns: 1fr 74mm; column-gap: 10mm; align-items: end; }
+.p-styles .intro p { font-size: 9pt; color: var(--ink-2); }
+.illus { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-top: 8mm; }
+.illu { background: #fff; border: .25mm solid var(--line); padding: 3mm 3mm 3.2mm; }
+.illu .pic { height: 42mm; display: flex; align-items: center; justify-content: center; }
+.illu img { max-height: 42mm; max-width: 100%; object-fit: contain; }
+.illu .g { margin-top: 2.4mm; font-size: 6.2pt; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.illu .l { font-family: var(--serif); font-size: 10pt; line-height: 1.25; margin-top: .8mm; }
+.illu .d { font-size: 7pt; line-height: 1.4; color: var(--muted); margin-top: 1mm; }
+.section-label { margin-top: 8mm; display: flex; align-items: baseline; gap: 4mm; border-bottom: .25mm solid var(--line); padding-bottom: 2mm; }
+.section-label h3 { font-size: 15pt; margin: 0; }
+.section-label span { font-size: 7.4pt; color: var(--muted); }
+.p-styles2 .illus { margin-top: 4mm; }
+.p-styles2 .illu .pic { height: 50mm; }
+.p-styles2 .illu img { max-height: 50mm; }
+.konf-box { position: absolute; left: 16mm; right: 16mm; bottom: 18mm; border: .35mm solid var(--ink); padding: 6mm 7mm; display: grid; grid-template-columns: 1fr auto; column-gap: 8mm; align-items: center; background: #fff; }
+.konf-box h3 { font-size: 14pt; margin: 0 0 1.5mm; }
+.konf-box p { font-size: 8.4pt; color: var(--ink-2); }
+.konf-box .url { font-size: 7.4pt; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; text-align: right; }
+.konf-box .url b { display: block; font-family: var(--serif); font-size: 20pt; letter-spacing: 0; text-transform: none; font-weight: 500; color: var(--gold); margin-bottom: 1mm; }
+
+/* ---------- 8 Stoffe ---------- */
+.p-stoffe .mosaic { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: 62mm 46mm; gap: 2mm; height: 110mm; }
+.p-stoffe .mosaic .a { grid-row: 1 / span 2; }
+.p-stoffe .mosaic img { width: 100%; height: 100%; object-fit: cover; }
+.p-stoffe .wrap { padding: 12mm 16mm 0; display: grid; grid-template-columns: 1fr 66mm; column-gap: 11mm; }
+.p-stoffe h2 { font-size: 30pt; }
+.p-stoffe .lead { margin-top: 5mm; font-size: 12pt; }
+.p-stoffe .side { border-left: .25mm solid var(--line); padding-left: 7mm; }
+.p-stoffe .side h3 { font-size: 11pt; font-family: var(--sans); font-weight: 600; letter-spacing: .18em; text-transform: uppercase; font-size: 7pt; color: var(--gold); margin: 0 0 2mm; }
+.p-stoffe .side ul { list-style: none; font-family: var(--serif); font-size: 11pt; line-height: 1.55; margin-bottom: 6mm; }
+.p-stoffe .big-n { font-family: var(--serif); font-size: 24pt; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+.p-stoffe .big-n + .muted { font-size: 7.6pt; margin-bottom: 5mm; margin-top: 1mm; }
+.p-stoffe .tip { margin-top: 6mm; padding-top: 4mm; border-top: .25mm solid var(--line); font-size: 8.4pt; color: var(--ink-2); }
+.p-stoffe .tip b { font-weight: 600; }
+
+/* ---------- 9 Hochzeit (Bild) ---------- */
+.p-hz .img { position: absolute; inset: 0; }
+.p-hz .img img { object-position: 50% 30%; }
+.p-hz .panel { position: absolute; left: 0; bottom: 0; width: 124mm; background: var(--ink); color: #f1ece3; padding: 12mm 14mm 16mm 16mm; }
+.p-hz h2 { font-size: 34pt; color: #fff; }
+.p-hz .lead { margin-top: 5mm; font-size: 12pt; }
+
+/* ---------- 10 Hochzeit (Details) ---------- */
+.p-hz2 .wrap { padding: 16mm 16mm 0; }
+.p-hz2 .top { display: grid; grid-template-columns: 1fr 1fr; column-gap: 11mm; }
+.p-hz2 h2 { font-size: 24pt; }
+.p-hz2 .imgs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; margin-top: 8mm; height: 52mm; }
+.p-hz2 .imgs img { width: 100%; height: 100%; object-fit: cover; }
+.p-hz2 .cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 11mm; margin-top: 8mm; }
+.p-hz2 .cols p { font-size: 8.9pt; }
+.styles-list { list-style: none; margin-top: 3mm; }
+.styles-list li { display: grid; grid-template-columns: 40mm 1fr; border-top: .25mm solid var(--line); padding: 1.7mm 0; font-size: 8.4pt; }
+.styles-list li b { font-family: var(--serif); font-weight: 500; font-size: 10pt; }
+.p-hz2 .timing { position: absolute; left: 16mm; right: 16mm; bottom: 18mm; background: var(--warm); border-left: .8mm solid var(--gold); padding: 5mm 7mm; display: grid; grid-template-columns: auto 1fr; column-gap: 7mm; align-items: center; }
+.p-hz2 .timing .n { font-family: var(--serif); font-size: 24pt; line-height: 1; }
+.p-hz2 .timing p { font-size: 8.6pt; }
+
+/* ---------- 11 Brands ---------- */
+.p-brands .wrap { padding: 16mm 16mm 0; }
+.p-brands h2 { font-size: 30pt; }
+.brands { margin-top: 8mm; border-top: .35mm solid var(--ink); }
+.brand { display: grid; grid-template-columns: 34mm 1fr; column-gap: 7mm; padding: 4mm 0; border-bottom: .25mm solid var(--line); }
+.brand img { width: 34mm; height: 26mm; object-fit: cover; }
+.brand .head { display: flex; justify-content: space-between; align-items: baseline; }
+.brand h3 { font-size: 15pt; margin: 0; }
+.brand .origin { font-size: 6.6pt; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.brand .claim { font-family: var(--serif); font-style: italic; color: var(--gold); font-size: 10pt; margin-top: .4mm; }
+.brand p { font-size: 8.2pt; line-height: 1.5; color: var(--ink-2); margin-top: 1mm; }
+
+/* ---------- 12 Kontakt ---------- */
+.p-kontakt .wrap { padding: 18mm 16mm 0; }
+.p-kontakt .logo { width: 70mm; }
+.p-kontakt h2 { font-size: 34pt; color: #fff; margin-top: 16mm; }
+.p-kontakt .grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 11mm; margin-top: 11mm; border-top: .25mm solid #3a3632; }
+.p-kontakt .blk { padding-top: 6mm; }
+.p-kontakt .blk h3 { font-family: var(--sans); font-size: 7pt; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 3mm; }
+.p-kontakt .blk p, .p-kontakt .blk td { font-size: 10pt; color: #e6dfd2; line-height: 1.7; }
+.p-kontakt .blk .big { font-family: var(--serif); font-size: 15pt; color: #fff; line-height: 1.4; }
+.p-kontakt table { border-collapse: collapse; width: 100%; }
+.p-kontakt td { padding: 1.2mm 0; border-bottom: .25mm solid #2e2b28; }
+.p-kontakt td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.qrs { margin: 12mm 16mm 0; display: grid; grid-template-columns: 1fr; row-gap: 5mm; }
+.qr { display: grid; grid-template-columns: 40mm minmax(0,1fr); column-gap: 9mm; align-items: center; border: .25mm solid #3a3632; padding: 5mm; }
+.qr .code { background: #fff; padding: 2.8mm; width: 40mm; height: 40mm; }
+.p-kontakt .closing { position: absolute; left: 16mm; right: 16mm; bottom: 24mm; font-family: var(--serif); font-style: italic; font-size: 17pt; color: #e6dfd2; border-top: .25mm solid #3a3632; padding-top: 6mm; }
+.p-kontakt .closing span { color: var(--gold); }
+.qr .code img { width: 100%; height: 100%; }
+.qr h3 { font-size: 18pt; color: #fff; margin: 0 0 1.5mm; }
+.qr p { font-size: 9pt; color: #b9b1a4; line-height: 1.5; }
+.qr .u { margin-top: 3mm; font-size: 7.2pt; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.p-kontakt .legal { position: absolute; left: 16mm; right: 16mm; bottom: 11mm; display: flex; justify-content: space-between; font-size: 6.6pt; letter-spacing: .2em; text-transform: uppercase; color: #8d8579; }
+</style>
+</head>
+<body>
+
+<!-- 1 · Titel -->
+<section class="page dark p-cover">
+  <div class="img"><img class="cover-img" src="img/titel.jpg" alt=""></div>
+  <img class="logo" src="img/logo-weiss.png" alt="The Sartorialist Zürich">
+  <div class="body">
+    <div class="kicker">Massanzüge · Hochzeitsanzüge · Herrenausstatter</div>
+    <h1>Mode ist vergänglich.<br><em>Stil ist für die Ewigkeit.</em></h1>
+    <p class="sub">Massanzüge und exklusive italienische Herrenmode im Herzen von Zürich — Full-Canvas-Verarbeitung, 100&nbsp;% Made in Italy.</p>
+  </div>
+  <div class="bottom"><span>Kuttelgasse 7 · 8001 Zürich</span><span>thesartorialist.ch</span></div>
+</section>
+
+<!-- 2 · Das Haus -->
+<section class="page warm p-haus">
+  <div class="img"><img class="cover-img" src="img/schere.jpg" alt=""></div>
+  <div class="wrap">
+    <p class="quote">«Unsere Kunden suchen nicht den günstigsten Anzug, <span>sondern den richtigen.</span>»</p>
+    <div>
+      <div class="kicker">Das Haus</div>
+      <h2>Vom Tom Ford Store Zürich zum persönlichen Herrenausstatter</h2>
+      <p>Ich bin Alexander Shubin, Gründer von «The Sartorialist» in Zürich — Modemacher mit Leidenschaft, Erfahrung und besten Kontakten zu traditionellen italienischen Textil-Manufakturen. Als langjähriger Geschäftsführer des ersten Tom Ford Stores Europas in Zürich habe ich mich feinster Herrenmode verschrieben.</p>
+    </div>
+    <div>
+      <p style="margin-top: 9mm">Jede von mir ausgewählte Manufaktur wird von Meistern ihres Fachs geführt und blickt auf jahrzehntelange Tradition zurück. So lernen Sie bei mir die echten Gesichter hinter den Brands kennen — und entsprechend fair sind meine Preise.</p>
+      <ul class="check">
+        <li>Persönliche Beratung von der ersten Idee bis zum fertigen Anzug</li>
+        <li>Exklusive Stoffauswahl aus italienischen und englischen Manufakturen</li>
+        <li>Über 15 Jahre Erfahrung in führenden Positionen bei Tom Ford und Prada</li>
+        <li>Persönliche Beratung durch den Gründer — keine wechselnden Mitarbeiter</li>
+      </ul>
+      <p class="sign">Alexander Shubin<small>Gründer · The Sartorialist Zürich</small></p>
+    </div>
+  </div>
+  <div class="folio"><span>The Sartorialist Zürich</span><span>Das Haus</span></div>
+</section>
+
+<!-- 3 · Massanzug -->
+<section class="page p-mass">
+  <div class="top">
+    <div>
+      <div class="kicker">Made to Measure</div>
+      <h2>Massanzug<br><em>Create Your Own Style</em></h2>
+      <p class="lead">Bei The Sartorialist sind Sie Ihr eigener Designer — exklusive Designermode namhafter italienischer Traditions-Manufakturen, perfekt auf Ihre Masse zugeschnitten.</p>
+      <div class="txt">
+        <p>Es gibt nichts Schöneres, als einen Anzug zu tragen, der genau auf Ihre Masse zugeschnitten ist. Ein massgeschneiderter Anzug ist ein wertvolles Stück Lebensqualität, in das jeder Gentleman investieren sollte.</p>
+        <p>Sie erhalten keinen Konfektionsanzug mit kleinen Anpassungen, sondern ein vollständig auf Sie zugeschnittenes Einzelstück: ganzjährige Anzüge, Jackets und Abendgarderobe, ergänzt durch exklusive saisonale Kollektionen — und auf Wunsch ein Masshemd aus über 400 Hemdenstoffen.</p>
+      </div>
+    </div>
+    <div class="img"><img class="cover-img" src="img/massanzug.jpg" alt="" style="object-position: 20% 30%"></div>
+  </div>
+  <div class="facts">
+    <div class="grid">
+      <div class="f"><div class="num"><small>Massanzug ab</small>CHF 1’690</div><div class="lbl">in Full-Canvas-Verarbeitung</div></div>
+      <div class="f"><div class="num"><small>Arbeitstage</small>20</div><div class="lbl">bis abholbereit — die schnellste Lieferzeit der Schweiz</div></div>
+      <div class="f"><div class="num"><small>Anzugstoffe</small>1’000+</div><div class="lbl">dazu über 400 Hemdenstoffe</div></div>
+      <div class="f"><div class="num"><small>Messparameter</small>30+</div><div class="lbl">für eine perfekte Passform</div></div>
+    </div>
+    <p class="note">Der Endpreis hängt von Ihrer Stoff- und Designwahl ab: Mit einem besonders edlen Stoff, luxuriösem Innenfutter oder einer handvernähten Weste kann Ihr Anzug bis etwa CHF 2’500 kosten. Zahlung auf Raten mit 0&nbsp;% Zinsen via HeidiPay. Die Beratung ist kostenlos und unverbindlich.</p>
+  </div>
+</section>
+
+<!-- 4 · Ablauf -->
+<section class="page warm p-ablauf">
+  <div class="img"><img class="cover-img" src="img/atelier-sakko.jpg" alt=""></div>
+  <div class="wrap">
+    <div class="kicker">Der Ablauf</div>
+    <h2>In vier Schritten zu <em>Ihrem Massanzug</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01</div>
+        <h3>Beratung</h3>
+        <p>Wir nehmen uns mindestens 60 bis 90 Minuten Zeit: ein persönliches Gespräch über Wünsche, Anlass, Stil und Körperform, danach Stoffauswahl aus edelsten italienischen Stoffen und Schnittberatung. Keine Hektik, kein Druck — nur ehrliche Beratung mit Substanz.</p>
+        <div class="meta">Kostenlos und unverbindlich</div>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3>Masse</h3>
+        <p>Präzises Massnehmen mit über 30 Parametern. Dazu die Designentscheidungen: Revers, Kragenform, Taschen, Knöpfe, Innenfutter und Initialen. Sie brauchen keine Vorkenntnisse — wir holen Sie genau da ab, wo Sie sind.</p>
+        <div class="meta">Über 30 Messparameter</div>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3>Anprobe</h3>
+        <p>Zwei bis drei Wochen später folgt die Anprobe mit Feinschliff vor Ort. Wir nehmen alle erforderlichen Anpassungen vor, bis der Anzug perfekt passt.</p>
+        <div class="meta">Feinschliff im Atelier</div>
+      </div>
+      <div class="step">
+        <div class="n">04</div>
+        <h3>Abholung</h3>
+        <p>Ihr Anzug ist in der Regel in 20 Arbeitstagen abholbereit — die schnellste Lieferzeit der Schweiz. Auf Wunsch beraten wir Sie auch bei Ihnen im Büro oder zu Hause.</p>
+        <div class="meta">In 20 Arbeitstagen</div>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><span>The Sartorialist Zürich</span><span>Der Ablauf</span></div>
+</section>
+
+<!-- 5 · Full Canvas / Made in Italy -->
+<section class="page dark p-canvas">
+  <div class="wrap">
+    <div class="kicker">Verarbeitung</div>
+    <h2>Full Canvas.<br><em>100 % Made in Italy.</em></h2>
+    <div class="cols">
+      <div>
+        <h3>Vernäht statt geklebt</h3>
+        <p>In der Fertigkonfektion werden die Materialien vor dem Nähen mechanisch unter hohem Druck verklebt. Beim Full-Canvas-Verfahren wird die Einlage komplett vernäht — in der ganzen Länge, vom Hals bis zum Saum.</p>
+        <p>Canvas, ein Einlagegewebe aus Leinen oder Baumwolle, verleiht dem feinen Oberstoff Stabilität durch Nähen (Pikieren) statt thermischem Bekleben. So passt sich das Veston der Körperform an, kann atmen und gewinnt an Langlebigkeit. Alle unsere Anzüge entstehen ausschliesslich in Full-Canvas-Qualität.</p>
+      </div>
+      <div>
+        <h3>Familiengeführte Manufakturen</h3>
+        <p>The Sartorialist arbeitet ausschliesslich mit familiengeführten italienischen und englischen Manufakturen zusammen. Jede wird von Meistern ihres Fachs geführt und blickt auf jahrzehntelange Tradition zurück.</p>
+        <p>Italienische Webkunst, individuelles Design, echte Massarbeit — und ein Service-Erlebnis, das Sie sonst nur in London oder Florenz bekommen.</p>
+      </div>
+    </div>
+  </div>
+  <div class="gallery">
+    <img class="big" src="img/manufaktur-1.jpg" alt="">
+    <img src="img/manufaktur-4.jpg" alt="">
+    <img src="img/manufaktur-3.jpg" alt="">
+  </div>
+  <div class="cap">Handarbeit in der italienischen Manufaktur</div>
+</section>
+
+<!-- 6 · Styles & Options: Sakko -->
+<section class="page warm p-styles">
+  <div class="wrap">
+    <div class="intro">
+      <div>
+        <div class="kicker">Styles &amp; Options</div>
+        <h2>Detail für Detail — <em>das Sakko</em></h2>
+      </div>
+      <p>Knöpfe, Revers, Taschen, Schulter, Futter: Wählen Sie, was Ihnen gefällt. Sie müssen nicht alles festlegen — den Rest besprechen wir im Atelier, wo wir Mass nehmen und mit Ihnen den Stoff wählen.</p>
+    </div>
+    <div class="illus">
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-sb-2b.jpg" alt=""></div><div class="g">Einreiher</div><div class="l">Zwei Knöpfe</div><div class="d">Der klassische Business-Standard.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-db-6x2.jpg" alt=""></div><div class="g">Zweireiher</div><div class="l">Sechs auf zwei</div><div class="d">Der Savile-Row-Klassiker.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-lapel-sb-notch-regular.jpg" alt=""></div><div class="g">Revers fallend</div><div class="l">Normal (8.0 cm)</div><div class="d">Ausgewogene Proportionen.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-lapel-sb-peak-regular.jpg" alt=""></div><div class="g">Revers steigend</div><div class="l">Normal (8.0 cm)</div><div class="d">In italienischer Manier.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-lapel-sb-shawl-regular.jpg" alt=""></div><div class="g">Schalkragen</div><div class="l">Normal (6.0 cm)</div><div class="d">Für Smoking und Samtsakko.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-pocket-barchetta-flap.jpg" alt=""></div><div class="g">Taschen</div><div class="l">Barchetta &amp; Pattentasche</div><div class="d">Vielseitig, Patten einsteckbar.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-pocket-patch-patch.jpg" alt=""></div><div class="g">Taschen</div><div class="l">Aufgesetzt &amp; aufgesetzt</div><div class="d">Lässiger Blazer-Stil.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-back-side-vents.jpg" alt=""></div><div class="g">Rücken</div><div class="l">Seitenschlitze</div><div class="d">Fällt im Sitzen tadellos.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-sb-3-2b.jpg" alt=""></div><div class="g">Einreiher</div><div class="l">Drei auf zwei</div><div class="d">Neapolitanisch weich gerollt.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-pocket-safari.jpg" alt=""></div><div class="g">Taschen</div><div class="l">Safari &amp; Safari</div><div class="d">Blasebalgtaschen mit Falte.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-canvas-traditional.jpg" alt=""></div><div class="g">Einlage</div><div class="l">Klassische Einlage</div><div class="d">Ganzflächige Rosshaar-Einlage.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/jacket-monogram-lined.jpg" alt=""></div><div class="g">Monogramm</div><div class="l">Monogramm im Futter</div><div class="d">Initialen nach Wunsch gestickt.</div></div>
+    </div>
+  </div>
+  <div class="folio"><span>The Sartorialist Zürich</span><span>Styles &amp; Options</span></div>
+</section>
+
+<!-- 7 · Styles & Options: Hose, Weste, Smoking -->
+<section class="page warm p-styles p-styles2">
+  <div class="wrap">
+    <div class="kicker">Styles &amp; Options</div>
+    <h2>Hose, Weste <em>und Smoking</em></h2>
+    <div class="section-label"><h3>Hose</h3><span>Klare Linien und Bunddetails</span></div>
+    <div class="illus">
+      <div class="illu"><div class="pic"><img src="img/illu/trousers-front-flat.jpg" alt=""></div><div class="g">Vorderhose</div><div class="l">Ohne Bundfalte</div><div class="d">Glatt und modern.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/trousers-front-double-pleat.jpg" alt=""></div><div class="g">Vorderhose</div><div class="l">Zwei Bundfalten</div><div class="d">Hoher Bund, schöner Fall.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/trousers-waistband-side-adjusters.jpg" alt=""></div><div class="g">Bund</div><div class="l">Seitenregulierer</div><div class="d">Ganz ohne Gürtel.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/trousers-hem-turnup-4cm.jpg" alt=""></div><div class="g">Saum</div><div class="l">Umschlag (4.0 cm)</div><div class="d">Klassische Massschneider-Breite.</div></div>
+    </div>
+    <div class="section-label"><h3>Weste &amp; Smoking</h3><span>Die Vollendung des Dreiteilers · Black Tie</span></div>
+    <div class="illus">
+      <div class="illu"><div class="pic"><img src="img/illu/waistcoat-sb-5b.jpg" alt=""></div><div class="g">Weste</div><div class="l">Fünf Knöpfe</div><div class="d">Die klassische Weste.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/waistcoat-db-6b.jpg" alt=""></div><div class="g">Weste</div><div class="l">Zweireiher, sechs Knöpfe</div><div class="d">Gerade abgeschlossen.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/black-tie-tux-shawl.jpg" alt=""></div><div class="g">Smoking</div><div class="l">Mit Schalkragen</div><div class="d">Gerundetes Seidenrevers.</div></div>
+      <div class="illu"><div class="pic"><img src="img/illu/black-tie-tux-peak-db.jpg" alt=""></div><div class="g">Smoking</div><div class="l">Zweireihiger Smoking</div><div class="d">6 auf 2, mit Seidenrevers.</div></div>
+    </div>
+  </div>
+  <div class="konf-box">
+    <div>
+      <h3>Gestalten Sie Ihren Anzug schon zu Hause</h3>
+      <p>Im Konfigurator wählen Sie in Ruhe Revers, Knöpfe, Taschen, Schulter, Futter, Hosenbund und Saum, speichern die Auswahl als PDF und bringen sie zum Termin mit. Stoff und Masse wählen wir gemeinsam im Atelier.</p>
+    </div>
+    <div class="url"><b>118 Optionen</b>thesartorialist.ch/<br>massanzug-konfigurator</div>
+  </div>
+</section>
+
+<!-- 8 · Stoffe -->
+<section class="page p-stoffe">
+  <div class="mosaic">
+    <img class="a" src="img/stoff-1.jpg" alt="">
+    <img src="img/stoff-4.jpg" alt="">
+    <img src="img/stoff-5.jpg" alt="">
+    <img src="img/stoff-2.jpg" alt="">
+    <img src="img/stoff-3.jpg" alt="">
+  </div>
+  <div class="wrap">
+    <div>
+      <div class="kicker">Stoffe</div>
+      <h2>Die Stoffkollektion von <em>Holland &amp; Sherry</em></h2>
+      <p class="lead">Seit 1836 webt Holland &amp; Sherry Stoffe für die besten Schneider der Welt.</p>
+      <p style="margin-top: 5mm">Holland &amp; Sherry hat sich auf feinste Wollstoffe, Kaschmir und Seide spezialisiert und steht für zeitlose Eleganz und kontinuierliche Innovation. Die Stoffe sind leicht, atmungsaktiv und hervorragend haltbar — ob klassischer Businessanzug, eleganter Hochzeitsanzug oder modischer Freizeitanzug, mit einer breiten Palette an Farben, Mustern und Texturen.</p>
+      <p>Von superfeinen Wollqualitäten und weichen Flanellen bis zu luftigen Seersucker-Stoffen für Sommeranzüge, Samt für die Wintergarderobe — dazu Kreidestreifen, kräftige oder subtile Karos und mehr.</p>
+      <p class="tip"><b>So gehen Sie vor:</b> Stöbern Sie in der Kollektion auf apparel.hollandandsherry.com und notieren Sie die Nummern Ihrer Favoriten — wir legen die Muster zu Ihrem Termin im Atelier bereit.</p>
+    </div>
+    <div class="side">
+      <div class="big-n">1’000+</div><div class="muted">Anzugstoffe</div>
+      <div class="big-n">400+</div><div class="muted">Hemdenstoffe</div>
+      <h3>Weitere Webereien</h3>
+      <ul><li>Loro Piana</li><li>Vitale Barberis Canonico</li><li>Drago</li><li>Reda</li><li>Cerruti</li><li>Scabal</li><li>Solbiati</li><li>Zegna</li></ul>
+      <h3>Hemdenstoffe</h3>
+      <ul><li>Canclini</li><li>Albini</li><li>Thomas Mason</li></ul>
+    </div>
+  </div>
+  <div class="folio"><span>The Sartorialist Zürich</span><span>Stoffe</span></div>
+</section>
+
+<!-- 9 · Hochzeitsanzug -->
+<section class="page dark p-hz">
+  <div class="img"><img class="cover-img" src="img/hochzeit.jpg" alt=""></div>
+  <div class="panel">
+    <div class="kicker">Hochzeit</div>
+    <h2>Hochzeitsanzug <em>Zürich</em></h2>
+    <p class="lead">Der perfekte Auftritt für den schönsten Tag Ihres Lebens: ein Anzug, der perfekt sitzt, Ihre Persönlichkeit strahlen lässt und jede Bewegung mitmacht.</p>
+  </div>
+</section>
+
+<!-- 10 · Hochzeit Details -->
+<section class="page p-hz2">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="kicker">Hochzeit</div>
+        <h2>Warum Hochzeitsanzüge bei <em>The Sartorialist?</em></h2>
+      </div>
+      <ul class="check" style="margin-top: 0">
+        <li>15 Jahre Erfahrung — Ihr Garant für die schönsten Hochzeitsanzüge in Zürich und Umgebung</li>
+        <li>Wir lieben Mode — und wir lieben es, unsere Kunden persönlich zu beraten</li>
+        <li>Aktuelle Trends, exklusive Materialien und faire Konditionen</li>
+        <li>Full Canvas für perfekt sitzende massgeschneiderte Anzüge</li>
+      </ul>
+    </div>
+    <div class="imgs">
+      <img src="img/braeutigam.jpg" alt="" style="object-position: 25% 30%">
+      <img src="img/hochzeit-elegant.jpg" alt="" style="object-position: 55% 30%">
+      <img src="img/vintage.jpg" alt="" style="object-position: 50% 30%">
+    </div>
+    <div class="cols">
+      <div>
+        <h3>Passform und Tragekomfort</h3>
+        <p>Ihr Körper ist an Ihrer Hochzeit nonstop gefordert: das Warten auf die Trauung, das Fotoshooting, der Eröffnungstanz, das lange Sitzen beim Festmahl, die ausgelassene Party. Dank perfekter Passform und hochwertiger, natürlicher Stoffe atmet Ihr Anzug mit.</p>
+        <h3 style="margin-top: 5mm">Ein Unikat</h3>
+        <p>Lassen Sie den Namen Ihrer Braut, einen Sinnspruch oder das Hochzeitsdatum ins Innenfutter sticken. Dazu Krawatten, Fliegen, Einstecktücher, Manschettenknöpfe und auf Wunsch ein Masshemd.</p>
+      </div>
+      <div>
+        <h3>Beliebte Stile</h3>
+        <ul class="styles-list">
+          <li><b>Dreiteiler</b><span>Mit Weste, zeitlos elegant</span></li>
+          <li><b>Slim Fit</b><span>Moderne, schlanke Silhouette</span></li>
+          <li><b>Leinenanzug</b><span>Ideal für Sommerhochzeiten</span></li>
+          <li><b>Smoking</b><span>Dinner Jacket für Black Tie</span></li>
+          <li><b>Vintage</b><span>Tweed oder Karos für rustikale Settings</span></li>
+          <li><b>Farbig</b><span>Dunkelgrün, Bordeaux oder Beige</span></li>
+        </ul>
+        <p style="margin-top: 3mm">Wir statten auch Trauzeugen, Väter und Hochzeitsgäste aus — stilvoll abgestimmt, ohne den Bräutigam zu überstrahlen.</p>
+      </div>
+    </div>
+  </div>
+  <div class="timing">
+    <div class="n">8–10 Wochen</div>
+    <p>Buchen Sie Ihren Termin mindestens 8 bis 10 Wochen vor der Hochzeit — so bleibt genug Zeit für Stoffwahl, Massnehmen, Anprobe und die persönliche Feinabstimmung.</p>
+  </div>
+  <div class="folio"><span>The Sartorialist Zürich</span><span>Hochzeitsanzug</span></div>
+</section>
+
+<!-- 11 · Brands -->
+<section class="page warm p-brands">
+  <div class="wrap">
+    <div class="kicker">Unsere Brands</div>
+    <h2>Familiengeführte Manufakturen, <em>persönlich ausgewählt</em></h2>
+    <div class="brands">
+      <div class="brand"><img src="img/brand-orazio.jpg" alt="" style="object-position: 50% 25%"><div><div class="head"><h3>Orazio Luciano</h3><span class="origin">Neapel, Italien</span></div><div class="claim">Neapolitanische Schneiderkunst</div><p>Raffinierte Klassik mit technischer Virtuosität: polsterlose Schultern, mindestens 10 cm breites Revers und die berühmte Passform mit uneingeschränkter Bewegungsfreiheit.</p></div></div>
+      <div class="brand"><img src="img/brand-santangelo.jpg" alt=""><div><div class="head"><h3>Maria Santangelo</h3><span class="origin">Neapel, Italien · seit 1953</span></div><div class="claim">Handgefertigte Hemden seit 1953</div><p>Jedes Hemd von Hand hergestellt und bestickt, mit australischen Perlmuttknöpfen — familiengeführt, zu 100 % hauseigene Produktion.</p></div></div>
+      <div class="brand"><img src="img/italienisch.jpg" alt="" style="object-position: 50% 25%"><div><div class="head"><h3>Loro Piana</h3><span class="origin">Quarona, Italien</span></div><div class="claim">Feinste Stoffe der Welt</div><p>Über 200 Jahre Textilerfahrung: aussergewöhnliche Woll- und Kaschmirstoffe, die Eleganz, Komfort und Langlebigkeit vereinen.</p></div></div>
+      <div class="brand"><img src="img/brand-hollandsherry.jpg" alt=""><div><div class="head"><h3>Holland &amp; Sherry</h3><span class="origin">London / Peebles, Grossbritannien</span></div><div class="claim">Britische Stofftradition seit 1836</div><p>Feinste Wollstoffe, Kaschmir und Seide — luxuriöse Textur und aussergewöhnliche Strapazierfähigkeit für anspruchsvolle Massanzüge.</p></div></div>
+      <div class="brand"><img src="img/brand-gransasso.jpg" alt="" style="object-position: 50% 20%"><div><div class="head"><h3>Gran Sasso</h3><span class="origin">Abruzzen, Italien</span></div><div class="claim">Italienische Strickkunst</div><p>Luxuriöse Strickmode seit den 1950er Jahren — Pullover, Cardigans und Polos aus Kaschmir, Wolle und Baumwolle, gefertigt in Italien.</p></div></div>
+      <div class="brand"><img src="img/brand-woolrich.jpg" alt="" style="object-position: 50% 20%"><div><div class="head"><h3>Woolrich</h3><span class="origin">USA · seit 1830</span></div><div class="claim">Outdoor-Ikone seit 1830</div><p>Vom ikonischen Arctic Parka bis zum eleganten Wollmantel — robust, wetterfest, klassisch. Auch im Online-Shop erhältlich.</p></div></div>
+    </div>
+  </div>
+  <div class="folio"><span>The Sartorialist Zürich</span><span>Brands</span></div>
+</section>
+
+<!-- 12 · Kontakt -->
+<section class="page dark p-kontakt">
+  <div class="wrap">
+    <img class="logo" src="img/logo-weiss.png" alt="The Sartorialist Zürich">
+    <div class="kicker" style="margin-top: 16mm">Kontakt</div>
+    <h2 style="margin-top: 4mm">Wir freuen uns <em>auf Ihren Besuch.</em></h2>
+    <div class="grid">
+      <div class="blk">
+        <h3>Showroom</h3>
+        <p class="big">Kuttelgasse 7<br>8001 Zürich</p>
+        <p style="margin-top: 4mm">Telefon +41 43 243 02 77<br>Mobile &amp; WhatsApp +41 76 488 06 30<br>store@thesartorialist.ch</p>
+      </div>
+      <div class="blk">
+        <h3>Öffnungszeiten</h3>
+        <table>
+          <tr><td>Montag – Freitag</td><td>10:00 – 19:00</td></tr>
+          <tr><td>Samstag</td><td>10:00 – 17:00</td></tr>
+          <tr><td>Termin</td><td>nach Vereinbarung</td></tr>
+        </table>
+        <p class="muted" style="margin-top: 4mm; font-size: 8pt; line-height: 1.55">Beratung 60–90 Minuten, kostenlos und unverbindlich. Für Hochzeitsanzüge 8 bis 10 Wochen vor dem grossen Tag.</p>
+      </div>
+    </div>
+  </div>
+  <div class="qrs">
+    <div class="qr">
+      <div class="code"><img src="img/qr-termin.svg" alt="QR-Code Termin buchen"></div>
+      <div><h3>Termin buchen</h3><p>Code scannen und Wunschtermin für Ihre persönliche Beratung anfragen.</p><div class="u">thesartorialist.ch/termin</div></div>
+    </div>
+    <div class="qr">
+      <div class="code"><img src="img/qr-instagram.svg" alt="QR-Code Instagram"></div>
+      <div><h3>Instagram</h3><p>Neue Stoffe, Looks und Einblicke ins Atelier.</p><div class="u">@the_sartorialist_zurich</div></div>
+    </div>
+  </div>
+  <p class="closing">«Mode ist vergänglich. <span>Stil ist für die Ewigkeit.</span>»</p>
+  <div class="legal"><span>Swiss Art Partner AG</span><span>thesartorialist.ch</span></div>
+</section>
+
+</body>
+</html>
