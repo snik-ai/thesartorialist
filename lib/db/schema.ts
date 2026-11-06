@@ -257,17 +257,29 @@ export const ereignis = pgTable(
 
 /* ---------- Atelier: Angebote, Aufträge, Rechnungen, Massblätter (Phase 2) ---------- */
 
-/** Position auf Angebot, Auftrag und Rechnung. Preise in Rappen, inkl. MWST. */
+/**
+ * Zeile auf Angebot, Auftrag und Rechnung (wie VoxCRM): `position` (mit Preis), `titel` (Zwischentitel) oder `text` (Textblock).
+ * Preise in Rappen, inkl. MWST. Ohne `art` (Daten aus Phase 2) gilt «position», Einheit «Stk.», Satz des Belegs.
+ */
+export type PositionArt = 'position' | 'titel' | 'text';
 export type Position = {
   id: string;
+  art?: PositionArt;
   kategorie: string;
   bezeichnung: string;
   beschreibung?: string;
   stoffnummer?: string;
   menge: number;
+  einheit?: string;
   einzelpreisRp: number;
   rabattProzent?: number;
+  /** MWST-Satz der Position in Prozent (Standard: Satz des Belegs) */
+  mwstSatz?: number;
+  produktId?: string | null;
+  varianteId?: string | null;
 };
+/** Dokumentsprache der Belege (Kundensprache, Texte in lib/beleg/texte.ts) */
+export type BelegSprache = 'de' | 'en' | 'fr' | 'it';
 
 const prozent = (name: string) => numeric(name, { precision: 5, scale: 2, mode: 'number' });
 const satz = (name: string) => numeric(name, { precision: 4, scale: 2, mode: 'number' });
@@ -306,6 +318,14 @@ export const angebot = pgTable(
     abgelehntAm: zeit('abgelehnt_am'),
     abgelehntGrund: text('abgelehnt_grund'),
     erstelltVon: uuid('erstellt_von'),
+    /** Dokumentdatum (Kopf des Angebots) */
+    datum: zeit('datum').notNull().defaultNow(),
+    sprache: text('sprache').$type<BelegSprache>().notNull().default('de'),
+    /** Stil-Auswahl aus dem Konfigurator als eigene Seite im PDF anhängen */
+    stilAnhang: boolean('stil_anhang').notNull().default(true),
+    /** Laufende Version (wird beim Senden und mit «Version sichern» hochgezählt, Verlauf in beleg_version) */
+    version: integer('version').notNull().default(1),
+    angesehenAnzahl: integer('angesehen_anzahl').notNull().default(0),
     erstelltAm: erstellt(),
     aktualisiertAm: zeit('aktualisiert_am').notNull().defaultNow(),
   },
@@ -405,6 +425,12 @@ export const rechnung = pgTable(
     referenz: text('referenz'),
     storniertAm: zeit('storniert_am'),
     erstelltVon: uuid('erstellt_von'),
+    sprache: text('sprache').$type<BelegSprache>().notNull().default('de'),
+    version: integer('version').notNull().default(1),
+    /** Mahnwesen (lib/beleg/mahnwesen.ts): erreichte Stufe 0–3, Frist der letzten Mahnung, verrechnete Gebühren */
+    mahnstufe: integer('mahnstufe').notNull().default(0),
+    mahnfristBis: zeit('mahnfrist_bis'),
+    mahngebuehrenRp: integer('mahngebuehren_rp').notNull().default(0),
     erstelltAm: erstellt(),
     aktualisiertAm: zeit('aktualisiert_am').notNull().defaultNow(),
   },
@@ -428,6 +454,91 @@ export const zahlung = pgTable(
     erstelltAm: erstellt(),
   },
   (t) => [index('zahlung_rechnung_idx').on(t.rechnungId), index('zahlung_datum_idx').on(t.datum)],
+);
+
+/** Mahnung zu einer Rechnung: 1 Zahlungserinnerung, 2 = 1. Mahnung, 3 = 2. Mahnung (je PDF mit QR-Zahlteil, optional per Mail) */
+export const mahnung = pgTable(
+  'mahnung',
+  {
+    id: id(),
+    rechnungId: uuid('rechnung_id')
+      .notNull()
+      .references(() => rechnung.id, { onDelete: 'cascade' }),
+    stufe: integer('stufe').notNull(),
+    nummer: text('nummer').notNull().unique(),
+    datum: zeit('datum').notNull().defaultNow(),
+    fristBis: zeit('frist_bis').notNull(),
+    gebuehrRp: integer('gebuehr_rp').notNull().default(0),
+    /** Offener Betrag inkl. aller Gebühren bis und mit dieser Stufe */
+    offenRp: integer('offen_rp').notNull(),
+    sprache: text('sprache').$type<BelegSprache>().notNull().default('de'),
+    versendetAm: zeit('versendet_am'),
+    versendetAn: text('versendet_an'),
+    erstelltVon: uuid('erstellt_von'),
+    erstelltAm: erstellt(),
+  },
+  (t) => [index('mahnung_rechnung_idx').on(t.rechnungId, t.stufe)],
+);
+
+/** Gesicherte Fassungen eines Angebots bzw. einer Rechnung (automatisch beim Senden, sonst «Version sichern») */
+export const belegVersion = pgTable(
+  'beleg_version',
+  {
+    id: id(),
+    art: text('art').$type<'angebot' | 'rechnung'>().notNull(),
+    belegId: uuid('beleg_id').notNull(),
+    version: integer('version').notNull(),
+    grund: text('grund').notNull().default('manuell'),
+    daten: jsonb('daten').$type<Record<string, unknown>>().notNull(),
+    totalRp: integer('total_rp').notNull().default(0),
+    erstelltVon: uuid('erstellt_von'),
+    erstelltAm: erstellt(),
+  },
+  (t) => [index('beleg_version_beleg_idx').on(t.belegId, t.version)],
+);
+
+/* ---------- Produkte (Katalog für die Positionen, wie VoxCRM) ---------- */
+
+export type ProduktKategorie =
+  | 'massanzug'
+  | 'sakko'
+  | 'hose'
+  | 'weste'
+  | 'hemd'
+  | 'smoking'
+  | 'mantel'
+  | 'aenderung'
+  | 'stoffzuschlag'
+  | 'accessoire'
+  | 'dienstleistung';
+/** Variante eines Produkts, z. B. Stoffqualität «Super 150»: eigener Preis inkl. MWST */
+export type ProduktVariante = { id: string; name: string; preisRp: number; aktiv: boolean };
+
+export const produkt = pgTable(
+  'produkt',
+  {
+    id: id(),
+    name: text('name').notNull(),
+    kategorie: text('kategorie').$type<ProduktKategorie>().notNull().default('massanzug'),
+    beschreibung: text('beschreibung'),
+    /** Preis inkl. MWST in Rappen (Grundpreis bzw. ohne Varianten) */
+    preisRp: integer('preis_rp').notNull().default(0),
+    mwstSatz: satz('mwst_satz').notNull().default(8.1),
+    einheit: text('einheit').notNull().default('Stk.'),
+    varianten: jsonb('varianten').$type<ProduktVariante[]>().notNull().default([]),
+    aktiv: boolean('aktiv').notNull().default(true),
+    /** Hochgeladenes Bild (PNG/JPEG/WebP), ausgeliefert über /api/admin/produkte/<id>/bild */
+    bild: bytea('bild'),
+    bildTyp: text('bild_typ'),
+    /** Alternativ ein Bild aus /public (z. B. /images/…) */
+    bildPfad: text('bild_pfad'),
+    sortierung: integer('sortierung').notNull().default(0),
+    /** Herkunft aus der alten Preisliste (firma_einstellung «katalog») */
+    katalogId: text('katalog_id'),
+    erstelltAm: erstellt(),
+    aktualisiertAm: zeit('aktualisiert_am').notNull().defaultNow(),
+  },
+  (t) => [index('produkt_kategorie_idx').on(t.kategorie, t.sortierung), index('produkt_aktiv_idx').on(t.aktiv)],
 );
 
 /** Masse in cm je Feld («sakko.brust»), Körperhaltung als Chips. Jede Messung = neue Version, die neueste ist aktiv. */

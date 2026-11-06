@@ -3,6 +3,8 @@
 import { eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import { SITE } from '@/lib/site';
+import type { BelegSprache } from '@/lib/db/schema';
+import { STANDARD_TEXTE } from '@/lib/beleg/texte';
 
 export type Firma = {
   name: string;
@@ -34,6 +36,10 @@ export type Firma = {
   };
   erinnerungAktiv: boolean;
   erinnerungStunden: number;
+  /** Mahnwesen (lib/beleg/mahnwesen.ts): Gebühr 1. und 2. Mahnung in Rappen, Frist je Mahnung in Tagen */
+  mahnGebuehr2Rp: number;
+  mahnGebuehr3Rp: number;
+  mahnFristTage: number;
 };
 
 export type KatalogEintrag = { id: string; kategorie: string; bezeichnung: string; beschreibung?: string; preisRp: number };
@@ -68,6 +74,9 @@ export const FIRMA_STANDARD: Firma = {
   },
   erinnerungAktiv: true,
   erinnerungStunden: 2,
+  mahnGebuehr2Rp: 2000,
+  mahnGebuehr3Rp: 4000,
+  mahnFristTage: 10,
 };
 
 /** Preisliste des Ateliers. Nur der Massanzug hat einen veröffentlichten Ab-Preis — die übrigen Preise trägt das Atelier ein. */
@@ -128,3 +137,8 @@ export const mwstSatzVon = (f: Firma) => (f.mwstPflichtig ? f.mwstSatz : 0);
 
 /** «Kuttelgasse 7, 8001 Zürich» */
 export const firmaAdresse = (f: Firma) => `${f.strasse}, ${f.plz} ${f.ort}`;
+
+/** Standardtexte eines neuen Belegs in der Dokumentsprache (Deutsch aus den Firmeneinstellungen) */
+export function belegTexte(f: Firma, sprache: BelegSprache) {
+  return sprache === 'de' ? f.texte : STANDARD_TEXTE[sprache];
+}
