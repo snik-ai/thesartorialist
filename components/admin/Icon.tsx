@@ -104,6 +104,24 @@ const PFADE: Record<string, React.ReactNode> = {
     </>
   ),
   abmelden: <path d="M9 4H5v16h4M15 8l4 4-4 4M19 12H9" />,
+  glocke: (
+    <>
+      <path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z" />
+      <path d="M10 20.5a2.2 2.2 0 0 0 4 0" />
+    </>
+  ),
+  teilen: (
+    <>
+      <path d="M12 3v12M8 7l4-4 4 4" />
+      <path d="M6 11H5v10h14V11h-1" />
+    </>
+  ),
+  plusquadrat: (
+    <>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+      <path d="M12 8v8M8 12h8" />
+    </>
+  ),
   merge: <path d="M6 3v6a6 6 0 0 0 6 6h6M6 21v-6M15 12l3 3-3 3" />,
   mehr: (
     <>

@@ -3,10 +3,12 @@
 // 2. Sendet die Anfrage über Resend an das Atelier (Antworten gehen direkt an den Kunden) und
 //    schickt dem Kunden eine Bestätigung (falls E-Mail angegeben).
 // 3. Meldet den Lead an das DLM-Cockpit.
+// 4. Web-Push an alle aktiven Admins (nach der Antwort, blockiert nie; lib/admin/push.ts).
 // Gespeichert, aber Resend fehlt/scheitert → trotzdem 200 (Mail wird aus dem Admin nachgeholt).
 // Weder DB noch Resend → 503, das Formular öffnet dann wie bisher das Mailprogramm.
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
+import { pushNeueAnfrage } from '@/lib/admin/push';
 import { db, dbBereit, schema } from '@/lib/db';
 import { aktivitaetLoggen, kontaktAufnehmen } from '@/lib/crm/kontakte';
 import { zuerich } from '@/lib/zeit';
@@ -124,6 +126,11 @@ export async function POST(req: Request) {
     }
   }
   const gespeichert = Boolean(terminId);
+  // Push an alle aktiven Admins — nach der Antwort (after), mit Timeout, Fehler nur im Log
+  if (terminId) {
+    const id = terminId;
+    after(() => pushNeueAnfrage({ terminId: id, art, name, wunsch, mitStil: stil.length > 0 || stoffe.length > 0 }));
+  }
   const markiere = async (feld: 'atelierMailAm' | 'eingangMailAm') => {
     if (terminId) await db().update(schema.termin).set({ [feld]: new Date() }).where(eq(schema.termin.id, terminId)).catch(() => {});
   };

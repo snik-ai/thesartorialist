@@ -88,6 +88,36 @@ export const sitzung = pgTable('sitzung', {
   erstelltAm: erstellt(),
 });
 
+/**
+ * Einstellungen der App (Schlüssel/Wert), z. B. die VAPID-Schlüssel für Web-Push. Werden beim ersten Bedarf
+ * automatisch erzeugt — keine Umgebungsvariable nötig. Inhalte nur serverseitig lesen (Privatschlüssel!).
+ */
+export const einstellung = pgTable('einstellung', {
+  schluessel: text('schluessel').primaryKey(),
+  wert: jsonb('wert').$type<Record<string, unknown>>().notNull(),
+  aktualisiertAm: zeit('aktualisiert_am').notNull().defaultNow(),
+});
+
+/** Web-Push-Abos der Admin-App (ein Eintrag je Gerät/Browser). 404/410 vom Push-Dienst → automatisch gelöscht. */
+export const pushAbo = pgTable(
+  'push_abo',
+  {
+    id: id(),
+    adminUserId: uuid('admin_user_id')
+      .notNull()
+      .references(() => adminUser.id, { onDelete: 'cascade' }),
+    endpoint: text('endpoint').notNull().unique(),
+    p256dh: text('p256dh').notNull(),
+    auth: text('auth').notNull(),
+    geraet: text('geraet'),
+    userAgent: text('user_agent'),
+    erstelltAm: erstellt(),
+    zuletztOk: zeit('zuletzt_ok'),
+    fehler: text('fehler'),
+  },
+  (t) => [index('push_abo_admin_idx').on(t.adminUserId)],
+);
+
 /* ---------- CRM ---------- */
 
 /**

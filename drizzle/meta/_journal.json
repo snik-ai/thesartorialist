@@ -15,6 +15,13 @@
       "when": 1793964473964,
       "tag": "0001_admin_in_db",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793964474964,
+      "tag": "0002_push",
+      "breakpoints": true
     }
   ]
 }

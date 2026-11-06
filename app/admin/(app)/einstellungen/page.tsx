@@ -7,6 +7,7 @@ import { mailBereit } from '@/lib/mail';
 import { TZ } from '@/lib/zeit';
 import Passkeys from '@/components/admin/Passkeys';
 import Admins from '@/components/admin/Admins';
+import Benachrichtigungen from '@/components/admin/Benachrichtigungen';
 
 export const metadata: Metadata = { title: 'Einstellungen' };
 export const dynamic = 'force-dynamic';
@@ -55,6 +56,7 @@ export default async function EinstellungenPage() {
       </div>
       <div className="a-zwei" style={{ marginTop: 20 }}>
         <Admins liste={admins.map((a) => ({ id: a.id, email: a.email, name: a.name, aktiv: a.aktiv, zuletzt: fmt(a.letzteAnmeldung), ich: a.id === s.user.id }))} />
+        <Benachrichtigungen />
       </div>
     </>
   );
