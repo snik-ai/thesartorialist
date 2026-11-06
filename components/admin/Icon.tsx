@@ -112,6 +112,78 @@ const PFADE: Record<string, React.ReactNode> = {
       <circle cx="19" cy="12" r="1.3" />
     </>
   ),
+  uebersicht: (
+    <>
+      <rect x="3" y="3" width="7.5" height="9" rx="0.5" />
+      <rect x="13.5" y="3" width="7.5" height="5" rx="0.5" />
+      <rect x="13.5" y="11" width="7.5" height="10" rx="0.5" />
+      <rect x="3" y="15" width="7.5" height="6" rx="0.5" />
+    </>
+  ),
+  leads: <path d="M3 4.5h18l-7 8.5v6l-4 1.5V13z" />,
+  kunde: (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c1-4.2 4.1-6.5 8-6.5s7 2.3 8 6.5" />
+    </>
+  ),
+  plus: <path d="M12 5v14M5 12h14" />,
+  pdf: (
+    <>
+      <path d="M6 2.5h8l4 4V21H6z" />
+      <path d="M14 2.5V7h4M9 15.5l3 3 3-3M12 11v7.5" />
+    </>
+  ),
+  link: <path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1" />,
+  senden: <path d="M21 3L10 14M21 3l-7 18-4-7-7-4z" />,
+  papierkorb: <path d="M4 6.5h16M9.5 6.5V4h5v2.5M6.5 6.5l1 14h9l1-14M10 10.5v6M14 10.5v6" />,
+  stift: <path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4" />,
+  auge: (
+    <>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  task: (
+    <>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="1" />
+      <path d="M8 12.5l3 3 5.5-6.5" />
+    </>
+  ),
+  kanban: (
+    <>
+      <rect x="3" y="4" width="5" height="16" rx="0.5" />
+      <rect x="9.5" y="4" width="5" height="11" rx="0.5" />
+      <rect x="16" y="4" width="5" height="7" rx="0.5" />
+    </>
+  ),
+  zeitstrahl: <path d="M4 6h10M4 12h16M4 18h7M17 4v4M20 10v4M14 16v4" />,
+  geld: (
+    <>
+      <rect x="2.5" y="6" width="19" height="12" rx="1" />
+      <circle cx="12" cy="12" r="2.6" />
+      <path d="M6 9.5v5M18 9.5v5" />
+    </>
+  ),
+  uhr: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </>
+  ),
+  schere: (
+    <>
+      <circle cx="6" cy="7" r="2.5" />
+      <circle cx="6" cy="17" r="2.5" />
+      <path d="M8 8.5L20 18M8 15.5L20 6" />
+    </>
+  ),
+  kopieren: (
+    <>
+      <rect x="8" y="8" width="12.5" height="12.5" rx="1" />
+      <path d="M16 8V4H4v12h4" />
+    </>
+  ),
   route: (
     <>
       <path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z" />

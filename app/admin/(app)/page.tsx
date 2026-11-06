@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
 export default function AdminStart() {
-  redirect('/admin/termine/');
+  redirect('/admin/uebersicht/');
 }

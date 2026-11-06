@@ -47,6 +47,8 @@ export async function kontaktAufnehmen(x: Exec, d: KontaktEingang): Promise<{ id
           brandDomain: t.brandDomain ?? (d.brandDomain || null),
           ...(einw && !t.einwilligungWhatsapp ? { einwilligungWhatsapp: jetzt, einwilligungWhatsappQuelle: einw } : {}),
           ...(einw && !t.einwilligungSms ? { einwilligungSms: jetzt, einwilligungSmsQuelle: einw } : {}),
+          // Neue Anfrage: inaktive Kontakte und verlorene Leads kommen wieder in die Pipeline (Kunden bleiben Kunden)
+          ...(t.status === 'inaktiv' || (t.status === 'lead' && t.leadPhase === 'verloren') ? { status: 'lead' as const, leadPhase: 'neu' as const, verlorenGrund: null } : {}),
           aktualisiertAm: jetzt,
         })
         .where(eq(k.id, t.id));

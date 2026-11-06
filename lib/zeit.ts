@@ -58,6 +58,31 @@ export function terminKurz(d: Date) {
   return `${tag}, ${zuerichTeile(d).zeit}`;
 }
 
+/** Date → «YYYY-MM-DD» (Zürcher Kalendertag) für die Datums-Picker */
+export const isoVon = (d: Date | string | null | undefined) => (d ? new Date(d).toLocaleDateString('en-CA', { timeZone: TZ }) : null);
+
+/** «06.11.2026» (Zürcher Kalendertag) */
+export const tagDatum = (d: Date | null | undefined) => (d ? d.toLocaleDateString('de-CH', { timeZone: TZ, day: '2-digit', month: '2-digit', year: 'numeric' }) : '');
+
+/** «Fr., 6. Nov.» */
+export const tagKurz = (d: Date | null | undefined) => (d ? d.toLocaleDateString('de-CH', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'short' }) : '');
+
+/** Ganze Tage von heute bis d (Zürcher Kalendertage): 0 = heute, negativ = vorbei */
+export function tageBis(d: Date, jetzt = new Date()) {
+  const a = Date.parse(`${jetzt.toLocaleDateString('en-CA', { timeZone: TZ })}T12:00:00Z`);
+  const b = Date.parse(`${d.toLocaleDateString('en-CA', { timeZone: TZ })}T12:00:00Z`);
+  return Math.round((b - a) / 86400_000);
+}
+
+/** «heute», «morgen», «in 5 Tagen», «seit 2 Tagen» */
+export function faelligText(d: Date, jetzt = new Date()) {
+  const n = tageBis(d, jetzt);
+  if (n === 0) return 'heute';
+  if (n === 1) return 'morgen';
+  if (n === -1) return 'gestern';
+  return n > 0 ? `in ${n} Tagen` : `seit ${-n} Tagen`;
+}
+
 /** «vor 5 Min.», «gestern», «12.10.2026» */
 export function relativ(d: Date, jetzt = new Date()) {
   const s = Math.round((jetzt.getTime() - d.getTime()) / 1000);
