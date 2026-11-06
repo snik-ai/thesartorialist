@@ -8,19 +8,11 @@ export type Brand = {
   origin: string;
   hero: string;
   gallery: string[];
+  /** Marke im Shopify-Shop: Galerie zeigt dann echte Produktfotos aus dem Shop */
+  shopMarke?: string;
+  shopSlug?: string;
   sections: { title: string; text: string }[];
 };
-
-// Gemeinsame Store-Galerie (Aufnahmen aus dem Showroom Kuttelgasse).
-export const STORE_GALLERY = [
-  '/images/97-12-scaled.webp',
-  '/images/98-12-scaled.webp',
-  '/images/99-12-scaled.webp',
-  '/images/100-12-scaled.webp',
-  '/images/101-12-scaled.webp',
-  '/images/102-12-scaled.webp',
-  '/images/103-12-scaled.webp',
-];
 
 export const BRANDS: Brand[] = [
   {
@@ -88,7 +80,14 @@ export const BRANDS: Brand[] = [
       'Loro Piana bei The Sartorialist Zürich: Massanzüge aus feinsten Woll- und Kaschmirstoffen — über 200 Jahre Textilerfahrung, kompromisslose Qualität.',
     origin: 'Quarona, Italien · über 200 Jahre',
     hero: '/images/massanzug-loro-piana.webp',
-    gallery: ['/images/loro-piana-stoffe.webp', ...STORE_GALLERY.slice(0, 5)],
+    gallery: [
+      '/images/loro-piana-stoffe.webp',
+      '/images/massanzug-loro-piana.webp',
+      '/images/italienischer-massanzug.webp',
+      '/images/massanzug.webp',
+      '/images/navy-blauer-anzug.webp',
+      '/images/modern-classic-anzug.webp',
+    ],
     sections: [
       {
         title: 'Luxuriöse Stoffe für erstklassige Anzüge',
@@ -146,7 +145,9 @@ export const BRANDS: Brand[] = [
       'Gran Sasso bei The Sartorialist Zürich: luxuriöse Strickmode aus Italien — Kaschmir, Wolle und Baumwolle in zeitlosem Design.',
     origin: 'Abruzzen, Italien · seit den 1950ern',
     hero: '/images/2024069_A20245715220202049L.webp',
-    gallery: STORE_GALLERY.slice(0, 6),
+    gallery: ['/images/2024069_A20245715220202049L.webp'],
+    shopMarke: 'Gran Sasso',
+    shopSlug: 'gran-sasso',
     sections: [
       {
         title: 'Zeitlose italienische Eleganz',
@@ -170,7 +171,9 @@ export const BRANDS: Brand[] = [
       'Woolrich bei The Sartorialist Zürich: ikonische Outdoor-Bekleidung seit 1830 — vom Arctic Parka bis zum eleganten Wollmantel.',
     origin: 'USA · seit 1830',
     hero: '/images/CFWOOU0792MRUT3496-3989.webp',
-    gallery: STORE_GALLERY.slice(0, 6),
+    gallery: ['/images/CFWOOU0792MRUT3496-3989.webp'],
+    shopMarke: 'Woolrich',
+    shopSlug: 'woolrich',
     sections: [
       {
         title: 'Traditionelle Outdoor-Mode mit modernem Flair',

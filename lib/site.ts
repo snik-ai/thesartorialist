@@ -14,6 +14,8 @@ export const SITE = {
   phoneHref: 'tel:+41432430277',
   mobile: '+41 76 488 06 30',
   mobileHref: 'tel:+41764880630',
+  /** WhatsApp über die Mobilnummer */
+  whatsapp: 'https://wa.me/41764880630',
   email: 'store@thesartorialist.ch',
   founder: 'Alexander Shubin',
   address: {
@@ -31,6 +33,8 @@ export const SITE = {
     { days: 'Termin', time: 'nach Vereinbarung' },
   ],
   openingHoursSchema: ['Mo-Fr 10:00-19:00', 'Sa 10:00-17:00'],
+  /** Öffnungszeiten maschinenlesbar (0 = Sonntag … 6 = Samstag), Zeitzone Europe/Zurich */
+  hours: { 1: ['10:00', '19:00'], 2: ['10:00', '19:00'], 3: ['10:00', '19:00'], 4: ['10:00', '19:00'], 5: ['10:00', '19:00'], 6: ['10:00', '17:00'] } as Record<number, [string, string]>,
   priceRange: 'CHF 1’690 – CHF 2’500',
   areaServed: 'Zürich und Umgebung, Schweiz',
   socials: {
@@ -42,6 +46,7 @@ export type NavItem = { label: string; href: string };
 
 export const PRIMARY_NAV: NavItem[] = [
   { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
+  { label: 'Stoffe', href: 'https://apparel.hollandandsherry.com/en/fabric' },
   { label: 'Massanzug', href: '/massanzug-zuerich/' },
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
   { label: 'Shop', href: '/shop/' },

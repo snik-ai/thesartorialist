@@ -6,6 +6,8 @@ import { SUIT_COLORS, getSuitColor } from '@/lib/suitColors';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CtaBand from '@/components/CtaBand';
 import { JsonLd, serviceSchema } from '@/components/JsonLd';
+import { getAllProducts, img as shopImg } from '@/lib/shop/catalog';
+import { chf } from '@/lib/shop/format';
 
 // Dynamische Root-Slugs: 8 Brand-Seiten + 3 Anzug-Farbseiten (Original-URLs
 // der bestehenden Website bleiben erhalten).
@@ -18,6 +20,7 @@ export function generateStaticParams() {
 }
 
 export const dynamicParams = false;
+export const revalidate = 900;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -57,13 +60,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SlugPage({ params }: Props) {
   const { slug } = await params;
   const brand = getBrand(slug);
-  if (brand) return <BrandPage brand={brand} />;
+  if (brand) {
+    // Marken aus dem Shop: echte Produktfotos statt Platzhaltern
+    const produkte = brand.shopMarke
+      ? (await getAllProducts().catch(() => [])).filter((p) => p.brand === brand.shopMarke && p.available).slice(0, 6)
+      : [];
+    return <BrandPage brand={brand} produkte={produkte} />;
+  }
   const color = getSuitColor(slug);
   if (color) return <SuitColorPage color={color} />;
   notFound();
 }
 
-function BrandPage({ brand }: { brand: NonNullable<ReturnType<typeof getBrand>> }) {
+type ShopTeaser = Awaited<ReturnType<typeof getAllProducts>>[number];
+
+function BrandPage({ brand, produkte }: { brand: NonNullable<ReturnType<typeof getBrand>>; produkte: ShopTeaser[] }) {
   const others = BRANDS.filter((b) => b.slug !== brand.slug).slice(0, 4);
   return (
     <>
@@ -121,26 +132,51 @@ function BrandPage({ brand }: { brand: NonNullable<ReturnType<typeof getBrand>> 
         </section>
       )}
 
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow">Impressionen</span>
-            <h2 className="h2">{brand.name} in unserem Store</h2>
+      {produkte.length > 0 ? (
+        <section className="section">
+          <div className="container">
+            <div className="section-head">
+              <span className="eyebrow">Im Shop</span>
+              <h2 className="h2">{brand.name} bei The Sartorialist</h2>
+            </div>
+            <div className="gallery-grid gallery-grid--shop">
+              {produkte.map((p) => (
+                <Link key={p.handle} href={`/shop/products/${p.handle}/`} className="brand-shopcard">
+                  <img src={shopImg(p.images[0].url, 700)} alt={`${p.title} — ${brand.name}`} width={600} height={800} loading="lazy" />
+                  <span className="brand-shopcard-t">{p.title}</span>
+                  <span className="brand-shopcard-p num">{chf(p.price)}</span>
+                </Link>
+              ))}
+            </div>
+            <p style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+              <Link href={`/shop/${brand.shopSlug}/`} className="btn btn--ghost">
+                Alle {brand.name} im Shop
+              </Link>
+            </p>
           </div>
-          <div className="gallery-grid">
-            {brand.gallery.map((img, i) => (
-              <img
-                key={img}
-                src={img}
-                alt={`${brand.name} — Impression ${i + 1} aus dem Store von The Sartorialist Zürich`}
-                width={600}
-                height={800}
-                loading="lazy"
-              />
-            ))}
+        </section>
+      ) : brand.gallery.length > 1 ? (
+        <section className="section">
+          <div className="container">
+            <div className="section-head">
+              <span className="eyebrow">Impressionen</span>
+              <h2 className="h2">{brand.name}</h2>
+            </div>
+            <div className="gallery-grid">
+              {brand.gallery.map((img, i) => (
+                <img
+                  key={img}
+                  src={img}
+                  alt={`${brand.name} — Impression ${i + 1}, The Sartorialist Zürich`}
+                  width={600}
+                  height={800}
+                  loading="lazy"
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <section className="section section--warm">
         <div className="container">

@@ -2,7 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CtaBand from '@/components/CtaBand';
-import { STORE_GALLERY } from '@/lib/brands';
+const BILDER = [
+  '/images/the-sartorialist-zuerich.webp',
+  '/images/Foto-mit-Schere.webp',
+  '/images/massanzug-zuerich.webp',
+  '/images/eleganter-hochzeitsanzug.webp',
+  '/images/dreiteiler-anzug.webp',
+  '/images/hochzeitsanzug.webp',
+];
 import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -77,15 +84,15 @@ export default function UeberUnsPage() {
       <section className="section section--warm">
         <div className="container">
           <div className="section-head">
-            <span className="eyebrow">Der Store</span>
-            <h2 className="h2">Einblicke in unseren Showroom</h2>
+            <span className="eyebrow">Stil &amp; Handwerk</span>
+            <h2 className="h2">Massanzüge von The Sartorialist</h2>
           </div>
           <div className="gallery-grid">
-            {STORE_GALLERY.slice(0, 6).map((img, i) => (
+            {BILDER.map((img, i) => (
               <img
                 key={img}
                 src={img}
-                alt={`Showroom von The Sartorialist an der Kuttelgasse 7 in Zürich — Ansicht ${i + 1}`}
+                alt={`Massanzug und Handwerk bei The Sartorialist Zürich — Bild ${i + 1}`}
                 width={600}
                 height={800}
                 loading="lazy"

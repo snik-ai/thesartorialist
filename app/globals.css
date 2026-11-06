@@ -2284,3 +2284,80 @@ body.cart-open .studio-fab, body.sheet-open .studio-fab { opacity: 0; pointer-ev
   .konf-tab { font-size: 0.56rem; letter-spacing: 0.05em; padding: 0.3rem 0.1rem 0.4rem; }
   .konf-tab-img, .konf-tab-img img { width: 30px; height: 36px; }
 }
+/* Marken-Seite: Produkte aus dem Shop */
+.brand-shopcard { display: grid; gap: 0.2rem; }
+.brand-shopcard img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: #efeeeb; transition: transform 0.6s var(--easing); }
+.brand-shopcard:hover img { transform: scale(1.02); }
+.brand-shopcard-t { font-size: 0.92rem; font-weight: 500; margin-top: 0.6rem; }
+.brand-shopcard-p { font-size: 0.85rem; color: var(--muted); }
+
+/* ==================================================================
+   Schwebender Kontakt-Knopf (WhatsApp · Anruf/Rückruf · Termin) mit Live-Öffnungszeiten
+================================================================== */
+.kfab { position: fixed; right: clamp(1rem, 2.5vw, 1.75rem); bottom: clamp(1rem, 2.5vw, 1.75rem); z-index: 72; display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem; }
+.kfab--hoch { bottom: calc(clamp(0.75rem, 2vw, 1.5rem) + 74px); }
+.kfab-toggle { position: relative; width: 60px; height: 60px; border: 0; background: var(--ink); color: var(--paper); cursor: pointer; display: grid; place-items: center; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28); transition: transform 0.25s var(--easing), background 0.2s ease; }
+.kfab-toggle:hover { transform: translateY(-2px); background: #2b2b2b; }
+.kfab-x { position: relative; width: 18px; height: 18px; display: block; }
+.kfab-x::before, .kfab-x::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: currentColor; }
+.kfab-x::before { transform: rotate(45deg); }
+.kfab-x::after { transform: rotate(-45deg); }
+.kfab-badge { position: absolute; top: 8px; right: 8px; width: 10px; height: 10px; border-radius: 50%; background: #c0503a; box-shadow: 0 0 0 2px var(--ink); }
+.kfab-badge.is-open { background: #3fa45b; }
+.kfab-badge.is-open::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid #3fa45b; animation: fabRing 2.4s ease-out infinite; }
+
+.kfab-panel {
+  width: min(360px, calc(100vw - 2rem));
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(16, 16, 16, 0.18);
+  transform-origin: bottom right;
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.3s var(--easing), visibility 0s linear 0.3s;
+}
+.kfab.is-open .kfab-panel { opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition: opacity 0.25s ease, transform 0.3s var(--easing), visibility 0s; }
+.kfab-head { padding: 1.1rem 1.25rem 0.9rem; border-bottom: 1px solid var(--line); }
+.kfab-title { font-family: var(--serif); font-size: 1.15rem; }
+.kfab-status { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem; font-size: 0.82rem; color: #9a3b2a; font-weight: 500; }
+.kfab-status.is-open { color: #2e7d45; }
+.kfab-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+.kfab-status.is-open .kfab-dot { box-shadow: 0 0 0 3px rgba(63, 164, 91, 0.2); }
+.kfab-actions { display: grid; gap: 0.5rem; padding: 0.9rem 1rem; }
+.kfab-btn { display: flex; align-items: center; gap: 0.85rem; width: 100%; padding: 0.8rem 0.95rem; border: 1px solid var(--line); background: var(--paper); color: var(--ink); text-align: left; font: inherit; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
+.kfab-btn:hover { border-color: var(--ink); }
+.kfab-btn span { display: grid; line-height: 1.25; }
+.kfab-btn strong { font-size: 0.92rem; font-weight: 600; }
+.kfab-btn small { font-size: 0.76rem; color: var(--muted); }
+.kfab-btn--wa { background: #1f7a4d; border-color: #1f7a4d; color: #fff; }
+.kfab-btn--wa small { color: rgba(255, 255, 255, 0.8); }
+.kfab-btn--wa:hover { background: #18663f; border-color: #18663f; }
+.kfab-btn--ink { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.kfab-btn--ink small { color: rgba(255, 255, 255, 0.65); }
+.kfab-btn--ink:hover { background: #2b2b2b; }
+.kfab-form { display: grid; gap: 0.7rem; padding: 0.9rem 1rem; }
+.kfab-field { display: grid; gap: 0.3rem; }
+.kfab-field span { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.kfab-field input { height: 48px; padding: 0 0.9rem; border: 1px solid #cfcac1; font: 400 1rem var(--sans); border-radius: 0; }
+.kfab-field input:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.3); }
+.kfab-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.kfab-chips button { height: 36px; padding: 0 0.8rem; border: 1px solid var(--line); background: var(--paper); font: 500 0.8rem var(--sans); cursor: pointer; color: var(--ink); }
+.kfab-chips button.is-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.kfab-form-row { display: flex; justify-content: space-between; align-items: center; }
+.kfab-form-row .btn { padding: 0.8rem 1.1rem; font-size: 0.7rem; }
+.kfab-form-row .btn:disabled { opacity: 0.45; }
+.kfab-done { padding: 1rem 1.25rem; display: grid; gap: 0.6rem; font-size: 0.92rem; }
+.kfab-hours { border-top: 1px solid var(--line); padding: 0.7rem 1.25rem 0.9rem; font-size: 0.82rem; }
+.kfab-hours summary { cursor: pointer; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.kfab-hours ul { list-style: none; display: grid; gap: 0.25rem; margin: 0.6rem 0 0.4rem; }
+.kfab-hours li { display: flex; justify-content: space-between; }
+.kfab-hours p { color: var(--muted); }
+
+/* «Anzug gestalten» rückt links neben den Kontakt-Knopf */
+.studio-fab { right: calc(clamp(1rem, 2.5vw, 1.75rem) + 72px); bottom: calc(clamp(1rem, 2.5vw, 1.75rem) + 2px); }
+@media (max-width: 700px) { .studio-fab { right: calc(1rem + 70px); } }
+body.cart-open .kfab, body.sheet-open .kfab, body.menu-open .kfab { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .kfab-panel, .kfab-badge::after { transition: none !important; animation: none !important; } }
+.kfab-toggle { border-radius: 50%; }

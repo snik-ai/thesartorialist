@@ -7,6 +7,7 @@ import Reveal from '@/components/Reveal';
 import CartProvider from '@/components/shop/CartProvider';
 import CartDrawer from '@/components/shop/CartDrawer';
 import StudioFab from '@/components/konfigurator/StudioFab';
+import KontaktFab from '@/components/KontaktFab';
 import { JsonLd, organizationSchema, websiteSchema } from '@/components/JsonLd';
 import { SITE } from '@/lib/site';
 import './globals.css';
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <CartDrawer />
           <StudioFab />
+          <KontaktFab />
         </CartProvider>
         <Reveal />
         <JsonLd data={organizationSchema()} />

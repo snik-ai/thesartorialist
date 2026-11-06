@@ -8,14 +8,17 @@ import { SITE } from '@/lib/site';
 import Wordmark from './Wordmark';
 import CartButton from './shop/CartButton';
 
-// Reihenfolge laut Kunde: Styles & Options, Massanzug, Hochzeitsanzug | Shop, Brands, Kontakt
+// Reihenfolge laut Kunde: Styles & Options, Stoffe, Massanzug | Hochzeitsanzug, Shop, Brands, Kontakt
+// «Stoffe» führt extern auf die Stoffkollektion von Holland & Sherry.
+const STOFFE_URL = 'https://apparel.hollandandsherry.com/en/fabric';
 const NAV_LEFT = [
   { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
+  { label: 'Stoffe', href: STOFFE_URL },
   { label: 'Massanzug', href: '/massanzug-zuerich/' },
-  { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
 ];
 
 const NAV_RIGHT = [
+  { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
   { label: 'Shop', href: '/shop/' },
   { label: 'Brands', href: '/category/brand/' },
   { label: 'Kontakt', href: '/kontakt/' },
@@ -90,7 +93,12 @@ export default function Header() {
     return () => document.removeEventListener('keydown', k);
   }, [mega]);
 
-  const navLink = (item: { label: string; href: string }) => (
+  const navLink = (item: { label: string; href: string }) =>
+    item.href.startsWith('http') ? (
+      <a key={item.href} href={item.href} target="_blank" rel="noopener">
+        {item.label}
+      </a>
+    ) : (
     <Link
       key={item.href}
       href={item.href}
@@ -145,9 +153,6 @@ export default function Header() {
               ),
             )}
             <CartButton />
-            <Link href="/termin/" className="btn">
-              Termin buchen
-            </Link>
           </nav>
 
           <div className="header-cart-m">
@@ -241,6 +246,9 @@ export default function Header() {
               <Link className="fs-row" href="/massanzug-konfigurator/" onClick={close}>
                 <span className="fs-lbl">Styles & Options</span>
               </Link>
+              <a className="fs-row" href={STOFFE_URL} target="_blank" rel="noopener" onClick={close}>
+                <span className="fs-lbl">Stoffe</span>
+              </a>
               <Link className="fs-row" href="/massanzug-zuerich/" onClick={close}>
                 <span className="fs-lbl">Massanzug</span>
               </Link>
