@@ -1,92 +1,91 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suit colour pages — English overlay of lib/suitColors.ts (sections: same number and order).
+// Páginas de cor de fato — sobreposição portuguesa de lib/suitColors.ts (secções: mesmo número e ordem).
 export const farben: Woerterbuch['farben'] = {
   'anzug-blau': {
-    name: 'Blue suit',
-    title: 'Blue Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Classic elegance redefined',
+    name: 'Fato azul',
+    title: 'Fato Azul — Elegância por Medida em Zurique',
+    claim: 'A elegância clássica reinventada',
     metaDescription:
-      'Made-to-measure blue suit in Zurich: from sky blue to navy — tailored by The Sartorialist. Book your appointment now.',
+      'Fato azul por medida em Zurique: do azul-céu ao azul-marinho — confecionado pelo The Sartorialist. Marque já a sua consulta.',
     sections: [
       {
-        title: 'Classic elegance redefined',
-        text: 'The blue suit is one of the timeless classics of menswear and an elegant alternative to black and grey. In its many shades — from light sky blue to deep navy — a blue suit suits almost every occasion, whether at work or at social events. It combines classic elegance with a modern touch.',
+        title: 'A elegância clássica reinventada',
+        text: 'O fato azul é um dos clássicos intemporais da moda masculina e uma alternativa elegante ao preto e ao cinzento. Nas suas muitas tonalidades — do azul-céu claro ao profundo azul-marinho — um fato azul adequa-se a quase todas as ocasiões, seja no trabalho ou em eventos sociais. Alia a elegância clássica a um toque moderno.',
       },
       {
-        title: 'Why choose a blue suit',
-        text: 'A blue suit is remarkably versatile and lends you a confident, well-groomed look. Blue feels calm and professional while bringing freshness and energy to your wardrobe. Ideal for the office, business meetings or special occasions — and easy to pair with classic and contemporary accessories alike.',
+        title: 'Porquê escolher um fato azul',
+        text: 'Um fato azul é extraordinariamente versátil e confere-lhe um visual confiante e cuidado. O azul transmite calma e profissionalismo, trazendo ao mesmo tempo frescura e energia ao seu guarda-roupa. Ideal para o escritório, reuniões de negócios ou ocasiões especiais — e fácil de combinar com acessórios clássicos e contemporâneos.',
       },
       {
-        title: 'Made-to-measure excellence',
-        text: 'With us, your blue suit is made individually — fitting perfectly and tailored to your personal style. Our experienced team helps you choose the ideal shade of blue, the right cloth and the perfect cut.',
+        title: 'Excelência por medida',
+        text: 'Connosco, o seu fato azul é confecionado individualmente — com um caimento perfeito e à medida do seu estilo pessoal. A nossa equipa experiente ajuda-o a escolher o tom de azul ideal, o tecido certo e o corte perfeito.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'We use fine cloths known for their longevity and comfort: from luxurious wool and fine linen to noble cashmere. The choice of cloth shapes not only the look but also the comfort of your suit.',
+        title: 'Tecidos e acabamentos',
+        text: 'Utilizamos tecidos finos, conhecidos pela sua durabilidade e conforto: da lã luxuosa e do linho fino à nobre caxemira. A escolha do tecido define não só o aspeto, mas também o conforto do seu fato.',
       },
       {
-        title: 'Individual design',
-        text: 'Design your blue suit exactly as you envisage it: cloths, cuts and details of your choice — a one-of-a-kind piece that underlines your personality.',
+        title: 'Design individual',
+        text: 'Crie o seu fato azul exatamente como o imagina: tecidos, cortes e detalhes à sua escolha — uma peça única que sublinha a sua personalidade.',
       },
     ],
   },
   'anzug-gruen': {
-    name: 'Green suit',
-    title: 'Green Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Fresh accents for your look',
+    name: 'Fato verde',
+    title: 'Fato Verde — Elegância por Medida em Zurique',
+    claim: 'Apontamentos frescos para o seu visual',
     metaDescription:
-      'Made-to-measure green suit in Zurich: from pastel to deep green — tailored by The Sartorialist. Book your appointment now.',
+      'Fato verde por medida em Zurique: do tom pastel ao verde profundo — confecionado pelo The Sartorialist. Marque já a sua consulta.',
     sections: [
       {
-        title: 'Fresh accents for your look',
-        text: 'The green suit is a fashionable choice for anyone who wants to lift their look with a touch of colour. Shades of green range from soft pastels to rich, deep tones and offer a modern alternative to the classic colours. A green suit adds fresh accents and makes a distinctive impression.',
+        title: 'Apontamentos frescos para o seu visual',
+        text: 'O fato verde é uma escolha elegante para quem quer valorizar o seu visual com um toque de cor. Os tons de verde vão dos suaves pastéis aos tons ricos e profundos e oferecem uma alternativa moderna às cores clássicas. Um fato verde traz apontamentos frescos e causa uma impressão marcante.',
       },
       {
-        title: 'Why choose a green suit',
-        text: 'A green suit brings colour to your wardrobe and stands out through its unique character. It is versatile — elegant with neutral colours, fashionable with bold accents. In spring and summer especially, it makes for a lively, dynamic look.',
+        title: 'Porquê escolher um fato verde',
+        text: 'Um fato verde traz cor ao seu guarda-roupa e destaca-se pelo seu carácter único. É versátil — elegante com cores neutras, moderno com apontamentos ousados. Sobretudo na primavera e no verão, proporciona um visual vivo e dinâmico.',
       },
       {
-        title: 'Made-to-measure exclusivity',
-        text: 'We make your green suit individually, to your wishes and measurements. Our team advises you on the perfect shade of green, the right cloth and the appropriate details of the cut.',
+        title: 'Exclusividade por medida',
+        text: 'Confecionamos o seu fato verde individualmente, de acordo com os seus desejos e medidas. A nossa equipa aconselha-o sobre o tom de verde perfeito, o tecido certo e os detalhes de corte adequados.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Fine wool, noble linen or luxurious cashmere: the choice of cloth determines comfort and longevity. We pay attention to the details that underline the unique character of your green suit.',
+        title: 'Tecidos e acabamentos',
+        text: 'Lã fina, linho nobre ou caxemira luxuosa: a escolha do tecido determina o conforto e a durabilidade. Damos atenção aos detalhes que sublinham o carácter único do seu fato verde.',
       },
       {
-        title: 'Individual design',
-        text: 'A green suit from us is more than a garment — it is an expression of your personality. Choose from a range of cloths, cuts and details.',
+        title: 'Design individual',
+        text: 'Um fato verde feito por nós é mais do que uma peça de vestuário — é uma expressão da sua personalidade. Escolha entre uma variedade de tecidos, cortes e detalhes.',
       },
     ],
   },
   'anzug-beige': {
-    name: 'Beige suit',
-    title: 'Beige Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Timeless refinement in beige',
+    name: 'Fato bege',
+    title: 'Fato Bege — Elegância por Medida em Zurique',
+    claim: 'Requinte intemporal em bege',
     metaDescription:
-      'Made-to-measure beige suit in Zurich: light, bright and elegant — ideal for summer and weddings. Tailored by The Sartorialist.',
+      'Fato bege por medida em Zurique: leve, luminoso e elegante — ideal para o verão e para casamentos. Confecionado pelo The Sartorialist.',
     sections: [
       {
-        title: 'Timeless refinement in beige',
-        text: 'The beige suit is a classic that impresses with its versatility and elegance. It unites timeless refinement with a neutral tone suited to formal and informal occasions alike — ideal for spring and summer, as it looks light and bright.',
+        title: 'Requinte intemporal em bege',
+        text: 'O fato bege é um clássico que impressiona pela sua versatilidade e elegância. Une um requinte intemporal a um tom neutro, adequado tanto a ocasiões formais como informais — ideal para a primavera e o verão, por ser leve e luminoso.',
       },
       {
-        title: 'Why choose a beige suit',
-        text: 'A beige suit pairs effortlessly with a wide range of colours and patterns. Whether a wedding, a business event or a relaxed get-together — it always gives you a stylish, well-groomed look. The light colour reflects sunlight and is particularly pleasant to wear.',
+        title: 'Porquê escolher um fato bege',
+        text: 'Um fato bege combina sem esforço com uma grande variedade de cores e padrões. Seja num casamento, num evento de negócios ou num encontro descontraído — confere-lhe sempre um visual elegante e cuidado. A cor clara reflete a luz do sol e é particularmente agradável de usar.',
       },
       {
-        title: 'Made-to-measure perfection',
-        text: 'With us, you design your beige suit exactly as you wish: tailored individually to your measurements and your style, with advice on cloth, fit and details.',
+        title: 'Perfeição por medida',
+        text: 'Connosco, cria o seu fato bege exatamente como deseja: confecionado individualmente às suas medidas e ao seu estilo, com aconselhamento sobre tecido, caimento e detalhes.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Only fine cloths that guarantee comfort and longevity — from fine wool and noble linen to luxurious cashmere. Every detail is right, so that you feel entirely at ease.',
+        title: 'Tecidos e acabamentos',
+        text: 'Apenas tecidos finos que garantem conforto e durabilidade — da lã fina e do linho nobre à caxemira luxuosa. Cada detalhe está certo, para que se sinta totalmente à vontade.',
       },
       {
-        title: 'Individual design',
-        text: 'Choose the cloth, the cut and special details such as buttons and lining — creating a suit that fits perfectly and reflects your personal touch.',
+        title: 'Design individual',
+        text: 'Escolha o tecido, o corte e detalhes especiais, como os botões e o forro — criando um fato que assenta na perfeição e reflete o seu toque pessoal.',
       },
     ],
   },

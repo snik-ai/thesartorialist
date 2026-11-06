@@ -1,44 +1,43 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suits Zurich
+// Fatos em Zurique
 export const anzuege: Woerterbuch['anzuege'] = {
   meta: {
-    titel: 'Suits Zurich — Exclusive Suits & Expert Advice',
+    titel: 'Fatos em Zurique — Fatos Exclusivos e Aconselhamento Especializado',
     beschreibung:
-      'Suits in Zurich: exclusive suits, jackets, shirts and trousers from The Sartorialist — handcrafted Italian tailoring meets contemporary style. Visit us at Kuttelgasse 7.',
-    ogTitel: 'Suits Zurich — The Sartorialist',
-    ogBeschreibung: 'What may well be the finest suits in Zurich — with advice of the highest standard.',
+      'Fatos em Zurique: fatos, casacos, camisas e calças exclusivos do The Sartorialist — alfaiataria italiana artesanal aliada ao estilo contemporâneo. Visite-nos na Kuttelgasse 7.',
+    ogTitel: 'Fatos em Zurique — The Sartorialist',
+    ogBeschreibung: 'Porventura os mais belos fatos de Zurique — com um aconselhamento do mais alto nível.',
   },
-  breadcrumb: 'Suits Zurich',
+  breadcrumb: 'Fatos em Zurique',
   hero: {
-    eyebrow: 'Gentlemen’s outfitter in the heart of Zurich',
-    h1: 'Suits Zurich',
-    lead: 'At The Sartorialist you will find what may well be the finest suits in Zurich. Our advice is expert, personal and of the highest standard — handcrafted Italian tailoring meets contemporary style.',
-    gestalten: 'Design your suit',
-    termin: 'Book an appointment',
+    eyebrow: 'Alfaiataria para cavalheiros no coração de Zurique',
+    h1: 'Fatos em Zurique',
+    lead: 'No The Sartorialist encontra aqueles que serão, porventura, os mais belos fatos de Zurique. O nosso aconselhamento é especializado, pessoal e do mais alto nível — alfaiataria italiana artesanal aliada ao estilo contemporâneo.',
+    gestalten: 'Crie o seu fato',
+    termin: 'Marcar uma consulta',
   },
   abschnitte: [
     {
-      titel: 'Genuine brand expertise',
-      text: 'We offer exclusive suits, jackets, denim shirts and trousers — complemented by elegant accessories and cashmere of the finest quality. Our carefully selected exclusive brands guarantee the best materials and cuts. Fifteen years of experience in fashion, including at the menswear powerhouse Tom Ford, are your guarantee of the finest suits in Zurich.',
+      titel: 'Verdadeiro conhecimento das marcas',
+      text: 'Oferecemos fatos, casacos, camisas de ganga e calças exclusivos — complementados por acessórios elegantes e caxemira da mais alta qualidade. As nossas marcas exclusivas, cuidadosamente selecionadas, garantem os melhores materiais e cortes. Quinze anos de experiência no mundo da moda, incluindo na grande casa de moda masculina Tom Ford, são a sua garantia dos melhores fatos de Zurique.',
     },
     {
-      titel: 'How a quality suit comes to life',
-      text: 'First, you tell us what you have in mind and we take your exact measurements. Our tailoring team designs and sews the suit to fit you precisely — on average this takes just 15 to 20 days. After a final fitting we make any adjustments needed until the suit fits perfectly and meets every wish.',
+      titel: 'Como nasce um fato de qualidade',
+      text: 'Primeiro, conta-nos o que tem em mente e tiramos as suas medidas exatas. A nossa equipa de alfaiataria desenha e cose o fato para lhe assentar com precisão — em média, isto demora apenas 15 a 20 dias. Após uma prova final, fazemos os ajustes necessários até o fato assentar na perfeição e corresponder a todos os seus desejos.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Whether a modern double-breasted or a single-breasted suit, for business, a wedding or the opera: a suit is like a second skin. Beyond the style of the suit, fit, cloth and colour play a decisive role. We watch every detail closely to ensure you receive the perfect suit for your personal style.',
+      titel: 'Que fato é o certo para mim?',
+      text: 'Seja um moderno fato de trespasse ou um fato de abotoamento simples, para o trabalho, um casamento ou a ópera: um fato é como uma segunda pele. Para além do estilo do fato, o caimento, o tecido e a cor têm um papel decisivo. Acompanhamos cada detalhe com atenção, para que receba o fato perfeito para o seu estilo pessoal.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'An exclusive suit has its price — and we make sure the investment pays off. We advise against cheap off-the-peg suits: they never achieve the comfort and quality of a made-to-measure suit. Our prices are always fair and transparent.',
+      titel: 'Preços e condições',
+      text: 'Um fato exclusivo tem o seu preço — e garantimos que o investimento compensa. Desaconselhamos os fatos baratos de pronto-a-vestir: nunca alcançam o conforto e a qualidade de um fato por medida. Os nossos preços são sempre justos e transparentes.',
     },
   ],
   schema: {
-    name: 'Suits Zurich',
+    name: 'Fatos em Zurique',
     beschreibung:
-      'Exclusive suits, jackets, shirts and trousers in Zurich — advice of the highest standard at The Sartorialist.',
+      'Fatos, casacos, camisas e calças exclusivos em Zurique — aconselhamento do mais alto nível no The Sartorialist.',
   },
 };

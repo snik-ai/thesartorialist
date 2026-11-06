@@ -1,115 +1,114 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Privacy policy
+// Política de privacidade
 export const datenschutz: Woerterbuch['datenschutz'] = {
   meta: {
-    titel: 'Privacy Policy',
+    titel: 'Política de Privacidade',
     beschreibung:
-      'Privacy policy of The Sartorialist Zurich — information on the collection and processing of personal data.',
+      'Política de privacidade do The Sartorialist Zurique — informações sobre a recolha e o tratamento de dados pessoais.',
   },
-  h1: 'Privacy Policy',
+  h1: 'Política de Privacidade',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/datenschutzerklaerung/).',
-  adresse: { land: 'Switzerland', telefon: 'Telephone: ', email: 'Email: ' },
+    'Esta tradução para português é disponibilizada apenas para sua conveniência. A versão alemã é a juridicamente vinculativa: [ler a versão alemã](/datenschutzerklaerung/).',
+  adresse: { land: 'Suíça', telefon: 'Telefone: ', email: 'E-mail: ' },
   abschnitte: [
     {
-      titel: '1. Data protection at a glance',
+      titel: '1. Proteção de dados em resumo',
       bloecke: [
-        { h3: 'General information' },
+        { h3: 'Informações gerais' },
         {
-          p: 'The following information provides a simple overview of what happens to your personal data when you visit this website. Personal data is any data by which you can be personally identified.',
+          p: 'As informações seguintes dão-lhe uma visão geral simples do que acontece aos seus dados pessoais quando visita este website. Dados pessoais são todos os dados que permitem identificá-lo pessoalmente.',
         },
-        { h3: 'Data collection on this website' },
+        { h3: 'Recolha de dados neste website' },
         {
-          p: 'Data on this website is processed by the website operator, whose contact details can be found in the [imprint](impressum) of this website. On the pages outside the shop, no cookies are set and no third-party content (e.g. videos or external fonts) is loaded. The exceptions are the anonymous audience measurement carried out by our web agency (see section 4, “Audience measurement”), the film on the home page (Vimeo, see section 4, “Film on the home page”) and the online shop at /shop, which is operated with Shopify (see section 4, “Online shop”).',
+          p: 'Os dados deste website são tratados pelo operador do website, cujos contactos constam da [ficha técnica](impressum) deste website. Nas páginas fora da loja não são instalados cookies nem carregados conteúdos de terceiros (por exemplo, vídeos ou tipos de letra externos). As exceções são a medição anónima de audiência efetuada pela nossa agência web (ver secção 4, «Medição de audiência»), o filme na página inicial (Vimeo, ver secção 4, «Filme na página inicial») e a loja online em /shop, que funciona com Shopify (ver secção 4, «Loja online»).',
         },
         {
-          p: 'Some data is collected when you provide it to us — for example, when you send us an appointment request by email or telephone. Other data is collected automatically by the hosting provider’s IT systems when you visit the website (above all technical data such as your web browser, operating system or the time the page was accessed).',
+          p: 'Alguns dados são recolhidos quando no-los fornece — por exemplo, quando nos envia um pedido de marcação por e-mail ou telefone. Outros dados são recolhidos automaticamente pelos sistemas informáticos do fornecedor de alojamento quando visita o website (sobretudo dados técnicos, como o navegador, o sistema operativo ou a hora de acesso à página).',
         },
       ],
     },
     {
-      titel: '2. Hosting',
+      titel: '2. Alojamento',
       bloecke: [
         {
-          p: 'This website is hosted by an external service provider (host). The data collected when you visit the website is stored on the host’s servers. This consists above all of IP addresses, metadata and communication data, and website access data. We use the host in the interest of providing our website securely, quickly and efficiently. Our host processes your data only to the extent necessary to fulfil its contractual obligations.',
+          p: 'Este website está alojado num prestador de serviços externo (alojamento). Os dados recolhidos durante a visita ao website são armazenados nos servidores do fornecedor de alojamento. Trata-se sobretudo de endereços IP, metadados e dados de comunicação, bem como de dados de acesso ao website. Recorremos ao fornecedor de alojamento no interesse de disponibilizar o nosso website de forma segura, rápida e eficiente. O nosso fornecedor de alojamento trata os seus dados apenas na medida do necessário para cumprir as suas obrigações contratuais.',
         },
       ],
     },
     {
-      titel: '3. General information and mandatory disclosures',
+      titel: '3. Informações gerais e obrigatórias',
       bloecke: [
-        { h3: 'Data protection' },
+        { h3: 'Proteção de dados' },
         {
-          p: 'The operators of these pages take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with the statutory data protection regulations (in particular the Swiss Federal Act on Data Protection (FADP) and — where applicable — the EU General Data Protection Regulation (GDPR)) and this privacy policy.',
+          p: 'Os operadores destas páginas levam muito a sério a proteção dos seus dados pessoais. Tratamos os seus dados pessoais de forma confidencial e em conformidade com as disposições legais em matéria de proteção de dados (em particular a Lei Federal Suíça sobre a Proteção de Dados (LPD) e — quando aplicável — o Regulamento Geral sobre a Proteção de Dados da UE (RGPD)) e com a presente política de privacidade.',
         },
         {
-          p: 'Please note that data transmitted over the internet (e.g. when communicating by email) may be subject to security vulnerabilities. Complete protection of data against access by third parties is not possible.',
+          p: 'Chamamos a atenção para o facto de a transmissão de dados pela Internet (por exemplo, na comunicação por e-mail) poder apresentar falhas de segurança. Não é possível uma proteção total dos dados contra o acesso de terceiros.',
         },
-        { h3: 'Controller' },
-        { p: 'The controller responsible for data processing on this website is:' },
+        { h3: 'Responsável pelo tratamento' },
+        { p: 'O responsável pelo tratamento de dados neste website é:' },
         { adresse: true },
-        { h3: 'Your rights' },
+        { h3: 'Os seus direitos' },
         {
-          p: 'You have the right at any time to obtain information, free of charge, about the origin, recipients and purpose of your stored personal data. You also have the right to have this data corrected or erased, to restrict its processing and to data portability. You may withdraw any consent you have given to data processing at any time with effect for the future. You also have the right to lodge a complaint with the competent supervisory authority (in Switzerland: the Federal Data Protection and Information Commissioner, FDPIC).',
+          p: 'Tem o direito de obter, a qualquer momento e gratuitamente, informações sobre a origem, os destinatários e a finalidade dos seus dados pessoais armazenados. Tem também o direito de solicitar a retificação ou o apagamento desses dados, a limitação do seu tratamento e a portabilidade dos dados. Pode retirar a qualquer momento, com efeitos para o futuro, qualquer consentimento que tenha dado para o tratamento de dados. Tem ainda o direito de apresentar reclamação junto da autoridade de controlo competente (na Suíça: o Comissário Federal para a Proteção de Dados e a Transparência, PFPDT).',
         },
-        { h3: 'SSL/TLS encryption' },
+        { h3: 'Encriptação SSL/TLS' },
         {
-          p: 'For security reasons and to protect the transmission of confidential content, this site uses SSL/TLS encryption. You can recognise an encrypted connection by the address bar of your browser changing from “http://” to “https://” and by the padlock symbol in your browser bar.',
+          p: 'Por motivos de segurança e para proteger a transmissão de conteúdos confidenciais, este site utiliza encriptação SSL/TLS. Reconhece uma ligação encriptada pela alteração da barra de endereço do navegador de «http://» para «https://» e pelo símbolo do cadeado na barra do navegador.',
         },
       ],
     },
     {
-      titel: '4. Data collection on this website',
+      titel: '4. Recolha de dados neste website',
       bloecke: [
-        { h3: 'Server log files' },
+        { h3: 'Ficheiros de registo do servidor' },
         {
-          p: 'The provider of these pages automatically collects and stores information in so-called server log files, which your browser transmits automatically:',
+          p: 'O fornecedor destas páginas recolhe e armazena automaticamente informações nos chamados ficheiros de registo do servidor, que o seu navegador nos transmite automaticamente:',
         },
         {
           liste: [
-            'Browser type and browser version',
-            'Operating system used',
-            'Referrer URL',
-            'Host name of the accessing computer',
-            'Time of the server request',
-            'IP address',
+            'Tipo e versão do navegador',
+            'Sistema operativo utilizado',
+            'URL de referência',
+            'Nome do anfitrião do computador que acede',
+            'Hora do pedido ao servidor',
+            'Endereço IP',
           ],
         },
         {
-          p: 'This data is not combined with other data sources. The website operator has a legitimate interest in the technically error-free presentation and optimisation of its website — for this purpose, the server log files must be recorded.',
+          p: 'Estes dados não são combinados com outras fontes de dados. O operador do website tem um interesse legítimo na apresentação tecnicamente sem erros e na otimização do seu website — para esse efeito, os ficheiros de registo do servidor têm de ser registados.',
         },
-        { h3: 'Audience measurement' },
+        { h3: 'Medição de audiência' },
         {
-          p: 'To improve this website, our web agency DLM Digital (Zurich, Switzerland) measures anonymously, on our behalf, which pages are viewed and which contact channels (telephone, WhatsApp, email, form) are used. No cookies are set and no IP addresses are stored for this purpose; recognition beyond the same day is not possible. The content of forms (e.g. name, email, message) is not transmitted to DLM Digital. The data is processed in Switzerland or the EU.',
+          p: 'Para melhorar este website, a nossa agência web DLM Digital (Zurique, Suíça) mede de forma anónima, em nosso nome, quais as páginas visitadas e quais os canais de contacto (telefone, WhatsApp, e-mail, formulário) utilizados. Para este efeito, não são instalados cookies nem armazenados endereços IP; não é possível um reconhecimento para além do próprio dia. O conteúdo dos formulários (por exemplo, nome, e-mail, mensagem) não é transmitido à DLM Digital. Os dados são tratados na Suíça ou na UE.',
         },
-        { h3: 'Our own visitor statistics' },
+        { h3: 'As nossas próprias estatísticas de visitantes' },
         {
-          p: 'In addition, we keep our own cookie-free visitor statistics on our server. We record the page viewed, the referring website (its domain only), any campaign parameters (utm_source, utm_medium, utm_campaign), the device type (smartphone, tablet, computer), the browser language, as well as clicks on contact channels (telephone, WhatsApp, email, directions) and form submissions. To be able to count visits, we create a truncated check value (hash) from the IP address, browser identifier and the date, combined with a secret key. The IP address itself is not stored; the check value changes daily and does not allow any conclusions to be drawn about you personally. Neither cookies nor any other storage in your browser are used. The data is used exclusively for our own analysis, is not passed on to third parties and is stored in Switzerland or the EU. The legal basis is our legitimate interest in designing the website to meet visitors’ needs.',
+          p: 'Para além disso, mantemos no nosso servidor estatísticas de visitantes próprias, sem cookies. Registamos a página visitada, o website de origem (apenas o domínio), eventuais parâmetros de campanha (utm_source, utm_medium, utm_campaign), o tipo de dispositivo (smartphone, tablet, computador), o idioma do navegador, bem como os cliques nos canais de contacto (telefone, WhatsApp, e-mail, como chegar) e o envio de formulários. Para podermos contar as visitas, criamos um valor de verificação truncado (hash) a partir do endereço IP, da identificação do navegador e da data, combinado com uma chave secreta. O próprio endereço IP não é armazenado; o valor de verificação muda diariamente e não permite tirar quaisquer conclusões sobre a sua pessoa. Não são utilizados cookies nem qualquer outro armazenamento no seu navegador. Os dados servem exclusivamente para a nossa própria análise, não são transmitidos a terceiros e são armazenados na Suíça ou na UE. A base jurídica é o nosso interesse legítimo em conceber o website de acordo com as necessidades dos visitantes.',
         },
-        { h3: 'Film on the home page (Vimeo)' },
+        { h3: 'Filme na página inicial (Vimeo)' },
         {
-          p: 'On the home page we show our film via the video service Vimeo (Vimeo.com Inc., New York, USA). We embed it with the “Do Not Track” setting: Vimeo does not set any cookies and does not create usage profiles. When the film is loaded, Vimeo necessarily receives your IP address and information about your browser for technical reasons.',
+          p: 'Na página inicial apresentamos o nosso filme através do serviço de vídeo Vimeo (Vimeo.com Inc., Nova Iorque, EUA). Integramo-lo com a definição «Do Not Track»: o Vimeo não instala cookies e não cria perfis de utilização. Ao carregar o filme, o Vimeo recebe necessariamente, por razões técnicas, o seu endereço IP e informações sobre o seu navegador.',
         },
-        { h3: 'Made-to-measure suit configurator' },
+        { h3: 'Configurador de fatos por medida' },
         {
-          p: 'Your selection in the made-to-measure suit configurator (“Styles & Options”) is stored exclusively in your browser (localStorage) and is not transmitted to us. We only receive it if you send it with an appointment request or send us the PDF. You can delete your selection at any time via “Reset all”.',
+          p: 'A sua seleção no configurador de fatos por medida («Estilos e Opções») é armazenada exclusivamente no seu navegador (localStorage) e não nos é transmitida. Só a recebemos se a enviar com um pedido de marcação ou se nos enviar o PDF. Pode apagar a sua seleção a qualquer momento através de «Repor tudo».',
         },
-        { h3: 'Online shop (Shopify)' },
+        { h3: 'Loja online (Shopify)' },
         {
-          p: 'Our online shop at thesartorialist.ch/shop is operated with Shopify (Shopify International Limited, Dublin, Ireland, and Shopify Inc., Ottawa, Canada). Product data, images and prices are loaded from Shopify; product images are delivered directly from the Shopify server (cdn.shopify.com), which necessarily receives your IP address for technical reasons.',
+          p: 'A nossa loja online em thesartorialist.ch/shop funciona com Shopify (Shopify International Limited, Dublin, Irlanda, e Shopify Inc., Otava, Canadá). Os dados dos produtos, as imagens e os preços são carregados a partir da Shopify; as imagens dos produtos são entregues diretamente pelo servidor da Shopify (cdn.shopify.com), que recebe necessariamente, por razões técnicas, o seu endereço IP.',
         },
         {
-          p: 'As soon as you add an item to your basket, we set a strictly necessary cookie containing the identifier of your basket (valid for 14 days) as well as Shopify’s session cookies, so that your basket and order match. You complete the order itself — address, shipping and payment — in Shopify’s checkout at shop.thesartorialist.ch, where Shopify’s privacy notices also apply. The data is processed for the performance of the purchase contract. Shopify may also process data in countries outside Switzerland and the EU; standard contractual clauses are in place for this.',
+          p: 'Logo que adicione um artigo ao cesto, instalamos um cookie estritamente necessário com a identificação do seu cesto (válido durante 14 dias), bem como os cookies de sessão da Shopify, para que o seu cesto e a sua encomenda correspondam. A encomenda propriamente dita — morada, envio e pagamento — é concluída no checkout da Shopify em shop.thesartorialist.ch, onde se aplicam também as informações de privacidade da Shopify. Os dados são tratados para a execução do contrato de compra. A Shopify pode também tratar dados em países fora da Suíça e da UE; para esse efeito existem cláusulas contratuais-tipo.',
         },
-        { h3: 'Appointment and call-back requests via the website' },
+        { h3: 'Pedidos de marcação e de chamada através do website' },
         {
-          p: 'If you request an appointment or a call-back via the website, we send your details (name, telephone, email, preferred date and — if selected — your style choices) by email to our atelier and send you a confirmation. To send these emails we use the service Resend (Resend Inc., San Francisco, USA), with data processing in the EU. We also store your details in our customer database so that we can prepare your appointment and consultation and follow up on your request. We use the data exclusively to handle your request and to look after you as a customer. We only contact you via WhatsApp or SMS if you have expressly consented to this; you may withdraw this consent at any time.',
+          p: 'Se pedir uma marcação ou uma chamada através do website, enviamos os seus dados (nome, telefone, e-mail, data preferida e — se selecionada — a sua escolha de estilo) por e-mail ao nosso atelier e enviamos-lhe uma confirmação. Para o envio destes e-mails utilizamos o serviço Resend (Resend Inc., São Francisco, EUA), com tratamento de dados na UE. Armazenamos também os seus dados na nossa base de dados de clientes, para podermos preparar a sua consulta e o aconselhamento e dar seguimento ao seu pedido. Utilizamos os dados exclusivamente para tratar o seu pedido e para o acompanhar enquanto cliente. Só o contactamos por WhatsApp ou SMS se tiver dado expressamente o seu consentimento; pode retirar este consentimento a qualquer momento.',
         },
-        { h3: 'Enquiries by email or telephone' },
+        { h3: 'Pedidos por e-mail ou telefone' },
         {
-          p: 'If you contact us by email or telephone (e.g. for an appointment request), your enquiry, including the contact details you provide, is stored by us for the purpose of handling the request and in case of follow-up questions. We do not pass on this data without your consent. The data remains with us until you ask us to delete it or the purpose for storing it no longer applies. Mandatory statutory provisions — in particular retention periods — remain unaffected.',
+          p: 'Se nos contactar por e-mail ou telefone (por exemplo, para um pedido de marcação), o seu pedido, incluindo os dados de contacto que indicar, é armazenado por nós para efeitos de tratamento do pedido e para o caso de questões subsequentes. Não transmitimos estes dados sem o seu consentimento. Os dados permanecem connosco até que nos solicite o seu apagamento ou até que deixe de existir a finalidade do seu armazenamento. Mantêm-se inalteradas as disposições legais imperativas — em particular os prazos de conservação.',
         },
       ],
     },

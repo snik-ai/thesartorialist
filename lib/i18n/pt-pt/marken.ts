@@ -1,117 +1,116 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Brand pages — English overlay of lib/brands.ts (sections: same number and order).
+// Páginas de marca — sobreposição portuguesa de lib/brands.ts (secções: mesmo número e ordem).
 export const marken: Woerterbuch['marken'] = {
   'orazio-luciano': {
-    claim: 'Neapolitan tailoring',
+    claim: 'Alfaiataria napolitana',
     metaDescription:
-      'Orazio Luciano at The Sartorialist Zurich: handmade suits from Naples — refined classicism, unpadded shoulders and a celebrated fit.',
-    origin: 'Naples, Italy',
+      'Orazio Luciano no The Sartorialist Zurique: fatos feitos à mão em Nápoles — classicismo requintado, ombros sem chumaços e um caimento célebre.',
+    origin: 'Nápoles, Itália',
     sections: [
       {
-        title: 'Milan is the city of fashion. Naples is the city of tailors.',
-        text: 'Every man should own a handmade suit from Naples — a suit that embodies pride, style and success. Orazio Luciano is defined by refined classicism with a touch of technical virtuosity, inspired by Neapolitan tailoring. The models are cut along modern lines for light, unrestricted ease of wear.',
+        title: 'Milão é a cidade da moda. Nápoles é a cidade dos alfaiates.',
+        text: 'Todo o homem deveria ter um fato feito à mão em Nápoles — um fato que encarna orgulho, estilo e sucesso. A Orazio Luciano define-se por um classicismo requintado com um toque de virtuosismo técnico, inspirado na alfaiataria napolitana. Os modelos são cortados segundo linhas modernas, para uma sensação leve e livre ao vestir.',
       },
       {
-        title: 'The celebrated fit',
-        text: 'The Orazio Luciano fit offers complete freedom of movement and a perfectly sculpted silhouette. The shoulders are ideally accentuated, the waist flatteringly defined, the trousers taken to exactly the right length. Characteristic is the lapel of at least 10 cm, which together with the unpadded shoulders gives a confident yet “soft” presence. Neapolitan flair runs through every suit, every jacket, every coat and every detail.',
+        title: 'O célebre caimento',
+        text: 'O caimento Orazio Luciano oferece total liberdade de movimentos e uma silhueta perfeitamente modelada. Os ombros são idealmente acentuados, a cintura definida de forma elegante, as calças cortadas exatamente no comprimento certo. Característica é a lapela de pelo menos 10 cm, que, juntamente com os ombros sem chumaços, confere uma presença confiante e, ainda assim, «suave». O estilo napolitano está presente em cada fato, cada casaco, cada sobretudo e cada detalhe.',
       },
     ],
   },
   'maria-santangelo': {
-    claim: 'Handmade shirts since 1953',
+    claim: 'Camisas feitas à mão desde 1953',
     metaDescription:
-      'Maria Santangelo at The Sartorialist Zurich: hand-sewn shirts from Naples since 1953 — Australian mother-of-pearl buttons, made entirely in-house.',
-    origin: 'Naples, Italy · since 1953',
+      'Maria Santangelo no The Sartorialist Zurique: camisas cosidas à mão em Nápoles desde 1953 — botões de madrepérola australiana, produção inteiramente própria.',
+    origin: 'Nápoles, Itália · desde 1953',
     sections: [
       {
-        title: 'The Neapolitan art of shirtmaking',
-        text: 'True to the Neapolitan school, every Maria Santangelo shirt is made and embroidered by hand — the only way to achieve perfection. Finished with Australian mother-of-pearl buttons, it is both a luxurious and a relaxed choice. To avoid seams and unevenness, every label is sewn on by hand — the hallmark of a genuine Santangelo shirt.',
+        title: 'A arte napolitana da camisaria',
+        text: 'Fiel à escola napolitana, cada camisa Maria Santangelo é confecionada e bordada à mão — a única forma de alcançar a perfeição. Com botões de madrepérola australiana, é uma escolha simultaneamente luxuosa e descontraída. Para evitar costuras e irregularidades, cada etiqueta é cosida à mão — a marca distintiva de uma verdadeira camisa Santangelo.',
       },
       {
-        title: 'A family tradition since 1953',
-        text: 'Since 1953, Maria Santangelo shirts have expressed the Neapolitan tailoring tradition. The company is still run by the family and does not shy away from innovation. A particular source of pride is that production is 100 % in-house — quantities are deliberately limited, which makes every shirt all the more exclusive.',
+        title: 'Uma tradição familiar desde 1953',
+        text: 'Desde 1953, as camisas Maria Santangelo exprimem a tradição da alfaiataria napolitana. A empresa continua a ser gerida pela família e não receia a inovação. Motivo de especial orgulho é a produção 100 % própria — as quantidades são deliberadamente limitadas, o que torna cada camisa ainda mais exclusiva.',
       },
     ],
   },
   'loro-piana': {
-    claim: 'The finest cloths in the world',
+    claim: 'Os tecidos mais finos do mundo',
     metaDescription:
-      'Loro Piana at The Sartorialist Zurich: made-to-measure suits in the finest wool and cashmere cloths — over 200 years of textile expertise, uncompromising quality.',
-    origin: 'Quarona, Italy · over 200 years',
+      'Loro Piana no The Sartorialist Zurique: fatos por medida nos mais finos tecidos de lã e caxemira — mais de 200 anos de saber têxtil, qualidade sem compromissos.',
+    origin: 'Quarona, Itália · mais de 200 anos',
     sections: [
       {
-        title: 'Luxurious cloths for exceptional suits',
-        text: 'Loro Piana stands worldwide for the finest cloths and uncompromising quality. The Italian house specialises in the noblest materials and is renowned for its exceptional wool and cashmere. With more than 200 years of experience in textiles, Loro Piana offers cloths that combine elegance, comfort and longevity to perfection.',
+        title: 'Tecidos luxuosos para fatos excecionais',
+        text: 'A Loro Piana é sinónimo, em todo o mundo, dos tecidos mais finos e de uma qualidade sem compromissos. A casa italiana é especializada nos materiais mais nobres e reconhecida pela sua lã e caxemira excecionais. Com mais de 200 anos de experiência têxtil, a Loro Piana oferece tecidos que aliam na perfeição elegância, conforto e durabilidade.',
       },
       {
-        title: 'Craftsmanship meets innovation',
-        text: 'Loro Piana unites traditional craftsmanship with the latest technology. From the finest cashmere and luxurious merino wool to rare natural fibres — every cloth is a masterpiece. The particular finishing guarantees not only an elegant appearance but also a functionality and durability without equal.',
+        title: 'O artesanato encontra a inovação',
+        text: 'A Loro Piana une o artesanato tradicional à mais recente tecnologia. Da mais fina caxemira e da luxuosa lã merino a fibras naturais raras — cada tecido é uma obra-prima. O acabamento particular garante não só um aspeto elegante, mas também uma funcionalidade e uma durabilidade sem igual.',
       },
       {
-        title: 'Made-to-measure perfection in our boutique',
-        text: 'Our suits in exclusive Loro Piana cloths are tailored individually to your measurements and your style. The combination of first-class materials and precise made-to-measure work ensures a perfect fit and the greatest comfort. Experience the cloths for yourself in our Zurich boutique — our team will find the perfect suit for you.',
+        title: 'Perfeição por medida na nossa boutique',
+        text: 'Os nossos fatos em tecidos exclusivos Loro Piana são confecionados individualmente às suas medidas e ao seu estilo. A combinação de materiais de primeira classe e de um trabalho por medida preciso garante um caimento perfeito e o máximo conforto. Descubra pessoalmente os tecidos na nossa boutique em Zurique — a nossa equipa encontrará o fato perfeito para si.',
       },
     ],
   },
   'holland-sherry': {
-    claim: 'British cloth heritage since 1836',
+    claim: 'Tradição britânica de tecidos desde 1836',
     metaDescription:
-      'Holland & Sherry at The Sartorialist Zurich: the finest wool, cashmere and silk cloths for made-to-measure suits of the highest calibre.',
-    origin: 'London / Peebles, United Kingdom',
+      'Holland & Sherry no The Sartorialist Zurique: os mais finos tecidos de lã, caxemira e seda para fatos por medida do mais alto nível.',
+    origin: 'Londres / Peebles, Reino Unido',
     sections: [
       {
-        title: 'A tradition of excellence',
-        text: 'Since its foundation, Holland & Sherry has specialised in the finest wool, cashmere and silk cloths that meet the highest standards of quality and style. The house stands for timeless elegance and continuous innovation. Its cloths are known for their luxurious handle and exceptional resilience — the first choice for discerning made-to-measure suits.',
+        title: 'Uma tradição de excelência',
+        text: 'Desde a sua fundação, a Holland & Sherry especializou-se nos mais finos tecidos de lã, caxemira e seda, que satisfazem os mais elevados padrões de qualidade e estilo. A casa é sinónimo de elegância intemporal e de inovação contínua. Os seus tecidos são conhecidos pelo toque luxuoso e pela resistência excecional — a primeira escolha para fatos por medida exigentes.',
       },
       {
-        title: 'Made-to-measure suits in Holland & Sherry cloths',
-        text: 'With us, you can have suits made in the exquisite cloths of Holland & Sherry. Whether a classic business suit, an elegant wedding suit or a stylish leisure suit — we offer a wide range of colours, patterns and textures with countless design options.',
+        title: 'Fatos por medida em tecidos Holland & Sherry',
+        text: 'Connosco, pode mandar fazer fatos nos requintados tecidos da Holland & Sherry. Seja um clássico fato de trabalho, um elegante fato de noivo ou um fato descontraído para o lazer — oferecemos uma vasta gama de cores, padrões e texturas, com inúmeras possibilidades de design.',
       },
       {
-        title: 'Quality and style combined',
-        text: 'The cloths are distinguished by exceptional quality and precise finishing: light, breathable and remarkably durable — ideal for made-to-measure suits with an impeccable fit and a refined look that offer the greatest comfort for many years.',
+        title: 'Qualidade e estilo em harmonia',
+        text: 'Os tecidos distinguem-se por uma qualidade excecional e um acabamento preciso: leves, respiráveis e notavelmente resistentes — ideais para fatos por medida com um caimento impecável e um visual requintado, que oferecem o máximo conforto durante muitos anos.',
       },
     ],
   },
   'gran-sasso': {
-    claim: 'Italian knitwear artistry',
+    claim: 'A arte italiana da malha',
     metaDescription:
-      'Gran Sasso at The Sartorialist Zurich: luxurious knitwear from Italy — cashmere, wool and cotton in timeless design.',
-    origin: 'Abruzzo, Italy · since the 1950s',
+      'Gran Sasso no The Sartorialist Zurique: malhas luxuosas de Itália — caxemira, lã e algodão num design intemporal.',
+    origin: 'Abruzos, Itália · desde os anos 50',
     sections: [
       {
-        title: 'Timeless Italian elegance',
-        text: 'For decades, Gran Sasso has stood for fine Italian fashion that unites elegance and craftsmanship. Founded in the 1950s, the house specialises in luxurious knitwear and impresses with timeless style and exquisite materials. Every garment is made in Italy and embodies the tradition of “Made in Italy”.',
+        title: 'Elegância italiana intemporal',
+        text: 'Há décadas que a Gran Sasso é sinónimo de moda italiana requintada, que une elegância e artesanato. Fundada nos anos 50, a casa especializou-se em malhas luxuosas e impressiona pelo seu estilo intemporal e pelos materiais requintados. Cada peça é produzida em Itália e encarna a tradição do «Made in Italy».',
       },
       {
-        title: 'Quality and design',
-        text: 'At Gran Sasso, innovative design meets traditional handwork. The range extends from fine jumpers and cardigans to polo shirts and elegant leisure and business wear. Premium materials such as cashmere, wool and cotton ensure comfort and longevity.',
+        title: 'Qualidade e design',
+        text: 'Na Gran Sasso, o design inovador encontra o trabalho artesanal tradicional. A gama vai das camisolas e casacos de malha finos aos polos e a peças elegantes para o lazer e o trabalho. Materiais de primeira qualidade, como caxemira, lã e algodão, garantem conforto e durabilidade.',
       },
       {
-        title: 'Gran Sasso in our Zurich boutique',
-        text: 'Discover the exclusive collection of Gran Sasso in our boutique in the heart of Zurich. We offer a carefully curated selection of this renowned house’s fine knitwear and elegant garments. Our team will be pleased to advise you.',
+        title: 'Gran Sasso na nossa boutique em Zurique',
+        text: 'Descubra a coleção exclusiva da Gran Sasso na nossa boutique, no coração de Zurique. Oferecemos uma seleção criteriosa das finas malhas e das peças elegantes desta casa de renome. A nossa equipa terá todo o gosto em aconselhá-lo.',
       },
     ],
   },
   woolrich: {
-    claim: 'Outdoor icon since 1830',
+    claim: 'Ícone outdoor desde 1830',
     metaDescription:
-      'Woolrich at The Sartorialist Zurich: iconic outerwear since 1830 — from the Arctic Parka to the elegant wool coat.',
-    origin: 'USA · since 1830',
+      'Woolrich no The Sartorialist Zurique: agasalhos icónicos desde 1830 — do Arctic Parka ao elegante sobretudo de lã.',
+    origin: 'EUA · desde 1830',
     sections: [
       {
-        title: 'Traditional outerwear with a modern flair',
-        text: 'Woolrich is an iconic brand, renowned for fine outdoor clothing since 1830. Founded in the United States, Woolrich unites traditional craftsmanship with innovative design and sets the standard for functional, stylish clothing — robust, weatherproof, classic.',
+        title: 'Agasalhos de tradição com um toque moderno',
+        text: 'A Woolrich é uma marca icónica, reconhecida desde 1830 pelo seu fino vestuário outdoor. Fundada nos Estados Unidos, a Woolrich une o artesanato tradicional a um design inovador e define o padrão do vestuário funcional e elegante — robusto, resistente às intempéries, clássico.',
       },
       {
-        title: 'Timeless quality and functionality',
-        text: 'From the iconic Arctic Parka to elegant wool coats: every garment is made from first-class materials that protect against the elements and guarantee the greatest comfort — in the city as in the countryside.',
+        title: 'Qualidade e funcionalidade intemporais',
+        text: 'Do icónico Arctic Parka aos elegantes sobretudos de lã: cada peça é confecionada em materiais de primeira classe, que protegem contra as intempéries e garantem o máximo conforto — tanto na cidade como no campo.',
       },
       {
-        title: 'Woolrich in our boutique',
-        text: 'Experience the exclusive world of Woolrich in our Zurich boutique — with a carefully curated collection of fine outerwear and accessories.',
+        title: 'Woolrich na nossa boutique',
+        text: 'Descubra o mundo exclusivo da Woolrich na nossa boutique em Zurique — com uma coleção criteriosa de agasalhos e acessórios finos.',
       },
     ],
   },

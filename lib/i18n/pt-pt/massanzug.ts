@@ -1,85 +1,84 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure suit Zurich
+// Fato por medida em Zurique
 export const massanzug: Woerterbuch['massanzug'] = {
   meta: {
-    titel: 'Made-to-Measure Suit Zurich — from CHF 1’690, Made in Italy',
+    titel: 'Fato por Medida em Zurique — a partir de CHF 1’690, Made in Italy',
     beschreibung:
-      'Made-to-measure suits in Zurich: full-canvas construction, exclusive cloths from Loro Piana, Scabal & Cerruti and a personal fitting service — from CHF 1’690.',
-    ogTitel: 'Made-to-Measure Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'Full canvas, exclusive Italian cloths, from CHF 1’690.',
+      'Fatos por medida em Zurique: confeção full canvas, tecidos exclusivos da Loro Piana, Scabal e Cerruti e um serviço de provas personalizado — a partir de CHF 1’690.',
+    ogTitel: 'Fato por Medida em Zurique — The Sartorialist',
+    ogBeschreibung: 'Full canvas, tecidos italianos exclusivos, a partir de CHF 1’690.',
   },
-  breadcrumb: 'Made-to-measure suit Zurich',
+  breadcrumb: 'Fato por medida em Zurique',
   hero: {
-    eyebrow: 'Made to Measure',
-    h1: 'Made-to-Measure Suits Zurich',
-    lead: 'Create your own style: at The Sartorialist you become your own designer — exclusive tailoring from renowned, long-established Italian houses, cut precisely to your measurements.',
+    eyebrow: 'Por Medida',
+    h1: 'Fatos por Medida em Zurique',
+    lead: 'Create your own style: no The Sartorialist, o senhor torna-se o seu próprio designer — alfaiataria exclusiva de casas italianas de renome e longa tradição, cortada com precisão às suas medidas.',
   },
   luxus: {
-    bildAlt: 'Made-to-measure suit in Zurich — tailored by The Sartorialist',
-    titel: 'The ultimate luxury: a suit cut to your measurements',
+    bildAlt: 'Fato por medida em Zurique — confecionado pelo The Sartorialist',
+    titel: 'O luxo supremo: um fato cortado às suas medidas',
     absaetze: [
-      'There is nothing quite like wearing a suit cut precisely to your own measurements. A made-to-measure suit is a lasting piece of quality of life — an investment every gentleman should make.',
-      'The made-to-measure journey begins with try-on sizes, entirely redeveloped to deliver an even better fit. Our made-to-measure programme offers a collection of cloths for every occasion — year-round suits, jackets and eveningwear, complemented by exclusive seasonal collections.',
+      'Nada se compara a vestir um fato cortado com precisão às suas próprias medidas. Um fato por medida é uma peça duradoura de qualidade de vida — um investimento que todo o cavalheiro deveria fazer.',
+      'O percurso por medida começa com tamanhos de prova, totalmente redesenhados para um caimento ainda melhor. O nosso programa por medida oferece uma coleção de tecidos para todas as ocasiões — fatos para o ano inteiro, casacos e trajes de cerimónia, complementados por coleções sazonais exclusivas.',
     ],
-    knopf: 'Book an appointment',
+    knopf: 'Marcar uma consulta',
   },
   verarbeitung: [
     {
-      eyebrow: 'Construction',
-      titel: 'Built to last with full canvas',
-      text: 'In full-canvas construction, the canvas interlining is stitched rather than glued — from the collar to the hem. The jacket moulds itself beautifully to your body, breathes and lasts considerably longer. It is the finest construction there is, and you feel it every time you wear it.',
+      eyebrow: 'Confeção',
+      titel: 'Feito para durar, em full canvas',
+      text: 'Na confeção full canvas, a entretela é cosida e não colada — da gola à bainha. O casaco molda-se de forma elegante ao seu corpo, respira e dura consideravelmente mais. É a confeção mais nobre que existe, e sente-se sempre que o veste.',
     },
     {
-      eyebrow: 'Tailoring',
-      titel: 'Jackets — light yet shapely',
-      text: 'The quality of a gentleman’s jacket is measured by how it feels to wear: the lightness and shape retention of the cloth. Canvas — an interlining of linen or cotton — gives the fine, light outer cloth its structure, through pad stitching rather than heat-fused bonding.',
+      eyebrow: 'Alfaiataria',
+      titel: 'Casacos — leves, mas com forma',
+      text: 'A qualidade de um casaco de homem mede-se pela sensação ao vesti-lo: a leveza e a estabilidade de forma do tecido. A entretela — de linho ou algodão — dá estrutura ao tecido exterior, fino e leve, através de pontos de picado feitos à mão e não por colagem a quente.',
     },
   ],
   konfigurator: {
-    eyebrow: 'Style configurator',
-    titel: 'Put your suit together from the comfort of home.',
-    lead: 'Lapels, buttons, pockets, shoulders, lining, waistband and hem: choose what you like online at your leisure, save your selection as a PDF and bring it along to your appointment.',
-    knopf: 'Open the configurator',
+    eyebrow: 'Configurador de estilo',
+    titel: 'Componha o seu fato no conforto da sua casa.',
+    lead: 'Lapelas, botões, bolsos, ombros, forro, cós e bainha: escolha com calma, online, o que lhe agrada, guarde a sua seleção em PDF e traga-a para a sua consulta.',
+    knopf: 'Abrir o configurador',
   },
-  faqTitel: 'The made-to-measure process',
+  faqTitel: 'O processo por medida',
   faq: [
     {
-      q: 'Where can I have a made-to-measure suit made in Zurich?',
+      q: 'Onde posso mandar fazer um fato por medida em Zurique?',
       a: [
-        'At The Sartorialist Zurich you do not receive an off-the-peg suit with minor alterations, but a one-off cut entirely for you. We begin with a consultation about your wishes, the occasion, your style and your build — then you choose from an exclusive collection of fine wools, silk blends, linen, cashmere and mohair.',
-        'Our focus is on the finest cloths in Europe: we work with Loro Piana, Scabal, Cerruti and other renowned mills.',
+        'No The Sartorialist Zurique não recebe um fato de pronto-a-vestir com pequenos ajustes, mas uma peça única cortada inteiramente para si. Começamos com uma conversa sobre os seus desejos, a ocasião, o seu estilo e a sua constituição — depois escolhe entre uma coleção exclusiva de lãs finas, misturas de seda, linho, caxemira e mohair.',
+        'O nosso foco está nos melhores tecidos da Europa: trabalhamos com Loro Piana, Scabal, Cerruti e outras tecelagens de renome.',
       ],
     },
     {
-      q: 'What does full canvas mean — and why is it better?',
+      q: 'O que significa full canvas — e porque é melhor?',
       a: [
-        'In ready-to-wear, the materials are mechanically bonded under high pressure before sewing. In full-canvas construction, by contrast, the interlining is stitched rather than glued — along its entire length, from the collar to the hem. The canvas has more freedom to move and moulds itself to your body as you wear it.',
-        'The stitched construction lets the jacket breathe and makes it last far longer — the finest and most durable choice for your made-to-measure suit.',
+        'No pronto-a-vestir, os materiais são colados mecanicamente sob alta pressão antes da costura. Na confeção full canvas, pelo contrário, a entretela é cosida e não colada — em toda a sua extensão, da gola à bainha. A entretela tem mais liberdade de movimento e molda-se ao seu corpo com o uso.',
+        'A construção cosida deixa o casaco respirar e torna-o muito mais duradouro — a escolha mais nobre e resistente para o seu fato por medida.',
       ],
     },
     {
-      q: 'How does the made-to-measure process work?',
+      q: 'Como decorre o processo por medida?',
       a: [
-        'Your first consultation has three steps: choosing the cloth, taking your measurements and selecting the details. You decide on lapel style and width, lining colour, side adjusters, trouser turn-ups, pocket style, buttons and much more.',
-        'Three to six weeks later your suit arrives in our store — at the final fitting we make every adjustment needed until it fits perfectly. On request, we are also happy to advise you at your office or at home.',
+        'A sua primeira consulta tem três etapas: a escolha do tecido, a tomada de medidas e a seleção dos detalhes. Decide o estilo e a largura da lapela, a cor do forro, os ajustadores laterais, as dobras das calças, o estilo dos bolsos, os botões e muito mais.',
+        'Três a seis semanas depois, o seu fato chega à nossa loja — na prova final fazemos todos os ajustes necessários até assentar na perfeição. A pedido, teremos todo o gosto em aconselhá-lo no seu escritório ou em sua casa.',
       ],
     },
     {
-      q: 'Which cloths can I choose from?',
+      q: 'Que tecidos posso escolher?',
       a: [
-        'From superfine wools and soft flannels to airy seersucker for summer suits; densely woven flannels for eveningwear and velvet as a refined choice for the winter wardrobe. Then colour, weave and pattern — chalk stripes, bold or subtle checks and more.',
+        'Das lãs superfinas e das flanelas macias ao seersucker arejado para fatos de verão; flanelas de tecelagem densa para trajes de cerimónia e veludo como escolha requintada para o guarda-roupa de inverno. Depois a cor, a tecelagem e o padrão — riscas de giz, xadrezes marcados ou discretos e muito mais.',
       ],
     },
   ],
   cta: {
-    titel: 'Your made-to-measure suit — from CHF 1’690, ready in 20 working days.',
-    text: 'Made-to-measure suits are the perfect choice for the modern gentleman who values style and individuality.',
+    titel: 'O seu fato por medida — a partir de CHF 1’690, pronto em 20 dias úteis.',
+    text: 'O fato por medida é a escolha perfeita para o cavalheiro moderno que valoriza o estilo e a individualidade.',
   },
   schema: {
-    name: 'Made-to-measure suits Zurich',
+    name: 'Fatos por medida em Zurique',
     beschreibung:
-      'Full-canvas made-to-measure suits in exclusive Italian cloths — a personal made-to-measure service in Zurich, from CHF 1’690.',
+      'Fatos por medida full canvas em tecidos italianos exclusivos — um serviço por medida personalizado em Zurique, a partir de CHF 1’690.',
   },
 };
