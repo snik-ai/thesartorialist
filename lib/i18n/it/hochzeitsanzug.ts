@@ -80,8 +80,8 @@ export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
     },
   ],
   cta: {
-    titel: 'Il Suo abito da sposo — prenoti 8–10 settimane prima del grande giorno.',
-    text: '',
+    titel: 'Lei dice sì. Noi facciamo in modo che tutto calzi a pennello.',
+    text: 'Consulenza, misure, prove — con calma e fin nel minimo dettaglio. Preveda 8–10 settimane prima delle nozze e si assicuri ora la data preferita in atelier.',
   },
   schema: {
     name: 'Abiti da sposo Zurigo',

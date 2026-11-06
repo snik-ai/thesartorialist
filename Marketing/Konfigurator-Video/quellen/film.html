@@ -237,90 +237,88 @@ const TAGS = [
   { g: 'Stoff', o: 'Holland & Sherry', ax: 0.86, ay: 0.78, t: () => w('hook', 5) },
 ];
 function heroImgRect() {
-  const img = IMG['lapel-sb-peak-regular'], bw = HERO.w - 36, bh = HERO.ih - 30;
+  const img = IMG['lapel-sb-peak-regular'], bw = HERO.w - 36, bh = HERO.ih - 26;
   const k = Math.min(bw / img.width, bh / img.height), iw = img.width * k, ih = img.height * k;
   return { x: HERO.x + 18 + (bw - iw) / 2, y: HERO.y + 18 + (bh - ih) / 2, w: iw, h: ih };
 }
 const heroPt = (fx, fy) => { const r = heroImgRect(); return { x: r.x + r.w * fx, y: r.y + r.h * fy }; };
 // Portal 1: Fokusrahmen auf der Reversspitze
 const P1 = () => { const p = heroPt(0.64, 0.25); return frameAt(p.x, p.y, V ? 120 : 150); };
-function camHook(t) {
-  const hc = { x: HERO.x + HERO.w / 2, y: HERO.y + HERO.h / 2 }, up = heroPt(0.5, 0.33), lap = heroPt(0.64, 0.25);
-  // Start: nah am Oberkörper, Rückzug auf «Bis», dann sanfte Fahrt Richtung Revers
-  const tb = w('hook', 2) - 0.1, tp = w('hook', 7) + 0.35;
-  const c = trackObj(t, [
-    [0, { wx: up.x, wy: up.y, ax: V ? W / 2 - 30 : hc.x + 60, ay: V ? up.y - 110 : up.y + 40, s: V ? 1.25 : 1.42, r: -1.0 }],
-    [tb, { wx: hc.x, wy: hc.y, ax: hc.x, ay: hc.y, s: 1.0, r: 0 }, 60, 16],
-    [tp, { wx: hc.x, wy: hc.y, ax: hc.x, ay: hc.y, s: 1.05, r: 0 }, 40, 14],
-  ]);
-  return c;
-}
-const HM = 110; // Rand der Hero-Ebene (Platz für den Frame Escape)
+// ---------------------------------------------------------------------------
+// Neue erste Szene (v4): Makro im Holland-&-Sherry-Stoff → Rückfahrt, der Stoff hat die Form des Anzugs →
+// eine Goldlinie zeichnet den Anzug → die Illustration füllt sich → die Karte entsteht dahinter (Match-Cut-Start bei 4.75 s).
+// Variante b (?hook=b): ohne Stoff – nur Goldlinie auf Schwarz, dann Füllung.
+// ---------------------------------------------------------------------------
 const STICH = [[0.555, 0.125], [0.70, 0.2], [0.655, 0.27], [0.585, 0.38], [0.53, 0.5]];   // Reverskante (Bildbruchteile)
-function heroRy(t) { return track(t, [[0, 0.6], [w('hook', 2) - 0.12, 0, 52, 14], [w('hook', 6), -0.07, 22, 11]]); }
-function heroEsc(t) { return sp(t - (w('hook', 7) - 0.05), 'heavy') * (1 - sp(t - (T.d1[0] - 0.25), 'default')); }
-function heroLayer(t) {
-  const ir = heroImgRect(), esc = heroEsc(t), lw = HERO.w + 2 * HM, lh = HERO.h + 2 * HM;
-  return layer(0, lw, lh, (x) => {
-    x.translate(HM - HERO.x, HM - HERO.y);
-    x.fillStyle = '#fff'; x.fillRect(HERO.x, HERO.y, HERO.w, HERO.h);
-    x.fillStyle = WARM; x.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, HERO.th); x.fillStyle = LINE; x.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, 1);
-    spaced(x, 'Ihr Entwurf', HERO.x + HERO.w / 2, HERO.y + HERO.ih + HERO.th * 0.4, 14, MUTED, 3, 600, 'center');
-    x.font = `500 25px ${SERIF}`; x.fillStyle = INK; x.textAlign = 'center'; x.fillText('Einreiher, steigendes Revers', HERO.x + HERO.w / 2, HERO.y + HERO.ih + HERO.th * 0.76); x.textAlign = 'left';
-    // Frame Escape: der Anzug wächst aus der Karte heraus (Schultern über die Kante)
-    const k = 1 + 0.36 * esc, bx = ir.x + ir.w / 2, by = ir.y + ir.h;
-    x.save(); x.translate(bx, by); x.scale(k, k); x.translate(-bx, -by);
-    x.drawImage(HEROK || IMG['lapel-sb-peak-regular'], ir.x, ir.y, ir.w, ir.h);
-    // Goldener Handstich entlang der Reverskante (AMF-Stich), Wort «entworfen»
-    const q = clamp((t - w('hook', 7)) / 0.7);
-    if (q > 0) {
-      const pts = STICH.map(([fx, fy]) => [ir.x + ir.w * fx, ir.y + ir.h * fy]);
-      let L0 = 0; const seglen = pts.slice(1).map((pp, i) => Math.hypot(pp[0] - pts[i][0], pp[1] - pts[i][1])), tot = seglen.reduce((a2, b2) => a2 + b2, 0);
-      x.save(); x.strokeStyle = GOLD; x.lineWidth = 2.2; x.setLineDash([6, 5]); x.lineDashOffset = -t * 18; x.lineCap = 'round';
-      x.globalAlpha = 1 - seg(t, T.d1[0] - 0.1, T.d1[0] + 0.2);
-      x.beginPath(); x.moveTo(...pts[0]); let left = tot * E.outCubic(q);
-      for (let i = 1; i < pts.length && left > 0; i++) { const l = Math.min(left, seglen[i - 1]), f = l / seglen[i - 1]; x.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); left -= l; }
-      x.stroke(); x.restore();
-    }
-    x.restore();
-    glanz(x, HERO.x, HERO.y, HERO.w, HERO.ih, t, w('hook', 7) - 0.1, { staerke: 0.35, dauer: 1.2, modus: 'source-atop' });
-  });
-}
-// Ankerpunkt (Bildbruchteil) → Weltkoordinaten unter Orbit und Escape
-function heroAnchor(fx, fy, t) {
-  const ir = heroImgRect(), esc = heroEsc(t), k = 1 + 0.36 * esc, bx = ir.x + ir.w / 2, by = ir.y + ir.h;
-  const ax = bx + (ir.x + ir.w * fx - bx) * k, ay = by + (ir.y + ir.h * fy - by) * k;
-  const cx = HERO.x + HERO.w / 2, cy = HERO.y + HERO.h / 2;
-  return projPt(ax - cx, ay - cy, cx, cy, { ry: heroRy(t) });
+const HOOKV = Q.get('hook') || 'a';
+const LINIE = new Image(); loads.push(new Promise((r) => { LINIE.onload = r; LINIE.onerror = r; LINIE.src = 'img/hero-linie.png'; }));
+const HK = () => ({
+  zoomEnd: HOOKV === 'b' ? 2.4 : 1.95, z0: HOOKV === 'b' ? 1.9 : 7.5,
+  linie: HOOKV === 'b' ? 0.05 : w('hook', 2) - 0.1, linieD: HOOKV === 'b' ? 1.5 : 1.15,
+  fuell: [w('hook', 5) - 0.12, w('hook', 6) + 0.5], karte: w('hook', 7) - 0.3,
+});
+function heroRy() { return 0; }
+function camHook(t) {
+  const k = HK(), hc = { x: HERO.x + HERO.w / 2, y: HERO.y + HERO.h / 2 }, ir = heroImgRect(), mac = { x: ir.x + ir.w * 0.4, y: ir.y + ir.h * 0.3 };
+  const q = 1 - Math.pow(1 - clamp(t / k.zoomEnd), 3);
+  const s2 = Math.exp(lerp(Math.log(k.z0), Math.log(1.24), q)) * lerp(1, 1 / 1.24, ioc(seg(t, k.karte - 0.25, k.karte + 0.75))) * (1 + 0.03 * ioc(seg(t, k.karte + 0.75, T.d1[0])));
+  return { wx: lerp(mac.x, hc.x, q), wy: lerp(mac.y, hc.y, q), ax: hc.x, ay: hc.y, s: s2, r: 0 };
 }
 function worldHook(g, t, opt = {}) {
-  const cx = HERO.x + HERO.w / 2, cy = HERO.y + HERO.h / 2, ry = heroRy(t);
-  if (!opt.onlyTags) {
-    shadowRect(g, cx - HERO.w * Math.cos(ry) / 2, HERO.y, HERO.w * Math.cos(ry), HERO.h, 1.4, 70, 30);
-    persp(g, heroLayer(t), cx, cy, HERO.w + 2 * HM, HERO.h + 2 * HM, { ry });
-  }
-  // Callouts auf einer näheren Ebene (Parallaxe gegen den Orbit)
-  const ex = opt.exit ?? 0, par = -ry * 170;
-  TAGS.forEach((tg, i) => {
-    const t0 = tg.t(), p = p4out((t - t0) / 0.38), pl = ioc((t - t0 - 0.05) / 0.36);
-    if (p <= 0) return;
-    const ty = TAG.y0 + i * TAG.dy, an = heroAnchor(tg.ax, tg.ay, t), ei = p4in((ex - i * 0.06) / 0.5);
-    if (ei >= 1) return;
-    g.save(); g.globalAlpha *= 1 - ei;
-    const ox = par + ei * 260, sx = TAG.x - 14 + ox, sy = ty + TAG.h / 2 - ei * 40;
-    g.strokeStyle = GOLD; g.lineWidth = 1.5; g.beginPath(); g.moveTo(sx, sy); g.lineTo(lerp(sx, an.x, pl), lerp(sy, an.y, pl)); g.stroke();
-    if (pl > 0.98) { const pu = sp(t - t0 - 0.4, 'playful'); g.fillStyle = 'rgba(201,160,99,.28)'; g.beginPath(); g.arc(an.x, an.y, 11 * pu, 0, Math.PI * 2); g.fill(); g.fillStyle = GOLD; g.beginPath(); g.arc(an.x, an.y, 5, 0, Math.PI * 2); g.fill(); }
-    g.globalAlpha *= clamp(p * 1.4); g.translate((1 - p) * 40 + ox, -ei * 40);
-    // Glas-Karte (Liquid Glass): helles Glas, feine Kante, Lichtkante oben
-    g.fillStyle = 'rgba(255,255,255,.07)'; g.fillRect(TAG.x, ty, TAG.w, TAG.h);
-    strokeRect(g, TAG.x, ty, TAG.w, TAG.h, 'rgba(255,255,255,.26)');
-    g.fillStyle = 'rgba(255,255,255,.35)'; g.fillRect(TAG.x + 1, ty + 1, TAG.w - 2, 1);
-    glanz(g, TAG.x, ty, TAG.w, TAG.h, t, t0 + 0.2, { staerke: 0.18, dauer: 0.8 });
-    tickMark(g, TAG.x + 34, ty + TAG.h / 2, 13, p4out((t - t0 - 0.1) / 0.3), GOLD, INK);
-    spaced(g, tg.g, TAG.x + 64, ty + TAG.h * 0.42, 13, 'rgba(255,255,255,.55)', 3);
-    g.font = `500 26px ${SERIF}`; g.fillStyle = '#fff'; g.fillText(tg.o, TAG.x + 64, ty + TAG.h * 0.78);
+  if (opt.onlyTags) return;
+  const k = HK(), ir = heroImgRect(), fab = IMG['Holland-Sherry-3-scaled'];
+  // Karte entsteht hinter dem Anzug (von der Silhouette zur vollen Karte)
+  const kp = spring(t - k.karte, 95, 17);
+  if (kp > 0.002) {
+    const R = rectLerp({ x: ir.x, y: ir.y + ir.h * 0.1, w: ir.w, h: ir.h * 0.8 }, { x: HERO.x, y: HERO.y, w: HERO.w, h: HERO.h }, clamp(kp));
+    g.save(); g.globalAlpha *= clamp(kp * 1.6);
+    shadowRect(g, R.x, R.y, R.w, R.h, 1.3, 70, 30);
+    g.fillStyle = '#fff'; g.fillRect(R.x, R.y, R.w, R.h);
+    const lb = seg(kp, 0.55, 1);
+    if (lb > 0) {
+      g.fillStyle = WARM; g.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, HERO.th); g.fillStyle = LINE; g.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, 1);
+      g.save(); g.beginPath(); g.rect(HERO.x, HERO.y + HERO.ih, HERO.w, HERO.th); g.clip(); g.translate(0, (1 - p4out(lb)) * 30);
+      spaced(g, 'Ihr Entwurf', HERO.x + HERO.w / 2, HERO.y + HERO.ih + HERO.th * 0.4, 14, MUTED, 3, 600, 'center');
+      g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText('Einreiher, steigendes Revers', HERO.x + HERO.w / 2, HERO.y + HERO.ih + HERO.th * 0.76); g.textAlign = 'left';
+      g.restore();
+    }
+    strokeRect(g, R.x, R.y, R.w, R.h, `rgba(229,227,222,${kp})`);
     g.restore();
-  });
+  }
+  // Füllung: Illustration wischt von unten nach oben über den Stoff
+  const fq = ioc(seg(t, k.fuell[0], k.fuell[1])), wy = ir.y + ir.h * (1.04 - 1.08 * fq);
+  if (HOOKV !== 'b' && fq < 1) {
+    // der Anzug aus Stoff: Fotografie in der Silhouette, Faltenschatten der Illustration darüber
+    const lay = layer(0, ir.w, ir.h, (x) => {
+      cover(x, fab, 0, 0, ir.w, ir.h, 1.0, 0.5, 0.5);
+      x.globalCompositeOperation = 'multiply'; x.globalAlpha = 0.5; x.drawImage(IMG['lapel-sb-peak-regular'], 0, 0, ir.w, ir.h); x.globalAlpha = 1;
+      x.globalCompositeOperation = 'destination-in'; if (HEROK) x.drawImage(HEROK, 0, 0, ir.w, ir.h); x.globalCompositeOperation = 'source-over';
+      glanz(x, 0, 0, ir.w, ir.h, t, 0.25, { farbe: '255,220,150', staerke: 0.28, dauer: 1.7, breite: ir.w * 0.35, modus: 'source-atop' });
+    }, 2.6);
+    g.save(); g.beginPath(); g.rect(ir.x - 2, ir.y - 2, ir.w + 4, wy - ir.y + 2); g.clip(); g.drawImage(lay, ir.x, ir.y, ir.w, ir.h); g.restore();
+  }
+  if (fq > 0) { g.save(); g.beginPath(); g.rect(ir.x - 2, wy, ir.w + 4, ir.y + ir.h - wy + 4); g.clip(); g.drawImage(HEROK || IMG['lapel-sb-peak-regular'], ir.x, ir.y, ir.w, ir.h); g.restore();
+  }
+  // Goldlinie zeichnet den Anzug (Reveal von oben, Lichtkante an der Zeichenspitze)
+  const lq = E.inOutCubic(clamp((t - k.linie) / k.linieD)), la = 1 - seg(t, k.karte + 0.2, k.karte + 0.9);
+  if (lq > 0 && la > 0 && LINIE.width) {
+    const ly = ir.y - 4 + (ir.h + 8) * lq;
+    g.save(); g.globalAlpha *= la; g.beginPath(); g.rect(ir.x - 20, ir.y - 20, ir.w + 40, ly - ir.y + 20); g.clip();
+    g.drawImage(LINIE, ir.x, ir.y, ir.w, ir.h); g.restore();
+    if (lq < 1) { g.save(); const lg = g.createLinearGradient(0, ly - 22, 0, ly + 4); lg.addColorStop(0, 'rgba(255,225,170,0)'); lg.addColorStop(1, 'rgba(255,225,170,.5)'); g.globalCompositeOperation = 'lighter'; g.beginPath(); g.rect(ir.x, ly - 22, ir.w, 26); g.clip(); g.drawImage(LINIE, ir.x, ir.y, ir.w, ir.h); g.fillStyle = lg; g.globalCompositeOperation = 'source-atop'; g.restore(); }
+  }
+  // Goldener Handstich entlang der Reverskante – läuft schon im Makro (Bild 1)
+  const sq = clamp(t / 1.3), sa = 1 - seg(t, k.karte + 0.2, k.karte + 0.9);
+  if (sa > 0 && HOOKV !== 'b') {
+    const pts = STICH.map(([fx, fy]) => [ir.x + ir.w * fx, ir.y + ir.h * fy]);
+    const seglen = pts.slice(1).map((pp, i) => Math.hypot(pp[0] - pts[i][0], pp[1] - pts[i][1])), tot = seglen.reduce((a2, b2) => a2 + b2, 0);
+    g.save(); g.globalAlpha *= sa; g.strokeStyle = GOLD; g.lineWidth = 1.4; g.setLineDash([3.2, 2.6]); g.lineDashOffset = -t * 9; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(...pts[0]); let left = tot * (0.35 + 0.65 * E.outCubic(sq));
+    for (let i = 1; i < pts.length && left > 0; i++) { const l = Math.min(left, seglen[i - 1]), f = l / seglen[i - 1]; g.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); left -= l; }
+    g.stroke(); g.restore();
+  }
+  // Lichtband über den fertigen Entwurf auf «entworfen»
+  if (kp > 0.6) glanz(g, HERO.x, HERO.y, HERO.w, HERO.ih, t, w('hook', 7) + 0.15, { staerke: 0.3, dauer: 1.1 });
 }
 
 // ---------------------------------------------------------------------------
@@ -662,7 +660,7 @@ function worldEnd(g, t, opt = {}) {
 // ---------------------------------------------------------------------------
 // [anzeige, zeilen-id, wortindex, kursiv?] ; Seite endet zur Zeit «aus»
 const PAGES = [
-  { kick: 'Styles & Options', light: true, aus: () => w('hook', 2) - 0.12, lines: [[['Ihr', 'hook', 0], ['Massanzug', 'hook', 1]]] },
+  { kick: 'Styles & Options', light: true, glass: true, aus: () => w('hook', 2) - 0.12, lines: [[['Ihr', 'hook', 0], ['Massanzug', 'hook', 1]]] },
   { kick: 'Styles & Options', light: true, gold: true, aus: () => T.d1[0] - 0.05, lines: [[['Bis', 'hook', 2], ['ins', 'hook', 3], ['Detail', 'hook', 4]], [['von', 'hook', 5], ['Ihnen', 'hook', 6], ['entworfen', 'hook', 7, 1]]] },
   { kick: 'Sakko · Revers', aus: () => T.d2[0] + 0.05, lines: [[['Wählen', 'revers', 0], ['Sie', 'revers', 1]], [['das', 'revers', 2], ['Revers', 'revers', 3, 1]]] },
   { kick: 'Sakko · Vorderteil', snap: () => T.clickKnopf + 0.02, aus: () => T.d3[0] + 0.1, lines: [[['Die', 'knopf', 0], ['Knöpfe', 'knopf', 1, 1]]] },
@@ -960,8 +958,8 @@ function glassBehind(pg, t) {
 // Ton-Cues (Filmzeit) für engine/ton-mischen.mjs – Effekte aus der ElevenLabs-Bibliothek
 // ---------------------------------------------------------------------------
 window.CUES = [
-  ...TAGS.map((tg) => ({ t: tg.t() + 0.02, type: 'pop', gain: 0.45 })),
-  { t: w('hook', 7), type: 'funken', gain: 0.45 }, { t: w('hook', 7) + 0.05, type: 'papier', gain: 0.35 },
+  { t: 0.02, type: 'papier', gain: 0.5 }, { t: 0.4, type: 'whoosh', gain: 0.45 }, { t: w('hook', 2) - 0.08, type: 'riser', gain: 0.25 },
+  { t: w('hook', 2) - 0.05, type: 'funken', gain: 0.3 }, { t: w('hook', 5) - 0.1, type: 'swish', gain: 0.5 }, { t: w('hook', 7) - 0.28, type: 'pop', gain: 0.5 }, { t: w('hook', 7) + 0.15, type: 'chime', gain: 0.3 },
   { t: T.d1[0] + 0.05, type: 'swish', gain: 0.7 }, { t: T.d1[0] + 0.35, type: 'whoosh', gain: 0.6 },
   ...[0, 2].map((i, k) => ({ t: T.d1[0] + 0.3 + k * 0.08, type: 'tick', gain: 0.35, pan: (i - 1) * 0.5 })),
   ...CLICKS().map((k) => ({ t: k - 0.02, type: 'click', gain: 0.8 })),

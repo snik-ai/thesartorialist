@@ -80,8 +80,8 @@ export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
     },
   ],
   cta: {
-    titel: 'Kostumi Juaj i dasmës — rezervoni 8–10 javë para ditës së madhe.',
-    text: '',
+    titel: 'Ju thoni po. Ne kujdesemi që gjithçka të rrijë në mënyrë të përsosur.',
+    text: 'Këshillim, masa, prova — pa nxitim dhe deri në detajin e fundit. Llogaritni 8 deri në 10 javë para dasmës dhe rezervoni që tani datën Tuaj në atelie.',
   },
   schema: {
     name: 'Kostume dasme në Cyrih',

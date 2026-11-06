@@ -80,8 +80,8 @@ export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
     },
   ],
   cta: {
-    titel: 'O seu fato de noivo — marque 8–10 semanas antes do grande dia.',
-    text: '',
+    titel: 'O senhor diz sim. Nós garantimos que tudo assenta na perfeição.',
+    text: 'Aconselhamento, medidas, provas — com calma e até ao último detalhe. Conte com 8 a 10 semanas antes do casamento e reserve já a sua data preferida no atelier.',
   },
   schema: {
     name: 'Fatos de noivo em Zurique',

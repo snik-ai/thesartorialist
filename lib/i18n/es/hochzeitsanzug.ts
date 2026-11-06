@@ -80,8 +80,8 @@ export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
     },
   ],
   cta: {
-    titel: 'Su traje de boda: resérvelo 8–10 semanas antes del gran día.',
-    text: '',
+    titel: 'Usted dice sí. Nosotros nos aseguramos de que todo siente perfecto.',
+    text: 'Asesoramiento, medidas, pruebas — sin prisas y hasta el último detalle. Cuente con 8 a 10 semanas antes de la boda y reserve ya su fecha preferida en el atelier.',
   },
   schema: {
     name: 'Trajes de boda en Zúrich',

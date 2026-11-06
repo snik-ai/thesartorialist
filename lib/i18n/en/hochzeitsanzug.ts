@@ -80,8 +80,8 @@ export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
     },
   ],
   cta: {
-    titel: 'Your wedding suit — book 8–10 weeks before the big day.',
-    text: '',
+    titel: 'You say yes. We make sure everything fits.',
+    text: 'Consultation, measurements, fittings — unhurried and down to the last detail. Allow 8 to 10 weeks before the wedding and secure your preferred date in the atelier now.',
   },
   schema: {
     name: 'Wedding suits Zurich',

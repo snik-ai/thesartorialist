@@ -78,9 +78,8 @@ export const hochzeitsanzug = {
     },
   ],
   cta: {
-    titel: 'Ihr Hochzeitsanzug — buchen Sie 8–10 Wochen vor dem grossen Tag.',
-    // Leer = kein Text unter dem Titel (bewusst)
-    text: '',
+    titel: 'Sie sagen Ja. Wir sorgen dafür, dass alles sitzt.',
+    text: 'Beratung, Masse, Anprobe — in Ruhe und bis ins Detail. Planen Sie 8 bis 10 Wochen vor der Hochzeit ein und sichern Sie sich jetzt Ihren Wunschtermin im Atelier.',
   },
   schema: {
     name: 'Hochzeitsanzug Zürich',

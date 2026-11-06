@@ -80,8 +80,8 @@ export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
     },
   ],
   cta: {
-    titel: 'Votre costume de mariage — à réserver 8 à 10 semaines avant le grand jour.',
-    text: '',
+    titel: 'Vous dites oui. Nous veillons à ce que tout tombe parfaitement.',
+    text: 'Conseil, prise de mesures, essayages — sans précipitation et jusque dans le moindre détail. Prévoyez 8 à 10 semaines avant le mariage et réservez dès maintenant votre date à l’atelier.',
   },
   schema: {
     name: 'Costumes de mariage Zurich',

@@ -1,4 +1,4 @@
-The Sartorialist Zürich – Konfigurator-Video «Styles & Options» · Fassung 3 (Next Level, mit Sprecher)
+The Sartorialist Zürich – Konfigurator-Video «Styles & Options» · Fassung 4 (neue erste Szene, mit Sprecher)
 =========================================================================================
 
 Inhalt
@@ -31,9 +31,12 @@ Aufnahmen-Cache: ton/sprecher/zeilen (nicht löschen, sonst kostet jeder Neubau 
 Wortzeiten: ton/sprecher-zeiten.js (von ton-sprecher.mjs erzeugt, film.html liest sie selbst).
 
 Szenen und Übergänge (jeder Übergang einmalig, alle mit Träger)
-  0.00– 4.75  Hook auf dunkler Bühne (Lichtwolken, Bokeh mit Parallaxe): ORBIT um den Entwurf (echte 3D-Perspektive),
-              Callouts auf LIQUID-GLASS-Karten in einer näheren Parallaxe-Ebene, auf «entworfen» goldener Handstich entlang
-              der Reverskante, FRAME ESCAPE (der Anzug wächst über die Kartenkante), Lichtband über den Entwurf
+  0.00– 4.75  Hook (neu in v4): Bild 1 = extremes MAKRO im Holland-&-Sherry-Stoff (goldene Webkante «SUPER 170's MERINO»),
+              ein goldener Handstich läuft über das Revers. Die Kamera fährt zurück (7.5× → 1.24×, 0–1.95 s): der Stoff hat
+              die Form des Anzugs. Auf «Bis» zeichnet eine GOLDLINIE den Anzug von oben nach unten, auf «von Ihnen» füllt sich
+              die Illustration von unten nach oben, auf «entworfen» entsteht dahinter die Karte (Label steigt ein, Lichtband).
+              Wörter «Ihr Massanzug» ab 0.30 s auf Liquid Glass – Bild, Stimme und Text gleichzeitig in Sekunde 1.
+              Variante b (film.html?hook=b, nur Goldlinie auf Schwarz) wurde verworfen: Bild 1 wäre leer.
   4.75– 5.55  MATCH-CUT: der Entwurf wird zur Karte «Steigend» (gleiche Illustration, Label morpht), die warme Welt öffnet
               sich aus der Karte, die Nachbarkarten fliegen aus der Tiefe (Perspektive, gestaffelt)
   5.55– 7.78  Revers: Klick auf «Revers», DIGITAL ZOOM aufs Revers, Detail-Karte, Kamera fährt zum Knopf, Goldring zeichnet sich
@@ -53,7 +56,7 @@ Szenen und Übergänge (jeder Übergang einmalig, alle mit Träger)
  24.61–25.35  SHAPE-MORPH: das Atelierfoto schrumpft zur goldenen Linie der Endkarte
  25.35–34.30  Endkarte: Logo (Masken-Wisch + Goldglanz), «Ihr Massanzug.», SLOT-Ziffern «CHF 1’690.» auf der gesprochenen Zahl,
               CTA Wort für Wort, URL schreibt sich
- 34.30–35.00  RACK-FOCUS-LOOP zurück zum ersten Frame (Bühne periodisch über 35 s → nahtlos)
+ 34.30–35.00  RACK-FOCUS-LOOP zurück ins Stoff-Makro des ersten Frames (Bühne periodisch über 35 s → nahtlos)
 Übernommen aus VoxCRM (_vorlage/lib/vox-buehne.js): perspektive (Streifen-3D), glanz, Bokeh/Lichtwolken, Schatten-Träger;
 aus Karo (Marketingvideo-Online-Rechner): verschachtelte Welten, Kamera fährt durch ein Element in die nächste Welt.
 
@@ -61,7 +64,7 @@ Ton
 ---
 Sprecher (ElevenLabs) + Sounddesign aus der ElevenLabs-Effektbibliothek (ton/effekte, aus VoxCRM übernommen:
 whoosh, swish, klick, pop, tick, chime, flut, logo, slot, papier, falten, funken, thump).
-Musik: OFFEN. Der VoxCRM-Schlüssel hat keine Berechtigung music_generation (und keine sound_generation),
+Musik: OFFEN (zuletzt geprüft 06.11.2026, 15:43: weiterhin 401). Der VoxCRM-Schlüssel hat keine Berechtigung music_generation (und keine sound_generation),
 deshalb gibt es in dieser Fassung keine Musik. Sobald ein Schlüssel mit Music-Berechtigung da ist:
   ELEVENLABS_KEY_FILE=<.env mit Key> node engine/musik.mjs            → ton/musik.mp3 (cineastischer Score, Plan im Skript)
   node engine/ton-mischen.mjs --page film.html --musik ton/musik.mp3 --musikPegel -6 --out out/ton-fx.wav
@@ -76,7 +79,7 @@ Formate / Ergebnisse
   public/videos/konfigurator-16x9.webm           Web, 1600×900, VP9, stumm
   public/videos/konfigurator-16x9-ton.mp4        Web mit Sprecher (für «Mit Ton ansehen»)
   public/videos/konfigurator-poster.webp         Poster (3.9 s: Entwurf mit Callouts, Goldstich und Headline)
-  ../alternative/v1/, ../alternative/v2/          frühere Fassungen
+  ../alternative/v1/ … v3/                       frühere Fassungen
 
 Dateien
 -------
@@ -84,7 +87,7 @@ Dateien
                    window.CUES = Effekt-Einsätze für ton-mischen.mjs.
   engine/          eleven.mjs, ton-sprecher.mjs, ton-mischen.mjs (Playwright), musik.mjs, stimmtest.mjs, stt.mjs, f0.mjs
   ton/             sprecher.json, sprecher-zeiten.js, sprecher/zeilen (Cache), effekte/, stimmtest/, kosten.log
-  img/hero-frei.png = freigestellter Entwurf für den Frame Escape (ffmpeg floodfill)
+  img/hero-frei.png = freigestellter Entwurf (ffmpeg lutrgb+floodfill), img/hero-linie.png = Goldlinie (ffmpeg geq aus den Konturen)
   fonts/, img/, motion.js, lib/timewarp.js, stills.sh, sheet.sh
   out/             Zwischen-Renders (nicht in Git)
 
@@ -94,8 +97,8 @@ Neu erzeugen
   E=~/.claude/skills/motion-reel/engine; export ELEVENLABS_KEY_FILE=~/_Claude/voxcrm/.env   (Schlüssel nie ausgeben)
   node engine/ton-sprecher.mjs --plan ton/sprecher.json --ton out/ton-fx.wav --out out/ton-final.wav --stimmePegel 12 --ducken 0.08
      (vorher: node engine/ton-mischen.mjs --page film.html --out out/ton-fx.wav)
-  node $E/render.mjs --page film.html --w 1920 --h 1080 --fps 60 --sub 4 --dur 35 --out out/v3-silent-16x9.mp4
-  node $E/render.mjs --page film.html --w 1080 --h 1920 --q f=9x16 --fps 60 --sub 4 --dur 35 --out out/v3-silent-9x16.mp4
-  ffmpeg -i out/v3-silent-16x9.mp4 -i out/ton-final.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest \
+  node $E/render.mjs --page film.html --w 1920 --h 1080 --fps 60 --sub 4 --dur 35 --out out/v4-silent-16x9.mp4
+  node $E/render.mjs --page film.html --w 1080 --h 1920 --q f=9x16 --fps 60 --sub 4 --dur 35 --out out/v4-silent-9x16.mp4
+  ffmpeg -i out/v4-silent-16x9.mp4 -i out/ton-final.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest \
     -movflags +faststart ../The-Sartorialist-Konfigurator-16x9.mp4        (9:16 analog)
   Web: scale=1600:900, fps 30, x264 CRF ~26 (stumm), VP9 2-Pass ~550k (stumm), Ton-Fassung x264 + AAC 128k.
