@@ -3,7 +3,7 @@ import { istAktiv } from '@/lib/i18n/sprachen';
 import { notFound } from 'next/navigation';
 
 export const revalidate = 900;
-export const dynamicParams = false;
+export const dynamicParams = true; // neue oder im Build nicht geladene Produkte entstehen zur Laufzeit (ISR)
 
 export async function generateStaticParams() {
   return istAktiv('es') ? kategorieParams() : [];

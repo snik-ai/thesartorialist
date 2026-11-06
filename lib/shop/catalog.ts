@@ -140,8 +140,8 @@ function normalize(r: Raw): ShopProduct {
   };
 }
 
-/** Alle Produkte (paginiert), neueste zuerst wie im Shopify-Shop. Ohne Bild erscheinen sie nicht. */
-export const getAllProducts = cache(async (): Promise<ShopProduct[]> => {
+/** Lädt alle Produkte (paginiert) direkt bei Shopify. */
+async function ladeAlleProdukte(): Promise<ShopProduct[]> {
   const out: ShopProduct[] = [];
   let after: string | null = null;
   for (let page = 0; page < 20; page++) {
@@ -157,6 +157,40 @@ export const getAllProducts = cache(async (): Promise<ShopProduct[]> => {
     after = data.products.pageInfo.endCursor;
   }
   return out.filter((p) => p.images.length > 0);
+}
+
+// Im Build (9 Sprachen × Shop-Seiten, mehrere Worker) den Katalog nur einmal laden:
+// gemeinsame Datei in .next/cache plus Promise je Prozess. So drosselt Shopify den Build nicht,
+// und ein Shopify-Ausfall lässt den Deploy nicht scheitern (Seiten entstehen dann zur Laufzeit).
+const IM_BUILD = process.env.NEXT_PHASE === 'phase-production-build';
+let buildKatalog: Promise<ShopProduct[]> | null = null;
+
+async function katalogImBuild(): Promise<ShopProduct[]> {
+  const fs = await import('node:fs/promises');
+  const pfad = await import('node:path');
+  const datei = pfad.join(process.cwd(), '.next', 'cache', 'shop-katalog.json');
+  try {
+    const st = await fs.stat(datei);
+    if (Date.now() - st.mtimeMs < 30 * 60_000) return JSON.parse(await fs.readFile(datei, 'utf8')) as ShopProduct[];
+  } catch {
+    /* noch keine Datei */
+  }
+  try {
+    const alle = await ladeAlleProdukte();
+    await fs.mkdir(pfad.dirname(datei), { recursive: true }).catch(() => {});
+    await fs.writeFile(datei, JSON.stringify(alle)).catch(() => {});
+    return alle;
+  } catch (e) {
+    const grund = e instanceof Error ? `${e.name}: ${e.message}${(e as { cause?: unknown }).cause ? ` (${String((e as { cause?: unknown }).cause)})` : ''}` : String(e);
+    console.warn(`[shop] Katalog im Build nicht ladbar — Shop-Seiten entstehen zur Laufzeit. Grund: ${grund}`);
+    return [];
+  }
+}
+
+/** Alle Produkte, neueste zuerst wie im Shopify-Shop. Ohne Bild erscheinen sie nicht. */
+export const getAllProducts = cache(async (): Promise<ShopProduct[]> => {
+  if (IM_BUILD) return (buildKatalog ??= katalogImBuild());
+  return ladeAlleProdukte();
 });
 
 export const getProduct = cache(async (handle: string): Promise<ShopProduct | null> => {
