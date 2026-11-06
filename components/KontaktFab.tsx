@@ -84,11 +84,23 @@ export default function KontaktFab() {
     return () => clearInterval(id);
   }, []);
   useEffect(() => setOpen(false), [path]);
+  // Rückruf-Knöpfe auf der Seite öffnen das Panel direkt im Formular
+  useEffect(() => {
+    const auf = () => {
+      setRueckruf(true);
+      setGesendet(false);
+      setOpen(true);
+    };
+    window.addEventListener('ts-rueckruf', auf);
+    return () => window.removeEventListener('ts-rueckruf', auf);
+  }, []);
   useEffect(() => {
     if (!open) return;
     const k = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
     const c = (e: MouseEvent) => {
-      if (box.current && !box.current.contains(e.target as Node)) setOpen(false);
+      const t = e.target as HTMLElement;
+      if (t.closest?.('[data-rueckruf]')) return;
+      if (box.current && !box.current.contains(t)) setOpen(false);
     };
     document.addEventListener('keydown', k);
     document.addEventListener('mousedown', c);

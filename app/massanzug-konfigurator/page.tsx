@@ -1,3 +1,4 @@
+import CtaBand from '@/components/CtaBand';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -117,6 +118,10 @@ export default function KonfiguratorPage() {
       </section>
 
       <Faq items={FAQ} title="Fragen zum Massanzug-Konfigurator" />
+      <CtaBand
+        title="Ihre Auswahl steht? Jetzt Masse nehmen lassen."
+        text="Bringen Sie Ihre Stil-Auswahl in die kostenlose Beratung an der Kuttelgasse 7 — oder wir rufen Sie zurück und besprechen alles am Telefon."
+      />
       <JsonLd
         data={serviceSchema({
           name: 'Massanzug-Konfigurator',

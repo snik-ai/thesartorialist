@@ -10,6 +10,7 @@ import BuyBox from '@/components/shop/BuyBox';
 import ShopCard from '@/components/shop/ShopCard';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { JsonLd } from '@/components/JsonLd';
+import CtaBand from '@/components/CtaBand';
 import { SITE } from '@/lib/site';
 
 export const revalidate = 900;
@@ -115,6 +116,11 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
           </div>
         </section>
       )}
+      <CtaBand
+        eyebrow="Beratung im Store"
+        title="Lieber anprobieren? Wir legen es für Sie bereit."
+        text="Termin buchen oder Rückruf anfordern — wir beraten Sie zu Grösse, Kombination und passendem Massanzug."
+      />
       <JsonLd data={productGroupSchema(p)} />
     </>
   );

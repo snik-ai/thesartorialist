@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { SITE } from '@/lib/site';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import BookingWizard from '@/components/BookingWizard';
+import RueckrufButton from '@/components/RueckrufButton';
+import InstagramBand from '@/components/InstagramBand';
 
 export const metadata: Metadata = {
   title: 'Kontakt & Anfahrt — Kuttelgasse 7, Zürich',
@@ -94,8 +96,16 @@ export default function KontaktPage() {
               Mehr zum Beratungsablauf
             </Link>
           </p>
+          <div className="kontakt-alt">
+            <p>Kein passender Termin dabei?</p>
+            <RueckrufButton className="btn btn--ghost">Rückruf anfordern</RueckrufButton>
+            <a className="btn btn--ghost" href={`${SITE.whatsapp}?text=${encodeURIComponent('Grüezi, ich hätte gerne einen Beratungstermin.')}`} target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+          </div>
         </div>
       </section>
+      <InstagramBand />
     </>
   );
 }

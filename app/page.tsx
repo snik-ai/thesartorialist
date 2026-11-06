@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BRANDS } from '@/lib/brands';
 import CtaBand from '@/components/CtaBand';
+import InstagramBand from '@/components/InstagramBand';
 import Faq from '@/components/Faq';
 import { SITE } from '@/lib/site';
 import HeroVideo from '@/components/HeroVideo';
@@ -275,6 +276,8 @@ export default function HomePage() {
       </section>
 
       <Faq items={HOME_FAQ} title="Alles rund um Massanzug & Hochzeitsanzug in Zürich" />
+
+      <InstagramBand />
 
       <CtaBand />
       <JsonLd
