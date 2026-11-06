@@ -1,92 +1,91 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Wedding suit Zurich
+// Венчано одело Цирих
 export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
   meta: {
-    titel: 'Men’s Wedding Suit Zurich — Made to Measure',
+    titel: 'Мушко венчано одело Цирих — по мери',
     beschreibung:
-      'Men’s wedding suits made to measure in Zurich: a perfect fit, breathable natural cloths and personal details down to embroidery in the lining. For the groom from CHF 1’690.',
-    ogTitel: 'Wedding Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'The perfect look for the most beautiful day of your life.',
+      'Мушка венчана одела по мери у Цириху: савршен пристанак, прозрачне природне тканине и лични детаљи све до веза у постави. За младожењу од CHF 1’690.',
+    ogTitel: 'Венчано одело Цирих — The Sartorialist',
+    ogBeschreibung: 'Савршен изглед за најлепши дан у Вашем животу.',
   },
-  breadcrumb: 'Wedding suit Zurich',
+  breadcrumb: 'Венчано одело Цирих',
   hero: {
-    eyebrow: 'Wedding suits for men',
-    h1: 'Wedding Suits Zurich',
-    lead: 'The perfect look for the most beautiful day of your life: a suit that fits impeccably, lets your personality shine and moves with you every step of the way.',
+    eyebrow: 'Венчана одела за мушкарце',
+    h1: 'Венчана одела Цирих',
+    lead: 'Савршен изглед за најлепши дан у Вашем животу: одело које беспрекорно пристаје, истиче Вашу личност и прати Вас у сваком кораку.',
   },
   warum: {
-    bildAlt: 'Made-to-measure wedding suit by The Sartorialist Zurich',
-    titel: 'Why choose The Sartorialist for your wedding suit?',
+    bildAlt: 'Венчано одело по мери, The Sartorialist Цирих',
+    titel: 'Зашто изабрати The Sartorialist за Ваше венчано одело?',
     liste: [
-      '15 years of experience — your guarantee of the finest wedding suits in Zurich and beyond',
-      'We love fashion — and we love advising our clients in person',
-      'Current trends, exclusive materials and fair terms',
-      'Full canvas for made-to-measure suits that fit perfectly',
+      '15 година искуства — Ваша гаранција за најфинија венчана одела у Цириху и шире',
+      'Волимо моду — и волимо да своје клијенте саветујемо лично',
+      'Актуелни трендови, ексклузивни материјали и поштени услови',
+      'Пуни канвас за одела по мери која савршено пристају',
     ],
-    text: 'At The Sartorialist, your made-to-measure wedding suit fulfils every wish, is crafted from the finest cloths and, thanks to its distinctive details, is a true one-off — at a fair price.',
-    knopf: 'Arrange a no-obligation consultation',
+    text: 'У The Sartorialist Ваше венчано одело по мери испуњава сваку жељу, израђено је од најфинијих тканина и, захваљујући посебним детаљима, право је уникатно — по поштеној цени.',
+    knopf: 'Договорите необавезну консултацију',
   },
   bloecke: [
     {
-      eyebrow: 'Fit',
-      titel: 'Fit and comfort — essential for every wedding',
+      eyebrow: 'Пристанак',
+      titel: 'Пристанак и удобност — неопходни за свако венчање',
       absaetze: [
-        'On your wedding day, your body is on the move from morning to night: the nervous wait before the ceremony, kneeling in church, the photo shoot, the first dance, the long wedding breakfast, the party that follows. Off-the-peg suits rarely keep up — they crease, bag and constrict.',
-        'A made-to-measure wedding suit from The Sartorialist accompanies you perfectly through every moment: thanks to an impeccable fit and exceptionally fine natural cloths, your suit breathes with you and reliably wicks away heat and moisture.',
+        'На дан венчања Ваше тело је у покрету од јутра до вечери: нервозно чекање пред церемонију, клечање у цркви, фотографисање, први плес, дуга свечана вечера, прослава која следи. Конфекцијска одела ретко то издрже — гужвају се, деформишу и стежу.',
+        'Венчано одело по мери из The Sartorialist савршено Вас прати кроз сваки тренутак: захваљујући беспрекорном пристанку и изузетно финим природним тканинама, Ваше одело дише са Вама и поуздано одводи топлоту и влагу.',
       ],
     },
     {
-      eyebrow: 'Details',
-      titel: 'You choose the details — and create a one-off',
+      eyebrow: 'Детаљи',
+      titel: 'Ви бирате детаље — и стварате уникат',
       absaetze: [
-        'Choose from a range of button shapes and finishes, and have your bride’s name, a motto or your wedding date embroidered into the lining. Luxurious cufflinks add a touch of brilliance to the moment you exchange rings.',
-        'Complete the look with a wide selection of ties, braces and bow ties — and, if you wish, a made-to-measure shirt cut to your exact measurements.',
+        'Изаберите између различитих облика и завршних обрада дугмади и дајте да се у поставу извезе име Ваше невесте, мото или датум венчања. Луксузна дугмад за манжетне додају дашак сјаја тренутку размене прстенова.',
+        'Употпуните изглед широким избором кравата, трегера и лептир-машни — и, ако желите, кошуљом по мери скројеном тачно по Вашим мерама.',
       ],
     },
   ],
-  faqTitel: 'Frequently asked questions about wedding suits',
+  faqTitel: 'Често постављана питања о венчаним оделима',
   faq: [
     {
-      q: 'What is the difference between a wedding suit and a business suit?',
+      q: 'Која је разлика између венчаног и пословног одела?',
       a: [
-        'A wedding suit is not simply an ordinary suit — it is a statement. While a business suit is functional and understated, a wedding suit takes centre stage on one of the most emotional days of your life. It must fit perfectly, reflect your character, suit the style of the wedding and stand the test of time, both in photographs and in memory.',
+        'Венчано одело није обично одело — оно је изјава. Док је пословно одело функционално и уздржано, венчано одело је у центру пажње једног од најемотивнијих дана у Вашем животу. Мора савршено да пристаје, да одражава Ваш карактер, да одговара стилу венчања и да издржи пробу времена, како на фотографијама, тако и у сећању.',
       ],
     },
     {
-      q: 'How far in advance should I have my wedding suit made?',
+      q: 'Колико унапред треба да наручим венчано одело?',
       a: [
-        'We recommend booking your appointment at least 8 to 10 weeks before the wedding — earlier is better. That leaves ample time for choosing the cloth, taking measurements, the first fitting, any alterations and the final personal touches. Short-notice requests are possible in exceptional cases — just ask us.',
+        'Препоручујемо да термин закажете најмање 8 до 10 недеља пре венчања — што раније, то боље. Тако остаје довољно времена за избор тканине, узимање мера, прву пробу, евентуалне преправке и завршне личне детаље. Захтеви у кратком року изузетно су могући — само нас питајте.',
       ],
     },
     {
-      q: 'Which suit styles are popular for weddings?',
+      q: 'Који стилови одела су популарни за венчања?',
       a: [
-        'The classic three-piece suit with waistcoat (timelessly elegant), the modern slim-fit suit (a sleek silhouette), the Italian linen suit (ideal for summer weddings), the dinner suit or dinner jacket (black tie), the vintage suit in tweed or checks (for rustic settings), as well as coloured suits in dark green, burgundy or beige.',
-        'You set the direction — we make sure it is executed to perfection.',
+        'Класично тродељно одело са прслуком (безвременски елегантно), модерно slim-fit одело (витка силуета), италијанско ланено одело (идеално за летња венчања), смокинг или смокинг-сако (black tie), винтиџ одело од твида или са каро-узорком (за рустичне амбијенте), као и одела у бојама — тамнозеленој, бордо или беж.',
+        'Ви одређујете правац — ми се старамо да изведба буде савршена.',
       ],
     },
     {
-      q: 'Can I still wear my made-to-measure suit after the wedding?',
+      q: 'Могу ли своје одело по мери да носим и после венчања?',
       a: [
-        'Yes — that is precisely one of its advantages. From the very first consultation we make sure your suit stays versatile: classic colours such as navy, charcoal or dark green, understated cloths, and the option to wear the waistcoat or accessories separately. Italian cloths keep their shape and elegance for years to come.',
+        'Да — управо је то једна од његових предности. Већ од прве консултације пазимо да Ваше одело остане свестрано: класичне боје као што су тамноплава, антрацит или тамнозелена, ненаметљиве тканине и могућност да прслук или додатке носите засебно. Италијанске тканине годинама задржавају облик и елеганцију.',
       ],
     },
     {
-      q: 'Which accessories go with a wedding suit?',
+      q: 'Који додаци иду уз венчано одело?',
       a: [
-        'We offer a carefully curated selection of bow ties, ties, pocket squares, cufflinks, waistcoats and leather belts, all perfectly matched to your suit. We are also happy to coordinate colours with the bridal gown or the décor.',
+        'Нудимо пажљиво одабран избор лептир-машни, кравата, марамица за џеп, дугмади за манжетне, прслука и кожних каишева, савршено усклађених са Вашим оделом. Радо ћемо ускладити и боје са венчаницом или декорацијом.',
       ],
     },
   ],
   cta: {
-    titel: 'Your wedding suit — book 8–10 weeks before the big day.',
+    titel: 'Ваше венчано одело — закажите 8–10 недеља пре великог дана.',
     text: '',
   },
   schema: {
-    name: 'Wedding suits Zurich',
+    name: 'Венчана одела Цирих',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: a perfect fit, fine natural cloths and individual details — The Sartorialist.',
+      'Венчана одела по мери у Цириху: савршен пристанак, фине природне тканине и индивидуални детаљи — The Sartorialist.',
   },
 };

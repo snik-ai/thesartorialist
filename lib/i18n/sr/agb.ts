@@ -1,110 +1,109 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Terms and conditions / payment in instalments
+// Општи услови пословања / плаћање на рате
 export const agb: Woerterbuch['agb'] = {
   meta: {
-    titel: 'Terms & Conditions / Payment in Instalments',
+    titel: 'Општи услови пословања / плаћање на рате',
     beschreibung:
-      'General terms and conditions of The Sartorialist Zurich — including payment in instalments at 0% interest via HeidiPay.',
+      'Општи услови пословања компаније The Sartorialist Цирих — укључујући плаћање на рате са 0 % камате путем HeidiPay.',
   },
-  breadcrumb: 'Terms & Conditions',
-  h1: 'Terms & Conditions / Payment in Instalments',
+  breadcrumb: 'Општи услови пословања',
+  h1: 'Општи услови пословања / плаћање на рате',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/allgemeine-geschaeftsbedingungen/).',
+    'Овај превод на српски језик служи искључиво ради лакшег сналажења. Правно обавезујућа је верзија на немачком језику: [прочитајте немачку верзију](/allgemeine-geschaeftsbedingungen/).',
   einleitung:
-    'These General Terms and Conditions (hereinafter “GTC”) govern the conclusion, content and performance of contracts between thesartorialist.ch and its customers (hereinafter “Customer”) in connection with the sale of goods. All orders and deliveries are based without exception on these terms and conditions, which the Customer accepts at the time of placing an order.',
+    'Ови Општи услови пословања (у даљем тексту: „ОУП“) уређују закључење, садржину и извршење уговора између thesartorialist.ch и његових купаца (у даљем тексту: „Купац“) у вези са продајом робе. Све поруџбине и испоруке заснивају се без изузетка на овим условима, које Купац прихвата у тренутку наручивања.',
   abschnitte: [
     {
-      titel: 'Conclusion of contract',
+      titel: 'Закључење уговора',
       bloecke: [
         {
-          p: 'The presentation of the products does not constitute a legally binding offer but a non-binding catalogue. By placing a binding order, you submit an order for the selected goods. Receipt of your order is confirmed, together with its acceptance, by an automated email immediately after the order is submitted. The purchase contract is concluded upon this email confirmation.',
+          p: 'Приказ производа не представља правно обавезујућу понуду, већ необавезујући каталог. Обавезујућим наручивањем подносите поруџбину за изабрану робу. Пријем Ваше поруџбине, заједно са њеним прихватањем, потврђује се аутоматским имејлом одмах након слања поруџбине. Овом потврдом путем имејла закључује се купопродајни уговор.',
         },
       ],
     },
     {
-      titel: 'Complaints (in the event of defects) / right of return',
+      titel: 'Рекламације (у случају недостатака) / право на повраћај',
       bloecke: [
         {
-          p: 'On receipt of the parcel, the Customer must inspect the contents of the delivery without delay. In the case of items that are damaged or do not correspond to the order, the Customer has the right to lodge a complaint within 7 (seven) days of receipt of the goods. The shipping costs of the return are borne by the Customer. After receiving and inspecting the returned goods (unused items only), thesartorialist.ch will provide a free exchange or, on request, a refund of the amount paid. For products already paid for, a refund will be made to the Customer’s bank account; no cash refunds are made.',
+          p: 'По пријему пошиљке Купац је дужан да без одлагања прегледа садржај испоруке. За артикле који су оштећени или не одговарају поруџбини Купац има право да поднесе рекламацију у року од 7 (седам) дана од пријема робе. Трошкове слања повраћаја сноси Купац. Након пријема и провере враћене робе (само некоришћени артикли) thesartorialist.ch обезбеђује бесплатну замену или, на захтев, повраћај плаћеног износа. За већ плаћене производе повраћај се врши на банковни рачун Купца; повраћај у готовини се не врши.',
         },
         {
-          p: 'Accessories and swimwear cannot be exchanged — for reasons of hygiene, these products are excluded from exchange. Ordered items are delivered within 1–4 working days of receipt of payment. The choice of carrier is the responsibility of thesartorialist.ch.',
+          p: 'Додаци и купаћи костими не могу се заменити — из хигијенских разлога ови производи су искључени из замене. Наручени артикли испоручују се у року од 1–4 радна дана од пријема уплате. Избор превозника у надлежности је thesartorialist.ch.',
         },
         {
-          p: 'thesartorialist.ch can only deliver individual goods while stocks last and is entitled to make partial deliveries. In the event of delivery disruptions due to circumstances such as strikes, shortages of materials or transport problems, thesartorialist.ch is entitled to cancel confirmed orders; in this case the Customer is entitled to a refund of any purchase price already paid. If redelivery is required because of an incorrect address or failure to collect, the recipient bears the additional shipping costs.',
+          p: 'thesartorialist.ch може испоручити појединачну робу само док траје залиха и има право на делимичне испоруке. У случају сметњи у испоруци услед околности као што су штрајкови, несташица материјала или проблеми у превозу, thesartorialist.ch има право да откаже потврђене поруџбине; у том случају Купац има право на повраћај већ плаћене купопродајне цене. Ако је због погрешне адресе или непреузимања потребна поновна испорука, додатне трошкове слања сноси прималац.',
         },
       ],
     },
     {
-      titel: 'Delivery outside Switzerland',
-      bloecke: [{ p: 'Customers from Germany or Austria are kindly asked to contact us by email at [{email}](mailto:{email}).' }],
+      titel: 'Испорука ван Швајцарске',
+      bloecke: [{ p: 'Купце из Немачке или Аустрије љубазно молимо да нам се обрате имејлом на [{email}](mailto:{email}).' }],
     },
     {
-      titel: 'Prices and special offers',
+      titel: 'Цене и посебне понуде',
       bloecke: [
         {
-          p: 'All prices are stated in CHF (Swiss francs). Additional costs such as packaging and shipping are not included in the prices. thesartorialist.ch reserves the right to change prices at any time. The prices published at the time of ordering apply to the Customer.',
+          p: 'Све цене су исказане у CHF (швајцарским францима). Додатни трошкови, као што су паковање и слање, нису урачунати у цене. thesartorialist.ch задржава право да у било ком тренутку измени цене. За Купца важе цене објављене у тренутку наручивања.',
         },
       ],
     },
     {
-      titel: 'Payment, warranty and liability',
+      titel: 'Плаћање, гаранција и одговорност',
       bloecke: [
         {
-          p: 'Orders are payable by bank transfer or in advance by credit card or PostFinance Card. Responsibility for the selection, use and application of the products lies with the Customer. The Customer is entitled solely to any manufacturer’s warranty, which must be claimed directly from the manufacturer. The products delivered remain the property of thesartorialist.ch until paid for in full.',
+          p: 'Поруџбине се плаћају банковним трансфером или унапред кредитном картицом или картицом PostFinance Card. Одговорност за избор, употребу и примену производа сноси Купац. Купцу припада искључиво евентуална гаранција произвођача, коју мора остварити непосредно код произвођача. Испоручени производи остају власништво thesartorialist.ch до потпуне исплате.',
         },
       ],
     },
     {
-      titel: 'Data protection',
+      titel: 'Заштита података',
       bloecke: [
         {
-          p: 'thesartorialist.ch does not pass on any personal customer data to third parties and is responsible for data protection. Data that is essential for processing the order (e.g. disclosure to the carrier) may be passed on. All customer data is treated in strict confidence.',
+          p: 'thesartorialist.ch не прослеђује личне податке купаца трећим лицима и одговоран је за заштиту података. Подаци који су неопходни за обраду поруџбине (нпр. прослеђивање превознику) могу бити прослеђени. Сви подаци купаца третирају се као строго поверљиви.',
         },
       ],
     },
     {
-      titel: 'Image rights',
+      titel: 'Права на фотографије',
       bloecke: [
         {
-          p: 'The images of the products shown are the property of thesartorialist.ch and may not be used for third-party blogs, social media, the press or any other media.',
+          p: 'Приказане фотографије производа власништво су thesartorialist.ch и не смеју се користити за блогове трећих лица, друштвене мреже, штампу нити друге медије.',
         },
       ],
     },
     {
-      titel: 'Final provisions',
+      titel: 'Завршне одредбе',
       bloecke: [
         {
-          p: 'thesartorialist.ch may amend these GTC at any time. Should one or more of these provisions be void or invalid, the validity of the remaining provisions shall remain unaffected. These GTC are drawn up in German; in the event of any discrepancy, the German version shall prevail. The place of jurisdiction is Zurich; Swiss law applies.',
+          p: 'thesartorialist.ch може у било ком тренутку изменити ове ОУП. Ако једна или више ових одредаба буду ништаве или неважеће, то не утиче на важење осталих одредаба. Ови ОУП састављени су на немачком језику; у случају одступања меродавна је немачка верзија. Место надлежности суда је Цирих; примењује се швајцарско право.',
         },
       ],
     },
     {
-      titel: 'Payment in instalments — buy now, pay later — 0% interest',
+      titel: 'Плаћање на рате — купите сада, платите касније — 0 % камате',
       bloecke: [
         {
           schritte: [
-            'Add the items you would like to your basket',
-            'Choose HeidiPay as your payment method at checkout',
-            'Enter your card details',
-            'Pay in interest-free monthly instalments',
+            'Додајте жељене артикле у корпу',
+            'При плаћању изаберите HeidiPay као начин плаћања',
+            'Унесите податке своје картице',
+            'Плаћајте у месечним ратама без камате',
           ],
         },
         {
-          p: 'The first instalment is paid at the time of purchase. The remaining instalments are debited automatically from your card every 30 days.',
+          p: 'Прва рата плаћа се у тренутку куповине. Преостале рате аутоматски се терете са Ваше картице сваких 30 дана.',
         },
-        { h3: 'Requirements' },
+        { h3: 'Услови' },
         {
           liste: [
-            'You are between 18 and 70 years old',
-            'You are resident in Switzerland',
-            'You are a Swiss citizen or have held a C or B residence permit for at least 1 year',
+            'Имате између 18 и 70 година',
+            'Имате пребивалиште у Швајцарској',
+            'Држављанин сте Швајцарске или најмање 1 годину поседујете дозволу боравка C или B',
           ],
         },
         {
-          p: 'We check with the credit agency CRIF AG that you are registered at the residential address provided. If your address cannot be found, please contact CRIF AG by telephone on +41 44 913 50 58 or send proof of address by email to support.ch@crif.com. See the terms and conditions and privacy policy at www.heidipay.com.',
+          p: 'Код агенције за кредитне информације CRIF AG проверавамо да ли сте пријављени на наведеној адреси становања. Ако Ваша адреса не може да се пронађе, молимо Вас да се обратите CRIF AG телефоном на +41 44 913 50 58 или да пошаљете доказ о адреси имејлом на support.ch@crif.com. Услове пословања и политику приватности погледајте на www.heidipay.com.',
         },
       ],
     },

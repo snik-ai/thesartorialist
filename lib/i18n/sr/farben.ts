@@ -1,92 +1,91 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suit colour pages — English overlay of lib/suitColors.ts (sections: same number and order).
+// Stranice boja odela — srpski prevod (ćirilica) uz lib/suitColors.ts (sections: isti broj i redosled).
 export const farben: Woerterbuch['farben'] = {
   'anzug-blau': {
-    name: 'Blue suit',
-    title: 'Blue Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Classic elegance redefined',
+    name: 'Плаво одело',
+    title: 'Плаво одело — елеганција по мери у Цириху',
+    claim: 'Класична елеганција у новом светлу',
     metaDescription:
-      'Made-to-measure blue suit in Zurich: from sky blue to navy — tailored by The Sartorialist. Book your appointment now.',
+      'Плаво одело по мери у Цириху: од небеско плаве до тамноплаве — по мери из атељеа The Sartorialist. Закажите термин.',
     sections: [
       {
-        title: 'Classic elegance redefined',
-        text: 'The blue suit is one of the timeless classics of menswear and an elegant alternative to black and grey. In its many shades — from light sky blue to deep navy — a blue suit suits almost every occasion, whether at work or at social events. It combines classic elegance with a modern touch.',
+        title: 'Класична елеганција у новом светлу',
+        text: 'Плаво одело спада у безвремене класике мушке моде и елегантна је алтернатива црној и сивој. У бројним нијансама — од светле небеско плаве до дубоке тамноплаве — плаво одело пристаје готово свакој прилици, било на послу или на друштвеним догађајима. Оно спаја класичну елеганцију са модерним тоном.',
       },
       {
-        title: 'Why choose a blue suit',
-        text: 'A blue suit is remarkably versatile and lends you a confident, well-groomed look. Blue feels calm and professional while bringing freshness and energy to your wardrobe. Ideal for the office, business meetings or special occasions — and easy to pair with classic and contemporary accessories alike.',
+        title: 'Зашто плаво одело',
+        text: 'Плаво одело је изузетно свестрано и даје Вам самоуверен, негован изглед. Плава делује смирено и професионално, а Вашој гардероби доноси свежину и енергију. Идеално за канцеларију, пословне састанке или посебне прилике — и лако се комбинује како са класичним, тако и са савременим додацима.',
       },
       {
-        title: 'Made-to-measure excellence',
-        text: 'With us, your blue suit is made individually — fitting perfectly and tailored to your personal style. Our experienced team helps you choose the ideal shade of blue, the right cloth and the perfect cut.',
+        title: 'Врхунски квалитет по мери',
+        text: 'Код нас се Ваше плаво одело израђује појединачно — савршено пристаје и прилагођено је Вашем личном стилу. Наш искусни тим помаже Вам да одаберете идеалну нијансу плаве, праву тканину и савршен крој.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'We use fine cloths known for their longevity and comfort: from luxurious wool and fine linen to noble cashmere. The choice of cloth shapes not only the look but also the comfort of your suit.',
+        title: 'Тканине и обрада',
+        text: 'Користимо фине тканине познате по дуговечности и удобности: од луксузне вуне и финог лана до племенитог кашмира. Избор тканине не одређује само изглед, већ и удобност Вашег одела.',
       },
       {
-        title: 'Individual design',
-        text: 'Design your blue suit exactly as you envisage it: cloths, cuts and details of your choice — a one-of-a-kind piece that underlines your personality.',
+        title: 'Индивидуални дизајн',
+        text: 'Обликујте своје плаво одело тачно онако како га замишљате: тканине, кројеви и детаљи по Вашем избору — уникат који наглашава Вашу личност.',
       },
     ],
   },
   'anzug-gruen': {
-    name: 'Green suit',
-    title: 'Green Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Fresh accents for your look',
+    name: 'Зелено одело',
+    title: 'Зелено одело — елеганција по мери у Цириху',
+    claim: 'Свежи акценти за Ваш изглед',
     metaDescription:
-      'Made-to-measure green suit in Zurich: from pastel to deep green — tailored by The Sartorialist. Book your appointment now.',
+      'Зелено одело по мери у Цириху: од пастелне до дубоке зелене — по мери из атељеа The Sartorialist. Закажите термин.',
     sections: [
       {
-        title: 'Fresh accents for your look',
-        text: 'The green suit is a fashionable choice for anyone who wants to lift their look with a touch of colour. Shades of green range from soft pastels to rich, deep tones and offer a modern alternative to the classic colours. A green suit adds fresh accents and makes a distinctive impression.',
+        title: 'Свежи акценти за Ваш изглед',
+        text: 'Зелено одело је модеран избор за свакога ко жели да свом изгледу дода мало боје. Нијансе зелене крећу се од нежних пастелних до засићених, дубоких тонова и пружају модерну алтернативу класичним бојама. Зелено одело уноси свеже акценте и оставља упечатљив утисак.',
       },
       {
-        title: 'Why choose a green suit',
-        text: 'A green suit brings colour to your wardrobe and stands out through its unique character. It is versatile — elegant with neutral colours, fashionable with bold accents. In spring and summer especially, it makes for a lively, dynamic look.',
+        title: 'Зашто зелено одело',
+        text: 'Зелено одело уноси боју у Вашу гардеробу и истиче се посебним карактером. Свестрано је — елегантно уз неутралне боје, модерно уз смеле акценте. Нарочито у пролеће и лето ствара живахан, динамичан изглед.',
       },
       {
-        title: 'Made-to-measure exclusivity',
-        text: 'We make your green suit individually, to your wishes and measurements. Our team advises you on the perfect shade of green, the right cloth and the appropriate details of the cut.',
+        title: 'Ексклузивност по мери',
+        text: 'Ваше зелено одело израђујемо појединачно, према Вашим жељама и мерама. Наш тим Вас саветује при избору савршене нијансе зелене, праве тканине и одговарајућих детаља кроја.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Fine wool, noble linen or luxurious cashmere: the choice of cloth determines comfort and longevity. We pay attention to the details that underline the unique character of your green suit.',
+        title: 'Тканине и обрада',
+        text: 'Фина вуна, племенити лан или луксузни кашмир: избор тканине одређује удобност и дуговечност. Пажњу посвећујемо детаљима који наглашавају јединствен карактер Вашег зеленог одела.',
       },
       {
-        title: 'Individual design',
-        text: 'A green suit from us is more than a garment — it is an expression of your personality. Choose from a range of cloths, cuts and details.',
+        title: 'Индивидуални дизајн',
+        text: 'Зелено одело од нас је више од одевног предмета — оно је израз Ваше личности. Бирајте између разноврсних тканина, кројева и детаља.',
       },
     ],
   },
   'anzug-beige': {
-    name: 'Beige suit',
-    title: 'Beige Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Timeless refinement in beige',
+    name: 'Беж одело',
+    title: 'Беж одело — елеганција по мери у Цириху',
+    claim: 'Безвремена отменост у беж тону',
     metaDescription:
-      'Made-to-measure beige suit in Zurich: light, bright and elegant — ideal for summer and weddings. Tailored by The Sartorialist.',
+      'Беж одело по мери у Цириху: лагано, светло и елегантно — идеално за лето и венчања. По мери из атељеа The Sartorialist.',
     sections: [
       {
-        title: 'Timeless refinement in beige',
-        text: 'The beige suit is a classic that impresses with its versatility and elegance. It unites timeless refinement with a neutral tone suited to formal and informal occasions alike — ideal for spring and summer, as it looks light and bright.',
+        title: 'Безвремена отменост у беж тону',
+        text: 'Беж одело је класик који одушевљава свестраношћу и елеганцијом. Оно спаја безвремену отменост са неутралним тоном, погодним како за свечане, тако и за опуштене прилике — идеално за пролеће и лето, јер делује лагано и светло.',
       },
       {
-        title: 'Why choose a beige suit',
-        text: 'A beige suit pairs effortlessly with a wide range of colours and patterns. Whether a wedding, a business event or a relaxed get-together — it always gives you a stylish, well-groomed look. The light colour reflects sunlight and is particularly pleasant to wear.',
+        title: 'Зашто беж одело',
+        text: 'Беж одело се без напора комбинује са најразличитијим бојама и узорцима. Било да је реч о венчању, пословном догађају или опуштеном дружењу — увек Вам даје стилски, негован изглед. Светла боја одбија сунчеву светлост и посебно је пријатна за ношење.',
       },
       {
-        title: 'Made-to-measure perfection',
-        text: 'With us, you design your beige suit exactly as you wish: tailored individually to your measurements and your style, with advice on cloth, fit and details.',
+        title: 'Савршенство по мери',
+        text: 'Код нас обликујете своје беж одело тачно по својој жељи: израђено појединачно према Вашим мерама и Вашем стилу, уз савет при избору тканине, кроја и детаља.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Only fine cloths that guarantee comfort and longevity — from fine wool and noble linen to luxurious cashmere. Every detail is right, so that you feel entirely at ease.',
+        title: 'Тканине и обрада',
+        text: 'Само фине тканине које гарантују удобност и дуговечност — од фине вуне и племенитог лана до луксузног кашмира. Сваки детаљ је на свом месту, како бисте се осећали потпуно пријатно.',
       },
       {
-        title: 'Individual design',
-        text: 'Choose the cloth, the cut and special details such as buttons and lining — creating a suit that fits perfectly and reflects your personal touch.',
+        title: 'Индивидуални дизајн',
+        text: 'Одаберите тканину, крој и посебне детаље као што су дугмад и постава — тако настаје одело које савршено пристаје и одражава Ваш лични печат.',
       },
     ],
   },

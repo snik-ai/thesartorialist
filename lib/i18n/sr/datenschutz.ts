@@ -1,115 +1,114 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Privacy policy
+// Политика приватности
 export const datenschutz: Woerterbuch['datenschutz'] = {
   meta: {
-    titel: 'Privacy Policy',
+    titel: 'Политика приватности',
     beschreibung:
-      'Privacy policy of The Sartorialist Zurich — information on the collection and processing of personal data.',
+      'Политика приватности компаније The Sartorialist Цирих — информације о прикупљању и обради личних података.',
   },
-  h1: 'Privacy Policy',
+  h1: 'Политика приватности',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/datenschutzerklaerung/).',
-  adresse: { land: 'Switzerland', telefon: 'Telephone: ', email: 'Email: ' },
+    'Овај превод на српски језик служи искључиво ради лакшег сналажења. Правно обавезујућа је верзија на немачком језику: [прочитајте немачку верзију](/datenschutzerklaerung/).',
+  adresse: { land: 'Швајцарска', telefon: 'Телефон: ', email: 'Имејл: ' },
   abschnitte: [
     {
-      titel: '1. Data protection at a glance',
+      titel: '1. Заштита података укратко',
       bloecke: [
-        { h3: 'General information' },
+        { h3: 'Опште напомене' },
         {
-          p: 'The following information provides a simple overview of what happens to your personal data when you visit this website. Personal data is any data by which you can be personally identified.',
+          p: 'Следеће напомене пружају једноставан преглед тога шта се дешава са Вашим личним подацима када посетите ову веб-страницу. Лични подаци су сви подаци помоћу којих се Ви лично можете идентификовати.',
         },
-        { h3: 'Data collection on this website' },
+        { h3: 'Прикупљање података на овој веб-страници' },
         {
-          p: 'Data on this website is processed by the website operator, whose contact details can be found in the [imprint](impressum) of this website. On the pages outside the shop, no cookies are set and no third-party content (e.g. videos or external fonts) is loaded. The exceptions are the anonymous audience measurement carried out by our web agency (see section 4, “Audience measurement”), the film on the home page (Vimeo, see section 4, “Film on the home page”) and the online shop at /shop, which is operated with Shopify (see section 4, “Online shop”).',
+          p: 'Податке на овој веб-страници обрађује оператер веб-странице, чије контакт податке можете пронаћи у [импресуму](impressum) ове веб-странице. На страницама ван продавнице не постављају се колачићи нити се учитава садржај трећих лица (нпр. видео-снимци или спољни фонтови). Изузеци су анонимно мерење посећености које спроводи наша веб-агенција (видети одељак 4, „Мерење посећености“), филм на почетној страници (Vimeo, видети одељак 4, „Филм на почетној страници“) и онлајн продавница на /shop, која ради на платформи Shopify (видети одељак 4, „Онлајн продавница“).',
         },
         {
-          p: 'Some data is collected when you provide it to us — for example, when you send us an appointment request by email or telephone. Other data is collected automatically by the hosting provider’s IT systems when you visit the website (above all technical data such as your web browser, operating system or the time the page was accessed).',
+          p: 'Неке податке прикупљамо тако што их Ви нама саопштите — на пример, када нам пошаљете захтев за термин имејлом или телефоном. Друге податке приликом посете веб-страници аутоматски бележе ИТ системи пружаоца хостинга (пре свега техничке податке као што су интернет прегледач, оперативни систем или време приступа страници).',
         },
       ],
     },
     {
-      titel: '2. Hosting',
+      titel: '2. Хостинг',
       bloecke: [
         {
-          p: 'This website is hosted by an external service provider (host). The data collected when you visit the website is stored on the host’s servers. This consists above all of IP addresses, metadata and communication data, and website access data. We use the host in the interest of providing our website securely, quickly and efficiently. Our host processes your data only to the extent necessary to fulfil its contractual obligations.',
+          p: 'Ова веб-страница налази се код спољног пружаоца услуга (хостинг). Подаци прикупљени приликом посете веб-страници чувају се на серверима пружаоца хостинга. То су пре свега ИП адресе, метаподаци и подаци о комуникацији, као и подаци о приступу веб-страници. Пружаоца хостинга користимо у интересу безбедног, брзог и ефикасног пружања наше веб-странице. Наш пружалац хостинга обрађује Ваше податке само у мери у којој је то неопходно за испуњење његових уговорних обавеза.',
         },
       ],
     },
     {
-      titel: '3. General information and mandatory disclosures',
+      titel: '3. Опште напомене и обавезне информације',
       bloecke: [
-        { h3: 'Data protection' },
+        { h3: 'Заштита података' },
         {
-          p: 'The operators of these pages take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with the statutory data protection regulations (in particular the Swiss Federal Act on Data Protection (FADP) and — where applicable — the EU General Data Protection Regulation (GDPR)) and this privacy policy.',
+          p: 'Оператери ових страница веома озбиљно схватају заштиту Ваших личних података. Ваше личне податке третирамо поверљиво и у складу са законским прописима о заштити података (нарочито швајцарским Савезним законом о заштити података (DSG) и — где је примењива — Општом уредбом ЕУ о заштити података (GDPR)) и овом политиком приватности.',
         },
         {
-          p: 'Please note that data transmitted over the internet (e.g. when communicating by email) may be subject to security vulnerabilities. Complete protection of data against access by third parties is not possible.',
+          p: 'Напомињемо да пренос података путем интернета (нпр. при комуникацији имејлом) може имати безбедносне пропусте. Потпуна заштита података од приступа трећих лица није могућа.',
         },
-        { h3: 'Controller' },
-        { p: 'The controller responsible for data processing on this website is:' },
+        { h3: 'Руковалац' },
+        { p: 'Руковалац одговоран за обраду података на овој веб-страници је:' },
         { adresse: true },
-        { h3: 'Your rights' },
+        { h3: 'Ваша права' },
         {
-          p: 'You have the right at any time to obtain information, free of charge, about the origin, recipients and purpose of your stored personal data. You also have the right to have this data corrected or erased, to restrict its processing and to data portability. You may withdraw any consent you have given to data processing at any time with effect for the future. You also have the right to lodge a complaint with the competent supervisory authority (in Switzerland: the Federal Data Protection and Information Commissioner, FDPIC).',
+          p: 'У сваком тренутку имате право да бесплатно добијете информације о пореклу, примаоцима и сврси Ваших сачуваних личних података. Такође имате право да захтевате исправку или брисање ових података, ограничење њихове обраде и преносивост података. Дату сагласност за обраду података можете у сваком тренутку опозвати са дејством за убудуће. Поред тога, имате право да поднесете притужбу надлежном надзорном органу (у Швајцарској: Савезни повереник за заштиту података и јавност, EDÖB).',
         },
-        { h3: 'SSL/TLS encryption' },
+        { h3: 'SSL/TLS шифровање' },
         {
-          p: 'For security reasons and to protect the transmission of confidential content, this site uses SSL/TLS encryption. You can recognise an encrypted connection by the address bar of your browser changing from “http://” to “https://” and by the padlock symbol in your browser bar.',
+          p: 'Из безбедносних разлога и ради заштите преноса поверљивог садржаја ова страница користи SSL/TLS шифровање. Шифровану везу препознајете по томе што се адресна линија прегледача мења из „http://“ у „https://“ и по симболу катанца у траци прегледача.',
         },
       ],
     },
     {
-      titel: '4. Data collection on this website',
+      titel: '4. Прикупљање података на овој веб-страници',
       bloecke: [
-        { h3: 'Server log files' },
+        { h3: 'Датотеке серверског дневника' },
         {
-          p: 'The provider of these pages automatically collects and stores information in so-called server log files, which your browser transmits automatically:',
+          p: 'Пружалац ових страница аутоматски прикупља и чува информације у такозваним датотекама серверског дневника (server log files), које Ваш прегледач аутоматски шаље:',
         },
         {
           liste: [
-            'Browser type and browser version',
-            'Operating system used',
-            'Referrer URL',
-            'Host name of the accessing computer',
-            'Time of the server request',
-            'IP address',
+            'Врста и верзија прегледача',
+            'Коришћени оперативни систем',
+            'Референтни URL (referrer)',
+            'Назив хоста рачунара који приступа',
+            'Време серверског захтева',
+            'ИП адреса',
           ],
         },
         {
-          p: 'This data is not combined with other data sources. The website operator has a legitimate interest in the technically error-free presentation and optimisation of its website — for this purpose, the server log files must be recorded.',
+          p: 'Ови подаци се не спајају са другим изворима података. Оператер веб-странице има легитиман интерес за технички беспрекоран приказ и оптимизацију своје веб-странице — у ту сврху морају се бележити датотеке серверског дневника.',
         },
-        { h3: 'Audience measurement' },
+        { h3: 'Мерење посећености' },
         {
-          p: 'To improve this website, our web agency DLM Digital (Zurich, Switzerland) measures anonymously, on our behalf, which pages are viewed and which contact channels (telephone, WhatsApp, email, form) are used. No cookies are set and no IP addresses are stored for this purpose; recognition beyond the same day is not possible. The content of forms (e.g. name, email, message) is not transmitted to DLM Digital. The data is processed in Switzerland or the EU.',
+          p: 'Ради унапређења ове веб-странице наша веб-агенција DLM Digital (Цирих, Швајцарска) по нашем налогу анонимно мери које се странице прегледају и који се канали контакта (телефон, WhatsApp, имејл, формулар) користе. У ту сврху не постављају се колачићи нити се чувају ИП адресе; препознавање након истог дана није могуће. Садржај формулара (нпр. име, имејл, порука) не прослеђује се агенцији DLM Digital. Подаци се обрађују у Швајцарској или у ЕУ.',
         },
-        { h3: 'Our own visitor statistics' },
+        { h3: 'Сопствена статистика посета' },
         {
-          p: 'In addition, we keep our own cookie-free visitor statistics on our server. We record the page viewed, the referring website (its domain only), any campaign parameters (utm_source, utm_medium, utm_campaign), the device type (smartphone, tablet, computer), the browser language, as well as clicks on contact channels (telephone, WhatsApp, email, directions) and form submissions. To be able to count visits, we create a truncated check value (hash) from the IP address, browser identifier and the date, combined with a secret key. The IP address itself is not stored; the check value changes daily and does not allow any conclusions to be drawn about you personally. Neither cookies nor any other storage in your browser are used. The data is used exclusively for our own analysis, is not passed on to third parties and is stored in Switzerland or the EU. The legal basis is our legitimate interest in designing the website to meet visitors’ needs.',
+          p: 'Поред тога, на свом серверу водимо сопствену статистику посета без колачића. Бележимо прегледану страницу, веб-страницу са које сте дошли (само њен домен), евентуалне параметре кампање (utm_source, utm_medium, utm_campaign), врсту уређаја (паметни телефон, таблет, рачунар), језик прегледача, као и кликове на канале контакта (телефон, WhatsApp, имејл, упутства за долазак) и слање формулара. Да бисмо могли да бројимо посете, од ИП адресе, идентификатора прегледача и датума, у комбинацији са тајним кључем, формирамо скраћену контролну вредност (хеш). Сама ИП адреса се не чува; контролна вредност се мења свакодневно и не омогућава закључке о Вама лично. Не користе се ни колачићи ни било какво друго складиштење у Вашем прегледачу. Подаци служе искључиво за нашу сопствену анализу, не прослеђују се трећим лицима и чувају се у Швајцарској или у ЕУ. Правни основ је наш легитиман интерес да веб-страницу обликујемо према потребама посетилаца.',
         },
-        { h3: 'Film on the home page (Vimeo)' },
+        { h3: 'Филм на почетној страници (Vimeo)' },
         {
-          p: 'On the home page we show our film via the video service Vimeo (Vimeo.com Inc., New York, USA). We embed it with the “Do Not Track” setting: Vimeo does not set any cookies and does not create usage profiles. When the film is loaded, Vimeo necessarily receives your IP address and information about your browser for technical reasons.',
+          p: 'На почетној страници приказујемо наш филм путем видео-сервиса Vimeo (Vimeo.com Inc., Њујорк, САД). Уграђујемо га са подешавањем „Do Not Track“: Vimeo не поставља колачиће и не прави профиле коришћења. Приликом учитавања филма Vimeo из техничких разлога нужно добија Вашу ИП адресу и информације о Вашем прегледачу.',
         },
-        { h3: 'Made-to-measure suit configurator' },
+        { h3: 'Конфигуратор одела по мери' },
         {
-          p: 'Your selection in the made-to-measure suit configurator (“Styles & Options”) is stored exclusively in your browser (localStorage) and is not transmitted to us. We only receive it if you send it with an appointment request or send us the PDF. You can delete your selection at any time via “Reset all”.',
+          p: 'Ваш избор у конфигуратору одела по мери („Стилови и опције“) чува се искључиво у Вашем прегледачу (localStorage) и не преноси се нама. Добијамо га само ако га пошаљете уз захтев за термин или нам пошаљете PDF. Свој избор можете у сваком тренутку обрисати путем опције „Ресетуј све“.',
         },
-        { h3: 'Online shop (Shopify)' },
+        { h3: 'Онлајн продавница (Shopify)' },
         {
-          p: 'Our online shop at thesartorialist.ch/shop is operated with Shopify (Shopify International Limited, Dublin, Ireland, and Shopify Inc., Ottawa, Canada). Product data, images and prices are loaded from Shopify; product images are delivered directly from the Shopify server (cdn.shopify.com), which necessarily receives your IP address for technical reasons.',
+          p: 'Наша онлајн продавница на thesartorialist.ch/shop ради на платформи Shopify (Shopify International Limited, Даблин, Ирска, и Shopify Inc., Отава, Канада). Подаци о производима, фотографије и цене учитавају се са платформе Shopify; фотографије производа испоручују се директно са сервера компаније Shopify (cdn.shopify.com), који из техничких разлога нужно добија Вашу ИП адресу.',
         },
         {
-          p: 'As soon as you add an item to your basket, we set a strictly necessary cookie containing the identifier of your basket (valid for 14 days) as well as Shopify’s session cookies, so that your basket and order match. You complete the order itself — address, shipping and payment — in Shopify’s checkout at shop.thesartorialist.ch, where Shopify’s privacy notices also apply. The data is processed for the performance of the purchase contract. Shopify may also process data in countries outside Switzerland and the EU; standard contractual clauses are in place for this.',
+          p: 'Чим додате артикал у корпу, постављамо строго неопходан колачић са идентификатором Ваше корпе (важи 14 дана), као и колачиће сесије компаније Shopify, како би се Ваша корпа и поруџбина подударале. Саму поруџбину — адресу, слање и плаћање — завршавате на Shopify страници за плаћање на shop.thesartorialist.ch, где важе и напомене о заштити података компаније Shopify. Подаци се обрађују ради извршења купопродајног уговора. Shopify може обрађивати податке и у земљама ван Швајцарске и ЕУ; за то су уговорене стандардне уговорне клаузуле.',
         },
-        { h3: 'Appointment and call-back requests via the website' },
+        { h3: 'Захтеви за термин и повратни позив путем веб-странице' },
         {
-          p: 'If you request an appointment or a call-back via the website, we send your details (name, telephone, email, preferred date and — if selected — your style choices) by email to our atelier and send you a confirmation. To send these emails we use the service Resend (Resend Inc., San Francisco, USA), with data processing in the EU. We also store your details in our customer database so that we can prepare your appointment and consultation and follow up on your request. We use the data exclusively to handle your request and to look after you as a customer. We only contact you via WhatsApp or SMS if you have expressly consented to this; you may withdraw this consent at any time.',
+          p: 'Ако путем веб-странице затражите термин или повратни позив, Ваше податке (име, телефон, имејл, жељени датум и — ако сте изабрали — Ваш избор стила) шаљемо имејлом нашем атељеу, а Вама шаљемо потврду. За слање ових имејлова користимо сервис Resend (Resend Inc., Сан Франциско, САД), са обрадом података у ЕУ. Ваше податке чувамо и у нашој бази података о клијентима, како бисмо припремили Ваш термин и консултације и пратили Ваш захтев. Податке користимо искључиво за обраду Вашег захтева и бригу о Вама као клијенту. Путем WhatsApp-а или SMS-а контактирамо Вас само ако сте на то изричито пристали; ову сагласност можете у сваком тренутку опозвати.',
         },
-        { h3: 'Enquiries by email or telephone' },
+        { h3: 'Упити имејлом или телефоном' },
         {
-          p: 'If you contact us by email or telephone (e.g. for an appointment request), your enquiry, including the contact details you provide, is stored by us for the purpose of handling the request and in case of follow-up questions. We do not pass on this data without your consent. The data remains with us until you ask us to delete it or the purpose for storing it no longer applies. Mandatory statutory provisions — in particular retention periods — remain unaffected.',
+          p: 'Ако нас контактирате имејлом или телефоном (нпр. ради захтева за термин), Ваш упит, укључујући контакт податке које наведете, чувамо ради обраде захтева и за случај додатних питања. Ове податке не прослеђујемо без Ваше сагласности. Подаци остају код нас док не затражите њихово брисање или док не престане сврха њиховог чувања. Обавезне законске одредбе — нарочито рокови чувања — остају нетакнуте.',
         },
       ],
     },

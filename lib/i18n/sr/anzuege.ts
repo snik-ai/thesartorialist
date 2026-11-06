@@ -1,44 +1,43 @@
-// TODO übersetzen (Serbisch (Kyrillisch)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suits Zurich
+// Одела Цирих
 export const anzuege: Woerterbuch['anzuege'] = {
   meta: {
-    titel: 'Suits Zurich — Exclusive Suits & Expert Advice',
+    titel: 'Одела Цирих — ексклузивна одела и стручан савет',
     beschreibung:
-      'Suits in Zurich: exclusive suits, jackets, shirts and trousers from The Sartorialist — handcrafted Italian tailoring meets contemporary style. Visit us at Kuttelgasse 7.',
-    ogTitel: 'Suits Zurich — The Sartorialist',
-    ogBeschreibung: 'What may well be the finest suits in Zurich — with advice of the highest standard.',
+      'Одела у Цириху: ексклузивна одела, сакои, кошуље и панталоне из The Sartorialist — ручно италијанско кројење сусреће савремени стил. Посетите нас у улици Kuttelgasse 7.',
+    ogTitel: 'Одела Цирих — The Sartorialist',
+    ogBeschreibung: 'Можда најфинија одела у Цириху — уз савет највишег нивоа.',
   },
-  breadcrumb: 'Suits Zurich',
+  breadcrumb: 'Одела Цирих',
   hero: {
-    eyebrow: 'Gentlemen’s outfitter in the heart of Zurich',
-    h1: 'Suits Zurich',
-    lead: 'At The Sartorialist you will find what may well be the finest suits in Zurich. Our advice is expert, personal and of the highest standard — handcrafted Italian tailoring meets contemporary style.',
-    gestalten: 'Design your suit',
-    termin: 'Book an appointment',
+    eyebrow: 'Господски кројачки салон у срцу Цириха',
+    h1: 'Одела Цирих',
+    lead: 'У The Sartorialist ћете пронаћи можда најфинија одела у Цириху. Наш савет је стручан, личан и највишег нивоа — ручно италијанско кројење сусреће савремени стил.',
+    gestalten: 'Креирајте своје одело',
+    termin: 'Закажите термин',
   },
   abschnitte: [
     {
-      titel: 'Genuine brand expertise',
-      text: 'We offer exclusive suits, jackets, denim shirts and trousers — complemented by elegant accessories and cashmere of the finest quality. Our carefully selected exclusive brands guarantee the best materials and cuts. Fifteen years of experience in fashion, including at the menswear powerhouse Tom Ford, are your guarantee of the finest suits in Zurich.',
+      titel: 'Право познавање брендова',
+      text: 'Нудимо ексклузивна одела, сакое, тексас кошуље и панталоне — употпуњене елегантним додацима и кашмиром врхунског квалитета. Наши пажљиво одабрани ексклузивни брендови гарантују најбоље материјале и кројеве. Петнаест година искуства у моди, између осталог у мушкој модној кући Tom Ford, гаранција су за најфинија одела у Цириху.',
     },
     {
-      titel: 'How a quality suit comes to life',
-      text: 'First, you tell us what you have in mind and we take your exact measurements. Our tailoring team designs and sews the suit to fit you precisely — on average this takes just 15 to 20 days. After a final fitting we make any adjustments needed until the suit fits perfectly and meets every wish.',
+      titel: 'Како настаје квалитетно одело',
+      text: 'Најпре нам кажете шта замишљате, а ми узимамо Ваше тачне мере. Наш кројачки тим дизајнира и шије одело тако да Вам прецизно пристаје — у просеку то траје само 15 до 20 дана. Након завршне пробе обављамо све потребне корекције док одело не пристаје савршено и не испуњава сваку жељу.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Whether a modern double-breasted or a single-breasted suit, for business, a wedding or the opera: a suit is like a second skin. Beyond the style of the suit, fit, cloth and colour play a decisive role. We watch every detail closely to ensure you receive the perfect suit for your personal style.',
+      titel: 'Које одело је право за мене?',
+      text: 'Било да је реч о модерном дворедном или једноредном оделу, за посао, венчање или оперу: одело је попут друге коже. Осим стила одела, одлучујућу улогу имају пристанак, тканина и боја. Пажљиво пратимо сваки детаљ како бисте добили савршено одело за свој лични стил.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'An exclusive suit has its price — and we make sure the investment pays off. We advise against cheap off-the-peg suits: they never achieve the comfort and quality of a made-to-measure suit. Our prices are always fair and transparent.',
+      titel: 'Цене и услови',
+      text: 'Ексклузивно одело има своју цену — а ми се старамо да се инвестиција исплати. Не препоручујемо јефтина конфекцијска одела: она никада не достижу удобност и квалитет одела по мери. Наше цене су увек поштене и транспарентне.',
     },
   ],
   schema: {
-    name: 'Suits Zurich',
+    name: 'Одела Цирих',
     beschreibung:
-      'Exclusive suits, jackets, shirts and trousers in Zurich — advice of the highest standard at The Sartorialist.',
+      'Ексклузивна одела, сакои, кошуље и панталоне у Цириху — савет највишег нивоа у The Sartorialist.',
   },
 };
