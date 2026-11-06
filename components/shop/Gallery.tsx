@@ -35,7 +35,7 @@ export default function Gallery({ images, title }: { images: ShopImage[]; title:
           <div className="spdp-slide" key={im.url}>
             <img
               src={src(im.url, 1000)}
-              srcSet={`${src(im.url, 600)} 600w, ${src(im.url, 1000)} 1000w, ${src(im.url, 1400)} 1400w`}
+              srcSet={`${src(im.url, 480)} 480w, ${src(im.url, 720)} 720w, ${src(im.url, 1000)} 1000w, ${src(im.url, 1400)} 1400w`}
               sizes="(max-width: 900px) 100vw, 55vw"
               alt={n === 0 ? im.alt : `${title} — Ansicht ${n + 1}`}
               width={im.width}

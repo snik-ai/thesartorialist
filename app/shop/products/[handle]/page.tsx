@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { preconnect } from 'react-dom';
 import { getAllProducts, getProduct, ogImg, related, toCard } from '@/lib/shop/catalog';
 import { SHOP_PAGES } from '@/lib/shop/pages';
 import { productGroupSchema, shareMeta } from '@/lib/shop/seo';
@@ -51,6 +52,7 @@ export default async function ProductPage({ params }: { params: Promise<{ handle
   const catPage = SHOP_PAGES.find((pg) => pg.group === 'Kategorie' && pg.match(p));
   const more = related(all, p, 4);
 
+  preconnect('https://cdn.shopify.com');
   return (
     <>
       <Breadcrumbs
