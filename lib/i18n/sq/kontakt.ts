@@ -1,36 +1,35 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Contact & directions
+// Kontakt & si të na gjeni
 export const kontakt: Woerterbuch['kontakt'] = {
   meta: {
-    titel: 'Contact & Directions — Kuttelgasse 7, Zurich',
+    titel: 'Kontakt & si të na gjeni — Kuttelgasse 7, Cyrih',
     beschreibung:
-      'The Sartorialist Zurich: Kuttelgasse 7, 8001 Zürich. Telephone +41 43 243 02 77, store@thesartorialist.ch. Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
-    ogTitel: 'Contact — The Sartorialist Zurich',
-    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — our showroom in the heart of Zurich.',
+      'The Sartorialist Cyrih: Kuttelgasse 7, 8001 Zürich. Telefon +41 43 243 02 77, store@thesartorialist.ch. E hënë–e premte 10:00–19:00, e shtunë 10:00–17:00.',
+    ogTitel: 'Kontakt — The Sartorialist Cyrih',
+    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — showroom-i ynë në zemër të Cyrihut.',
   },
-  breadcrumb: 'Contact',
+  breadcrumb: 'Kontakt',
   hero: {
-    eyebrow: 'Contact & directions',
-    h1: 'Your menswear boutique, style adviser & tailor',
-    lead: 'Visit our boutique and, over a fine coffee, let us show you what we mean — with no obligation. Ideally, book an appointment so that we can devote our full attention to you.',
+    eyebrow: 'Kontakt & si të na gjeni',
+    h1: 'Butiku Juaj i veshjeve për meshkuj, këshilltari i stilit & rrobaqepësi',
+    lead: 'Vizitoni butikun tonë dhe, me një kafe të mirë, lini t’Ju tregojmë se çfarë kemi parasysh — pa asnjë detyrim. Më mirë rezervoni një takim, që t’Ju kushtojmë gjithë vëmendjen tonë.',
   },
-  bildAlt: 'The Sartorialist boutique at Kuttelgasse 7 in Zurich',
+  bildAlt: 'Butiku The Sartorialist në Kuttelgasse 7 në Cyrih',
   info: {
-    adresse: 'Address',
-    route: 'Directions on Google Maps',
-    telefon: 'Telephone',
-    email: 'Email',
+    adresse: 'Adresa',
+    route: 'Udhëzime në Google Maps',
+    telefon: 'Telefoni',
+    email: 'E-mail',
     instagram: 'Instagram',
-    oeffnungszeiten: 'Opening hours',
+    oeffnungszeiten: 'Orari i punës',
   },
-  wunschtermin: 'Your preferred appointment',
-  ablauf: 'More about the consultation',
+  wunschtermin: 'Takimi Juaj i preferuar',
+  ablauf: 'Më shumë rreth konsultës',
   alternativ: {
-    frage: 'No suitable time available?',
-    rueckruf: 'Request a call back',
+    frage: 'Nuk ka orar të përshtatshëm?',
+    rueckruf: 'Kërkoni t’Ju telefonojmë',
     whatsapp: 'WhatsApp',
-    waText: 'Hello, I would like to book a consultation.',
+    waText: 'Përshëndetje, dëshiroj të rezervoj një konsultë.',
   },
 };

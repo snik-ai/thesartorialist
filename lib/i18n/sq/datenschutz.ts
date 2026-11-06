@@ -1,115 +1,114 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Privacy policy
+// Politika e privatësisë
 export const datenschutz: Woerterbuch['datenschutz'] = {
   meta: {
-    titel: 'Privacy Policy',
+    titel: 'Politika e privatësisë',
     beschreibung:
-      'Privacy policy of The Sartorialist Zurich — information on the collection and processing of personal data.',
+      'Politika e privatësisë e The Sartorialist Cyrih — informacion mbi mbledhjen dhe përpunimin e të dhënave personale.',
   },
-  h1: 'Privacy Policy',
+  h1: 'Politika e privatësisë',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/datenschutzerklaerung/).',
-  adresse: { land: 'Switzerland', telefon: 'Telephone: ', email: 'Email: ' },
+    'Ky përkthim në shqip ofrohet vetëm për lehtësi. Juridikisht i detyrueshëm është versioni gjermanisht: [lexoni versionin gjermanisht](/datenschutzerklaerung/).',
+  adresse: { land: 'Zvicër', telefon: 'Telefon: ', email: 'E-mail: ' },
   abschnitte: [
     {
-      titel: '1. Data protection at a glance',
+      titel: '1. Mbrojtja e të dhënave në një vështrim',
       bloecke: [
-        { h3: 'General information' },
+        { h3: 'Informacion i përgjithshëm' },
         {
-          p: 'The following information provides a simple overview of what happens to your personal data when you visit this website. Personal data is any data by which you can be personally identified.',
+          p: 'Informacioni i mëposhtëm jep një pasqyrë të thjeshtë se çfarë ndodh me të dhënat Tuaja personale kur vizitoni këtë faqe interneti. Të dhëna personale janë të gjitha të dhënat me të cilat mund të identifikoheni personalisht.',
         },
-        { h3: 'Data collection on this website' },
+        { h3: 'Mbledhja e të dhënave në këtë faqe' },
         {
-          p: 'Data on this website is processed by the website operator, whose contact details can be found in the [imprint](impressum) of this website. On the pages outside the shop, no cookies are set and no third-party content (e.g. videos or external fonts) is loaded. The exceptions are the anonymous audience measurement carried out by our web agency (see section 4, “Audience measurement”), the film on the home page (Vimeo, see section 4, “Film on the home page”) and the online shop at /shop, which is operated with Shopify (see section 4, “Online shop”).',
+          p: 'Të dhënat në këtë faqe përpunohen nga operatori i faqes, të dhënat e kontaktit të të cilit i gjeni në [impresumin](impressum) e kësaj faqeje. Në faqet jashtë dyqanit nuk vendosen cookies dhe nuk ngarkohet përmbajtje e palëve të treta (p.sh. video ose fonte të jashtme). Përjashtim bëjnë matja anonime e audiencës nga agjencia jonë e uebit (shihni pikën 4, «Matja e audiencës»), filmi në faqen kryesore (Vimeo, shihni pikën 4, «Filmi në faqen kryesore») dhe dyqani online në /shop, i cili funksionon me Shopify (shihni pikën 4, «Dyqani online»).',
         },
         {
-          p: 'Some data is collected when you provide it to us — for example, when you send us an appointment request by email or telephone. Other data is collected automatically by the hosting provider’s IT systems when you visit the website (above all technical data such as your web browser, operating system or the time the page was accessed).',
+          p: 'Disa të dhëna mblidhen kur na i jepni Ju — për shembull, kur na dërgoni një kërkesë për takim me e-mail ose me telefon. Të dhëna të tjera mblidhen automatikisht nga sistemet IT të ofruesit të hostingut kur vizitoni faqen (kryesisht të dhëna teknike si shfletuesi, sistemi operativ ose ora e hapjes së faqes).',
         },
       ],
     },
     {
-      titel: '2. Hosting',
+      titel: '2. Hostingu',
       bloecke: [
         {
-          p: 'This website is hosted by an external service provider (host). The data collected when you visit the website is stored on the host’s servers. This consists above all of IP addresses, metadata and communication data, and website access data. We use the host in the interest of providing our website securely, quickly and efficiently. Our host processes your data only to the extent necessary to fulfil its contractual obligations.',
+          p: 'Kjo faqe interneti mbahet nga një ofrues i jashtëm shërbimi (host). Të dhënat që mblidhen gjatë vizitës në faqe ruhen në serverët e hostit. Këtu bëjnë pjesë kryesisht adresat IP, metadatat dhe të dhënat e komunikimit, si dhe të dhënat e qasjes në faqe. Ne e përdorim hostin në interes të ofrimit të sigurt, të shpejtë dhe efikas të faqes sonë. Hosti ynë i përpunon të dhënat Tuaja vetëm në masën e nevojshme për përmbushjen e detyrimeve të tij kontraktuale.',
         },
       ],
     },
     {
-      titel: '3. General information and mandatory disclosures',
+      titel: '3. Informacion i përgjithshëm dhe njoftime të detyrueshme',
       bloecke: [
-        { h3: 'Data protection' },
+        { h3: 'Mbrojtja e të dhënave' },
         {
-          p: 'The operators of these pages take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with the statutory data protection regulations (in particular the Swiss Federal Act on Data Protection (FADP) and — where applicable — the EU General Data Protection Regulation (GDPR)) and this privacy policy.',
+          p: 'Operatorët e këtyre faqeve e marrin shumë seriozisht mbrojtjen e të dhënave Tuaja personale. Ne i trajtojmë të dhënat Tuaja personale në mënyrë konfidenciale dhe në përputhje me rregulloret ligjore për mbrojtjen e të dhënave (veçanërisht Ligjin federal zviceran për mbrojtjen e të dhënave (nDSG/revDSG) dhe — aty ku zbatohet — Rregulloren e Përgjithshme të BE-së për Mbrojtjen e të Dhënave (GDPR/DSGVO)), si dhe me këtë politikë privatësie.',
         },
         {
-          p: 'Please note that data transmitted over the internet (e.g. when communicating by email) may be subject to security vulnerabilities. Complete protection of data against access by third parties is not possible.',
+          p: 'Kini parasysh që transmetimi i të dhënave në internet (p.sh. në komunikimin me e-mail) mund të ketë boshllëqe sigurie. Një mbrojtje e plotë e të dhënave nga qasja e palëve të treta nuk është e mundur.',
         },
-        { h3: 'Controller' },
-        { p: 'The controller responsible for data processing on this website is:' },
+        { h3: 'Përgjegjësi për përpunimin' },
+        { p: 'Përgjegjës për përpunimin e të dhënave në këtë faqe është:' },
         { adresse: true },
-        { h3: 'Your rights' },
+        { h3: 'Të drejtat Tuaja' },
         {
-          p: 'You have the right at any time to obtain information, free of charge, about the origin, recipients and purpose of your stored personal data. You also have the right to have this data corrected or erased, to restrict its processing and to data portability. You may withdraw any consent you have given to data processing at any time with effect for the future. You also have the right to lodge a complaint with the competent supervisory authority (in Switzerland: the Federal Data Protection and Information Commissioner, FDPIC).',
+          p: 'Ju keni të drejtë në çdo kohë të merrni falas informacion mbi origjinën, marrësit dhe qëllimin e të dhënave Tuaja personale të ruajtura. Keni gjithashtu të drejtë të kërkoni korrigjimin ose fshirjen e këtyre të dhënave, kufizimin e përpunimit të tyre dhe transferueshmërinë e të dhënave. Një pëlqim i dhënë për përpunimin e të dhënave mund ta tërhiqni në çdo kohë me efekt për të ardhmen. Përveç kësaj, keni të drejtë të paraqisni ankesë pranë autoritetit mbikëqyrës kompetent (në Zvicër: Komisioneri federal për mbrojtjen e të dhënave dhe transparencën, FDPIC/EDÖB).',
         },
-        { h3: 'SSL/TLS encryption' },
+        { h3: 'Enkriptimi SSL/TLS' },
         {
-          p: 'For security reasons and to protect the transmission of confidential content, this site uses SSL/TLS encryption. You can recognise an encrypted connection by the address bar of your browser changing from “http://” to “https://” and by the padlock symbol in your browser bar.',
+          p: 'Për arsye sigurie dhe për të mbrojtur transmetimin e përmbajtjeve konfidenciale, kjo faqe përdor enkriptimin SSL/TLS. Një lidhje të enkriptuar e njihni nga ndryshimi i shiritit të adresës së shfletuesit nga «http://» në «https://» dhe nga simboli i drynit në shiritin e shfletuesit.',
         },
       ],
     },
     {
-      titel: '4. Data collection on this website',
+      titel: '4. Mbledhja e të dhënave në këtë faqe',
       bloecke: [
-        { h3: 'Server log files' },
+        { h3: 'Skedarët log të serverit' },
         {
-          p: 'The provider of these pages automatically collects and stores information in so-called server log files, which your browser transmits automatically:',
+          p: 'Ofruesi i këtyre faqeve mbledh dhe ruan automatikisht informacione në të ashtuquajturit skedarë log të serverit, të cilat shfletuesi Juaj i transmeton automatikisht:',
         },
         {
           liste: [
-            'Browser type and browser version',
-            'Operating system used',
-            'Referrer URL',
-            'Host name of the accessing computer',
-            'Time of the server request',
-            'IP address',
+            'Lloji dhe versioni i shfletuesit',
+            'Sistemi operativ i përdorur',
+            'URL-ja referuese',
+            'Emri i hostit të kompjuterit që bën qasjen',
+            'Ora e kërkesës në server',
+            'Adresa IP',
           ],
         },
         {
-          p: 'This data is not combined with other data sources. The website operator has a legitimate interest in the technically error-free presentation and optimisation of its website — for this purpose, the server log files must be recorded.',
+          p: 'Këto të dhëna nuk bashkohen me burime të tjera të dhënash. Operatori i faqes ka një interes legjitim për paraqitjen teknikisht pa gabime dhe optimizimin e faqes së tij — për këtë qëllim, skedarët log të serverit duhet të regjistrohen.',
         },
-        { h3: 'Audience measurement' },
+        { h3: 'Matja e audiencës' },
         {
-          p: 'To improve this website, our web agency DLM Digital (Zurich, Switzerland) measures anonymously, on our behalf, which pages are viewed and which contact channels (telephone, WhatsApp, email, form) are used. No cookies are set and no IP addresses are stored for this purpose; recognition beyond the same day is not possible. The content of forms (e.g. name, email, message) is not transmitted to DLM Digital. The data is processed in Switzerland or the EU.',
+          p: 'Për të përmirësuar këtë faqe, agjencia jonë e uebit DLM Digital (Cyrih, Zvicër) mat në mënyrë anonime, në emrin tonë, cilat faqe shikohen dhe cilat kanale kontakti (telefon, WhatsApp, e-mail, formular) përdoren. Për këtë nuk vendosen cookies dhe nuk ruhen adresa IP; njohja përtej së njëjtës ditë nuk është e mundur. Përmbajtja e formularëve (p.sh. emri, e-mail, mesazhi) nuk i transmetohet DLM Digital. Të dhënat përpunohen në Zvicër ose në BE.',
         },
-        { h3: 'Our own visitor statistics' },
+        { h3: 'Statistikat tona të vizitorëve' },
         {
-          p: 'In addition, we keep our own cookie-free visitor statistics on our server. We record the page viewed, the referring website (its domain only), any campaign parameters (utm_source, utm_medium, utm_campaign), the device type (smartphone, tablet, computer), the browser language, as well as clicks on contact channels (telephone, WhatsApp, email, directions) and form submissions. To be able to count visits, we create a truncated check value (hash) from the IP address, browser identifier and the date, combined with a secret key. The IP address itself is not stored; the check value changes daily and does not allow any conclusions to be drawn about you personally. Neither cookies nor any other storage in your browser are used. The data is used exclusively for our own analysis, is not passed on to third parties and is stored in Switzerland or the EU. The legal basis is our legitimate interest in designing the website to meet visitors’ needs.',
+          p: 'Përveç kësaj, mbajmë në serverin tonë statistika vizitorësh pa cookies. Regjistrojmë faqen e shikuar, faqen referuese (vetëm domenin), parametrat eventualë të fushatës (utm_source, utm_medium, utm_campaign), llojin e pajisjes (smartphone, tablet, kompjuter), gjuhën e shfletuesit, si dhe klikimet në kanalet e kontaktit (telefon, WhatsApp, e-mail, itinerar) dhe dërgimet e formularëve. Për të numëruar vizitat, krijojmë nga adresa IP, identifikuesi i shfletuesit dhe data një vlerë kontrolli të shkurtuar (hash), të kombinuar me një çelës sekret. Vetë adresa IP nuk ruhet; vlera e kontrollit ndryshon çdo ditë dhe nuk lejon nxjerrjen e përfundimeve për Ju personalisht. Nuk përdoren as cookies, as ndonjë ruajtje tjetër në shfletuesin Tuaj. Të dhënat përdoren vetëm për analizën tonë, nuk u kalohen palëve të treta dhe ruhen në Zvicër ose në BE. Baza ligjore është interesi ynë legjitim për ta përshtatur faqen sipas nevojave të vizitorëve.',
         },
-        { h3: 'Film on the home page (Vimeo)' },
+        { h3: 'Filmi në faqen kryesore (Vimeo)' },
         {
-          p: 'On the home page we show our film via the video service Vimeo (Vimeo.com Inc., New York, USA). We embed it with the “Do Not Track” setting: Vimeo does not set any cookies and does not create usage profiles. When the film is loaded, Vimeo necessarily receives your IP address and information about your browser for technical reasons.',
+          p: 'Në faqen kryesore shfaqim filmin tonë përmes shërbimit video Vimeo (Vimeo.com Inc., New York, SHBA). E përfshijmë me cilësimin «Do Not Track»: Vimeo nuk vendos cookies dhe nuk krijon profile përdorimi. Kur ngarkohet filmi, Vimeo merr domosdoshmërisht, për arsye teknike, adresën Tuaj IP dhe informacione mbi shfletuesin Tuaj.',
         },
-        { h3: 'Made-to-measure suit configurator' },
+        { h3: 'Konfiguruesi i kostumit me porosi' },
         {
-          p: 'Your selection in the made-to-measure suit configurator (“Styles & Options”) is stored exclusively in your browser (localStorage) and is not transmitted to us. We only receive it if you send it with an appointment request or send us the PDF. You can delete your selection at any time via “Reset all”.',
+          p: 'Zgjedhja Juaj në konfiguruesin e kostumit me porosi («Stile & opsione») ruhet vetëm në shfletuesin Tuaj (localStorage) dhe nuk na transmetohet. E marrim vetëm nëse e dërgoni bashkë me një kërkesë për takim ose na dërgoni PDF-në. Zgjedhjen Tuaj mund ta fshini në çdo kohë përmes «Rivendos të gjitha».',
         },
-        { h3: 'Online shop (Shopify)' },
+        { h3: 'Dyqani online (Shopify)' },
         {
-          p: 'Our online shop at thesartorialist.ch/shop is operated with Shopify (Shopify International Limited, Dublin, Ireland, and Shopify Inc., Ottawa, Canada). Product data, images and prices are loaded from Shopify; product images are delivered directly from the Shopify server (cdn.shopify.com), which necessarily receives your IP address for technical reasons.',
+          p: 'Dyqani ynë online në thesartorialist.ch/shop funksionon me Shopify (Shopify International Limited, Dublin, Irlandë, dhe Shopify Inc., Ottawa, Kanada). Të dhënat e produkteve, imazhet dhe çmimet ngarkohen nga Shopify; imazhet e produkteve shpërndahen drejtpërdrejt nga serveri i Shopify (cdn.shopify.com), i cili merr domosdoshmërisht, për arsye teknike, adresën Tuaj IP.',
         },
         {
-          p: 'As soon as you add an item to your basket, we set a strictly necessary cookie containing the identifier of your basket (valid for 14 days) as well as Shopify’s session cookies, so that your basket and order match. You complete the order itself — address, shipping and payment — in Shopify’s checkout at shop.thesartorialist.ch, where Shopify’s privacy notices also apply. The data is processed for the performance of the purchase contract. Shopify may also process data in countries outside Switzerland and the EU; standard contractual clauses are in place for this.',
+          p: 'Sapo të shtoni një artikull në shportë, vendosim një cookie rreptësisht të nevojshme me identifikuesin e shportës Suaj (i vlefshëm 14 ditë), si dhe cookies të sesionit të Shopify, në mënyrë që shporta dhe porosia të përputhen. Vetë porosinë — adresën, dërgimin dhe pagesën — e përfundoni në arkën e Shopify në shop.thesartorialist.ch, ku vlejnë edhe njoftimet e privatësisë së Shopify. Të dhënat përpunohen për zbatimin e kontratës së shitblerjes. Shopify mund të përpunojë të dhëna edhe në vende jashtë Zvicrës dhe BE-së; për këtë ekzistojnë klauzola kontraktuale standarde.',
         },
-        { h3: 'Appointment and call-back requests via the website' },
+        { h3: 'Kërkesat për takim dhe për t’Ju telefonuar përmes faqes' },
         {
-          p: 'If you request an appointment or a call-back via the website, we send your details (name, telephone, email, preferred date and — if selected — your style choices) by email to our atelier and send you a confirmation. To send these emails we use the service Resend (Resend Inc., San Francisco, USA), with data processing in the EU. We also store your details in our customer database so that we can prepare your appointment and consultation and follow up on your request. We use the data exclusively to handle your request and to look after you as a customer. We only contact you via WhatsApp or SMS if you have expressly consented to this; you may withdraw this consent at any time.',
+          p: 'Nëse kërkoni një takim ose që t’Ju telefonojmë përmes faqes, ua dërgojmë të dhënat Tuaja (emri, telefoni, e-mail, data e dëshiruar dhe — nëse e keni zgjedhur — zgjedhja e stilit) me e-mail atelies sonë dhe Ju dërgojmë një konfirmim. Për dërgimin e këtyre e-maileve përdorim shërbimin Resend (Resend Inc., San Francisco, SHBA), me përpunim të të dhënave në BE. Të dhënat Tuaja i ruajmë gjithashtu në bazën tonë të të dhënave të klientëve, për të përgatitur takimin dhe konsultën Tuaj dhe për të ndjekur kërkesën Tuaj. Të dhënat i përdorim vetëm për trajtimin e kërkesës Suaj dhe për kujdesin ndaj Jush si klient. Ju kontaktojmë me WhatsApp ose SMS vetëm nëse keni dhënë pëlqimin e shprehur për këtë; këtë pëlqim mund ta tërhiqni në çdo kohë.',
         },
-        { h3: 'Enquiries by email or telephone' },
+        { h3: 'Kërkesat me e-mail ose telefon' },
         {
-          p: 'If you contact us by email or telephone (e.g. for an appointment request), your enquiry, including the contact details you provide, is stored by us for the purpose of handling the request and in case of follow-up questions. We do not pass on this data without your consent. The data remains with us until you ask us to delete it or the purpose for storing it no longer applies. Mandatory statutory provisions — in particular retention periods — remain unaffected.',
+          p: 'Nëse na kontaktoni me e-mail ose telefon (p.sh. për një kërkesë takimi), kërkesa Juaj, përfshirë të dhënat e kontaktit që jepni, ruhet nga ne për trajtimin e kërkesës dhe për pyetje të mëtejshme. Këto të dhëna nuk i kalojmë pa pëlqimin Tuaj. Të dhënat mbeten te ne derisa të kërkoni fshirjen e tyre ose derisa qëllimi i ruajtjes të mos ekzistojë më. Dispozitat ligjore të detyrueshme — veçanërisht afatet e ruajtjes — mbeten të paprekura.',
         },
       ],
     },

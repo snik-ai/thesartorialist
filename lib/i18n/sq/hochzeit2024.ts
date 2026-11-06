@@ -1,56 +1,55 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure wedding suit (page "wedding-suit-2024")
+// Kostum dasme me porosi (faqja "kostum-dasme-2024")
 export const hochzeit2024: Woerterbuch['hochzeit2024'] = {
   meta: {
-    titel: 'Made-to-Measure Wedding Suit — Zurich',
+    titel: 'Kostum dasme me porosi — Cyrih',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: classic design meets modern style — tailored for every celebration, venue and style. Complimentary measuring at The Sartorialist.',
-    ogTitel: 'Made-to-Measure Wedding Suit — The Sartorialist Zurich',
-    ogBeschreibung: 'Made-to-measure wedding suits in the heart of Zurich.',
+      'Kostume dasme me porosi në Cyrih: dizajni klasik takon stilin modern — të qepura për çdo festë, vend dhe stil. Marrje masash falas te The Sartorialist.',
+    ogTitel: 'Kostum dasme me porosi — The Sartorialist Cyrih',
+    ogBeschreibung: 'Kostume dasme me porosi në zemër të Cyrihut.',
   },
-  breadcrumb: 'Wedding suit',
+  breadcrumb: 'Kostum dasme',
   hero: {
-    eyebrow: 'Weddings · Made to measure',
-    h1: 'Made-to-Measure Wedding Suits',
-    lead: 'At The Sartorialist you will find what may well be the finest wedding suits in Zurich — with expert, personal advice of the highest standard.',
-    knopf: 'Book a complimentary measuring',
+    eyebrow: 'Dasma · Me porosi',
+    h1: 'Kostume dasme me porosi',
+    lead: 'Te The Sartorialist do të gjeni ndoshta kostumet më të hollë të dasmës në Cyrih — me këshillim profesional dhe personal të nivelit më të lartë.',
+    knopf: 'Rezervoni marrjen falas të masave',
   },
-  bildAlt: 'Made-to-measure wedding suit — a groom at The Sartorialist Zurich',
+  bildAlt: 'Kostum dasme me porosi — një dhëndër te The Sartorialist Cyrih',
   abschnitte: [
     {
-      titel: 'Wedding suits by The Sartorialist in Zurich',
-      text: 'A wedding day is a unique occasion, and the perfect suit underlines the significance of the moment. Our collection unites classic design with modern style. A made-to-measure suit does not merely fit perfectly — it conveys a special sense of luxury and individuality, tailored to your build and your style so that it remains comfortable all day long.',
+      titel: 'Kostume dasme nga The Sartorialist në Cyrih',
+      text: 'Dita e dasmës është një rast unik, dhe kostumi i përsosur e nënvizon rëndësinë e këtij momenti. Koleksioni ynë bashkon dizajnin klasik me stilin modern. Një kostum me porosi nuk bie thjesht në mënyrë të përsosur — ai përcjell një ndjesi të veçantë luksi dhe individualiteti, i përshtatur me trupin dhe stilin Tuaj, që të mbetet i rehatshëm gjatë gjithë ditës.',
     },
     {
-      titel: 'Made for every celebration',
-      text: 'Whether an intimate gathering or a grand wedding, an elegant ballroom, a rustic barn or a ceremony in the open air — our suits ensure you always look your best. Our wedding suits are made from the finest cloths such as noble wool, silk or linen: light and breathable for summer weddings, warmer and more structured for the cooler seasons.',
+      titel: 'I krijuar për çdo festë',
+      text: 'Qoftë një mbledhje intime apo një dasmë e madhe, një sallë elegante, një hambar rustik ose një ceremoni në natyrë — kostumet tona kujdesen që Ju të dukeni gjithmonë në formën më të mirë. Kostumet tona të dasmës punohen nga stofat më të hollë si leshi fisnik, mëndafshi ose liri: të lehtë dhe që marrin frymë për dasmat e verës, më të ngrohtë dhe më të strukturuar për stinët e freskëta.',
     },
     {
-      titel: 'Individual design',
-      text: 'Every wedding is unique — and so should your suit be. From the choice of cloth and the cut to personal details such as embroidery or special buttons, the result is an unmistakable garment that reflects exactly what you have in mind.',
+      titel: 'Dizajn individual',
+      text: 'Çdo dasmë është unike — dhe po ashtu duhet të jetë edhe kostumi Juaj. Nga zgjedhja e stofit dhe prerja deri te detajet personale si qëndisja ose kopsat e veçanta, rezultati është një veshje e pagabueshme që pasqyron saktësisht atë që keni në mendje.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Choosing the perfect suit depends on your style, your build and the occasion. Whether classically elegant or modern and contemporary — our team helps you select the cut, cloth and details that best express your personality.',
+      titel: 'Cili kostum është i duhuri për mua?',
+      text: 'Zgjedhja e kostumit të përsosur varet nga stili, trupi dhe rasti. Qoftë klasikisht elegant apo modern dhe bashkëkohor — ekipi ynë Ju ndihmon të zgjidhni prerjen, stofin dhe detajet që e shprehin më mirë personalitetin Tuaj.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'Our prices depend on the cloth you choose, the details and the individual design — every suit is a one-off. The service includes comprehensive advice, made-to-measure tailoring and all necessary alterations. For a personal quotation, visit us at our atelier in Zurich.',
+      titel: 'Çmimet & kushtet',
+      text: 'Çmimet tona varen nga stofi që zgjidhni, detajet dhe dizajni individual — çdo kostum është një krijim unik. Shërbimi përfshin këshillim të plotë, rrobaqepësi me porosi dhe të gjitha ndryshimet e nevojshme. Për një ofertë personale, na vizitoni në atelienë tonë në Cyrih.',
     },
     {
-      titel: 'We love suits!',
-      text: 'A perfectly fitting suit leaves a lasting impression. It is our passion to advise our clients attentively and thoroughly — in our store at Kuttelgasse 7 in Zurich. The finest selection, warm and personal advice, and fair prices.',
+      titel: 'Ne i duam kostumet!',
+      text: 'Një kostum që bie në mënyrë të përsosur lë një përshtypje të qëndrueshme. Pasioni ynë është t’i këshillojmë klientët tanë me vëmendje dhe në mënyrë të hollësishme — në dyqanin tonë në Kuttelgasse 7 në Cyrih. Përzgjedhja më e hollë, këshillim i ngrohtë dhe personal, dhe çmime të drejta.',
     },
   ],
   cta: {
-    titel: 'Have your measurements taken — complimentary.',
-    text: 'No-obligation measuring and advice at our atelier, Kuttelgasse 7, Zurich.',
+    titel: 'Lini t’Ju marrim masat — falas.',
+    text: 'Marrje masash dhe këshillim pa detyrim në atelienë tonë, Kuttelgasse 7, Cyrih.',
   },
   schema: {
-    name: 'Made-to-measure wedding suits',
+    name: 'Kostume dasme me porosi',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich — classic design, modern style, complimentary measuring.',
+      'Kostume dasme me porosi në Cyrih — dizajn klasik, stil modern, marrje masash falas.',
   },
 };

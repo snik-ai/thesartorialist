@@ -1,35 +1,34 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// About us
+// Rreth nesh
 export const ueberUns: Woerterbuch['ueberUns'] = {
   meta: {
-    titel: 'About Us — 15 Years at Tom Ford & Prada',
+    titel: 'Rreth nesh — 15 vjet te Tom Ford & Prada',
     beschreibung:
-      'The Sartorialist Zurich: exclusive designer and luxury labels and handmade tailoring — founded by Alexander Shubin after more than 15 years in senior positions at Tom Ford and Prada.',
-    ogTitel: 'About Us — The Sartorialist Zurich',
-    ogBeschreibung: 'A vision realised after 15 years at Tom Ford and Prada.',
+      'The Sartorialist Cyrih: marka ekskluzive stilistësh e luksi dhe rrobaqepësi e punuar me dorë — themeluar nga Alexander Shubin pas më shumë se 15 vjetësh në pozita drejtuese te Tom Ford dhe Prada.',
+    ogTitel: 'Rreth nesh — The Sartorialist Cyrih',
+    ogBeschreibung: 'Një vizion i realizuar pas 15 vjetësh te Tom Ford dhe Prada.',
   },
-  breadcrumb: 'About us',
+  breadcrumb: 'Rreth nesh',
   hero: {
-    eyebrow: 'The house',
-    h1: 'About us',
-    lead: 'Here you will find a curated selection of exclusive designer and luxury labels that pair the highest quality and individuality with a certain effortless chic.',
+    eyebrow: 'Shtëpia',
+    h1: 'Rreth nesh',
+    lead: 'Këtu do të gjeni një përzgjedhje të kujdesshme markash ekskluzive stilistësh dhe luksi, që bashkojnë cilësinë më të lartë dhe individualitetin me një elegancë të natyrshme e të shkujdesur.',
   },
   gruender: {
-    bildAlt: '{gruender}, founder of The Sartorialist Zurich',
-    eyebrow: 'The founder',
-    titel: 'From Tom Ford Zurich to personal outfitter',
+    bildAlt: '{gruender}, themeluesi i The Sartorialist Cyrih',
+    eyebrow: 'Themeluesi',
+    titel: 'Nga Tom Ford Cyrih te rrobaqepësi personal',
     absaetze: [
-      'I am Alexander Shubin, founder of “The Sartorialist” in Zurich — a menswear maker with passion, experience and the closest ties to traditional Italian textile houses. As long-standing managing director of Europe’s first Tom Ford store, here in Zurich, I devoted myself heart and soul to the finest menswear — until I felt the wish to open my own exclusive menswear boutique in the heart of the city.',
-      'From the very beginning, that particular “Italian touch” in making and selling suits — as well as shirts, jeans and accessories — has been close to my heart, as has a keen eye for new trends. At “The Sartorialist” you benefit from my many years of wide-ranging experience as managing director of the Tom Ford store in Zurich.',
-      'Every house I have chosen is run by masters of their craft and looks back on decades of tradition. With me, you get to know the real faces behind the brands — which is why my prices are fair and reasonable, so that a fine luxury suit need not remain a distant dream.',
+      'Unë jam Alexander Shubin, themeluesi i “The Sartorialist” në Cyrih — një krijues veshjesh për meshkuj me pasion, përvojë dhe lidhjet më të ngushta me shtëpitë tradicionale italiane të tekstilit. Si drejtor i gjatë i dyqanit të parë Tom Ford në Evropë, pikërisht këtu në Cyrih, iu përkushtova me shpirt e zemër veshjeve më të holla për meshkuj — derisa ndjeva dëshirën të hapja butikun tim ekskluziv të veshjeve për meshkuj në zemër të qytetit.',
+      'Që në fillim, ai “prekje italiane” e veçantë në krijimin dhe shitjen e kostumeve — si dhe të këmishave, xhinseve dhe aksesorëve — më ka qenë shumë e shtrenjtë, po ashtu si edhe një sy i mprehtë për trendet e reja. Te “The Sartorialist” Ju përfitoni nga përvoja ime shumëvjeçare dhe e gjithanshme si drejtor i dyqanit Tom Ford në Cyrih.',
+      'Çdo shtëpi që kam zgjedhur drejtohet nga mjeshtër të zanatit të tyre dhe ka pas vetes dekada traditë. Me mua, Ju njihni fytyrat e vërteta pas markave — prandaj çmimet e mia janë të drejta dhe të arsyeshme, që një kostum luksoz i hollë të mos mbetet një ëndërr e largët.',
     ],
-    termin: 'Book an appointment',
+    termin: 'Rezervoni një takim',
   },
   galerie: {
-    eyebrow: 'Style & craftsmanship',
-    titel: 'Made-to-measure suits by The Sartorialist',
-    bildAlt: 'Made-to-measure suit and craftsmanship at The Sartorialist Zurich — image {n}',
+    eyebrow: 'Stil & mjeshtëri',
+    titel: 'Kostume me porosi nga The Sartorialist',
+    bildAlt: 'Kostum me porosi dhe mjeshtëri te The Sartorialist Cyrih — imazhi {n}',
   },
 };
