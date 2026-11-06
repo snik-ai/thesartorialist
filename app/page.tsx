@@ -7,7 +7,7 @@ import CtaBand from '@/components/CtaBand';
 import Faq from '@/components/Faq';
 import { SITE } from '@/lib/site';
 import HeroVideo from '@/components/HeroVideo';
-import StilStudio from '@/components/konfigurator/StilStudio';
+import { KONFIG_KATEGORIEN } from '@/lib/konfigurator/daten';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
@@ -72,11 +72,21 @@ const HOME_FAQ = [
   {
     q: 'Was ist das Besondere an The Sartorialist in Zürich?',
     a: [
-      'Kompromisslose Qualität, echte Handarbeit und persönliche Beratung mit Charakter: exklusive italienische Stoffe, langjährige Erfahrung aus führenden Positionen bei Tom Ford und Prada, ein persönliches Atelier vis-à-vis Park Hyatt — und faire, transparente Preise.',
+      'Kompromisslose Qualität, echte Handarbeit und persönliche Beratung mit Charakter: exklusive italienische Stoffe, langjährige Erfahrung aus führenden Positionen bei Tom Ford und Prada, ein persönliches Atelier im Herzen von Zürich — und faire, transparente Preise.',
       'Unsere Kunden suchen nicht den günstigsten Anzug, sondern den richtigen.',
     ],
   },
 ];
+
+// Vorschau-Details für «Styles & Options» (aus den Konfigurator-Daten)
+const TEASER_IDS = ['jacket-sb-2b', 'jacket-db-6x2', 'jacket-lapel-peak-r', 'jacket-pocket-patch-patch', 'jacket-shoulder-soft', 'trousers-front-double-pleat'];
+const TEASER = TEASER_IDS.flatMap((id) =>
+  KONFIG_KATEGORIEN.flatMap((k) =>
+    k.subCategories.flatMap((u) =>
+      u.options.filter((o) => o.id === id).map((o) => ({ id, kat: k.id, gruppe: u.title.split(' — ')[0], label: o.label, image: o.image })),
+    ),
+  ),
+);
 
 export default function HomePage() {
   return (
@@ -97,13 +107,13 @@ export default function HomePage() {
             <Link href="/termin/" className="btn btn--light">
               Termin buchen
             </Link>
-            <a
-              href="#stil-studio"
+            <Link
+              href="/massanzug-konfigurator/"
               className="btn btn--ghost"
               style={{ color: '#fff', borderColor: 'rgba(255,255,255,.5)' }}
             >
               Anzug gestalten
-            </a>
+            </Link>
           </div>
         </div>
         <span className="hero-scrollcue" aria-hidden="true" />
@@ -142,18 +152,34 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Stil-Studio: den Massanzug Detail für Detail gestalten */}
-      <section className="section studio-section" id="stil-studio">
+      {/* Styles & Options: Vorschau, führt zum Massanzug-Konfigurator */}
+      <section className="section styles-teaser" id="styles-options">
         <div className="container">
-          <div className="section-head studio-head">
-            <span className="eyebrow">Stil-Studio</span>
+          <div className="section-head section-head--center">
+            <span className="eyebrow">Styles &amp; Options</span>
             <h2 className="h2">Gestalten Sie Ihren Massanzug — Detail für Detail.</h2>
             <p className="lead">
-              Knöpfe, Revers, Taschen, Schulter, Futter: Tippen Sie an, was Ihnen gefällt, und wir gehen Schritt für Schritt
-              weiter. Ihre Auswahl bleibt gespeichert und kommt mit zum Termin — Stoff und Masse wählen wir gemeinsam im Atelier.
+              Knöpfe, Revers, Taschen, Schulter, Futter: Wählen Sie auf einer Seite, was Ihnen gefällt. Sie müssen nicht
+              alles festlegen — den Rest besprechen wir im Atelier, wo wir Mass nehmen und mit Ihnen den Stoff wählen.
             </p>
           </div>
-          <StilStudio mode="inline" />
+          <div className="styles-row">
+            {TEASER.map((t) => (
+              <Link key={t.id} href={`/massanzug-konfigurator/#${t.kat}`} className="styles-card">
+                <span className="styles-card-img">
+                  <img src={t.image} alt={`${t.gruppe}: ${t.label}`} width={240} height={300} loading="lazy" />
+                </span>
+                <span className="styles-card-g">{t.gruppe}</span>
+                <span className="styles-card-l">{t.label}</span>
+              </Link>
+            ))}
+          </div>
+          <div className="styles-cta">
+            <Link href="/massanzug-konfigurator/" className="btn">
+              Massanzug gestalten
+            </Link>
+            <span className="muted">118 Optionen für Sakko, Hose, Weste und Smoking</span>
+          </div>
         </div>
       </section>
 

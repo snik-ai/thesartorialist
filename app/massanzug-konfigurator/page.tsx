@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Faq from '@/components/Faq';
@@ -9,16 +10,22 @@ const anzahl = KONFIG_KATEGORIEN.reduce((n, k) => n + k.subCategories.reduce((m,
 
 export const metadata: Metadata = {
   title: 'Styles & Options — Massanzug-Konfigurator',
-  description: `Stellen Sie Ihren Massanzug online zusammen: Revers, Knöpfe, Taschen, Schulter, Futter und ${anzahl} weitere Details für Sakko, Hose, Weste und Smoking. Auswahl speichern, als PDF mitnehmen und Termin in Zürich buchen.`,
+  description: `Massanzug selbst gestalten: ${anzahl} Styles & Options für Sakko, Hose, Weste und Smoking — Revers, Knöpfe, Taschen, Futter. Auswahl als PDF speichern und Ihren Anzug nach Mass in Zürich fertigen lassen.`,
   alternates: { canonical: '/massanzug-konfigurator/' },
   openGraph: {
-    title: 'Massanzug-Konfigurator — The Sartorialist Zürich',
-    description: 'Revers, Taschen, Knöpfe und Futter online wählen — und die Auswahl zum Termin ins Atelier mitbringen.',
+    title: 'Massanzug selbst gestalten — Styles & Options, The Sartorialist Zürich',
+    description: 'Revers, Taschen, Knöpfe und Futter für Ihren Massanzug online wählen — und die Auswahl zum Termin ins Atelier mitbringen.',
     url: '/massanzug-konfigurator/',
   },
 };
 
 const FAQ = [
+  {
+    q: 'Kann ich meinen Massanzug online selbst gestalten?',
+    a: [
+      'Ja. In «Styles & Options» wählen Sie online die Details Ihres Massanzugs — Knopfung, Revers, Taschen, Schulter, Futter, Hosenbund und mehr. Massnehmen und Stoffwahl erfolgen danach persönlich im Atelier in Zürich, damit der Anzug wirklich sitzt.',
+    ],
+  },
   {
     q: 'Wofür ist der Massanzug-Konfigurator?',
     a: [
@@ -64,12 +71,52 @@ export default function KonfiguratorPage() {
             Dort nehmen wir Mass, wählen mit Ihnen den Stoff und verfeinern jedes Detail, bis der Anzug nicht nur zu Ihrem
             Körper passt, sondern zu Ihrem Charakter.
           </p>
+          <ul className="konf-hints">
+            <li>Antippen, was gefällt</li>
+            <li>Sie müssen nicht alles wählen</li>
+            <li>Übersicht unten — als PDF oder direkt zum Termin</li>
+          </ul>
         </div>
       </section>
 
       <Konfigurator />
 
-      <Faq items={FAQ} title="Fragen zum Konfigurator" />
+      <section className="section section--warm">
+        <div className="container split-text">
+          <div>
+            <h2 className="h2">Massanzug selbst gestalten — so einfach geht es</h2>
+            <p>
+              Ein Massanzug entsteht aus vielen kleinen Entscheidungen. Hier treffen Sie die ersten in Ruhe: Einreiher oder
+              Zweireiher, fallendes oder steigendes Revers, Paspel- oder Pattentaschen, weiche neapolitanische oder
+              klassische Schulter, gefüttert oder ungefüttert. Jede Option ist gezeichnet, damit Sie sehen, was sich verändert.
+            </p>
+            <p>
+              Wählen Sie nur, was Ihnen wichtig ist. Ihre Auswahl erscheint unten in der Übersicht, lässt sich als PDF
+              speichern und geht mit Ihrer Terminanfrage direkt an uns.
+            </p>
+          </div>
+          <div>
+            <h2 className="h2">Ihr Anzug nach Mass in Zürich</h2>
+            <p>
+              Im Atelier an der Kuttelgasse 7 nehmen wir Mass, zeigen Ihnen die Stoffe von Loro Piana, Vitale Barberis
+              Canonico, Holland &amp; Sherry und weiteren Webereien und verfeinern jedes Detail mit Ihnen. Jeder
+              massgeschneiderte Anzug entsteht in Full-Canvas-Verarbeitung, 100&nbsp;% Made in Italy, ab CHF&nbsp;1’690 —
+              in 20 Arbeitstagen abholbereit.
+            </p>
+            <p>
+              <Link href="/massanzug-zuerich/" className="text-link">
+                Mehr zum Massanzug in Zürich
+              </Link>{' '}
+              ·{' '}
+              <Link href="/hochzeitsanzug-zuerich/" className="text-link">
+                Hochzeitsanzug nach Mass
+              </Link>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <Faq items={FAQ} title="Fragen zum Massanzug-Konfigurator" />
       <JsonLd
         data={serviceSchema({
           name: 'Massanzug-Konfigurator',

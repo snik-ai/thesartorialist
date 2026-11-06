@@ -7,7 +7,7 @@ export const SITE = {
   url: 'https://thesartorialist.ch',
   tagline: 'Massanzüge & italienische Herrenmode in Zürich',
   description:
-    'The Sartorialist Zürich – Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode. Full-Canvas-Verarbeitung, 100% Made in Italy, Massanzüge ab CHF 1’690. Showroom an der Kuttelgasse 7, vis-à-vis Park Hyatt.',
+    'The Sartorialist Zürich – Massanzüge, Hochzeitsanzüge und exklusive italienische Herrenmode. Full-Canvas-Verarbeitung, 100% Made in Italy, Massanzüge ab CHF 1’690. Showroom an der Kuttelgasse 7 in Zürich.',
   locale: 'de_CH',
   lang: 'de',
   phone: '+41 43 243 02 77',

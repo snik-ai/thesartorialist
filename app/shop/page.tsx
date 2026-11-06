@@ -39,7 +39,7 @@ const SHOP_FAQ = [
   {
     q: 'Kann ich die Stücke vor dem Kauf anprobieren?',
     a: [
-      `Ja. Alle Stücke im Shop führen wir auch im Showroom an der ${SITE.address.street} in Zürich, vis-à-vis Park Hyatt. Buchen Sie einen Termin, dann legen wir Ihre Grösse bereit.`,
+      `Ja. Alle Stücke im Shop führen wir auch im Showroom an der ${SITE.address.street} in Zürich. Buchen Sie einen Termin, dann legen wir Ihre Grösse bereit.`,
     ],
   },
   {

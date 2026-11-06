@@ -40,7 +40,7 @@ const SECTIONS = [
   },
   {
     title: 'Wir lieben Anzüge!',
-    text: 'Ein perfekt sitzender Anzug bleibt Ihrem Gegenüber im Gedächtnis. Es ist unsere Passion, unsere Kunden einfühlsam und umfassend zu beraten — im Store vis-à-vis Park Hyatt Zürich. Beste Auswahl, sympathische Beratung und faire Preise.',
+    text: 'Ein perfekt sitzender Anzug bleibt Ihrem Gegenüber im Gedächtnis. Es ist unsere Passion, unsere Kunden einfühlsam und umfassend zu beraten — im Store an der Kuttelgasse 7 in Zürich. Beste Auswahl, sympathische Beratung und faire Preise.',
   },
 ];
 

@@ -7,11 +7,11 @@ import BookingWizard from '@/components/BookingWizard';
 export const metadata: Metadata = {
   title: 'Kontakt & Anfahrt — Kuttelgasse 7, Zürich',
   description:
-    'The Sartorialist Zürich: Kuttelgasse 7, 8001 Zürich — vis-à-vis Park Hyatt. Telefon +41 43 243 02 77, store@thesartorialist.ch. Mo–Fr 10–19 Uhr, Sa 10–17 Uhr.',
+    'The Sartorialist Zürich: Kuttelgasse 7, 8001 Zürich. Telefon +41 43 243 02 77, store@thesartorialist.ch. Mo–Fr 10–19 Uhr, Sa 10–17 Uhr.',
   alternates: { canonical: '/kontakt/' },
   openGraph: {
     title: 'Kontakt — The Sartorialist Zürich',
-    description: 'Kuttelgasse 7, 8001 Zürich — vis-à-vis Park Hyatt.',
+    description: 'Kuttelgasse 7, 8001 Zürich — Showroom im Herzen von Zürich.',
     url: '/kontakt/',
   },
 };
@@ -49,7 +49,7 @@ export default function KontaktPage() {
             <li>
               <strong>Adresse</strong>
               {SITE.shortName} · {SITE.address.street} · {SITE.address.postalCode}{' '}
-              {SITE.address.city} — vis-à-vis Park Hyatt
+              {SITE.address.city}
               <br />
               <a href={mapsUrl} target="_blank" rel="noopener">
                 Route auf Google Maps

@@ -1,5 +1,5 @@
-// Abhängigkeiten zwischen Untergruppen: Was sich gegenseitig ausschliesst und
-// welche Schritte nach einer Wahl nicht mehr passen (Einreiher ↔ Zweireiher).
+// Abhängigkeiten zwischen Untergruppen: Was sich gegenseitig ausschliesst
+// (Einreiher ↔ Zweireiher, nur eine Revers-Art).
 import type { Auswahl } from './konst';
 
 /** Gruppen, von denen nur eine eine Auswahl haben darf. */
@@ -10,17 +10,6 @@ export const EXKLUSIV: string[][] = [
 ];
 
 const SB_REVERS = ['jacket-lapel-notch', 'jacket-lapel-peak', 'jacket-lapel-shawl'];
-
-/** Untergruppen, die nach der bisherigen Wahl nicht passen (im Stil-Studio übersprungen). */
-export function ausgeblendet(a: Auswahl): Set<string> {
-  const h = new Set<string>();
-  const has = (id: string) => (a[id] ?? []).length > 0;
-  if (has('jacket-front-sb')) ['jacket-front-db', 'jacket-lapel-db-peak'].forEach((x) => h.add(x));
-  if (has('jacket-front-db')) ['jacket-front-sb', ...SB_REVERS].forEach((x) => h.add(x));
-  if (has('waistcoat-front-sb')) h.add('waistcoat-front-db');
-  if (has('waistcoat-front-db')) h.add('waistcoat-front-sb');
-  return h;
-}
 
 /** Beim Wählen in einer Gruppe die anderen Gruppen desselben Sets leeren. */
 export function mitRegeln(a: Auswahl, gruppe: string): Auswahl {

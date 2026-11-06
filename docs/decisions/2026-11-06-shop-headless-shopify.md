@@ -70,3 +70,17 @@ schwebender Knopf für den Vollbild-Konfigurator, Shop nur sekundär, Film von t
 - **Neue Version des Quellcodes (06.11.2026, 09:43):** Adresse überall Kuttelgasse 7, 8001 Zürich (bestätigt
   `lib/site.ts`), Untergruppen mit 5 Optionen auf Desktop 3 pro Reihe zentriert (`.konf-grid--5`), Menüpunkt
   «Styles & Options» in der Hauptnavigation. Daten und Bilder unverändert.
+
+## Umstellung auf One-Pager (06.11.2026, Wunsch Kunde)
+
+Das Schritt-für-Schritt-Stil-Studio war zu lang («Leute klicken sich nicht durch 30 Schritte»). Entfernt
+(`StilStudio.tsx`, Vollbild-Overlay). Jetzt:
+- «Anzug gestalten» (schwebender Knopf, Hero) führt auf `/massanzug-konfigurator/` («Styles & Options»).
+- Alles auf einer Seite wie im Original, Untergruppen-Titel und Karten **zentriert**.
+- **Übersicht immer im Blick:** Leiste unten (`.konf-dock`) mit Zahl, Mini-Vorschau, Hinweis «Sie müssen nicht alles
+  wählen» und «Zur Übersicht ↓»; leuchtet bei jeder Wahl golden auf. Fortschritt «x/17» in den Tabs entfernt
+  (suggerierte Pflicht), nur noch «gewählt»-Zahl.
+- Startseite: «Styles & Options»-Vorschau (6 Details) statt Studio.
+- SEO: Seite ergänzt «Massanzug selbst gestalten», «Anzug nach Mass Zürich» (30/Mt.), «Anzug massgeschneidert
+  Zürich» (50/Mt., Keyword-DB); «Massanzug Zürich» bleibt bei `/massanzug-zuerich/` (keine Kannibalisierung).
+- «vis-à-vis Park Hyatt» auf Wunsch überall entfernt (Seiten, Meta, llms.txt, ai.txt, Video-Quelle).

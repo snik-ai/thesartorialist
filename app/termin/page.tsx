@@ -7,7 +7,7 @@ import { JsonLd, serviceSchema } from '@/components/JsonLd';
 export const metadata: Metadata = {
   title: 'Termin buchen — Beratung im Showroom Zürich',
   description:
-    'Buchen Sie Ihren persönlichen Beratungstermin bei The Sartorialist Zürich: 60–90 Minuten Stilberatung, Stoffauswahl und Massnahme — kostenlos und unverbindlich. Kuttelgasse 7, vis-à-vis Park Hyatt.',
+    'Buchen Sie Ihren persönlichen Beratungstermin bei The Sartorialist Zürich: 60–90 Minuten Stilberatung, Stoffauswahl und Massnahme — kostenlos und unverbindlich. Kuttelgasse 7, 8001 Zürich.',
   alternates: { canonical: '/termin/' },
   openGraph: {
     title: 'Termin buchen — The Sartorialist Zürich',
@@ -51,7 +51,7 @@ export default function TerminPage() {
             <li>
               <strong>Showroom</strong>
               {SITE.shortName} · {SITE.address.street} · {SITE.address.postalCode}{' '}
-              {SITE.address.city} — vis-à-vis Park Hyatt
+              {SITE.address.city}
             </li>
             <li>
               <strong>Telefon</strong>

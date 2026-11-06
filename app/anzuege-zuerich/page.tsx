@@ -9,7 +9,7 @@ import { JsonLd, serviceSchema } from '@/components/JsonLd';
 export const metadata: Metadata = {
   title: 'Anzüge Zürich — exklusive Anzüge & Markenexpertise',
   description:
-    'Anzüge in Zürich: exklusive Anzüge, Sakkos, Hemden und Hosen von The Sartorialist — handgemachte Schneiderkunst aus Italien trifft aktuelle Modetrends. Beratung im Store vis-à-vis Park Hyatt.',
+    'Anzüge in Zürich: exklusive Anzüge, Sakkos, Hemden und Hosen von The Sartorialist — handgemachte Schneiderkunst aus Italien trifft aktuelle Modetrends. Beratung im Store an der Kuttelgasse 7 in Zürich.',
   alternates: { canonical: '/anzuege-zuerich/' },
   openGraph: {
     title: 'Anzüge Zürich — The Sartorialist',

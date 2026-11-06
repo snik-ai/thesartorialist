@@ -1,7 +1,7 @@
 'use client';
 
 // Gemeinsamer Zustand der Stil-Auswahl für alle Ansichten (Konfigurator-Seite,
-// Stil-Studio auf der Startseite, Vollbild über den schwebenden Knopf, Termin).
+// schwebender Knopf, Terminbuchung).
 // Quelle ist localStorage; Änderungen gehen per Ereignis an alle Ansichten.
 import { useCallback, useSyncExternalStore } from 'react';
 import { CHANGE_EVENT, STORAGE_KEY, type Auswahl } from './konst';
@@ -72,10 +72,4 @@ export function useAuswahl() {
   }, []);
   const reset = useCallback(() => setAuswahl({}), []);
   return { auswahl, waehle, entferne, reset };
-}
-
-/** Öffnet das Stil-Studio im Vollbild (vom schwebenden Knopf oder von Links). */
-export const OPEN_EVENT = 'ts-stil-studio-open';
-export function oeffneStudio(start?: { kategorie?: string; untergruppe?: string }) {
-  window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: start ?? {} }));
 }

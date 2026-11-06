@@ -36,6 +36,7 @@ export default function Konfigurator() {
   const [status, setStatus] = useState<string | null>(null);
   const [ueberSicht, setUeberSicht] = useState(false);
   const [pop, setPop] = useState<string | null>(null);
+  const [glow, setGlow] = useState(false);
   const bar = useRef<HTMLDivElement>(null);
 
 
@@ -71,6 +72,9 @@ export default function Konfigurator() {
       setze(u, o);
       setPop(o.id);
       setTimeout(() => setPop(null), 450);
+      setGlow(false);
+      requestAnimationFrame(() => setGlow(true));
+      setTimeout(() => setGlow(false), 1300);
     },
     [setze],
   );
@@ -116,10 +120,11 @@ export default function Konfigurator() {
                 <a key={k.id} href={`#${k.id}`} data-k={k.id} className={`konf-tab${aktiv === k.id ? ' is-on' : ''}`} aria-current={aktiv === k.id ? 'true' : undefined}>
                   <span className="konf-tab-num num">0{i + 1}</span>
                   {k.title}
-                  <span className="konf-tab-prog num" aria-label={`${f.done} von ${f.total} gewählt`}>
-                    {f.done}/{f.total}
-                  </span>
-                  <span className="konf-tab-line" style={{ transform: `scaleX(${f.total ? f.done / f.total : 0})` }} />
+                  {f.done > 0 && (
+                    <span className="konf-tab-prog num" aria-label={`${f.done} gewählt`}>
+                      {f.done}
+                    </span>
+                  )}
                 </a>
               );
             })}
@@ -148,15 +153,8 @@ export default function Konfigurator() {
               return (
                 <div key={u.id} className="konf-group">
                   <div className="konf-group-head">
-                    <div>
-                      <h3 className="h3">{u.title}</h3>
-                      {u.subtitle && <p className="konf-group-sub">{u.subtitle}</p>}
-                    </div>
-                    {sel.length > 0 && (
-                      <span className="konf-chosen">
-                        <Check /> {sel.map((o) => o.label).join(', ')}
-                      </span>
-                    )}
+                    <h3 className="h3">{u.title}</h3>
+                    {u.subtitle && <p className="konf-group-sub">{u.subtitle}</p>}
                   </div>
                   {u.note && <p className="konf-note">{u.note}</p>}
                   <div className={`konf-grid${u.options.length === 5 ? ' konf-grid--5' : ''}`}>
@@ -273,14 +271,27 @@ export default function Konfigurator() {
         </section>
       </div>
 
-      {items.length > 0 && (
-        <a href="#uebersicht" className={`konf-float${ueberSicht ? ' is-hidden' : ''}`} tabIndex={ueberSicht ? -1 : 0}>
-          <span className="konf-float-n num">{items.length}</span>
-          {items.length === 1 ? 'Detail gewählt' : 'Details gewählt'}
-          <span className="konf-float-sep" />
+      {/* Übersicht immer im Blick: leuchtet bei jeder Wahl auf und führt nach unten */}
+      <a href="#uebersicht" className={`konf-dock${ueberSicht ? ' is-hidden' : ''}${glow ? ' is-glow' : ''}`} tabIndex={ueberSicht ? -1 : 0}>
+        <span className="konf-dock-n num" key={items.length}>
+          {items.length}
+        </span>
+        <span className="konf-dock-thumbs" aria-hidden="true">
+          {items.slice(-4).map((g) => (
+            <img key={g.untergruppeId + g.option.id} src={g.option.image} alt="" width={30} height={38} />
+          ))}
+        </span>
+        <span className="konf-dock-text">
+          <strong>{items.length === 0 ? 'Ihre Übersicht' : items.length === 1 ? '1 Detail gewählt' : `${items.length} Details gewählt`}</strong>
+          <span>Sie müssen nicht alles wählen — den Rest besprechen wir im Atelier.</span>
+        </span>
+        <span className="konf-dock-go">
           Zur Übersicht
-        </a>
-      )}
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M7 2v10m0 0l-4-4m4 4l4-4" stroke="currentColor" strokeWidth="1.4" />
+          </svg>
+        </span>
+      </a>
 
       {detail && (
         <DetailDialog

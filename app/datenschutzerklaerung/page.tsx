@@ -144,9 +144,9 @@ export default function DatenschutzPage() {
           setzt dabei keine Cookies und erstellt keine Nutzungsprofile. Beim Laden des Films
           erhält Vimeo technisch bedingt Ihre IP-Adresse und Angaben zu Ihrem Browser.
         </p>
-        <h3>Stil-Konfigurator</h3>
+        <h3>Massanzug-Konfigurator</h3>
         <p>
-          Ihre Auswahl im Massanzug-Konfigurator und im Stil-Studio wird ausschliesslich in
+          Ihre Auswahl im Massanzug-Konfigurator («Styles & Options») wird ausschliesslich in
           Ihrem Browser gespeichert (localStorage) und nicht an uns übertragen. Sie erhalten
           wir erst, wenn Sie sie mit einer Terminanfrage mitschicken oder uns das PDF senden.
           Sie können die Auswahl jederzeit über «Alles zurücksetzen» löschen.

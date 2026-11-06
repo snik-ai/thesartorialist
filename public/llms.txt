@@ -1,7 +1,7 @@
 # The Sartorialist Zürich — Massanzug, Hochzeitsanzug & italienische Herrenmode
 
 > The Sartorialist ist der persönliche Herrenausstatter im Herzen von Zürich
-> (Kuttelgasse 7, vis-à-vis Park Hyatt). Massanzüge und Hochzeitsanzüge in
+> (Kuttelgasse 7, 8001 Zürich). Massanzüge und Hochzeitsanzüge in
 > Full-Canvas-Verarbeitung, 100% Made in Italy, ab CHF 1'690 — in 20
 > Arbeitstagen abholbereit. Gegründet von Alexander Shubin, ehemals
 > Geschäftsführer des ersten Tom Ford Stores Europas.
@@ -11,7 +11,7 @@
 - Gründer: Alexander Shubin — über 15 Jahre Erfahrung in führenden Positionen
   bei Tom Ford und Prada
 - Firma: Swiss Art Partner AG
-- Showroom: Kuttelgasse 7, 8001 Zürich, Schweiz (vis-à-vis Park Hyatt)
+- Showroom: Kuttelgasse 7, 8001 Zürich, Schweiz
 - Öffnungszeiten: Mo–Fr 10–19 Uhr, Sa 10–17 Uhr, Termin nach Vereinbarung
 - Zusammenarbeit ausschliesslich mit familiengeführten italienischen und
   englischen Manufakturen
@@ -45,12 +45,10 @@ Stoffpartner: Loro Piana, Vitale Barberis Canonico, Drago, Reda, Cerruti,
 Scabal, Solbiati, Zegna, Holland & Sherry; Hemden: Canclini, Albini,
 Thomas Mason.
 
-## Massanzug-Konfigurator & Stil-Studio
+## Massanzug-Konfigurator «Styles & Options»
 
-Auf der Startseite führt das Stil-Studio Schritt für Schritt durch die Details
-des Massanzugs (eine Entscheidung pro Schritt, mit Illustration); ein schwebender
-Knopf «Anzug gestalten» öffnet es auf jeder Seite im Vollbild.
-Alle Details auf einer Seite: https://thesartorialist.ch/massanzug-konfigurator/
+Massanzug selbst gestalten auf einer Seite: https://thesartorialist.ch/massanzug-konfigurator/
+(ein schwebender Knopf «Anzug gestalten» führt von jeder Seite dorthin).
 Sakko (Knopfung, Revers, Taschen, Schlitze, Schulter, Canvas, Futter, Ärmelknöpfe,
 Handstich, Knopfloch, Monogramm), Hose (Bundfalten, Verschluss, Bund, Taschen,
 Saum), Weste und Smoking. Die Auswahl bleibt im Browser, lässt sich als PDF
