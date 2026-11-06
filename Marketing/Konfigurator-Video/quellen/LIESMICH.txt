@@ -1,4 +1,4 @@
-The Sartorialist Zürich – Konfigurator-Video «Styles & Options» · Fassung 2 (mit Sprecher)
+The Sartorialist Zürich – Konfigurator-Video «Styles & Options» · Fassung 3 (Next Level, mit Sprecher)
 =========================================================================================
 
 Inhalt
@@ -30,24 +30,32 @@ Sprechtext (Einsätze in s):
 Aufnahmen-Cache: ton/sprecher/zeilen (nicht löschen, sonst kostet jeder Neubau Zeichen).
 Wortzeiten: ton/sprecher-zeiten.js (von ton-sprecher.mjs erzeugt, film.html liest sie selbst).
 
-Szenen (Zeitmarken)
-  0.00– 4.75  Ergebnis zuerst: Kamera nah am Entwurf, Rückzug auf «Bis», Gold-Callouts auf jedem Wort
-  4.75– 5.45  Fokusrahmen → Zoom-Through durch die Reversspitze
-  5.45– 7.74  Revers: Klick auf «Steigend» exakt auf «Revers», Digital Zoom, Detail-Karte
-  7.74– 8.40  Fokusrahmen auf den Knöpfen → Zoom-Through
-  8.40– 9.82  Knöpfe: «Zwei Knöpfe» auf «Knöpfe», Snap Zoom + Gold-Unterstrich
-  9.82–10.25  Whip-Pan zur Taschen-Welt
- 10.25–11.58  Taschen: «Barchetta & Patte»
- 11.58–12.28  Flip-Morph: die Taschen-Karte dreht sich um und wird zur Futter-Karte
- 12.28–15.38  Futter & Details: Checklist Pop auf «Futter», «Details», «bis», «Monogramm»
- 15.38–16.03  Zoom-Through ins Futter → Stoff von Holland & Sherry (Ken Burns), Stoffnummer tippen
- 18.68–19.32  Zoom-out: das Stoffbild wird zur ersten Zeile der Übersicht
- 19.32–23.24  Übersicht «Ihr Massanzug in 7 Details», Klick «PDF herunterladen» auf «PDF», Klick «Termin» auf «Atelier»
- 23.24–24.61  Klick-Flood → Atelier (Foto mit Schere), Captions invertieren live im Kreis
- 24.61–25.35  Shape-Morph: das Foto schrumpft zur goldenen Linie der Endkarte
- 25.35–34.30  Endkarte: Logo, «Ihr Massanzug.», «Ab CHF 1’690.» (Ziffern rollen auf der gesprochenen Zahl ein),
-              «Gestalten Sie ihn jetzt auf thesartorialist.ch» (Wort für Wort, URL schreibt sich)
- 34.30–35.00  Loop: Rack-Focus zurück zum ersten Frame (Web-Loop nahtlos)
+Szenen und Übergänge (jeder Übergang einmalig, alle mit Träger)
+  0.00– 4.75  Hook auf dunkler Bühne (Lichtwolken, Bokeh mit Parallaxe): ORBIT um den Entwurf (echte 3D-Perspektive),
+              Callouts auf LIQUID-GLASS-Karten in einer näheren Parallaxe-Ebene, auf «entworfen» goldener Handstich entlang
+              der Reverskante, FRAME ESCAPE (der Anzug wächst über die Kartenkante), Lichtband über den Entwurf
+  4.75– 5.55  MATCH-CUT: der Entwurf wird zur Karte «Steigend» (gleiche Illustration, Label morpht), die warme Welt öffnet
+              sich aus der Karte, die Nachbarkarten fliegen aus der Tiefe (Perspektive, gestaffelt)
+  5.55– 7.78  Revers: Klick auf «Revers», DIGITAL ZOOM aufs Revers, Detail-Karte, Kamera fährt zum Knopf, Goldring zeichnet sich
+  7.78– 8.42  KNOPF-IRIS: der Goldring öffnet sich kreisrund zur Knöpfe-Welt, aussen läuft die Kamera weiter in den Knopf
+  8.42– 9.69  Knöpfe: «Zwei Knöpfe», SNAP ZOOM auf «Knöpfe» mit Gold-Unterstrich
+  9.69–10.31  3D-KARUSSELL: die Kartenreihe dreht sich auf einem Zylinder weiter zu den Taschen
+ 10.31–11.58  Taschen: «Barchetta & Patte»
+ 11.58–12.28  WENDEFLIP in echter Perspektive: die Tasche dreht sich um, innen liegt das Futter
+ 12.28–15.31  CHECKLIST POP auf «Futter», «Details», «bis», «Monogramm», Lichtband über das Futter
+ 15.31–16.08  MAKRO-ZOOM-THROUGH: Kamera taucht ins Futter, das Futter wird zum Stoff, Rückzug aus der goldenen Webkante
+ 16.08–18.60  Stoff von Holland & Sherry (Ken Burns, Lichtband über die Webkante), Caption auf Liquid Glass, Stoffnummer tippen
+ 18.60–19.35  LIQUID-GLASS-MORPH: die Stoffkarte wird zur Glasfläche und wächst zur Übersicht, der Stoff sinkt in die Tiefe,
+              die Nummer fliegt in ihre Zeile (TYPO-MORPH Inter → Playfair)
+ 19.35–23.24  Übersicht, «PDF herunterladen» auf «PDF», «Termin» auf «Atelier»
+ 23.24–24.09  SCHERENSCHNITT: eine Goldlinie schneidet die Übersicht, die Hälften gleiten auseinander, dahinter das Atelier
+              (Foto mit Schere); Captions invertieren live im Spalt
+ 24.61–25.35  SHAPE-MORPH: das Atelierfoto schrumpft zur goldenen Linie der Endkarte
+ 25.35–34.30  Endkarte: Logo (Masken-Wisch + Goldglanz), «Ihr Massanzug.», SLOT-Ziffern «CHF 1’690.» auf der gesprochenen Zahl,
+              CTA Wort für Wort, URL schreibt sich
+ 34.30–35.00  RACK-FOCUS-LOOP zurück zum ersten Frame (Bühne periodisch über 35 s → nahtlos)
+Übernommen aus VoxCRM (_vorlage/lib/vox-buehne.js): perspektive (Streifen-3D), glanz, Bokeh/Lichtwolken, Schatten-Träger;
+aus Karo (Marketingvideo-Online-Rechner): verschachtelte Welten, Kamera fährt durch ein Element in die nächste Welt.
 
 Ton
 ---
@@ -67,8 +75,8 @@ Formate / Ergebnisse
   public/videos/konfigurator-16x9.mp4            Web, 1600×900, H.264, stumm, faststart, Loop
   public/videos/konfigurator-16x9.webm           Web, 1600×900, VP9, stumm
   public/videos/konfigurator-16x9-ton.mp4        Web mit Sprecher (für «Mit Ton ansehen»)
-  public/videos/konfigurator-poster.webp         Poster (3.9 s: Entwurf mit Callouts und Headline)
-  ../alternative/v1/                             erste Fassung (ohne Sprecher)
+  public/videos/konfigurator-poster.webp         Poster (3.9 s: Entwurf mit Callouts, Goldstich und Headline)
+  ../alternative/v1/, ../alternative/v2/          frühere Fassungen
 
 Dateien
 -------
@@ -76,6 +84,7 @@ Dateien
                    window.CUES = Effekt-Einsätze für ton-mischen.mjs.
   engine/          eleven.mjs, ton-sprecher.mjs, ton-mischen.mjs (Playwright), musik.mjs, stimmtest.mjs, stt.mjs, f0.mjs
   ton/             sprecher.json, sprecher-zeiten.js, sprecher/zeilen (Cache), effekte/, stimmtest/, kosten.log
+  img/hero-frei.png = freigestellter Entwurf für den Frame Escape (ffmpeg floodfill)
   fonts/, img/, motion.js, lib/timewarp.js, stills.sh, sheet.sh
   out/             Zwischen-Renders (nicht in Git)
 
@@ -85,8 +94,8 @@ Neu erzeugen
   E=~/.claude/skills/motion-reel/engine; export ELEVENLABS_KEY_FILE=~/_Claude/voxcrm/.env   (Schlüssel nie ausgeben)
   node engine/ton-sprecher.mjs --plan ton/sprecher.json --ton out/ton-fx.wav --out out/ton-final.wav --stimmePegel 12 --ducken 0.08
      (vorher: node engine/ton-mischen.mjs --page film.html --out out/ton-fx.wav)
-  node $E/render.mjs --page film.html --w 1920 --h 1080 --fps 60 --sub 4 --dur 35 --out out/v2-silent-16x9.mp4
-  node $E/render.mjs --page film.html --w 1080 --h 1920 --q f=9x16 --fps 60 --sub 4 --dur 35 --out out/v2-silent-9x16.mp4
-  ffmpeg -i out/v2-silent-16x9.mp4 -i out/ton-final.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest \
+  node $E/render.mjs --page film.html --w 1920 --h 1080 --fps 60 --sub 4 --dur 35 --out out/v3-silent-16x9.mp4
+  node $E/render.mjs --page film.html --w 1080 --h 1920 --q f=9x16 --fps 60 --sub 4 --dur 35 --out out/v3-silent-9x16.mp4
+  ffmpeg -i out/v3-silent-16x9.mp4 -i out/ton-final.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest \
     -movflags +faststart ../The-Sartorialist-Konfigurator-16x9.mp4        (9:16 analog)
   Web: scale=1600:900, fps 30, x264 CRF ~26 (stumm), VP9 2-Pass ~550k (stumm), Ton-Fassung x264 + AAC 128k.

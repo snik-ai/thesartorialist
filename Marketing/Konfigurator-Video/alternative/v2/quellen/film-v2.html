@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<title>The Sartorialist – Konfigurator-Film v2</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>html,body{margin:0;background:#101010;overflow:hidden}canvas{display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="motion.js"></script>
+<script src="ton/sprecher-zeiten.js"></script>
+<script>
+// ===========================================================================
+// The Sartorialist Zürich – «Styles & Options», Fassung 2 (mit Sprecher)
+// 35.0 s. 16:9 (Standard) oder 9:16 (?f=9x16). Alle Zeiten folgen den Wortzeiten des Sprechers
+// (ton/sprecher-zeiten.js aus ElevenLabs /with-timestamps): gesprochen = gezeigt.
+// Eine durchgehende Kamera: Rückzug aus dem Detail → Fokusrahmen → Zoom-Through in die nächste Welt.
+//   Hook (Entwurf) → Revers → Knöpfe → (Whip) Taschen → (Flip) Futter → Stoff → (Zoom-out) Übersicht
+//   → (Flood) Atelier → (Shape-Morph) Endkarte → Loop (Rack-Focus zurück zum ersten Frame).
+// ===========================================================================
+const { clamp, lerp, seg, spring, sp, track, trackObj, hex, rgb, mixColor, rng, E } = M;
+const Q = new URLSearchParams(location.search);
+const V = Q.get('f') === '9x16';
+const W = V ? 1080 : 1920, H = V ? 1920 : 1080;
+const DUR = 35.0;
+const SPR = window.SPRECHER;
+const w = (id, i) => SPR[id].worte[i].t;           // Wortbeginn (s)
+const we = (id, i) => SPR[id].worte[i].e;          // Wortende (s)
+
+const out = document.getElementById('c'); out.width = W; out.height = H;
+const G = out.getContext('2d');
+const mk = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; };
+const SC = mk(), g = SC.getContext('2d');
+[G, g].forEach((x) => { x.imageSmoothingEnabled = true; x.imageSmoothingQuality = 'high'; });
+
+const INK = '#101010', WARM = '#f6f5f2', LINE = '#e5e3de', MUTED = '#6f6c66', GOLD = '#c9a063';
+const SERIF = '"Playfair Display", Georgia, serif', SANS = 'Inter, Helvetica, sans-serif';
+const p4out = (p) => 1 - Math.pow(1 - clamp(p), 4), p4in = (p) => Math.pow(clamp(p), 4);
+const ioc = (p) => E.inOutCubic(clamp(p));
+
+// ---------------------------------------------------------------------------
+// Zeitplan (aus den Wortzeiten)
+// ---------------------------------------------------------------------------
+const T = {
+  d1: [w('hook', 7) + 1.33, w('revers', 0) - 0.17],            // Zoom-Through Revers in die Revers-Welt
+  clickRevers: w('revers', 3) + 0.12,
+  d2: [w('knopf', 0) - 0.7, w('knopf', 0) - 0.04],              // Zoom-Through Knopf → Knöpfe
+  clickKnopf: w('knopf', 1) + 0.1,
+  d3: [w('tasche', 0) - 0.55, w('tasche', 0) - 0.12],           // Whip-Pan → Taschen
+  clickTasche: w('tasche', 1) + 0.1,
+  d4: [w('futter', 0) - 0.72, w('futter', 0) - 0.02],           // Flip-Morph → Futter
+  checks: [w('futter', 0), w('futter', 2), w('futter', 3), w('futter', 5)],
+  d5: [w('stoff', 0) - 0.75, w('stoff', 0) - 0.1],              // Zoom-Through ins Futter → Stoff
+  typ: [w('stoff', 3) + 0.05, w('stoff', 5) + 0.15], clickStoff: w('stoff', 5) + 0.45,
+  d6: [w('blick', 0) - 0.62, w('blick', 0) + 0.02],             // Zoom-out → Übersicht
+  clickPdf: w('blick', 5) + 0.06,
+  clickTermin: w('blick', 9) + 0.08,                            // Klick-Flood → Atelier
+  d8: [w('preis', 0) - 0.32, w('preis', 0) + 0.42],             // Atelierfoto schrumpft zur Goldlinie
+  loop: [34.3, DUR],
+};
+
+// ---- Bilder ----
+const IMG = {};
+const NAMES = ['lapel-sb-peak-regular', 'lapel-sb-notch-regular', 'lapel-sb-shawl-regular', 'sb-1b', 'sb-2b', 'db-6x2',
+  'pocket-barchetta-jetted', 'pocket-barchetta-flap', 'pocket-patch-patch', 'lining-lined', 'buttonhole-hand', 'cuff-kissing', 'monogram-lined', 'Holland-Sherry-3-scaled', 'Foto-mit-Schere'];
+const loads = NAMES.map((n) => new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = 'img/' + n + '.webp'; IMG[n] = i; }));
+const LOGO = new Image(); loads.push(new Promise((r) => { LOGO.onload = r; LOGO.src = 'img/sartorialist-zurich-logo.png'; }));
+let LOGO_W;
+
+// ---------------------------------------------------------------------------
+// Layout
+// ---------------------------------------------------------------------------
+const L = V ? { tx: 90, hs: 98, hY: 452, sc: { x: 500, y: 1040 }, cw: 280, gap: 18, th: 96 }
+            : { tx: 140, hs: 88, hY: 0, sc: { x: 1340, y: 545 }, cw: 296, gap: 30, th: 98 };
+L.ih = L.cw * 1.25; L.ch = L.ih + L.th; L.gy = L.sc.y - L.ch / 2; L.gx0 = L.sc.x - (3 * L.cw + 2 * L.gap) / 2;
+const cardRect = (i) => ({ x: L.gx0 + i * (L.cw + L.gap), y: L.gy, w: L.cw, h: L.ch });
+const ASP = W / H;
+// Fokusrahmen im Seitenverhältnis des Bildes (damit der Zoom-Through exakt bildfüllend landet)
+const frameAt = (cx, cy, fw) => ({ x: cx - fw / 2, y: cy - fw / ASP / 2, w: fw, h: fw / ASP });
+
+// ---------------------------------------------------------------------------
+// Bausteine
+// ---------------------------------------------------------------------------
+function contain(g, img, x, y, w2, h, s = 1) {
+  if (!img || !img.width) return;
+  const k = Math.min(w2 / img.width, h / img.height) * s, iw = img.width * k, ih = img.height * k;
+  g.drawImage(img, x + (w2 - iw) / 2, y + (h - ih) / 2, iw, ih);
+}
+function cover(g, img, x, y, w2, h, zoom = 1, fx = 0.5, fy = 0.5) {
+  const k = Math.max(w2 / img.width, h / img.height) * zoom, iw = img.width * k, ih = img.height * k;
+  g.drawImage(img, x + (w2 - iw) * fx, y + (h - ih) * fy, iw, ih);
+}
+function strokeRect(g, x, y, w2, h, col, lw = 1) { g.strokeStyle = col; g.lineWidth = lw; g.strokeRect(x + lw / 2, y + lw / 2, w2 - lw, h - lw); }
+function tickMark(g, x, y, r, s, fill = INK, stroke = '#fff') {
+  if (s <= 0.01) return;
+  g.save(); g.translate(x, y); g.scale(s, s);
+  g.fillStyle = fill; g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill();
+  g.strokeStyle = stroke; g.lineWidth = r * 0.16; g.lineCap = 'round'; g.lineJoin = 'round';
+  g.beginPath(); g.moveTo(-r * 0.4, 0); g.lineTo(-r * 0.1, r * 0.3); g.lineTo(r * 0.42, -r * 0.3); g.stroke();
+  g.restore();
+}
+function spaced(g, text, x, y, size, col, tr = 3, weight = 600, align = 'left') {
+  g.font = `${weight} ${size}px ${SANS}`; g.letterSpacing = tr + 'px'; g.fillStyle = col; g.textAlign = align;
+  g.fillText(text.toUpperCase(), x + (align === 'center' ? tr / 2 : 0), y); g.textAlign = 'left'; g.letterSpacing = '0px';
+}
+function card(g, r, c, st) {
+  const { x, y, w: cw } = r, ih = cw * 1.25, th = L.th, h = ih + th;
+  g.save();
+  const cx = x + cw / 2, cy = y + h / 2;
+  g.translate(cx, cy - (st.hover || 0) * 8); g.scale((st.sx ?? 1) * (st.pop ?? 1), st.pop ?? 1); g.translate(-cx, -cy);
+  g.fillStyle = '#fff'; g.fillRect(x, y, cw, h);
+  contain(g, IMG[c.img], x + 14, y + 14, cw - 28, ih - 22, 1 + 0.035 * (st.hover || 0));
+  g.fillStyle = rgb(mixColor(hex('#ffffff'), hex(WARM), st.on || 0)); g.fillRect(x, y + ih, cw, th);
+  g.fillStyle = LINE; g.fillRect(x, y + ih, cw, 1);
+  spaced(g, c.code, cx, y + ih + th * 0.40, 14, MUTED, 3, 600, 'center');
+  g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText(c.label, cx, y + ih + th * 0.76); g.textAlign = 'left';
+  strokeRect(g, x, y, cw, h, rgb(mixColor(hex(LINE), hex(INK), clamp((st.on || 0) + (st.hover || 0) * 0.35))), 1 + (st.on || 0));
+  if (st.on > 0) tickMark(g, x + cw - 26, y + 26, 16, sp(st.tOn, 'ui'));
+  if (st.shade) { g.fillStyle = `rgba(16,16,16,${st.shade})`; g.fillRect(x, y, cw, h); }
+  g.restore();
+}
+// Fokusrahmen: vier goldene Ecken, die sich um das Detail schliessen
+function focusFrame(g, r, p, lw = 2.5) {
+  if (p <= 0.01) return;
+  const k = 1 + 0.35 * (1 - p4out(p)), cx = r.x + r.w / 2, cy = r.y + r.h / 2, ww = r.w * k, hh = r.h * k, x = cx - ww / 2, y = cy - hh / 2;
+  const L2 = Math.min(ww, hh) * 0.22;
+  g.save(); g.globalAlpha *= clamp(p * 2); g.strokeStyle = GOLD; g.lineWidth = lw; g.lineCap = 'square';
+  g.beginPath();
+  [[x, y, 1, 1], [x + ww, y, -1, 1], [x, y + hh, 1, -1], [x + ww, y + hh, -1, -1]].forEach(([a, b2, sx, sy]) => { g.moveTo(a, b2 + sy * L2); g.lineTo(a, b2); g.lineTo(a + sx * L2, b2); });
+  g.stroke(); g.restore();
+}
+
+// ---------------------------------------------------------------------------
+// Kamera: {wx, wy} Weltpunkt → Bildschirmpunkt {ax, ay}, Massstab s, Drehung r (Grad)
+// ---------------------------------------------------------------------------
+const camM = (c) => new DOMMatrix().translate(c.ax, c.ay).rotate(c.r || 0).scale(c.s).translate(-c.wx, -c.wy);
+const ID = () => ({ wx: W / 2, wy: H / 2, ax: W / 2, ay: H / 2, s: 1, r: 0 });
+
+// ---------------------------------------------------------------------------
+// WELT 0 – Hook: der fertige Entwurf (Ink)
+// ---------------------------------------------------------------------------
+const HERO = V ? { x: 90, y: 760, w: 450 } : { x: 860, y: 196, w: 440 };
+HERO.ih = HERO.w * 1.3; HERO.th = 86; HERO.h = HERO.ih + HERO.th;
+const TAG = V ? { x: 590, w: 350, h: 92, y0: 820, dy: 134 } : { x: 1380, w: 380, h: 86, y0: 268, dy: 132 };
+const TAGS = [
+  { g: 'Revers', o: 'Steigend', ax: 0.64, ay: 0.27, t: () => w('hook', 2) },
+  { g: 'Vorderteil', o: 'Zwei Knöpfe', ax: 0.52, ay: 0.56, t: () => w('hook', 3) },
+  { g: 'Taschen', o: 'Barchetta & Patte', ax: 0.72, ay: 0.665, t: () => w('hook', 4) },
+  { g: 'Stoff', o: 'Holland & Sherry', ax: 0.86, ay: 0.78, t: () => w('hook', 5) },
+];
+function heroImgRect() {
+  const img = IMG['lapel-sb-peak-regular'], bw = HERO.w - 36, bh = HERO.ih - 30;
+  const k = Math.min(bw / img.width, bh / img.height), iw = img.width * k, ih = img.height * k;
+  return { x: HERO.x + 18 + (bw - iw) / 2, y: HERO.y + 18 + (bh - ih) / 2, w: iw, h: ih };
+}
+const heroPt = (fx, fy) => { const r = heroImgRect(); return { x: r.x + r.w * fx, y: r.y + r.h * fy }; };
+// Portal 1: Fokusrahmen auf der Reversspitze
+const P1 = () => { const p = heroPt(0.64, 0.25); return frameAt(p.x, p.y, V ? 120 : 150); };
+function camHook(t) {
+  const hc = { x: HERO.x + HERO.w / 2, y: HERO.y + HERO.h / 2 }, up = heroPt(0.5, 0.33), lap = heroPt(0.64, 0.25);
+  // Start: nah am Oberkörper, Rückzug auf «Bis», dann sanfte Fahrt Richtung Revers
+  const tb = w('hook', 2) - 0.1, tp = w('hook', 7) + 0.35;
+  const c = trackObj(t, [
+    [0, { wx: up.x, wy: up.y, ax: V ? W / 2 - 30 : hc.x + 90, ay: V ? up.y - 110 : up.y, s: V ? 1.3 : 1.6, r: -1.2 }],
+    [tb, { wx: hc.x, wy: hc.y, ax: hc.x, ay: hc.y, s: 1.0, r: 0 }, 60, 16],
+    [tp, { wx: lap.x, wy: lap.y, ax: lap.x, ay: lap.y, s: 1.22, r: 0 }, 40, 14],
+  ]);
+  c.s *= 1 + 0.01 * Math.sin(t * 0.7);
+  return c;
+}
+function worldHook(g, t, a = 1) {
+  g.fillStyle = INK; g.fillRect(-W * 2, -H * 2, W * 5, H * 5);
+  g.save(); g.globalAlpha *= a;
+  const hc = { x: HERO.x + HERO.w / 2 };
+  g.fillStyle = '#fff'; g.fillRect(HERO.x, HERO.y, HERO.w, HERO.h);
+  const ir = heroImgRect();
+  g.drawImage(IMG['lapel-sb-peak-regular'], ir.x, ir.y, ir.w, ir.h);
+  // Goldener Lichtschimmer auf «entworfen»
+  const ts = w('hook', 7), q = seg(t, ts - 0.1, ts + 1.1);
+  if (q > 0 && q < 1) {
+    const shx = HERO.x - 300 + q * (HERO.w + 600);
+    g.save(); g.beginPath(); g.rect(HERO.x, HERO.y, HERO.w, HERO.ih); g.clip();
+    const lg = g.createLinearGradient(shx, HERO.y, shx + 260, HERO.y + 200);
+    lg.addColorStop(0, 'rgba(201,160,99,0)'); lg.addColorStop(0.5, 'rgba(201,160,99,.16)'); lg.addColorStop(1, 'rgba(201,160,99,0)');
+    g.fillStyle = lg; g.fillRect(HERO.x, HERO.y, HERO.w, HERO.ih); g.restore();
+  }
+  g.fillStyle = WARM; g.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, HERO.th);
+  g.fillStyle = LINE; g.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, 1);
+  spaced(g, 'Ihr Entwurf', hc.x, HERO.y + HERO.ih + HERO.th * 0.4, 14, MUTED, 3, 600, 'center');
+  g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText('Einreiher, steigendes Revers', hc.x, HERO.y + HERO.ih + HERO.th * 0.76); g.textAlign = 'left';
+  // Callouts auf den Wörtern
+  const fade = 1 - seg(t, T.d1[0] - 0.5, T.d1[0] - 0.1) * 0.75;
+  TAGS.forEach((tg, i) => {
+    const t0 = tg.t(), p = p4out((t - t0) / 0.38), pl = ioc((t - t0 - 0.05) / 0.36);
+    if (p <= 0) return;
+    const ty = TAG.y0 + i * TAG.dy, an = heroPt(tg.ax, tg.ay);
+    g.save(); g.globalAlpha *= fade;
+    const sx = TAG.x - 14, sy = ty + TAG.h / 2;
+    g.strokeStyle = GOLD; g.lineWidth = 1.5; g.beginPath(); g.moveTo(sx, sy); g.lineTo(lerp(sx, an.x, pl), lerp(sy, an.y, pl)); g.stroke();
+    if (pl > 0.98) { const pu = sp(t - t0 - 0.4, 'playful'); g.fillStyle = 'rgba(201,160,99,.28)'; g.beginPath(); g.arc(an.x, an.y, 11 * pu, 0, Math.PI * 2); g.fill(); g.fillStyle = GOLD; g.beginPath(); g.arc(an.x, an.y, 5, 0, Math.PI * 2); g.fill(); }
+    g.globalAlpha *= clamp(p * 1.4); g.translate((1 - p) * 40, 0);
+    g.fillStyle = 'rgba(255,255,255,.045)'; g.fillRect(TAG.x, ty, TAG.w, TAG.h);
+    strokeRect(g, TAG.x, ty, TAG.w, TAG.h, 'rgba(255,255,255,.22)');
+    tickMark(g, TAG.x + 34, ty + TAG.h / 2, 13, p4out((t - t0 - 0.1) / 0.3), GOLD, INK);
+    spaced(g, tg.g, TAG.x + 64, ty + TAG.h * 0.42, 13, 'rgba(255,255,255,.55)', 3);
+    g.font = `500 26px ${SERIF}`; g.fillStyle = '#fff'; g.fillText(tg.o, TAG.x + 64, ty + TAG.h * 0.78);
+    g.restore();
+  });
+  // Fokusrahmen (kündigt den Zoom-Through an)
+  if (t < T.d1[0]) focusFrame(g, P1(), seg(t, T.d1[0] - 0.55, T.d1[0] - 0.1));
+  g.restore();
+}
+
+// ---------------------------------------------------------------------------
+// WELTEN 1–3 – Kartenraster (Revers, Knöpfe, Taschen), echte Optionen aus daten.ts
+// ---------------------------------------------------------------------------
+const SETS = [
+  { cards: [
+    { img: 'lapel-sb-notch-regular', code: 'Fallend', label: 'Normal (8.0 cm)' },
+    { img: 'lapel-sb-peak-regular', code: 'Steigend', label: 'Normal (8.0 cm)' },
+    { img: 'lapel-sb-shawl-regular', code: 'Schalkragen', label: 'Normal (6.0 cm)' }], pick: 1, click: () => T.clickRevers, t0: () => T.d1[0] },
+  { cards: [
+    { img: 'sb-1b', code: '1 B', label: 'Ein Knopf' },
+    { img: 'db-6x2', code: '6 X 2', label: 'Sechs auf zwei' },
+    { img: 'sb-2b', code: '2 B', label: 'Zwei Knöpfe' }], pick: 2, click: () => T.clickKnopf, t0: () => T.d2[0] },
+  { cards: [
+    { img: 'pocket-barchetta-flap', code: 'Brust · Seite', label: 'Barchetta & Patte' },
+    { img: 'pocket-barchetta-jetted', code: 'Brust · Seite', label: 'Barchetta & Paspel' },
+    { img: 'pocket-patch-patch', code: 'Brust · Seite', label: 'Aufgesetzt' }], pick: 0, click: () => T.clickTasche, t0: () => T.d3[0] },
+];
+function cardState(s, i, t) {
+  const S = SETS[s], pick = S.pick === i, c = S.click();
+  const hover = pick ? sp(t - (c - 0.42), 'ui') * (1 - sp(t - c, 'snappy')) : 0;
+  const on = pick && t >= c ? clamp((t - c) / 0.12) : 0;
+  const pop = pick ? 1 - 0.035 * Math.sin(Math.PI * seg(t, c - 0.02, c + 0.26)) : 1;
+  return { hover, on, pop, tOn: t - c };
+}
+// Punkt im Bild der gewählten Karte (Bruchteil der Bildfläche)
+function cardImgPt(s, fx, fy) { const r = cardRect(SETS[s].pick); return { x: r.x + 14 + (r.w - 28) * fx, y: r.y + 14 + (L.ih - 22) * fy }; }
+// Portal 2: Fokusrahmen auf den Knöpfen der gewählten Revers-Karte
+const P2 = () => { const p = cardImgPt(0, 0.5, 0.6); return frameAt(p.x, p.y, V ? 92 : 120); };
+function worldGrid(g, s, t, opt = {}) {
+  if (opt.bg !== false) { g.fillStyle = WARM; g.fillRect(-W * 2, -H * 2, W * 5, H * 5); }
+  const S = SETS[s];
+  S.cards.forEach((c, i) => {
+    if (opt.skip === i) return;
+    const r = cardRect(i), st = cardState(s, i, t);
+    const tin = S.t0() + 0.12 + i * 0.07, p = p4out((t - tin) / 0.55);   // Karten steigen gestaffelt auf
+    r.y += (1 - p) * 70;
+    let a = clamp(p * 1.6);
+    if (s === 0 && i !== S.pick) a *= 1 - 0.85 * (camGrid0(t).z || 0);
+    if (a <= 0.01) return;
+    g.save(); g.globalAlpha *= a; card(g, r, c, st); g.restore();
+  });
+  if (s === 0) {
+    // Detail-Karte zum gewählten Revers (Digital Zoom)
+    const ti = T.clickRevers + 0.28, pin = p4out((t - ti) / 0.4), pout = seg(t, T.d2[0] - 0.1, T.d2[0] + 0.15);
+    if (pin > 0) {
+      const r = cardRect(1), bw = V ? 420 : 380, bx = r.x + r.w / 2 - bw / 2, by = r.y + r.h + (V ? 26 : 22) + (1 - pin) * 20, bh = 92;
+      g.save(); g.globalAlpha *= clamp(pin * 1.5) * (1 - pout);
+      g.fillStyle = '#fff'; g.fillRect(bx, by, bw, bh); strokeRect(g, bx, by, bw, bh, INK); g.fillStyle = GOLD; g.fillRect(bx, by, 3, bh);
+      spaced(g, 'Revers — Einreiher, steigend', bx + 24, by + 34, 11, MUTED, 2.5);
+      g.font = `italic 500 20px ${SERIF}`; g.fillStyle = INK; g.fillText('Klassisch, in italienischer Manier', bx + 24, by + 68);
+      g.restore();
+    }
+    if (t < T.d2[0]) focusFrame(g, P2(), seg(t, T.d2[0] - 0.5, T.d2[0] - 0.05), 2);
+  }
+}
+function camGrid0(t) {
+  // Digital Zoom auf die gewählte Reversspitze
+  const f = cardImgPt(0, 0.6, 0.32), base = ID();
+  const z = sp(t - (T.clickRevers + 0.18), 'heavy');
+  return { wx: lerp(base.wx, f.x, z), wy: lerp(base.wy, f.y, z), ax: lerp(base.ax, f.x + (V ? 0 : 60), z), ay: lerp(base.ay, f.y - (V ? 30 : 40), z), s: 1 + 0.38 * z, r: 0, z };
+}
+function camDrift(t, t0, amt = 0.025) { const c = ID(); c.s = 1 + amt * seg(t, t0, t0 + 3); return c; }
+
+// ---------------------------------------------------------------------------
+// WELT 4 – Futter & Details (Checklist Pop)
+// ---------------------------------------------------------------------------
+const CHECK = [['Futter', 'Gefüttert'], ['Knopfloch am Revers', 'Handgenäht'], ['Ärmelknöpfe', 'Kissing Buttons'], ['Monogramm innen', 'Monogramm im Futter']];
+const LIN = V ? { x: 90, y: 640, w: 900 } : { x: 860, y: 0, w: 460 };
+LIN.ih = LIN.w / (V ? 1.8 : 1.23); LIN.th = 88; LIN.h = LIN.ih + LIN.th; if (!V) LIN.y = L.sc.y - LIN.h / 2;
+const CL = V ? { x: 90, y: LIN.y + LIN.h + 30, w: 900, rh: 72 } : { x: 1380, y: 0, w: 440, rh: 104 };
+if (!V) CL.y = L.sc.y - (CHECK.length * CL.rh) / 2;
+const P5 = () => frameAt(LIN.x + LIN.w * 0.5, LIN.y + LIN.ih * 0.55, V ? 170 : 220);
+function worldFutter(g, t, opt = {}) {
+  if (opt.bg !== false) { g.fillStyle = WARM; g.fillRect(-W * 2, -H * 2, W * 5, H * 5); }
+  if (!opt.noCard) {
+    const on = t >= T.checks[0] ? 1 : 0;
+    g.fillStyle = '#fff'; g.fillRect(LIN.x, LIN.y, LIN.w, LIN.h);
+    contain(g, IMG['lining-lined'], LIN.x + 20, LIN.y + 16, LIN.w - 40, LIN.ih - 24);
+    g.fillStyle = on ? WARM : '#fff'; g.fillRect(LIN.x, LIN.y + LIN.ih, LIN.w, LIN.th); g.fillStyle = LINE; g.fillRect(LIN.x, LIN.y + LIN.ih, LIN.w, 1);
+    spaced(g, 'Futter', LIN.x + LIN.w / 2, LIN.y + LIN.ih + LIN.th * 0.4, 14, MUTED, 3, 600, 'center');
+    g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText('Gefüttert', LIN.x + LIN.w / 2, LIN.y + LIN.ih + LIN.th * 0.76); g.textAlign = 'left';
+    strokeRect(g, LIN.x, LIN.y, LIN.w, LIN.h, on ? INK : LINE, on ? 2 : 1);
+    if (on) tickMark(g, LIN.x + LIN.w - 26, LIN.y + 26, 16, sp(t - T.checks[0], 'ui'));
+  }
+  CHECK.forEach(([gr, o], i) => {
+    const tc = T.checks[i], y = CL.y + i * CL.rh, pin = p4out((t - (tc - 0.3)) / 0.4);
+    if (pin <= 0) return;
+    g.save(); g.globalAlpha *= clamp(pin * 1.4); g.translate((1 - pin) * 50, 0);
+    g.fillStyle = LINE; g.fillRect(CL.x, y + CL.rh - 1, CL.w * pin, 1);
+    g.strokeStyle = LINE; g.lineWidth = 1.5; g.beginPath(); g.arc(CL.x + 22, y + CL.rh / 2, 20, 0, Math.PI * 2); g.stroke();
+    tickMark(g, CL.x + 22, y + CL.rh / 2, 20, t >= tc ? sp(t - tc, 'ui') : 0);
+    const pr = seg(t, tc, tc + 0.5); if (pr > 0 && pr < 1) { g.strokeStyle = `rgba(201,160,99,${0.7 * (1 - pr)})`; g.lineWidth = 2; g.beginPath(); g.arc(CL.x + 22, y + CL.rh / 2, 20 + 18 * E.outCubic(pr), 0, Math.PI * 2); g.stroke(); }
+    if (V) { spaced(g, gr, CL.x + 66, y + CL.rh * 0.5 + 6, 14, MUTED, 3); g.font = `500 30px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'right'; g.fillText(o, CL.x + CL.w, y + CL.rh * 0.5 + 10); g.textAlign = 'left'; }
+    else { spaced(g, gr, CL.x + 66, y + CL.rh * 0.42, 13, MUTED, 3); g.font = `500 30px ${SERIF}`; g.fillStyle = INK; g.fillText(o, CL.x + 66, y + CL.rh * 0.78); }
+    g.restore();
+  });
+  if (t < T.d5[0]) focusFrame(g, P5(), seg(t, T.d5[0] - 0.5, T.d5[0] - 0.05));
+}
+
+// ---------------------------------------------------------------------------
+// WELT 5 – Stoff (Holland & Sherry), Ken Burns
+// ---------------------------------------------------------------------------
+const STOFFNR = '4521 08';
+const SF = V ? { x: 90, y: 1080, w: 850, h: 330 } : { x: 1130, y: 600, w: 660, h: 330 };
+const SF_BTN = () => { const bw = V ? 250 : 230; return { x: SF.x + SF.w - 40 - bw, y: SF.y + (V ? 96 : 92), w: bw, h: V ? 76 : 70 }; };
+function worldStoff(g, t, opt = {}) {
+  const img = IMG['Holland-Sherry-3-scaled'];
+  g.fillStyle = '#0d1420'; g.fillRect(-W * 2, -H * 2, W * 5, H * 5);
+  const kb = 1.22 - 0.12 * seg(t, T.d5[0], T.d6[1] + 1);
+  cover(g, img, 0, 0, W, H, kb, V ? 0.6 : 0.45, 0.5);
+  const a = 1 - clamp((opt.strip || 0) * 2.2);
+  if (a <= 0) return;
+  g.save(); g.globalAlpha *= a;
+  const lg = V ? g.createLinearGradient(0, 0, 0, H * 0.6) : g.createLinearGradient(0, 0, W * 0.62, 0);
+  lg.addColorStop(0, 'rgba(10,10,10,.8)'); lg.addColorStop(0.6, 'rgba(10,10,10,.42)'); lg.addColorStop(1, 'rgba(10,10,10,0)');
+  g.fillStyle = lg; g.fillRect(0, 0, W, H);
+  const pin = p4out((t - (w('stoff', 2) - 0.1)) / 0.5);
+  if (pin > 0) {
+    g.save(); g.globalAlpha *= clamp(pin * 1.4); g.translate(0, (1 - pin) * 60);
+    g.fillStyle = '#fff'; g.fillRect(SF.x, SF.y, SF.w, SF.h);
+    spaced(g, 'Stoffnummer (optional)', SF.x + 40, SF.y + 58, V ? 16 : 14, MUTED, 3);
+    const btn = SF_BTN(), fx = SF.x + 40, fw = btn.x - 14 - fx;
+    const focus = seg(t, T.typ[0] - 0.2, T.typ[0]) * (1 - seg(t, T.clickStoff + 0.05, T.clickStoff + 0.2));
+    strokeRect(g, fx, btn.y, fw, btn.h, rgb(mixColor(hex(LINE), hex(INK), Math.max(focus, 0.35))), 1 + focus);
+    const n = t < T.clickStoff + 0.05 ? Math.floor(clamp((t - T.typ[0]) / (T.typ[1] - T.typ[0])) * STOFFNR.length) : 0;
+    g.font = `500 ${V ? 32 : 30}px ${SANS}`; g.letterSpacing = '2px';
+    const txt = STOFFNR.slice(0, n), tw = g.measureText(txt).width;
+    if (n > 0) { g.fillStyle = INK; g.fillText(txt, fx + 24, btn.y + btn.h * 0.66); }
+    else { g.fillStyle = 'rgba(16,16,16,.32)'; g.fillText('Product Code', fx + 24, btn.y + btn.h * 0.66); }
+    g.letterSpacing = '0px';
+    if (focus > 0.5) { g.fillStyle = GOLD; g.fillRect(fx + 24 + (n ? tw + 4 : 0), btn.y + 16, 2.5, btn.h - 32); }
+    const press = 1 - 0.04 * Math.sin(Math.PI * seg(t, T.clickStoff - 0.03, T.clickStoff + 0.2));
+    g.save(); g.translate(btn.x + btn.w / 2, btn.y + btn.h / 2); g.scale(press, press); g.translate(-(btn.x + btn.w / 2), -(btn.y + btn.h / 2));
+    g.fillStyle = INK; g.fillRect(btn.x, btn.y, btn.w, btn.h);
+    spaced(g, 'Hinzufügen', btn.x + btn.w / 2, btn.y + btn.h * 0.6, V ? 17 : 15, '#fff', 2.5, 600, 'center');
+    g.restore();
+    const pc = sp(t - (T.clickStoff + 0.08), 'ui');
+    if (pc > 0.01) {
+      g.font = `600 ${V ? 26 : 24}px ${SANS}`; g.letterSpacing = '1.5px';
+      const cw = g.measureText(STOFFNR).width + 120, cy = btn.y + btn.h + (V ? 40 : 30), chh = V ? 62 : 56;
+      g.save(); g.globalAlpha *= clamp(pc * 1.5); g.translate(fx, cy + chh / 2); g.scale(0.85 + 0.15 * pc, 0.85 + 0.15 * pc); g.translate(-fx, -(cy + chh / 2));
+      g.fillStyle = WARM; g.fillRect(fx, cy, cw, chh); strokeRect(g, fx, cy, cw, chh, INK);
+      tickMark(g, fx + 30, cy + chh / 2, 13, sp(t - (T.clickStoff + 0.2), 'ui'), GOLD, '#fff');
+      g.fillStyle = INK; g.fillText(STOFFNR, fx + 56, cy + chh * 0.64);
+      g.letterSpacing = '0px'; g.restore();
+      g.font = `400 ${V ? 23 : 20}px ${SANS}`; g.fillStyle = MUTED; g.globalAlpha *= clamp((t - T.clickStoff - 0.3) / 0.3);
+      g.fillText('Wir legen das Muster zu Ihrem Termin bereit', fx, cy + chh + 36);
+    }
+    g.restore();
+  }
+  g.restore();
+}
+
+// ---------------------------------------------------------------------------
+// WELT 6 – Übersicht (das Stoffbild sitzt in der ersten Zeile: Portal für den Zoom-out)
+// ---------------------------------------------------------------------------
+const SUM = V ? { x: 70, y: 650, w: 870, h: 830 } : { x: 860, y: 160, w: 960, h: 760 };
+const ROWS = [
+  { img: 'stoff', u: 'Stoffnummer', o: STOFFNR },
+  { img: 'lapel-sb-peak-regular', u: 'Revers — steigend', o: 'Normal (8.0 cm)' },
+  { img: 'sb-2b', u: 'Vorderteil — Einreiher', o: 'Zwei Knöpfe' },
+  { img: 'pocket-barchetta-flap', u: 'Taschen', o: 'Barchetta & Patte' },
+  { img: 'lining-lined', u: 'Futter', o: 'Gefüttert' },
+  { img: 'buttonhole-hand', u: 'Knopfloch am Revers', o: 'Handgenäht' },
+  { img: 'cuff-kissing', u: 'Ärmelknöpfe', o: 'Kissing Buttons' },
+  { img: 'monogram-lined', u: 'Monogramm innen', o: 'Im Futter' },
+];
+const RG = (() => { const pad = V ? 40 : 48, colw = (SUM.w - pad * 2 - 18) / 2, rh = 86, y0 = SUM.y + (V ? 186 : 188); return { pad, colw, rh, y0 }; })();
+const rowRect = (i) => ({ x: SUM.x + RG.pad + (i % 2) * (RG.colw + 18), y: RG.y0 + Math.floor(i / 2) * (RG.rh + 12), w: RG.colw, h: RG.rh });
+// Stoff-Vorschau im Bildformat (Portal)
+const P6 = () => { const r = rowRect(0), hh = r.h - 20, ww = hh * ASP; return V ? { x: r.x + 10, y: r.y + 10, w: hh * ASP, h: hh } : { x: r.x + 10, y: r.y + 10, w: ww, h: hh }; };
+const BTNS = (() => {
+  const y = rowRect(7).y + RG.rh + 40, h = V ? 78 : 70, w1 = V ? 520 : 470, w2 = V ? 340 : 300;
+  if (V) return { termin: { x: SUM.x + RG.pad, y, w: SUM.w - RG.pad * 2, h }, pdf: { x: SUM.x + RG.pad, y: y + h + 16, w: w2, h } };
+  return { termin: { x: SUM.x + RG.pad, y, w: w1, h }, pdf: { x: SUM.x + RG.pad + w1 + 16, y, w: w2, h } };
+})();
+if (V) SUM.h = BTNS.pdf.y + BTNS.pdf.h + 40 - SUM.y;
+function worldSum(g, t, opt = {}) {
+  g.fillStyle = WARM; g.fillRect(-W * 2, -H * 2, W * 5, H * 5);
+  const t0 = T.d6[0];
+  g.fillStyle = '#fff'; g.fillRect(SUM.x, SUM.y, SUM.w, SUM.h); strokeRect(g, SUM.x, SUM.y, SUM.w, SUM.h, LINE);
+  spaced(g, 'Übersicht', SUM.x + RG.pad, SUM.y + 62, V ? 16 : 14, MUTED, 4);
+  g.font = `500 ${V ? 46 : 44}px ${SERIF}`; g.fillStyle = INK; g.fillText('Ihr Massanzug in 7 Details', SUM.x + RG.pad, SUM.y + 122);
+  g.fillStyle = GOLD; g.fillRect(SUM.x + RG.pad, SUM.y + 148, 40, 2);
+  ROWS.forEach((row, i) => {
+    const r = rowRect(i), tr = { x: r.x + 10, y: r.y + 10, w: r.h - 20, h: r.h - 20 };
+    const ti = i === 0 ? -9 : w('blick', 0) + (i - 1) * 0.085, p = p4out((t - ti) / 0.4);
+    if (p <= 0) return;
+    g.save(); g.globalAlpha *= clamp(p * 1.4); g.translate(0, (1 - p) * 26);
+    g.fillStyle = i === 0 ? WARM : '#fff'; g.fillRect(r.x, r.y, r.w, r.h); strokeRect(g, r.x, r.y, r.w, r.h, LINE);
+    let tx = tr.x + tr.w + 18;
+    if (row.img === 'stoff') {
+      const pr = P6();
+      if (!opt.noThumb) { g.save(); g.beginPath(); g.rect(pr.x, pr.y, pr.w, pr.h); g.clip(); cover(g, IMG['Holland-Sherry-3-scaled'], pr.x, pr.y, pr.w, pr.h, 1.1, V ? 0.6 : 0.45, 0.5); g.restore(); }
+      tx = pr.x + pr.w + 18;
+    } else { g.fillStyle = '#fff'; g.fillRect(tr.x, tr.y, tr.w, tr.h); contain(g, IMG[row.img], tr.x + 3, tr.y + 3, tr.w - 6, tr.h - 6); strokeRect(g, tr.x, tr.y, tr.w, tr.h, LINE); }
+    spaced(g, row.u, tx, r.y + r.h * 0.42, 12, MUTED, 2);
+    g.font = `500 ${V ? 25 : 24}px ${SERIF}`; g.fillStyle = INK; g.fillText(row.o, tx, r.y + r.h * 0.76);
+    g.restore();
+  });
+  const pb = p4out((t - (w('blick', 3) + 0.1)) / 0.45);
+  if (pb > 0) {
+    g.save(); g.globalAlpha *= clamp(pb * 1.4); g.translate(0, (1 - pb) * 24);
+    const bt = BTNS.termin, bp = BTNS.pdf, tc = T.clickTermin, tpd = T.clickPdf;
+    const hov = sp(t - (tc - 0.5), 'ui'), press = 1 - 0.04 * Math.sin(Math.PI * seg(t, tc - 0.03, tc + 0.2));
+    g.save(); g.translate(bt.x + bt.w / 2, bt.y + bt.h / 2 - hov * 3); g.scale(press, press); g.translate(-(bt.x + bt.w / 2), -(bt.y + bt.h / 2));
+    g.fillStyle = INK; g.fillRect(bt.x, bt.y, bt.w, bt.h);
+    if (hov > 0.05) { g.fillStyle = GOLD; g.fillRect(bt.x, bt.y + bt.h - 3, bt.w * hov, 3); }
+    spaced(g, 'Termin mit dieser Auswahl buchen', bt.x + bt.w / 2, bt.y + bt.h * 0.6, V ? 17 : 15, '#fff', 2.5, 600, 'center');
+    g.restore();
+    const pp = 1 - 0.04 * Math.sin(Math.PI * seg(t, tpd - 0.03, tpd + 0.2)), ph = sp(t - (tpd - 0.45), 'ui') * (1 - sp(t - (tpd + 0.5), 'default'));
+    g.save(); g.translate(bp.x + bp.w / 2, bp.y + bp.h / 2); g.scale(pp, pp); g.translate(-(bp.x + bp.w / 2), -(bp.y + bp.h / 2));
+    g.fillStyle = ph > 0.05 ? rgb(mixColor(hex('#ffffff'), hex(WARM), ph)) : '#fff'; g.fillRect(bp.x, bp.y, bp.w, bp.h); strokeRect(g, bp.x, bp.y, bp.w, bp.h, INK);
+    const ix = bp.x + 36, iy = bp.y + bp.h / 2, drop = Math.sin(Math.PI * seg(t, tpd, tpd + 0.45)) * 6;
+    g.strokeStyle = INK; g.lineWidth = 2; g.lineCap = 'round'; g.lineJoin = 'round';
+    g.beginPath(); g.moveTo(ix, iy - 12 + drop); g.lineTo(ix, iy + 4 + drop); g.moveTo(ix - 6, iy - 2 + drop); g.lineTo(ix, iy + 4 + drop); g.lineTo(ix + 6, iy - 2 + drop); g.moveTo(ix - 10, iy + 12); g.lineTo(ix + 10, iy + 12); g.stroke();
+    spaced(g, 'PDF herunterladen', bp.x + bp.w / 2 + 20, bp.y + bp.h * 0.6, V ? 17 : 15, INK, 2.5, 600, 'center');
+    g.restore();
+    const ps = p4out((t - (tpd + 0.3)) / 0.35);
+    if (ps > 0) {
+      const sx = V ? bp.x + bp.w + 30 : bt.x, sy = V ? bp.y + bp.h * 0.6 : bt.y + bt.h + 52;
+      g.save(); g.globalAlpha *= clamp(ps * 1.4);
+      tickMark(g, sx + 12, sy - 8, 12, sp(t - (tpd + 0.35), 'ui'), GOLD, '#fff');
+      g.font = `500 ${V ? 24 : 21}px ${SANS}`; g.fillStyle = INK; g.fillText('PDF heruntergeladen', sx + 34, sy + (1 - ps) * 10);
+      g.restore();
+    }
+    g.restore();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// WELT 7 – Atelier (Foto mit Schere), WELT 8 – Endkarte
+// ---------------------------------------------------------------------------
+function worldAtelier(g, t, r = { x: 0, y: 0, w: W, h: H }, a = 1) {
+  const img = IMG['Foto-mit-Schere'], kb = 1.18 - 0.1 * seg(t, T.clickTermin, T.d8[1]);
+  g.save(); g.beginPath(); g.rect(r.x, r.y, r.w, r.h); g.clip();
+  g.fillStyle = '#1a1a1a'; g.fillRect(r.x, r.y, r.w, r.h);
+  const fr = { x: (r.x + r.w / 2) - W / 2, y: (r.y + r.h / 2) - H / 2 };
+  cover(g, img, fr.x, fr.y, W, H, kb, V ? 0.62 : 0.55, 0.5);
+  const lg = V ? g.createLinearGradient(0, fr.y, 0, fr.y + H * 0.55) : g.createLinearGradient(fr.x, 0, fr.x + W * 0.6, 0);
+  lg.addColorStop(0, 'rgba(10,10,10,.75)'); lg.addColorStop(1, 'rgba(10,10,10,0)');
+  g.fillStyle = lg; g.fillRect(r.x, r.y, r.w, r.h);
+  if (a < 1) { g.fillStyle = `rgba(201,160,99,${1 - a})`; g.fillRect(r.x, r.y, r.w, r.h); }
+  g.restore();
+}
+const EY = V ? { logo: 470, line: 640, h1: 800, h2: 916, c1: 1080, url: 1150 } : { logo: 200, line: 368, h1: 500, h2: 616, c1: 760, url: 836 };
+function worldEnd(g, t, opt = {}) {
+  if (opt.bg !== false) { g.fillStyle = INK; g.fillRect(-W * 2, -H * 2, W * 5, H * 5); }
+  const ex = opt.exitT ?? -9, outP = (k) => p4in((ex - k * 0.03) / 0.26);
+  const cx = W / 2, lw = 600, lh = 89, lx = cx - lw / 2;
+  const t0 = w('preis', 0);
+  // Logo: Masken-Wisch, danach immer vollständig und scharf
+  const pw = E.outExpo(seg(t, t0 - 0.05, t0 + 0.65)), o0 = outP(0);
+  if (pw > 0 && o0 < 1) {
+    g.save(); g.globalAlpha *= 1 - o0; g.beginPath();
+    if (t >= t0 + 0.7) g.rect(-W, -H, W * 3, H * 3); else g.rect(lx - 10, EY.logo - 10, (lw + 20) * pw, lh + 20);
+    g.clip(); g.drawImage(LOGO_W, lx, EY.logo - o0 * 40, lw, lh); g.restore();
+  }
+  if (!opt.noLine) { const pl = 1 - outP(1); g.fillStyle = GOLD; g.fillRect(cx - 50 * pl, EY.line, 100 * pl, 2); }
+  // «Ihr Massanzug.» Wort für Wort
+  const word = (txt, x, y, size, style, col, ts, k, align = 'left') => {
+    g.font = `${style} ${size}px ${SERIF}`; g.letterSpacing = '-0.5px';
+    const p = p4out((t - ts) / 0.42), q = outP(k);
+    if (p > 0 && q < 1) { g.save(); g.beginPath(); g.rect(x - 30, y - size * 1.05, g.measureText(txt).width + 60, size * 1.4); g.clip(); g.fillStyle = col; g.textAlign = align; g.fillText(txt, x, y + (1 - p) * size * 0.8 - q * size * 1.2); g.restore(); }
+    g.letterSpacing = '0px'; g.textAlign = 'left';
+  };
+  const hs = V ? 100 : 104;
+  g.font = `500 ${hs}px ${SERIF}`; g.letterSpacing = '-0.5px';
+  const a1 = 'Ihr ', a2 = 'Massanzug.', wa = g.measureText(a1).width, wb = g.measureText(a2).width, x1 = cx - (wa + wb) / 2;
+  word(a1, x1, EY.h1, hs, '500', '#fff', t0, 2); word(a2, x1 + wa, EY.h1, hs, '500', '#fff', w('preis', 1), 2);
+  // «Ab CHF 1’690.» – Ziffern rollen auf «sechzehnhundertneunzig» ein
+  g.font = `italic 500 ${hs}px ${SERIF}`;
+  const b1 = 'Ab CHF ', wb1 = g.measureText(b1).width, dig = '1’690.', wdig = g.measureText(dig).width, x2 = cx - (wb1 + wdig) / 2;
+  word('Ab', x2, EY.h2, hs, 'italic 500', GOLD, w('preis', 2), 3);
+  word('CHF', x2 + g.measureText('Ab ').width, EY.h2, hs, 'italic 500', GOLD, w('preis', 2) + 0.12, 3);
+  { const ts = w('preis', 3), q = outP(3); let x = x2 + wb1;
+    if (t > ts - 0.05 && q < 1) {
+      g.font = `italic 500 ${hs}px ${SERIF}`;
+      [...dig].forEach((ch, i) => {
+        const cwid = g.measureText(ch).width;
+        g.save(); g.beginPath(); g.rect(x - 6, EY.h2 - hs * 0.95, cwid + 12, hs * 1.25); g.clip(); g.fillStyle = GOLD;
+        if (/\d/.test(ch)) {
+          const d = +ch, sN = spring(t - (ts + i * 0.16), 120, 22), pos = d + 10 * (1 + (i % 3)) * (1 - sN), base = Math.floor(pos), fr = pos - base;
+          const dy = -q * hs * 1.2;
+          g.fillText(String(((base % 10) + 10) % 10), x, EY.h2 + dy + fr * hs * 1.05);
+          g.fillText(String((((base - 1) % 10) + 10) % 10), x, EY.h2 + dy + fr * hs * 1.05 - hs * 1.05);
+        } else { const p = p4out((t - (ts + i * 0.16)) / 0.4); g.fillText(ch, x, EY.h2 + (1 - p) * hs * 0.8 - q * hs * 1.2); }
+        g.restore(); x += cwid;
+      });
+    } }
+  // CTA
+  const pc = p4out((t - w('cta', 0)) / 0.45), qc = outP(4);
+  if (pc > 0 && qc < 1) {
+    g.save(); g.globalAlpha *= clamp(pc * 1.3) * (1 - qc); g.translate(0, (1 - pc) * 24 - qc * 40);
+    g.textAlign = 'center'; g.font = `400 ${V ? 34 : 30}px ${SANS}`; g.fillStyle = 'rgba(255,255,255,.72)';
+    // Wort für Wort im Takt
+    const ws = ['Gestalten', 'Sie', 'ihn', 'jetzt', 'auf'], full = ws.join(' ');
+    const fw = g.measureText(full).width; let x = cx - fw / 2; g.textAlign = 'left';
+    ws.forEach((ww, i) => { const p = p4out((t - w('cta', i)) / 0.3); g.globalAlpha = clamp(pc * 1.3) * (1 - qc) * p; g.fillText(ww, x, EY.c1 + (1 - p) * 14); x += g.measureText(ww + ' ').width; });
+    g.restore();
+  }
+  const pu = p4out((t - w('cta', 5)) / 0.5), qu = outP(5);
+  if (pu > 0 && qu < 1) {
+    g.save(); g.font = `600 ${V ? 50 : 46}px ${SANS}`; g.letterSpacing = '0.5px';
+    const url = 'thesartorialist.ch', uw = g.measureText(url).width, ux = cx - uw / 2;
+    // Schreibt sich von links nach rechts (Wisch) auf «Sartorialist Punkt C H»
+    const wipe = E.outCubic(seg(t, w('cta', 5), we('cta', 9)));
+    g.beginPath(); g.rect(ux - 10, EY.url - 70, (uw + 20) * Math.max(wipe, 0.0), 100); g.clip();
+    g.fillStyle = '#fff'; g.globalAlpha = 1 - qu; g.fillText(url, ux, EY.url - qu * 40);
+    g.restore();
+    // Goldener Unterstrich
+    g.save(); const ul = sp(t - we('cta', 9), 'heavy') * (1 - qu); g.font = `600 ${V ? 50 : 46}px ${SANS}`; const uw2 = g.measureText(url).width;
+    g.fillStyle = GOLD; g.fillRect(cx - uw2 / 2, EY.url + 18, uw2 * ul, 2); g.restore();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Kinetic Captions (Bildschirm-Ebene): exakt die gesprochenen Wörter, Wort für Wort
+// ---------------------------------------------------------------------------
+// [anzeige, zeilen-id, wortindex, kursiv?] ; Seite endet zur Zeit «aus»
+const PAGES = [
+  { kick: 'Styles & Options', light: true, aus: () => w('hook', 2) - 0.12, lines: [[['Ihr', 'hook', 0], ['Massanzug', 'hook', 1]]] },
+  { kick: 'Styles & Options', light: true, gold: true, aus: () => T.d1[0] - 0.05, lines: [[['Bis', 'hook', 2], ['ins', 'hook', 3], ['Detail', 'hook', 4]], [['von', 'hook', 5], ['Ihnen', 'hook', 6], ['entworfen', 'hook', 7, 1]]] },
+  { kick: 'Sakko · Revers', aus: () => T.d2[0] + 0.05, lines: [[['Wählen', 'revers', 0], ['Sie', 'revers', 1]], [['das', 'revers', 2], ['Revers', 'revers', 3, 1]]] },
+  { kick: 'Sakko · Vorderteil', snap: () => T.clickKnopf + 0.02, aus: () => T.d3[0] + 0.1, lines: [[['Die', 'knopf', 0], ['Knöpfe', 'knopf', 1, 1]]] },
+  { kick: 'Sakko · Taschen', aus: () => T.d4[0] + 0.15, lines: [[['Die', 'tasche', 0], ['Taschen', 'tasche', 1, 1]]] },
+  { kick: 'Futter & Details', aus: () => T.d5[0] + 0.05, lines: [[['Futter', 'futter', 0], ['und', 'futter', 1], ['Details,', 'futter', 2]], [['bis', 'futter', 3], ['zum', 'futter', 4], ['Monogramm', 'futter', 5, 1]]] },
+  { kick: 'Stoff · Holland & Sherry', light: true, aus: () => T.d6[0] - 0.3, lines: [[['Den', 'stoff', 0], ['Stoff', 'stoff', 1], ['von', 'stoff', 2]], [['Holland', 'stoff', 3, 1], ['&', 'stoff', 4, 1], ['Sherry', 'stoff', 5, 1]]] },
+  { kick: 'Ihre Auswahl', aus: () => w('blick', 4) - 0.1, lines: [[['Alles', 'blick', 0], ['auf', 'blick', 1]], [['einen', 'blick', 2], ['Blick', 'blick', 3, 1]]] },
+  { kick: 'Ihre Auswahl', flood: true, aus: () => T.d8[0] + 0.05, lines: [[['Als', 'blick', 4], ['PDF', 'blick', 5], ['oder', 'blick', 6]], [['direkt', 'blick', 7], ['ins', 'blick', 8], ['Atelier', 'blick', 9, 1]]] },
+];
+function kicker(g, text, x, y, light) {
+  g.fillStyle = GOLD; g.fillRect(x, y - 11, 26, 2);
+  g.font = `600 ${V ? 22 : 17}px ${SANS}`; g.letterSpacing = V ? '5px' : '4.5px';
+  g.fillStyle = light ? 'rgba(255,255,255,.78)' : MUTED; g.fillText(text.toUpperCase(), x + 42, y - 4); g.letterSpacing = '0px';
+}
+function capY(n) { return V ? 452 : (n === 2 ? 498 : 520); }
+function caption(g, pg, t, light) {
+  const first = SPR[pg.lines[0][0][1]].worte[pg.lines[0][0][2]].t, aus = pg.aus();
+  if (t < first - 0.1 || t > aus + 0.45) return;
+  const hs = L.hs, lh = hs * 1.14, y0 = capY(pg.lines.length);
+  const col = light ? '#ffffff' : INK, acc = light ? (pg.gold ? GOLD : '#ffffff') : INK;
+  const kIn = p4out((t - first + 0.1) / 0.4), kOut = p4in((t - aus) / 0.3);
+  g.save(); g.beginPath(); g.rect(L.tx - 10, y0 - hs - 70, 1000, 50); g.clip(); g.translate(0, (1 - kIn) * 30 - kOut * 36); kicker(g, pg.kick, L.tx, y0 - hs - 30, light); g.restore();
+  pg.lines.forEach((line, li) => {
+    const y = y0 + li * lh; let cx = L.tx;
+    let snap = 1, under = 0;
+    if (pg.snap && li === 0 && t > pg.snap()) { const u = t - pg.snap(); snap = 1 + 0.1 * Math.sin(Math.PI * clamp(u / 0.4)) * Math.exp(-u * 2); under = p4out(u / 0.45); }
+    g.save();
+    if (snap !== 1) { g.translate(L.tx, y - hs * 0.32); g.scale(snap, snap); g.translate(-L.tx, -(y - hs * 0.32)); }
+    line.forEach(([word, id, wi, it], k) => {
+      g.font = `${it ? 'italic 500' : '500'} ${hs}px ${SERIF}`; g.letterSpacing = '-0.5px';
+      const ww = g.measureText(word).width, sw = g.measureText(' ').width;
+      const start = SPR[id].worte[wi].t - 0.04;           // Wort erscheint mit dem Laut
+      const pIn = p4out((t - start) / 0.34), pOut = p4in((t - aus - k * 0.022 - li * 0.03) / 0.3);
+      if (t >= start && pOut < 1) {
+        g.save(); g.beginPath(); g.rect(cx - 20, y - hs * 1.02, ww + 40, hs * 1.36); g.clip();
+        const bl = (1 - pIn) * 8; if (bl > 0.4) g.filter = `blur(${bl.toFixed(1)}px)`;
+        g.fillStyle = it ? acc : col; g.fillText(word, cx, y + (1 - pIn) * hs * 0.6 - pOut * hs * 1.1);
+        g.restore();
+      }
+      cx += ww + sw;
+    });
+    if (under > 0) { g.fillStyle = GOLD; g.fillRect(L.tx, y + hs * 0.2, (cx - L.tx - 24) * under * (1 - p4in((t - aus) / 0.3)), 3); }
+    g.restore();
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Cursor (Weltkoordinaten der aktiven Welt → Bildschirm)
+// ---------------------------------------------------------------------------
+function cursorShape(x, y, press) {
+  G.save(); G.translate(x, y); const s = (V ? 1.6 : 1.35) * (1 - 0.14 * press); G.scale(s, s);
+  G.beginPath(); G.moveTo(0, 0); G.lineTo(0, 30); G.lineTo(7.5, 23); G.lineTo(12.5, 34); G.lineTo(17, 32); G.lineTo(12, 21.5); G.lineTo(22, 21.5); G.closePath();
+  G.fillStyle = INK; G.fill(); G.lineWidth = 2; G.strokeStyle = '#fff'; G.stroke(); G.restore();
+}
+const CLICKS = () => [T.clickRevers, T.clickKnopf, T.clickTasche, T.clickStoff, T.clickPdf, T.clickTermin];
+function cursorPath(t) {
+  const off = { x: W + 120, y: H + 160 };
+  const pk = (s) => { const r = cardRect(SETS[s].pick); return { x: r.x + r.w * 0.55, y: r.y + L.ih * 0.62 }; };
+  const b = SF_BTN(), stoff = { x: b.x + b.w * 0.55, y: b.y + b.h * 0.6 };
+  const pdf = { x: BTNS.pdf.x + BTNS.pdf.w * 0.6, y: BTNS.pdf.y + BTNS.pdf.h * 0.62 }, ter = { x: BTNS.termin.x + BTNS.termin.w * 0.62, y: BTNS.termin.y + BTNS.termin.h * 0.6 };
+  return trackObj(t, [
+    [0, off], [T.clickRevers - 0.75, pk(0), 100, 19], [T.clickRevers + 0.3, off, 50, 15],
+    [T.clickKnopf - 0.6, pk(1), 120, 20], [T.clickKnopf + 0.3, off, 50, 15],
+    [T.clickTasche - 0.6, pk(2), 120, 20], [T.clickTasche + 0.3, off, 50, 15],
+    [T.clickStoff - 0.7, stoff, 110, 20], [T.clickStoff + 0.3, off, 50, 15],
+    [T.clickPdf - 0.75, pdf, 110, 20], [T.clickPdf + 0.6, ter, 90, 18], [T.clickTermin + 0.25, off, 40, 14],
+  ]);
+}
+
+// ---------------------------------------------------------------------------
+// Zoom-Through: A (aussen) mit Kamera MA, darin B im Portal R (A-Koordinaten). p: 0 → 1 = hinein
+// ---------------------------------------------------------------------------
+function diveM(MA, R, p) {
+  // Bildschirmrechteck des Portals unter MA
+  const a = MA.transformPoint(new DOMPoint(R.x, R.y)), c = MA.transformPoint(new DOMPoint(R.x + R.w, R.y + R.h));
+  const ps = { x: (a.x + c.x) / 2, y: (a.y + c.y) / 2 }, pw = Math.abs(c.x - a.x);
+  const Send = W / pw, e = ioc(p), S = Math.exp(Math.log(Send) * e);
+  const f = (1 - 1 / S) / (1 - 1 / Send);                         // Portalmitte wandert geradlinig zur Bildmitte
+  const at = { x: lerp(ps.x, W / 2, f), y: lerp(ps.y, H / 2, f) };
+  const MD = new DOMMatrix().translate(at.x, at.y).scale(S).translate(-ps.x, -ps.y).multiply(MA);
+  const k = R.w / W;
+  const MB = MD.multiply(new DOMMatrix().translate(R.x + R.w / 2, R.y + R.h / 2).scale(k).translate(-W / 2, -H / 2));
+  return { MD, MB, speed: Math.log(Send) };
+}
+function drawDive(t, p, A, MA, R, B, peek = 1) {
+  const { MD, MB } = diveM(MA, R, p);
+  g.setTransform(MD); A(g, t);
+  g.setTransform(MD); g.save(); g.beginPath(); g.rect(R.x, R.y, R.w, R.h); g.clip();
+  g.setTransform(MB); g.globalAlpha = clamp(peek); B(g, t); g.globalAlpha = 1;
+  g.restore();
+  g.setTransform(MD); focusFrame(g, R, 1 - seg(p, 0.15, 0.45));
+}
+
+// ---------------------------------------------------------------------------
+// Komposition
+// ---------------------------------------------------------------------------
+let CAMNOW = ID(), CAPLIGHT = false, SMEAR = 0, WHIP = 0, FLOOD = null;
+function drawScene(t) {
+  g.setTransform(1, 0, 0, 1, 0, 0); g.filter = 'none'; g.globalAlpha = 1;
+  g.fillStyle = INK; g.fillRect(0, 0, W, H);
+  SMEAR = 0; WHIP = 0; FLOOD = null; let curM = null, light = false;
+  const [d1a, d1b] = T.d1, [d2a, d2b] = T.d2, [d3a, d3b] = T.d3, [d4a, d4b] = T.d4, [d5a, d5b] = T.d5, [d6a, d6b] = T.d6;
+  if (t < d1a) { g.setTransform(camM(camHook(t))); worldHook(g, t); light = true; }
+  else if (t < d1b) {
+    const p = seg(t, d1a, d1b), peek = seg(t, d1a - 0.4, d1a + 0.1);
+    drawDive(t, p, worldHook, camM(camHook(t)), P1(), (gg, tt) => worldGrid(gg, 0, tt), 1);
+    SMEAR = Math.sin(Math.PI * p); light = p < 0.5;
+  }
+  else if (t < d2a) { curM = camM(camGrid0(t)); g.setTransform(curM); worldGrid(g, 0, t); }
+  else if (t < d2b) {
+    const p = seg(t, d2a, d2b);
+    drawDive(t, p, (gg, tt) => worldGrid(gg, 0, tt), camM(camGrid0(t)), P2(), (gg, tt) => worldGrid(gg, 1, tt));
+    SMEAR = Math.sin(Math.PI * p);
+  }
+  else if (t < d3a) { curM = camM(camDrift(t, d2b)); g.setTransform(curM); worldGrid(g, 1, t); }
+  else if (t < d3b) {
+    // Whip-Pan: die Kamera reisst nach rechts zur Taschen-Welt
+    const p = seg(t, d3a, d3b), X = W * 1.15, e = E.inOutExpo ? E.inOutExpo(p) : ioc(p);
+    const M1 = camM(camDrift(t, d2b)).translate(0, 0);
+    g.setTransform(new DOMMatrix().translate(-X * e, 0).multiply(M1)); worldGrid(g, 1, t);
+    g.setTransform(new DOMMatrix().translate(X * (1 - e), 0)); g.fillStyle = WARM; g.fillRect(-W * 0.15, -H, W * 1.3, H * 3); worldGrid(g, 2, t, { bg: false });
+    WHIP = Math.sin(Math.PI * p);
+  }
+  else if (t < d4a) { curM = camM(camDrift(t, d3b, 0.02)); g.setTransform(curM); worldGrid(g, 2, t); }
+  else if (t < d4b) {
+    // Flip-Morph: die gewählte Taschen-Karte dreht sich um und wird zur Futter-Karte
+    const p = seg(t, d4a, d4b), e = ioc(p);
+    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = WARM; g.fillRect(0, 0, W, H);
+    g.save(); g.globalAlpha = 1 - clamp(p * 2.2); g.translate(0, -60 * e); worldGrid(g, 2, t, { bg: false, skip: 0 }); g.restore();
+    worldFutter(g, t, { bg: false, noCard: true });
+    const r0 = cardRect(0), r1 = { x: LIN.x, y: LIN.y, w: LIN.w, h: LIN.h };
+    const s2 = spring(t - d4a, 120, 21), r = { x: lerp(r0.x, r1.x, s2), y: lerp(r0.y, r1.y, s2), w: lerp(r0.w, r1.w, s2), h: lerp(r0.h, r1.h, s2) };
+    const fp = ioc(seg(t, d4a, d4a + 0.5)), sx = Math.max(0.002, Math.abs(Math.cos(Math.PI * fp)));
+    g.save(); g.translate(r.x + r.w / 2, r.y + r.h / 2); g.scale(sx, 1); g.translate(-(r.x + r.w / 2), -(r.y + r.h / 2));
+    if (fp < 0.5) { g.translate(r.x, r.y); g.scale(r.w / r0.w, r.h / r0.h); card(g, { x: 0, y: 0, w: r0.w }, SETS[2].cards[0], { on: 1, tOn: 5, shade: 0.2 * Math.sin(Math.PI * fp) }); }
+    else {
+      g.fillStyle = '#fff'; g.fillRect(r.x, r.y, r.w, r.h);
+      const ih = r.h * (LIN.ih / LIN.h); contain(g, IMG['lining-lined'], r.x + 20 * (r.w / LIN.w), r.y + 16, r.w - 40 * (r.w / LIN.w), ih - 24);
+      g.fillStyle = '#fff'; g.fillRect(r.x, r.y + ih, r.w, r.h - ih); g.fillStyle = LINE; g.fillRect(r.x, r.y + ih, r.w, 1);
+      strokeRect(g, r.x, r.y, r.w, r.h, LINE);
+      g.fillStyle = `rgba(16,16,16,${0.2 * Math.sin(Math.PI * fp)})`; g.fillRect(r.x, r.y, r.w, r.h);
+      if (p > 0.85) { g.globalAlpha = seg(p, 0.85, 1); spaced(g, 'Futter', r.x + r.w / 2, r.y + ih + LIN.th * 0.4, 14, MUTED, 3, 600, 'center'); g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText('Gefüttert', r.x + r.w / 2, r.y + ih + LIN.th * 0.76); g.textAlign = 'left'; g.globalAlpha = 1; }
+    }
+    g.restore();
+  }
+  else if (t < d5a) { curM = camM(camDrift(t, d4b, 0.03)); g.setTransform(curM); worldFutter(g, t); }
+  else if (t < d5b) {
+    const p = seg(t, d5a, d5b);
+    drawDive(t, p, worldFutter, camM(camDrift(t, d4b, 0.03)), P5(), worldStoff);
+    SMEAR = Math.sin(Math.PI * p); light = p > 0.5;
+  }
+  else if (t < d6a) { g.setTransform(1, 0, 0, 1, 0, 0); worldStoff(g, t); light = true; }
+  else if (t < d6b) {
+    // Zoom-out: das Stoffbild wird zur Vorschau in der Übersicht
+    const p = 1 - seg(t, d6a, d6b);
+    drawDive(t, p, (gg, tt) => worldSum(gg, tt, { noThumb: true }), new DOMMatrix(), P6(), (gg, tt) => worldStoff(gg, tt, { strip: 1 - p }));
+    SMEAR = Math.sin(Math.PI * p); light = p > 0.55;
+  }
+  else if (t < T.clickTermin) { curM = camM(camDrift(t, d6b, 0.02)); g.setTransform(curM); worldSum(g, t); }
+  else if (t < T.d8[0]) {
+    // Klick-Flood: das Atelier öffnet sich kreisrund aus dem Knopf
+    const M1 = camM(camDrift(t, d6b, 0.02)); g.setTransform(M1); worldSum(g, t);
+    const ter = { x: BTNS.termin.x + BTNS.termin.w * 0.62, y: BTNS.termin.y + BTNS.termin.h * 0.6 }, sp0 = M1.transformPoint(new DOMPoint(ter.x, ter.y));
+    const R = Math.hypot(W, H) * 1.05 * spring(t - T.clickTermin, 55, 16);
+    g.setTransform(1, 0, 0, 1, 0, 0); g.save(); g.beginPath(); g.arc(sp0.x, sp0.y, Math.max(0.1, R), 0, Math.PI * 2); g.clip(); worldAtelier(g, t); g.restore();
+    FLOOD = { x: sp0.x, y: sp0.y, r: R };
+  }
+  else if (t < T.d8[1]) {
+    // Shape-Morph: das Atelierfoto schrumpft zur goldenen Linie der Endkarte
+    const p = seg(t, T.d8[0], T.d8[1]);
+    g.setTransform(1, 0, 0, 1, 0, 0); worldEnd(g, t, { noLine: true });
+    const s2 = spring(t - T.d8[0], 110, 20), lr = { x: W / 2 - 50, y: EY.line, w: 100, h: 2 };
+    const r = { x: lerp(0, lr.x, s2), y: lerp(0, lr.y, s2), w: lerp(W, lr.w, s2), h: lerp(H, lr.h, s2) };
+    worldAtelier(g, t, r, 1 - clamp(s2 * 1.3 - 0.2));
+    light = true; FLOOD = 'all';
+  }
+  else if (t < T.loop[0]) { g.setTransform(camM(camDrift(t, T.d8[1], 0.03))); worldEnd(g, t); light = true; }
+  else {
+    // Loop: Endkarte geht nach oben raus, der Entwurf kommt per Rack-Focus zurück – exakt der erste Frame
+    const p = seg(t, T.loop[0], DUR);
+    g.setTransform(camM(camDrift(t, T.d8[1], 0.03))); worldEnd(g, t, { exitT: t - T.loop[0] });
+    const q = seg(t, T.loop[0] + 0.2, DUR), e = 1 - Math.pow(1 - q, 3);
+    if (q > 0) {
+      g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = e;
+      const bl = 16 * (1 - e); if (bl > 0.3) g.filter = `blur(${bl.toFixed(1)}px)`;
+      const s = 1.06 - 0.06 * e;
+      g.setTransform(new DOMMatrix().translate(W / 2, H / 2).scale(s).translate(-W / 2, -H / 2).multiply(camM(camHook(0))));
+      worldHook(g, 0); g.restore();
+    }
+    light = true;
+  }
+  CAMNOW = curM; CAPLIGHT = light;
+}
+
+const GRAIN = [0, 1, 2, 3].map((k) => {
+  const cv = document.createElement('canvas'); cv.width = 480; cv.height = 480;
+  const x = cv.getContext('2d'), im = x.createImageData(480, 480), r = rng(77 + k);
+  for (let i = 0; i < im.data.length; i += 4) { const v = r() * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+  x.putImageData(im, 0, 0); return cv;
+});
+
+function draw(t) {
+  drawScene(t);
+  G.setTransform(1, 0, 0, 1, 0, 0); G.filter = 'none'; G.globalAlpha = 1;
+  G.drawImage(SC, 0, 0);
+  // Zoom-Unschärfe (radialer Smear) und Whip-Smear
+  if (SMEAR > 0.05) { [[1.025, 0.3], [1.055, 0.18]].forEach(([s, a]) => { G.save(); G.globalAlpha = a * SMEAR; G.translate(W / 2, H / 2); G.scale(1 + (s - 1) * SMEAR, 1 + (s - 1) * SMEAR); G.translate(-W / 2, -H / 2); G.drawImage(SC, 0, 0); G.restore(); }); }
+  if (WHIP > 0.05) { [-24, -48, -72, 24].forEach((dx, i) => { G.save(); G.globalAlpha = 0.12 * WHIP; G.drawImage(SC, dx * WHIP, 0); G.restore(); }); }
+  // Captions: dunkel, plus helle Fassung im Flood-Kreis (Live-Text-Inversion)
+  for (const pg of PAGES.filter((p) => { const f = SPR[p.lines[0][0][1]].worte[p.lines[0][0][2]].t; return t >= f - 0.1 && t <= p.aus() + 0.45; })) {
+    if (pg.flood && FLOOD) {
+      caption(G, pg, t, false);
+      G.save(); G.beginPath(); if (FLOOD === 'all') G.rect(0, 0, W, H); else G.arc(FLOOD.x, FLOOD.y, FLOOD.r, 0, Math.PI * 2); G.clip(); caption(G, pg, t, true); G.restore();
+    } else caption(G, pg, t, pg.light ?? false);
+  }
+  // Cursor
+  const c = cursorPath(t);
+  if (CAMNOW) {
+    const sc = CAMNOW.transformPoint(new DOMPoint(c.x, c.y));
+    const pr = Math.max(...CLICKS().map((k) => Math.sin(Math.PI * seg(t, k - 0.05, k + 0.13))));
+    for (const k of CLICKS()) { const p = seg(t, k, k + 0.45); if (p > 0 && p < 1) { G.beginPath(); G.arc(sc.x, sc.y, 12 + 40 * E.outCubic(p), 0, Math.PI * 2); G.strokeStyle = `rgba(201,160,99,${0.6 * (1 - p)})`; G.lineWidth = 2.5; G.stroke(); } }
+    if (sc.x < W + 40 && sc.y < H + 40) cursorShape(sc.x, sc.y, pr);
+  } else if (t > T.d5b && t < T.d6[0]) {
+    const pr = Math.sin(Math.PI * seg(t, T.clickStoff - 0.05, T.clickStoff + 0.13)); if (c.x < W + 40) cursorShape(c.x, c.y, pr);
+  }
+  // Film-Finish
+  G.globalAlpha = 0.035; G.globalCompositeOperation = 'overlay';
+  const gi = GRAIN[Math.floor(t * 24) % 4];
+  for (let x = 0; x < W; x += 480) for (let y = 0; y < H; y += 480) G.drawImage(gi, x, y);
+  G.globalCompositeOperation = 'source-over'; G.globalAlpha = 1;
+  const vg = G.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.45, W / 2, H / 2, Math.max(W, H) * 0.75);
+  vg.addColorStop(0, 'rgba(20,16,10,0)'); vg.addColorStop(1, 'rgba(20,16,10,.12)');
+  G.fillStyle = vg; G.fillRect(0, 0, W, H);
+}
+T.d5b = T.d5[1];
+
+// ---------------------------------------------------------------------------
+// Ton-Cues (Filmzeit) für engine/ton-mischen.mjs – Effekte aus der ElevenLabs-Bibliothek
+// ---------------------------------------------------------------------------
+window.CUES = [
+  ...TAGS.map((tg) => ({ t: tg.t() + 0.02, type: 'pop', gain: 0.45 })),
+  { t: w('hook', 7), type: 'funken', gain: 0.5 },
+  { t: T.d1[0] + 0.35, type: 'whoosh', gain: 0.9 }, { t: T.d1[1], type: 'thump', gain: 0.35 },
+  ...[0, 1, 2].map((i) => ({ t: T.d1[0] + 0.24 + i * 0.07, type: 'tick', gain: 0.35, pan: (i - 1) * 0.4 })),
+  ...CLICKS().map((k) => ({ t: k - 0.02, type: 'click', gain: 0.8 })),
+  { t: T.clickRevers + 0.05, type: 'pop', gain: 0.5 }, { t: T.clickKnopf + 0.05, type: 'pop', gain: 0.5 }, { t: T.clickTasche + 0.05, type: 'pop', gain: 0.5 },
+  { t: T.clickRevers + 0.3, type: 'swish', gain: 0.45 },
+  { t: T.d2[0] + 0.33, type: 'whoosh', gain: 0.8 }, { t: T.clickKnopf + 0.04, type: 'chime', gain: 0.35 },
+  { t: T.d3[0] + 0.22, type: 'swish', gain: 1.0, panVon: 0.7, panBis: -0.7 },
+  { t: T.d4[0] + 0.25, type: 'falten', gain: 0.8 },
+  ...T.checks.map((tc) => ({ t: tc, type: 'pop', gain: 0.55 })), { t: T.checks[3] + 0.02, type: 'chime', gain: 0.35 },
+  { t: T.d5[0] + 0.33, type: 'whoosh', gain: 0.9 }, { t: T.d5[1] - 0.05, type: 'papier', gain: 0.6 },
+  { t: T.typ[0], type: 'type', gain: 0.6 }, { t: T.clickStoff + 0.1, type: 'pop', gain: 0.45 },
+  { t: T.d6[0] + 0.32, type: 'whoosh', gain: 0.75 },
+  ...[1, 2, 3, 4, 5, 6, 7].map((i) => ({ t: w('blick', 0) + (i - 1) * 0.085, type: 'tick', gain: 0.3, pan: (i % 2 - 0.5) * 0.5 })),
+  { t: T.clickPdf + 0.35, type: 'chime', gain: 0.35 },
+  { t: T.clickTermin + 0.02, type: 'flut', gain: 0.8 },
+  { t: T.d8[0] + 0.15, type: 'swish', gain: 0.6 },
+  { t: w('preis', 0) + 0.1, type: 'logo', gain: 0.75 },
+  { t: w('preis', 3), type: 'slot', gain: 0.35 },
+  { t: we('cta', 9) + 0.02, type: 'chime', gain: 0.3 },
+  { t: T.loop[0] + 0.05, type: 'swish', gain: 0.35 },
+];
+window.DUR = DUR; window.BPM = 96;
+window.seek = (t) => { t = ((t % DUR) + DUR) % DUR; draw(t); return true; };
+window.ready = Promise.all([
+  ...['500 80px "Playfair Display"', 'italic 500 80px "Playfair Display"', '400 30px Inter', '500 30px Inter', '600 30px Inter'].map((f) => document.fonts.load(f)),
+  ...loads,
+]).then(() => {
+  LOGO_W = document.createElement('canvas'); LOGO_W.width = LOGO.width; LOGO_W.height = LOGO.height;
+  const x = LOGO_W.getContext('2d'); x.drawImage(LOGO, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#fff'; x.fillRect(0, 0, LOGO.width, LOGO.height);
+});
+if (!location.search.includes('render')) {
+  window.ready.then(() => { const t0 = performance.now(); (function loop() { window.seek((performance.now() - t0) / 1000); requestAnimationFrame(loop); })(); });
+}
+</script>
+</body>
+</html>

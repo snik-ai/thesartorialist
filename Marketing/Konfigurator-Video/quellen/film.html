@@ -2,7 +2,7 @@
 <html lang="de-CH">
 <head>
 <meta charset="utf-8">
-<title>The Sartorialist – Konfigurator-Film v2</title>
+<title>The Sartorialist – Konfigurator-Film v3</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>html,body{margin:0;background:#101010;overflow:hidden}canvas{display:block}</style>
 </head>
@@ -12,7 +12,7 @@
 <script src="ton/sprecher-zeiten.js"></script>
 <script>
 // ===========================================================================
-// The Sartorialist Zürich – «Styles & Options», Fassung 2 (mit Sprecher)
+// The Sartorialist Zürich – «Styles & Options», Fassung 3 (Next Level: 3D-Kamera, Match-Cuts, Makro, Glas)
 // 35.0 s. 16:9 (Standard) oder 9:16 (?f=9x16). Alle Zeiten folgen den Wortzeiten des Sprechers
 // (ton/sprecher-zeiten.js aus ElevenLabs /with-timestamps): gesprochen = gezeigt.
 // Eine durchgehende Kamera: Rückzug aus dem Detail → Fokusrahmen → Zoom-Through in die nächste Welt.
@@ -43,19 +43,20 @@ const ioc = (p) => E.inOutCubic(clamp(p));
 // Zeitplan (aus den Wortzeiten)
 // ---------------------------------------------------------------------------
 const T = {
-  d1: [w('hook', 7) + 1.33, w('revers', 0) - 0.17],            // Zoom-Through Revers in die Revers-Welt
+  d1: [w('hook', 7) + 1.33, w('revers', 0) - 0.07],            // Match-Cut: Entwurf wird zur Karte «Steigend», Raster fliegt aus der Tiefe
   clickRevers: w('revers', 3) + 0.12,
-  d2: [w('knopf', 0) - 0.7, w('knopf', 0) - 0.04],              // Zoom-Through Knopf → Knöpfe
+  ring: w('knopf', 0) - 1.05,                                   // Goldring um den Knopf
+  d2: [w('knopf', 0) - 0.66, w('knopf', 0) - 0.02],             // Knopf-Iris → Knöpfe
   clickKnopf: w('knopf', 1) + 0.1,
-  d3: [w('tasche', 0) - 0.55, w('tasche', 0) - 0.12],           // Whip-Pan → Taschen
+  d3: [w('tasche', 0) - 0.68, w('tasche', 0) - 0.06],           // 3D-Karussell → Taschen
   clickTasche: w('tasche', 1) + 0.1,
-  d4: [w('futter', 0) - 0.72, w('futter', 0) - 0.02],           // Flip-Morph → Futter
+  d4: [w('futter', 0) - 0.72, w('futter', 0) - 0.02],           // Wendeflip (3D): Tasche → Futter
   checks: [w('futter', 0), w('futter', 2), w('futter', 3), w('futter', 5)],
-  d5: [w('stoff', 0) - 0.75, w('stoff', 0) - 0.1],              // Zoom-Through ins Futter → Stoff
+  d5: [w('stoff', 0) - 0.82, w('stoff', 0) - 0.05],             // Makro-Zoom durch das Futter in den Stoff
   typ: [w('stoff', 3) + 0.05, w('stoff', 5) + 0.15], clickStoff: w('stoff', 5) + 0.45,
-  d6: [w('blick', 0) - 0.62, w('blick', 0) + 0.02],             // Zoom-out → Übersicht
+  d6: [w('blick', 0) - 0.7, w('blick', 0) + 0.05],              // Glas-Morph: Stoffkarte wird zur Übersicht
   clickPdf: w('blick', 5) + 0.06,
-  clickTermin: w('blick', 9) + 0.08,                            // Klick-Flood → Atelier
+  clickTermin: w('blick', 9) + 0.08,                            // Scherenschnitt → Atelier
   d8: [w('preis', 0) - 0.32, w('preis', 0) + 0.42],             // Atelierfoto schrumpft zur Goldlinie
   loop: [34.3, DUR],
 };
@@ -65,6 +66,7 @@ const IMG = {};
 const NAMES = ['lapel-sb-peak-regular', 'lapel-sb-notch-regular', 'lapel-sb-shawl-regular', 'sb-1b', 'sb-2b', 'db-6x2',
   'pocket-barchetta-jetted', 'pocket-barchetta-flap', 'pocket-patch-patch', 'lining-lined', 'buttonhole-hand', 'cuff-kissing', 'monogram-lined', 'Holland-Sherry-3-scaled', 'Foto-mit-Schere'];
 const loads = NAMES.map((n) => new Promise((r) => { const i = new Image(); i.onload = r; i.onerror = r; i.src = 'img/' + n + '.webp'; IMG[n] = i; }));
+loads.push(new Promise((r) => { const i = new Image(); i.onload = () => { HEROK = i; r(); }; i.onerror = r; i.src = 'img/hero-frei.png'; }));
 const LOGO = new Image(); loads.push(new Promise((r) => { LOGO.onload = r; LOGO.src = 'img/sartorialist-zurich-logo.png'; }));
 let LOGO_W;
 
@@ -72,12 +74,95 @@ let LOGO_W;
 // Layout
 // ---------------------------------------------------------------------------
 const L = V ? { tx: 90, hs: 98, hY: 452, sc: { x: 500, y: 1040 }, cw: 280, gap: 18, th: 96 }
-            : { tx: 140, hs: 88, hY: 0, sc: { x: 1340, y: 545 }, cw: 296, gap: 30, th: 98 };
+            : { tx: 140, hs: 82, hY: 0, sc: { x: 1350, y: 545 }, cw: 318, gap: 28, th: 98 };
 L.ih = L.cw * 1.25; L.ch = L.ih + L.th; L.gy = L.sc.y - L.ch / 2; L.gx0 = L.sc.x - (3 * L.cw + 2 * L.gap) / 2;
 const cardRect = (i) => ({ x: L.gx0 + i * (L.cw + L.gap), y: L.gy, w: L.cw, h: L.ch });
 const ASP = W / H;
 // Fokusrahmen im Seitenverhältnis des Bildes (damit der Zoom-Through exakt bildfüllend landet)
 const frameAt = (cx, cy, fw) => ({ x: cx - fw / 2, y: cy - fw / ASP / 2, w: fw, h: fw / ASP });
+
+// ---------------------------------------------------------------------------
+// 3D, Ebenen, Licht (Technik aus VoxCRM _vorlage/lib/vox-buehne.js: perspektive, glanz, bokeh, Lichtwolken)
+// ---------------------------------------------------------------------------
+const LYR = [0, 1, 2, 3, 4, 5].map(() => { const c = document.createElement('canvas'); c.width = 4; c.height = 4; const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; return { c, x }; });
+// Ebene i in der Grösse w×h (Pixel × k) neu zeichnen und zurückgeben
+function layer(i, w2, h2, fn, k = 1) {
+  const Y = LYR[i], cw = Math.max(2, Math.ceil(w2 * k)), ch = Math.max(2, Math.ceil(h2 * k));
+  if (Y.c.width !== cw || Y.c.height !== ch) { Y.c.width = cw; Y.c.height = ch; Y.x.imageSmoothingQuality = 'high'; } else { Y.x.setTransform(1, 0, 0, 1, 0, 0); Y.x.clearRect(0, 0, cw, ch); }
+  Y.x.setTransform(k, 0, 0, k, 0, 0); Y.x.globalAlpha = 1; Y.x.filter = 'none'; fn(Y.x); return Y.c;
+}
+// Echte Perspektive: Ebene in Streifen, jeder Streifen mit eigener Tiefe (Drehung um Y oder X), z = Tiefe der Mitte
+function persp(g, src, dcx, dcy, dw, dh, o = {}) {
+  const f = o.f ?? 1900, rx = o.rx ?? 0, ry = o.ry ?? 0, z0 = o.z ?? 0, sw = src.width, sh = src.height;
+  if (Math.abs(rx) < 1e-4 && Math.abs(ry) < 1e-4) { const sc = f / (f + z0); g.drawImage(src, dcx - dw * sc / 2, dcy - dh * sc / 2, dw * sc, dh * sc); return; }
+  if (Math.abs(ry) >= Math.abs(rx)) {
+    const n = Math.max(12, Math.ceil(dw / 4)), c = Math.cos(ry), s2 = Math.sin(ry);
+    for (let i = 0; i < n; i++) {
+      const x0 = (i * dw) / n, wS = dw / n, xm = x0 + wS / 2 - dw / 2, sc = f / (f + z0 + xm * s2);
+      const X = xm * c * sc, ww = Math.abs(wS * c) * sc + 0.9, hh = dh * sc;
+      g.drawImage(src, (x0 / dw) * sw, 0, sw / n, sh, dcx + X - ww / 2, dcy - hh / 2, ww, hh);
+    }
+  } else {
+    const n = Math.max(12, Math.ceil(dh / 4)), c = Math.cos(rx), s2 = Math.sin(rx);
+    for (let i = 0; i < n; i++) {
+      const y0 = (i * dh) / n, hS = dh / n, ym = y0 + hS / 2 - dh / 2, sc = f / (f + z0 + ym * s2);
+      const Y = ym * c * sc, hh = Math.abs(hS * c) * sc + 0.9, ww = dw * sc;
+      g.drawImage(src, 0, (y0 / dh) * sh, sw, sh / n, dcx - ww / 2, dcy + Y - hh / 2, ww, hh);
+    }
+  }
+}
+function projPt(px, py, dcx, dcy, o = {}) { const f = o.f ?? 1900, ry = o.ry ?? 0, sc = f / (f + (o.z ?? 0) + px * Math.sin(ry)); return { x: dcx + px * Math.cos(ry) * sc, y: dcy + py * sc, sc }; }
+function shadowRect(g, x, y, w2, h2, a = 1, blur = 50, oy = 22) {
+  if (a <= 0.01) return; g.save(); g.shadowColor = `rgba(45,30,12,${0.2 * a})`; g.shadowBlur = blur; g.shadowOffsetY = oy; g.fillStyle = '#fff'; g.fillRect(x + 6, y + 6, w2 - 12, h2 - 12); g.restore();
+}
+// Lichtband läuft einmal über ein Rechteck
+function glanz(g, x, y, w2, h2, t, t0, o = {}) {
+  const p = (t - t0) / (o.dauer ?? 0.9); if (p <= 0 || p >= 1) return;
+  g.save(); g.beginPath(); g.rect(x, y, w2, h2); g.clip();
+  const sx = x - w2 * 0.6 + E.inOutCubic(p) * w2 * 2.2, b = o.breite ?? Math.max(110, w2 * 0.28), col = o.farbe ?? '255,255,255';
+  const lg = g.createLinearGradient(sx - b, y, sx + b, y + h2 * 0.45);
+  lg.addColorStop(0, `rgba(${col},0)`); lg.addColorStop(0.5, `rgba(${col},${o.staerke ?? 0.42})`); lg.addColorStop(1, `rgba(${col},0)`);
+  g.globalCompositeOperation = o.modus ?? 'source-over'; g.fillStyle = lg; g.fillRect(x, y, w2, h2); g.restore();
+}
+// Dunkle Bühne: langsam fliessende warme Lichtwolken + Bokeh in zwei Tiefen (Parallaxe zur Kamera)
+function darkStage(g, t, px = 0, py = 0) {
+  g.setTransform(1, 0, 0, 1, 0, 0); g.filter = 'none'; g.globalAlpha = 1; g.fillStyle = INK; g.fillRect(0, 0, W, H);
+  const om = (2 * Math.PI) / DUR;
+  [[0.7, 0.36, 0.6, '201,160,99', 0.13], [0.2, 0.85, 0.55, '120,88,55', 0.12], [0.45, 0.05, 0.45, '255,240,220', 0.05]].forEach(([bx, by, r0, c, a], i) => {
+    const x = W * (bx + 0.06 * Math.sin(om * t * (i + 1) + i * 2)) - px * 0.06, y = H * (by + 0.05 * Math.cos(om * t * (i + 1) + i)) - py * 0.06, R = Math.max(W, H) * r0;
+    const rg = g.createRadialGradient(x, y, 0, x, y, R); rg.addColorStop(0, `rgba(${c},${a})`); rg.addColorStop(1, `rgba(${c},0)`); g.fillStyle = rg; g.fillRect(0, 0, W, H);
+  });
+  const r = rng(21);
+  for (let i = 0; i < 12; i++) {
+    const tief = i % 2 ? 0.35 : 0.85, x0 = r() * W, y0 = r() * H, rad = (26 + r() * 60) * (tief > 0.5 ? 1.5 : 1), ph = r() * 6.28;
+    const x = (((x0 + Math.sin(om * t * 2 + ph) * 50 - px * tief) % (W + 240)) + W + 240) % (W + 240) - 120;
+    const y = (((y0 - (H + 240) * (t / DUR) * (tief > 0.5 ? 1 : 0) + Math.sin(om * t + ph) * 40 - py * tief) % (H + 240)) + H + 240) % (H + 240) - 120;
+    const a = 0.06 * (0.5 + 0.5 * Math.sin(om * t * 9 + ph)), rg = g.createRadialGradient(x, y, 0, x, y, rad);
+    rg.addColorStop(0, `rgba(232,196,140,${a})`); rg.addColorStop(1, 'rgba(232,196,140,0)'); g.fillStyle = rg; g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+  }
+}
+// Helle Bühne: Warmweiss mit weichem Licht (Atelier-Tisch)
+function warmStage(g, t, px = 0) {
+  g.setTransform(1, 0, 0, 1, 0, 0); g.filter = 'none'; g.fillStyle = WARM; g.fillRect(0, 0, W, H);
+  const cx = W * (0.64 + 0.03 * Math.sin(t * 0.12)) - px * 0.05, rg = g.createRadialGradient(cx, H * 0.42, 0, cx, H * 0.42, Math.max(W, H) * 0.7);
+  rg.addColorStop(0, 'rgba(255,255,255,.75)'); rg.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = rg; g.fillRect(0, 0, W, H);
+  const rg2 = g.createRadialGradient(W * 0.1, H, 0, W * 0.1, H, Math.max(W, H) * 0.6);
+  rg2.addColorStop(0, 'rgba(201,160,99,.07)'); rg2.addColorStop(1, 'rgba(201,160,99,0)'); g.fillStyle = rg2; g.fillRect(0, 0, W, H);
+}
+// Weissen Hintergrund einer Illustration freistellen (Flutfüllung von den Rändern) – für Frame Escape
+function keyWhite(img) {
+  const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+  const x = c.getContext('2d'); x.drawImage(img, 0, 0);
+  const d = x.getImageData(0, 0, c.width, c.height), px = d.data, Wd = c.width, Hd = c.height, seen = new Uint8Array(Wd * Hd), st = [];
+  for (let i = 0; i < Wd; i++) st.push(i, (Hd - 1) * Wd + i); for (let j = 0; j < Hd; j++) st.push(j * Wd, j * Wd + Wd - 1);
+  while (st.length) {
+    const k = st.pop(); if (seen[k]) continue; const o = k * 4, lum = Math.min(px[o], px[o + 1], px[o + 2]);
+    if (lum < 228) continue; seen[k] = 1; px[o + 3] = lum > 244 ? 0 : Math.round(255 * (244 - lum) / 16);
+    const xx = k % Wd, yy = (k / Wd) | 0; if (xx > 0) st.push(k - 1); if (xx < Wd - 1) st.push(k + 1); if (yy > 0) st.push(k - Wd); if (yy < Hd - 1) st.push(k + Wd);
+  }
+  x.putImageData(d, 0, 0); return c;
+}
+let HEROK = null; // freigestellter Entwurf (img/hero-frei.png, ffmpeg floodfill)
 
 // ---------------------------------------------------------------------------
 // Bausteine
@@ -109,8 +194,10 @@ function card(g, r, c, st) {
   g.save();
   const cx = x + cw / 2, cy = y + h / 2;
   g.translate(cx, cy - (st.hover || 0) * 8); g.scale((st.sx ?? 1) * (st.pop ?? 1), st.pop ?? 1); g.translate(-cx, -cy);
+  if (st.shadow !== false) shadowRect(g, x, y, cw, h, 0.8 + (st.hover || 0) * 0.6, 44 + (st.hover || 0) * 20, 18 + (st.hover || 0) * 10);
   g.fillStyle = '#fff'; g.fillRect(x, y, cw, h);
   contain(g, IMG[c.img], x + 14, y + 14, cw - 28, ih - 22, 1 + 0.035 * (st.hover || 0));
+  if (st.on > 0) glanz(g, x, y, cw, ih, st.tOn, 0.05, { staerke: 0.5 });
   g.fillStyle = rgb(mixColor(hex('#ffffff'), hex(WARM), st.on || 0)); g.fillRect(x, y + ih, cw, th);
   g.fillStyle = LINE; g.fillRect(x, y + ih, cw, 1);
   spaced(g, c.code, cx, y + ih + th * 0.40, 14, MUTED, 3, 600, 'center');
@@ -140,9 +227,9 @@ const ID = () => ({ wx: W / 2, wy: H / 2, ax: W / 2, ay: H / 2, s: 1, r: 0 });
 // ---------------------------------------------------------------------------
 // WELT 0 – Hook: der fertige Entwurf (Ink)
 // ---------------------------------------------------------------------------
-const HERO = V ? { x: 90, y: 760, w: 450 } : { x: 860, y: 196, w: 440 };
+const HERO = V ? { x: 90, y: 790, w: 450 } : { x: 940, y: 196, w: 460 };
 HERO.ih = HERO.w * 1.3; HERO.th = 86; HERO.h = HERO.ih + HERO.th;
-const TAG = V ? { x: 590, w: 350, h: 92, y0: 820, dy: 134 } : { x: 1380, w: 380, h: 86, y0: 268, dy: 132 };
+const TAG = V ? { x: 590, w: 350, h: 92, y0: 820, dy: 134 } : { x: 1520, w: 340, h: 86, y0: 262, dy: 138 };
 const TAGS = [
   { g: 'Revers', o: 'Steigend', ax: 0.64, ay: 0.27, t: () => w('hook', 2) },
   { g: 'Vorderteil', o: 'Zwei Knöpfe', ax: 0.52, ay: 0.56, t: () => w('hook', 3) },
@@ -162,54 +249,78 @@ function camHook(t) {
   // Start: nah am Oberkörper, Rückzug auf «Bis», dann sanfte Fahrt Richtung Revers
   const tb = w('hook', 2) - 0.1, tp = w('hook', 7) + 0.35;
   const c = trackObj(t, [
-    [0, { wx: up.x, wy: up.y, ax: V ? W / 2 - 30 : hc.x + 90, ay: V ? up.y - 110 : up.y, s: V ? 1.3 : 1.6, r: -1.2 }],
+    [0, { wx: up.x, wy: up.y, ax: V ? W / 2 - 30 : hc.x + 60, ay: V ? up.y - 110 : up.y + 40, s: V ? 1.25 : 1.42, r: -1.0 }],
     [tb, { wx: hc.x, wy: hc.y, ax: hc.x, ay: hc.y, s: 1.0, r: 0 }, 60, 16],
-    [tp, { wx: lap.x, wy: lap.y, ax: lap.x, ay: lap.y, s: 1.22, r: 0 }, 40, 14],
+    [tp, { wx: hc.x, wy: hc.y, ax: hc.x, ay: hc.y, s: 1.05, r: 0 }, 40, 14],
   ]);
-  c.s *= 1 + 0.01 * Math.sin(t * 0.7);
   return c;
 }
-function worldHook(g, t, a = 1) {
-  g.fillStyle = INK; g.fillRect(-W * 2, -H * 2, W * 5, H * 5);
-  g.save(); g.globalAlpha *= a;
-  const hc = { x: HERO.x + HERO.w / 2 };
-  g.fillStyle = '#fff'; g.fillRect(HERO.x, HERO.y, HERO.w, HERO.h);
-  const ir = heroImgRect();
-  g.drawImage(IMG['lapel-sb-peak-regular'], ir.x, ir.y, ir.w, ir.h);
-  // Goldener Lichtschimmer auf «entworfen»
-  const ts = w('hook', 7), q = seg(t, ts - 0.1, ts + 1.1);
-  if (q > 0 && q < 1) {
-    const shx = HERO.x - 300 + q * (HERO.w + 600);
-    g.save(); g.beginPath(); g.rect(HERO.x, HERO.y, HERO.w, HERO.ih); g.clip();
-    const lg = g.createLinearGradient(shx, HERO.y, shx + 260, HERO.y + 200);
-    lg.addColorStop(0, 'rgba(201,160,99,0)'); lg.addColorStop(0.5, 'rgba(201,160,99,.16)'); lg.addColorStop(1, 'rgba(201,160,99,0)');
-    g.fillStyle = lg; g.fillRect(HERO.x, HERO.y, HERO.w, HERO.ih); g.restore();
+const HM = 110; // Rand der Hero-Ebene (Platz für den Frame Escape)
+const STICH = [[0.555, 0.125], [0.70, 0.2], [0.655, 0.27], [0.585, 0.38], [0.53, 0.5]];   // Reverskante (Bildbruchteile)
+function heroRy(t) { return track(t, [[0, 0.6], [w('hook', 2) - 0.12, 0, 52, 14], [w('hook', 6), -0.07, 22, 11]]); }
+function heroEsc(t) { return sp(t - (w('hook', 7) - 0.05), 'heavy') * (1 - sp(t - (T.d1[0] - 0.25), 'default')); }
+function heroLayer(t) {
+  const ir = heroImgRect(), esc = heroEsc(t), lw = HERO.w + 2 * HM, lh = HERO.h + 2 * HM;
+  return layer(0, lw, lh, (x) => {
+    x.translate(HM - HERO.x, HM - HERO.y);
+    x.fillStyle = '#fff'; x.fillRect(HERO.x, HERO.y, HERO.w, HERO.h);
+    x.fillStyle = WARM; x.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, HERO.th); x.fillStyle = LINE; x.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, 1);
+    spaced(x, 'Ihr Entwurf', HERO.x + HERO.w / 2, HERO.y + HERO.ih + HERO.th * 0.4, 14, MUTED, 3, 600, 'center');
+    x.font = `500 25px ${SERIF}`; x.fillStyle = INK; x.textAlign = 'center'; x.fillText('Einreiher, steigendes Revers', HERO.x + HERO.w / 2, HERO.y + HERO.ih + HERO.th * 0.76); x.textAlign = 'left';
+    // Frame Escape: der Anzug wächst aus der Karte heraus (Schultern über die Kante)
+    const k = 1 + 0.36 * esc, bx = ir.x + ir.w / 2, by = ir.y + ir.h;
+    x.save(); x.translate(bx, by); x.scale(k, k); x.translate(-bx, -by);
+    x.drawImage(HEROK || IMG['lapel-sb-peak-regular'], ir.x, ir.y, ir.w, ir.h);
+    // Goldener Handstich entlang der Reverskante (AMF-Stich), Wort «entworfen»
+    const q = clamp((t - w('hook', 7)) / 0.7);
+    if (q > 0) {
+      const pts = STICH.map(([fx, fy]) => [ir.x + ir.w * fx, ir.y + ir.h * fy]);
+      let L0 = 0; const seglen = pts.slice(1).map((pp, i) => Math.hypot(pp[0] - pts[i][0], pp[1] - pts[i][1])), tot = seglen.reduce((a2, b2) => a2 + b2, 0);
+      x.save(); x.strokeStyle = GOLD; x.lineWidth = 2.2; x.setLineDash([6, 5]); x.lineDashOffset = -t * 18; x.lineCap = 'round';
+      x.globalAlpha = 1 - seg(t, T.d1[0] - 0.1, T.d1[0] + 0.2);
+      x.beginPath(); x.moveTo(...pts[0]); let left = tot * E.outCubic(q);
+      for (let i = 1; i < pts.length && left > 0; i++) { const l = Math.min(left, seglen[i - 1]), f = l / seglen[i - 1]; x.lineTo(lerp(pts[i - 1][0], pts[i][0], f), lerp(pts[i - 1][1], pts[i][1], f)); left -= l; }
+      x.stroke(); x.restore();
+    }
+    x.restore();
+    glanz(x, HERO.x, HERO.y, HERO.w, HERO.ih, t, w('hook', 7) - 0.1, { staerke: 0.35, dauer: 1.2, modus: 'source-atop' });
+  });
+}
+// Ankerpunkt (Bildbruchteil) → Weltkoordinaten unter Orbit und Escape
+function heroAnchor(fx, fy, t) {
+  const ir = heroImgRect(), esc = heroEsc(t), k = 1 + 0.36 * esc, bx = ir.x + ir.w / 2, by = ir.y + ir.h;
+  const ax = bx + (ir.x + ir.w * fx - bx) * k, ay = by + (ir.y + ir.h * fy - by) * k;
+  const cx = HERO.x + HERO.w / 2, cy = HERO.y + HERO.h / 2;
+  return projPt(ax - cx, ay - cy, cx, cy, { ry: heroRy(t) });
+}
+function worldHook(g, t, opt = {}) {
+  const cx = HERO.x + HERO.w / 2, cy = HERO.y + HERO.h / 2, ry = heroRy(t);
+  if (!opt.onlyTags) {
+    shadowRect(g, cx - HERO.w * Math.cos(ry) / 2, HERO.y, HERO.w * Math.cos(ry), HERO.h, 1.4, 70, 30);
+    persp(g, heroLayer(t), cx, cy, HERO.w + 2 * HM, HERO.h + 2 * HM, { ry });
   }
-  g.fillStyle = WARM; g.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, HERO.th);
-  g.fillStyle = LINE; g.fillRect(HERO.x, HERO.y + HERO.ih, HERO.w, 1);
-  spaced(g, 'Ihr Entwurf', hc.x, HERO.y + HERO.ih + HERO.th * 0.4, 14, MUTED, 3, 600, 'center');
-  g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText('Einreiher, steigendes Revers', hc.x, HERO.y + HERO.ih + HERO.th * 0.76); g.textAlign = 'left';
-  // Callouts auf den Wörtern
-  const fade = 1 - seg(t, T.d1[0] - 0.5, T.d1[0] - 0.1) * 0.75;
+  // Callouts auf einer näheren Ebene (Parallaxe gegen den Orbit)
+  const ex = opt.exit ?? 0, par = -ry * 170;
   TAGS.forEach((tg, i) => {
     const t0 = tg.t(), p = p4out((t - t0) / 0.38), pl = ioc((t - t0 - 0.05) / 0.36);
     if (p <= 0) return;
-    const ty = TAG.y0 + i * TAG.dy, an = heroPt(tg.ax, tg.ay);
-    g.save(); g.globalAlpha *= fade;
-    const sx = TAG.x - 14, sy = ty + TAG.h / 2;
+    const ty = TAG.y0 + i * TAG.dy, an = heroAnchor(tg.ax, tg.ay, t), ei = p4in((ex - i * 0.06) / 0.5);
+    if (ei >= 1) return;
+    g.save(); g.globalAlpha *= 1 - ei;
+    const ox = par + ei * 260, sx = TAG.x - 14 + ox, sy = ty + TAG.h / 2 - ei * 40;
     g.strokeStyle = GOLD; g.lineWidth = 1.5; g.beginPath(); g.moveTo(sx, sy); g.lineTo(lerp(sx, an.x, pl), lerp(sy, an.y, pl)); g.stroke();
     if (pl > 0.98) { const pu = sp(t - t0 - 0.4, 'playful'); g.fillStyle = 'rgba(201,160,99,.28)'; g.beginPath(); g.arc(an.x, an.y, 11 * pu, 0, Math.PI * 2); g.fill(); g.fillStyle = GOLD; g.beginPath(); g.arc(an.x, an.y, 5, 0, Math.PI * 2); g.fill(); }
-    g.globalAlpha *= clamp(p * 1.4); g.translate((1 - p) * 40, 0);
-    g.fillStyle = 'rgba(255,255,255,.045)'; g.fillRect(TAG.x, ty, TAG.w, TAG.h);
-    strokeRect(g, TAG.x, ty, TAG.w, TAG.h, 'rgba(255,255,255,.22)');
+    g.globalAlpha *= clamp(p * 1.4); g.translate((1 - p) * 40 + ox, -ei * 40);
+    // Glas-Karte (Liquid Glass): helles Glas, feine Kante, Lichtkante oben
+    g.fillStyle = 'rgba(255,255,255,.07)'; g.fillRect(TAG.x, ty, TAG.w, TAG.h);
+    strokeRect(g, TAG.x, ty, TAG.w, TAG.h, 'rgba(255,255,255,.26)');
+    g.fillStyle = 'rgba(255,255,255,.35)'; g.fillRect(TAG.x + 1, ty + 1, TAG.w - 2, 1);
+    glanz(g, TAG.x, ty, TAG.w, TAG.h, t, t0 + 0.2, { staerke: 0.18, dauer: 0.8 });
     tickMark(g, TAG.x + 34, ty + TAG.h / 2, 13, p4out((t - t0 - 0.1) / 0.3), GOLD, INK);
     spaced(g, tg.g, TAG.x + 64, ty + TAG.h * 0.42, 13, 'rgba(255,255,255,.55)', 3);
     g.font = `500 26px ${SERIF}`; g.fillStyle = '#fff'; g.fillText(tg.o, TAG.x + 64, ty + TAG.h * 0.78);
     g.restore();
   });
-  // Fokusrahmen (kündigt den Zoom-Through an)
-  if (t < T.d1[0]) focusFrame(g, P1(), seg(t, T.d1[0] - 0.55, T.d1[0] - 0.1));
-  g.restore();
 }
 
 // ---------------------------------------------------------------------------
@@ -246,10 +357,16 @@ function worldGrid(g, s, t, opt = {}) {
   S.cards.forEach((c, i) => {
     if (opt.skip === i) return;
     const r = cardRect(i), st = cardState(s, i, t);
-    const tin = S.t0() + 0.12 + i * 0.07, p = p4out((t - tin) / 0.55);   // Karten steigen gestaffelt auf
-    r.y += (1 - p) * 70;
-    let a = clamp(p * 1.6);
+    let a = 1;
     if (s === 0 && i !== S.pick) a *= 1 - 0.85 * (camGrid0(t).z || 0);
+    if (s === 0 && t < T.d1[1] + 0.6) {
+      // Die Nachbarkarten fliegen aus der Tiefe herein (echte Perspektive, gestaffelt)
+      const pin = spring(t - (T.d1[0] + 0.12 + Math.abs(i - 1) * 0.08), 120, 18), z = (1 - pin) * 900, ry = (i - 1) * 0.9 * (1 - pin);
+      if (pin <= 0.001) return;
+      const lay = layer(2 + i, r.w + 120, r.h + 120, (x) => { x.translate(60 - r.x, 60 - r.y); card(x, r, c, { ...st, shadow: true }); });
+      g.save(); g.globalAlpha *= a * clamp(pin * 2); persp(g, lay, r.x + r.w / 2, r.y + r.h / 2, r.w + 120, r.h + 120, { ry, z }); g.restore();
+      return;
+    }
     if (a <= 0.01) return;
     g.save(); g.globalAlpha *= a; card(g, r, c, st); g.restore();
   });
@@ -264,14 +381,21 @@ function worldGrid(g, s, t, opt = {}) {
       g.font = `italic 500 20px ${SERIF}`; g.fillStyle = INK; g.fillText('Klassisch, in italienischer Manier', bx + 24, by + 68);
       g.restore();
     }
-    if (t < T.d2[0]) focusFrame(g, P2(), seg(t, T.d2[0] - 0.5, T.d2[0] - 0.05), 2);
+    // Goldring zeichnet sich um den oberen Knopf (Träger für die Iris)
+    const pr = ioc((t - T.ring) / 0.4), kp = knopfPt();
+    if (pr > 0 && t < T.d2[0] + 0.05) { g.save(); g.strokeStyle = GOLD; g.lineWidth = 2; g.beginPath(); g.arc(kp.x, kp.y, KR, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pr); g.stroke(); g.restore(); }
   }
 }
+// Bild-Rechteck einer Karte (contain) und Punkt darin
+function cardImgRect(r, img) { const bw = r.w - 28, bh = L.ih - 22, k = Math.min(bw / img.width, bh / img.height), iw = img.width * k, ih = img.height * k; return { x: r.x + 14 + (bw - iw) / 2, y: r.y + 14 + (bh - ih) / 2, w: iw, h: ih }; }
+function knopfPt() { const ir = cardImgRect(cardRect(1), IMG['lapel-sb-peak-regular']); return { x: ir.x + ir.w * 0.515, y: ir.y + ir.h * 0.558 }; }
+const KR = 11;
 function camGrid0(t) {
-  // Digital Zoom auf die gewählte Reversspitze
-  const f = cardImgPt(0, 0.6, 0.32), base = ID();
-  const z = sp(t - (T.clickRevers + 0.18), 'heavy');
-  return { wx: lerp(base.wx, f.x, z), wy: lerp(base.wy, f.y, z), ax: lerp(base.ax, f.x + (V ? 0 : 60), z), ay: lerp(base.ay, f.y - (V ? 30 : 40), z), s: 1 + 0.38 * z, r: 0, z };
+  // Digital Zoom auf die Reversspitze, dann Fahrt hinunter zum Knopf
+  const ir = cardImgRect(cardRect(1), IMG['lapel-sb-peak-regular']), f = { x: ir.x + ir.w * 0.62, y: ir.y + ir.h * 0.26 }, kp = knopfPt(), base = ID();
+  const z = sp(t - (T.clickRevers + 0.18), 'heavy'), m = spring(t - (T.ring - 0.45), 70, 17);
+  const fx = lerp(f.x, kp.x, m), fy = lerp(f.y, kp.y, m);
+  return { wx: lerp(base.wx, fx, z), wy: lerp(base.wy, fy, z), ax: lerp(base.ax, L.sc.x, z), ay: lerp(base.ay, V ? 1010 : 520, z), s: 1 + (0.38 + 0.5 * m) * z, r: 0, z };
 }
 function camDrift(t, t0, amt = 0.025) { const c = ID(); c.s = 1 + amt * seg(t, t0, t0 + 3); return c; }
 
@@ -279,15 +403,16 @@ function camDrift(t, t0, amt = 0.025) { const c = ID(); c.s = 1 + amt * seg(t, t
 // WELT 4 – Futter & Details (Checklist Pop)
 // ---------------------------------------------------------------------------
 const CHECK = [['Futter', 'Gefüttert'], ['Knopfloch am Revers', 'Handgenäht'], ['Ärmelknöpfe', 'Kissing Buttons'], ['Monogramm innen', 'Monogramm im Futter']];
-const LIN = V ? { x: 90, y: 640, w: 900 } : { x: 860, y: 0, w: 460 };
+const LIN = V ? { x: 90, y: 640, w: 900 } : { x: 900, y: 0, w: 460 };
 LIN.ih = LIN.w / (V ? 1.8 : 1.23); LIN.th = 88; LIN.h = LIN.ih + LIN.th; if (!V) LIN.y = L.sc.y - LIN.h / 2;
-const CL = V ? { x: 90, y: LIN.y + LIN.h + 30, w: 900, rh: 72 } : { x: 1380, y: 0, w: 440, rh: 104 };
+const CL = V ? { x: 90, y: LIN.y + LIN.h + 30, w: 900, rh: 72 } : { x: 1420, y: 0, w: 430, rh: 104 };
 if (!V) CL.y = L.sc.y - (CHECK.length * CL.rh) / 2;
 const P5 = () => frameAt(LIN.x + LIN.w * 0.5, LIN.y + LIN.ih * 0.55, V ? 170 : 220);
 function worldFutter(g, t, opt = {}) {
   if (opt.bg !== false) { g.fillStyle = WARM; g.fillRect(-W * 2, -H * 2, W * 5, H * 5); }
   if (!opt.noCard) {
     const on = t >= T.checks[0] ? 1 : 0;
+    shadowRect(g, LIN.x, LIN.y, LIN.w, LIN.h, 1);
     g.fillStyle = '#fff'; g.fillRect(LIN.x, LIN.y, LIN.w, LIN.h);
     contain(g, IMG['lining-lined'], LIN.x + 20, LIN.y + 16, LIN.w - 40, LIN.ih - 24);
     g.fillStyle = on ? WARM : '#fff'; g.fillRect(LIN.x, LIN.y + LIN.ih, LIN.w, LIN.th); g.fillStyle = LINE; g.fillRect(LIN.x, LIN.y + LIN.ih, LIN.w, 1);
@@ -295,8 +420,9 @@ function worldFutter(g, t, opt = {}) {
     g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText('Gefüttert', LIN.x + LIN.w / 2, LIN.y + LIN.ih + LIN.th * 0.76); g.textAlign = 'left';
     strokeRect(g, LIN.x, LIN.y, LIN.w, LIN.h, on ? INK : LINE, on ? 2 : 1);
     if (on) tickMark(g, LIN.x + LIN.w - 26, LIN.y + 26, 16, sp(t - T.checks[0], 'ui'));
+    glanz(g, LIN.x, LIN.y, LIN.w, LIN.ih, t, T.checks[3] + 0.1, { staerke: 0.45, dauer: 1.0 });
   }
-  CHECK.forEach(([gr, o], i) => {
+  if (!opt.onlyCard) CHECK.forEach(([gr, o], i) => {
     const tc = T.checks[i], y = CL.y + i * CL.rh, pin = p4out((t - (tc - 0.3)) / 0.4);
     if (pin <= 0) return;
     g.save(); g.globalAlpha *= clamp(pin * 1.4); g.translate((1 - pin) * 50, 0);
@@ -308,7 +434,6 @@ function worldFutter(g, t, opt = {}) {
     else { spaced(g, gr, CL.x + 66, y + CL.rh * 0.42, 13, MUTED, 3); g.font = `500 30px ${SERIF}`; g.fillStyle = INK; g.fillText(o, CL.x + 66, y + CL.rh * 0.78); }
     g.restore();
   });
-  if (t < T.d5[0]) focusFrame(g, P5(), seg(t, T.d5[0] - 0.5, T.d5[0] - 0.05));
 }
 
 // ---------------------------------------------------------------------------
@@ -320,8 +445,11 @@ const SF_BTN = () => { const bw = V ? 250 : 230; return { x: SF.x + SF.w - 40 - 
 function worldStoff(g, t, opt = {}) {
   const img = IMG['Holland-Sherry-3-scaled'];
   g.fillStyle = '#0d1420'; g.fillRect(-W * 2, -H * 2, W * 5, H * 5);
-  const kb = 1.22 - 0.12 * seg(t, T.d5[0], T.d6[1] + 1);
+  const kb = (1.22 - 0.12 * seg(t, T.d5[0], T.d6[1] + 1)) * (opt.kbx ?? 1);
   cover(g, img, 0, 0, W, H, kb, V ? 0.6 : 0.45, 0.5);
+  // Lichtband über die goldene Webkante (Holland & Sherry)
+  glanz(g, 0, 0, W, H, t, w('stoff', 3) - 0.2, { farbe: '255,220,150', staerke: 0.16, dauer: 1.6, breite: W * 0.18, modus: 'screen' });
+  if (opt.noOverlay) return;
   const a = 1 - clamp((opt.strip || 0) * 2.2);
   if (a <= 0) return;
   g.save(); g.globalAlpha *= a;
@@ -329,7 +457,7 @@ function worldStoff(g, t, opt = {}) {
   lg.addColorStop(0, 'rgba(10,10,10,.8)'); lg.addColorStop(0.6, 'rgba(10,10,10,.42)'); lg.addColorStop(1, 'rgba(10,10,10,0)');
   g.fillStyle = lg; g.fillRect(0, 0, W, H);
   const pin = p4out((t - (w('stoff', 2) - 0.1)) / 0.5);
-  if (pin > 0) {
+  if (pin > 0 && !opt.noCard) {
     g.save(); g.globalAlpha *= clamp(pin * 1.4); g.translate(0, (1 - pin) * 60);
     g.fillStyle = '#fff'; g.fillRect(SF.x, SF.y, SF.w, SF.h);
     spaced(g, 'Stoffnummer (optional)', SF.x + 40, SF.y + 58, V ? 16 : 14, MUTED, 3);
@@ -390,9 +518,8 @@ const BTNS = (() => {
 })();
 if (V) SUM.h = BTNS.pdf.y + BTNS.pdf.h + 40 - SUM.y;
 function worldSum(g, t, opt = {}) {
-  g.fillStyle = WARM; g.fillRect(-W * 2, -H * 2, W * 5, H * 5);
-  const t0 = T.d6[0];
-  g.fillStyle = '#fff'; g.fillRect(SUM.x, SUM.y, SUM.w, SUM.h); strokeRect(g, SUM.x, SUM.y, SUM.w, SUM.h, LINE);
+  if (opt.bg !== false) { g.fillStyle = WARM; g.fillRect(-W * 2, -H * 2, W * 5, H * 5); }
+  if (!opt.noPanel) { shadowRect(g, SUM.x, SUM.y, SUM.w, SUM.h, 1.1, 60, 26); g.fillStyle = '#fff'; g.fillRect(SUM.x, SUM.y, SUM.w, SUM.h); strokeRect(g, SUM.x, SUM.y, SUM.w, SUM.h, LINE); }
   spaced(g, 'Übersicht', SUM.x + RG.pad, SUM.y + 62, V ? 16 : 14, MUTED, 4);
   g.font = `500 ${V ? 46 : 44}px ${SERIF}`; g.fillStyle = INK; g.fillText('Ihr Massanzug in 7 Details', SUM.x + RG.pad, SUM.y + 122);
   g.fillStyle = GOLD; g.fillRect(SUM.x + RG.pad, SUM.y + 148, 40, 2);
@@ -409,7 +536,7 @@ function worldSum(g, t, opt = {}) {
       tx = pr.x + pr.w + 18;
     } else { g.fillStyle = '#fff'; g.fillRect(tr.x, tr.y, tr.w, tr.h); contain(g, IMG[row.img], tr.x + 3, tr.y + 3, tr.w - 6, tr.h - 6); strokeRect(g, tr.x, tr.y, tr.w, tr.h, LINE); }
     spaced(g, row.u, tx, r.y + r.h * 0.42, 12, MUTED, 2);
-    g.font = `500 ${V ? 25 : 24}px ${SERIF}`; g.fillStyle = INK; g.fillText(row.o, tx, r.y + r.h * 0.76);
+    if (!(i === 0 && opt.flyChip)) { g.font = `500 ${V ? 25 : 24}px ${SERIF}`; g.fillStyle = INK; g.fillText(row.o, tx, r.y + r.h * 0.76); }
     g.restore();
   });
   const pb = p4out((t - (w('blick', 3) + 0.1)) / 0.45);
@@ -468,7 +595,9 @@ function worldEnd(g, t, opt = {}) {
   if (pw > 0 && o0 < 1) {
     g.save(); g.globalAlpha *= 1 - o0; g.beginPath();
     if (t >= t0 + 0.7) g.rect(-W, -H, W * 3, H * 3); else g.rect(lx - 10, EY.logo - 10, (lw + 20) * pw, lh + 20);
-    g.clip(); g.drawImage(LOGO_W, lx, EY.logo - o0 * 40, lw, lh); g.restore();
+    g.clip();
+    const ll = layer(5, lw + 20, lh + 20, (x) => { x.drawImage(LOGO_W, 10, 10, lw, lh); glanz(x, 0, 0, lw + 20, lh + 20, t, t0 + 0.8, { farbe: '230,200,150', staerke: 0.9, dauer: 1.2, modus: 'source-atop' }); });
+    g.drawImage(ll, lx - 10, EY.logo - 10 - o0 * 40); g.restore();
   }
   if (!opt.noLine) { const pl = 1 - outP(1); g.fillStyle = GOLD; g.fillRect(cx - 50 * pl, EY.line, 100 * pl, 2); }
   // «Ihr Massanzug.» Wort für Wort
@@ -539,7 +668,7 @@ const PAGES = [
   { kick: 'Sakko · Vorderteil', snap: () => T.clickKnopf + 0.02, aus: () => T.d3[0] + 0.1, lines: [[['Die', 'knopf', 0], ['Knöpfe', 'knopf', 1, 1]]] },
   { kick: 'Sakko · Taschen', aus: () => T.d4[0] + 0.15, lines: [[['Die', 'tasche', 0], ['Taschen', 'tasche', 1, 1]]] },
   { kick: 'Futter & Details', aus: () => T.d5[0] + 0.05, lines: [[['Futter', 'futter', 0], ['und', 'futter', 1], ['Details,', 'futter', 2]], [['bis', 'futter', 3], ['zum', 'futter', 4], ['Monogramm', 'futter', 5, 1]]] },
-  { kick: 'Stoff · Holland & Sherry', light: true, aus: () => T.d6[0] - 0.3, lines: [[['Den', 'stoff', 0], ['Stoff', 'stoff', 1], ['von', 'stoff', 2]], [['Holland', 'stoff', 3, 1], ['&', 'stoff', 4, 1], ['Sherry', 'stoff', 5, 1]]] },
+  { kick: 'Stoff · Holland & Sherry', light: true, glass: true, aus: () => T.d6[0] - 0.3, lines: [[['Den', 'stoff', 0], ['Stoff', 'stoff', 1], ['von', 'stoff', 2]], [['Holland', 'stoff', 3, 1], ['&', 'stoff', 4, 1], ['Sherry', 'stoff', 5, 1]]] },
   { kick: 'Ihre Auswahl', aus: () => w('blick', 4) - 0.1, lines: [[['Alles', 'blick', 0], ['auf', 'blick', 1]], [['einen', 'blick', 2], ['Blick', 'blick', 3, 1]]] },
   { kick: 'Ihre Auswahl', flood: true, aus: () => T.d8[0] + 0.05, lines: [[['Als', 'blick', 4], ['PDF', 'blick', 5], ['oder', 'blick', 6]], [['direkt', 'blick', 7], ['ins', 'blick', 8], ['Atelier', 'blick', 9, 1]]] },
 ];
@@ -604,128 +733,172 @@ function cursorPath(t) {
 }
 
 // ---------------------------------------------------------------------------
-// Zoom-Through: A (aussen) mit Kamera MA, darin B im Portal R (A-Koordinaten). p: 0 → 1 = hinein
+// Komposition – jeder Übergang einmalig, alle mit Träger
 // ---------------------------------------------------------------------------
-function diveM(MA, R, p) {
-  // Bildschirmrechteck des Portals unter MA
-  const a = MA.transformPoint(new DOMPoint(R.x, R.y)), c = MA.transformPoint(new DOMPoint(R.x + R.w, R.y + R.h));
-  const ps = { x: (a.x + c.x) / 2, y: (a.y + c.y) / 2 }, pw = Math.abs(c.x - a.x);
-  const Send = W / pw, e = ioc(p), S = Math.exp(Math.log(Send) * e);
-  const f = (1 - 1 / S) / (1 - 1 / Send);                         // Portalmitte wandert geradlinig zur Bildmitte
-  const at = { x: lerp(ps.x, W / 2, f), y: lerp(ps.y, H / 2, f) };
-  const MD = new DOMMatrix().translate(at.x, at.y).scale(S).translate(-ps.x, -ps.y).multiply(MA);
-  const k = R.w / W;
-  const MB = MD.multiply(new DOMMatrix().translate(R.x + R.w / 2, R.y + R.h / 2).scale(k).translate(-W / 2, -H / 2));
-  return { MD, MB, speed: Math.log(Send) };
+let CAMNOW = null, SMEAR = 0, WHIP = 0, FLOOD = null;
+const DIAG = Math.hypot(W, H);
+const rectLerp = (a, b, p) => ({ x: lerp(a.x, b.x, p), y: lerp(a.y, b.y, p), w: lerp(a.w, b.w, p), h: lerp(a.h, b.h, p) });
+function screenRect(M, r) { const a = M.transformPoint(new DOMPoint(r.x, r.y)), c = M.transformPoint(new DOMPoint(r.x + r.w, r.y + r.h)); return { x: a.x, y: a.y, w: c.x - a.x, h: c.y - a.y }; }
+const terminPt = () => ({ x: BTNS.termin.x + BTNS.termin.w * 0.62, y: BTNS.termin.y + BTNS.termin.h * 0.6 });
+// Träger des Match-Cuts: Karte, die vom Entwurf zur Option «Steigend» wird (lokal 0,0 – w×h)
+function morphCard(x, w2, h2, p, t) {
+  const q = ioc(seg(p, 0.3, 0.7)), th = h2 * lerp(HERO.th / HERO.h, L.th / L.ch, ioc(p)), ih = h2 - th, pad = lerp(18, 14, p);
+  x.fillStyle = '#fff'; x.fillRect(0, 0, w2, h2);
+  contain(x, IMG['lapel-sb-peak-regular'], pad, pad, w2 - pad * 2, ih - pad - 8);
+  x.fillStyle = rgb(mixColor(hex(WARM), hex('#ffffff'), q)); x.fillRect(0, ih, w2, th); x.fillStyle = LINE; x.fillRect(0, ih, w2, 1);
+  const lab = (a, code, label) => { if (a <= 0.01) return; x.save(); x.globalAlpha = a; const bl = (1 - a) * 8; if (bl > 0.4) x.filter = `blur(${bl.toFixed(1)}px)`;
+    spaced(x, code, w2 / 2, ih + th * 0.4, 14, MUTED, 3, 600, 'center'); x.font = `500 25px ${SERIF}`; x.fillStyle = INK; x.textAlign = 'center'; x.fillText(label, w2 / 2, ih + th * 0.76); x.textAlign = 'left'; x.restore(); };
+  lab(1 - q, 'Ihr Entwurf', 'Einreiher, steigendes Revers'); lab(q, 'Steigend', 'Normal (8.0 cm)');
+  strokeRect(x, 0, 0, w2, h2, LINE);
 }
-function drawDive(t, p, A, MA, R, B, peek = 1) {
-  const { MD, MB } = diveM(MA, R, p);
-  g.setTransform(MD); A(g, t);
-  g.setTransform(MD); g.save(); g.beginPath(); g.rect(R.x, R.y, R.w, R.h); g.clip();
-  g.setTransform(MB); g.globalAlpha = clamp(peek); B(g, t); g.globalAlpha = 1;
-  g.restore();
-  g.setTransform(MD); focusFrame(g, R, 1 - seg(p, 0.15, 0.45));
-}
-
-// ---------------------------------------------------------------------------
-// Komposition
-// ---------------------------------------------------------------------------
-let CAMNOW = ID(), CAPLIGHT = false, SMEAR = 0, WHIP = 0, FLOOD = null;
 function drawScene(t) {
   g.setTransform(1, 0, 0, 1, 0, 0); g.filter = 'none'; g.globalAlpha = 1;
-  g.fillStyle = INK; g.fillRect(0, 0, W, H);
-  SMEAR = 0; WHIP = 0; FLOOD = null; let curM = null, light = false;
-  const [d1a, d1b] = T.d1, [d2a, d2b] = T.d2, [d3a, d3b] = T.d3, [d4a, d4b] = T.d4, [d5a, d5b] = T.d5, [d6a, d6b] = T.d6;
-  if (t < d1a) { g.setTransform(camM(camHook(t))); worldHook(g, t); light = true; }
+  SMEAR = 0; WHIP = 0; FLOOD = null; CAMNOW = null;
+  const [d1a, d1b] = T.d1, [d2a, d2b] = T.d2, [d3a, d3b] = T.d3, [d4a, d4b] = T.d4, [d5a, d5b] = T.d5, [d6a, d6b] = T.d6, tc = T.clickTermin, TCUT = tc + 0.85;
+  if (t < d1a) {
+    // 1 · Hook: Orbit um den Entwurf, Frame Escape, Goldstich, Callouts auf Glas (Parallaxe)
+    darkStage(g, t, heroRy(t) * 420, 0); g.setTransform(camM(camHook(t))); worldHook(g, t);
+  }
   else if (t < d1b) {
-    const p = seg(t, d1a, d1b), peek = seg(t, d1a - 0.4, d1a + 0.1);
-    drawDive(t, p, worldHook, camM(camHook(t)), P1(), (gg, tt) => worldGrid(gg, 0, tt), 1);
-    SMEAR = Math.sin(Math.PI * p); light = p < 0.5;
+    // 2 · Match-Cut: der Entwurf wird zur Karte «Steigend», die Welt öffnet sich warm aus der Karte, Nachbarn fliegen aus der Tiefe
+    const p = seg(t, d1a, d1b), MH = camM(camHook(t));
+    darkStage(g, t, heroRy(t) * 420, 0);
+    const hs = screenRect(MH, { x: HERO.x, y: HERO.y, w: HERO.w, h: HERO.h });
+    const R = rectLerp(hs, { x: -60, y: -60, w: W + 120, h: H + 120 }, clamp(spring(t - d1a - 0.05, 70, 17)));
+    g.save(); g.beginPath(); g.rect(R.x, R.y, R.w, R.h); g.clip(); warmStage(g, t); worldGrid(g, 0, t, { bg: false, skip: 1 }); g.restore();
+    g.setTransform(MH); worldHook(g, t, { onlyTags: true, exit: p * 1.6 });
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    const s2 = clamp(spring(t - d1a, 95, 17)), r = rectLerp(hs, cardRect(1), s2), ry = 0.4 * Math.sin(Math.PI * ioc(p));
+    shadowRect(g, r.x, r.y, r.w, r.h, 1.2);
+    persp(g, layer(1, r.w, r.h, (x) => morphCard(x, r.w, r.h, p, t), 1), r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, { ry });
+    SMEAR = 0.35 * Math.sin(Math.PI * p);
   }
-  else if (t < d2a) { curM = camM(camGrid0(t)); g.setTransform(curM); worldGrid(g, 0, t); }
+  else if (t < d2a) {
+    // 3 · Revers: Klick, Digital Zoom aufs Revers, Fahrt zum Knopf, Goldring
+    CAMNOW = camM(camGrid0(t)); warmStage(g, t); g.setTransform(CAMNOW); worldGrid(g, 0, t, { bg: false });
+  }
   else if (t < d2b) {
-    const p = seg(t, d2a, d2b);
-    drawDive(t, p, (gg, tt) => worldGrid(gg, 0, tt), camM(camGrid0(t)), P2(), (gg, tt) => worldGrid(gg, 1, tt));
-    SMEAR = Math.sin(Math.PI * p);
+    // 4 · Knopf-Iris: der Goldring öffnet sich zur Knöpfe-Welt, aussen läuft die Kamera weiter in den Knopf
+    const p = seg(t, d2a, d2b), M0 = camM(camGrid0(t)), kp = knopfPt(), ks = M0.transformPoint(new DOMPoint(kp.x, kp.y));
+    const Z = 1 + 2.2 * E.inCubic(p), MO = new DOMMatrix().translate(ks.x, ks.y).scale(Z).translate(-ks.x, -ks.y).multiply(M0);
+    warmStage(g, t); g.setTransform(MO); const bl = 10 * E.inCubic(p); if (bl > 0.3) g.filter = `blur(${bl.toFixed(1)}px)`; worldGrid(g, 0, t, { bg: false }); g.filter = 'none';
+    const R = KR * M0.a * Z + DIAG * 1.05 * spring(t - d2a, 58, 16);
+    g.setTransform(1, 0, 0, 1, 0, 0); g.save(); g.beginPath(); g.arc(ks.x, ks.y, R, 0, Math.PI * 2); g.clip();
+    warmStage(g, t); const sB = 1 + 0.25 * (1 - spring(t - d2a, 70, 17));
+    g.setTransform(new DOMMatrix().translate(ks.x, ks.y).scale(sB).translate(-ks.x, -ks.y)); worldGrid(g, 1, t, { bg: false }); g.restore();
+    g.setTransform(1, 0, 0, 1, 0, 0); g.strokeStyle = `rgba(201,160,99,${1 - seg(p, 0.25, 0.9)})`; g.lineWidth = 2.5; g.beginPath(); g.arc(ks.x, ks.y, R, 0, Math.PI * 2); g.stroke();
+    SMEAR = 0.5 * Math.sin(Math.PI * p);
   }
-  else if (t < d3a) { curM = camM(camDrift(t, d2b)); g.setTransform(curM); worldGrid(g, 1, t); }
+  else if (t < d3a) { CAMNOW = camM(camDrift(t, d2b)); warmStage(g, t); g.setTransform(CAMNOW); worldGrid(g, 1, t, { bg: false }); }
   else if (t < d3b) {
-    // Whip-Pan: die Kamera reisst nach rechts zur Taschen-Welt
-    const p = seg(t, d3a, d3b), X = W * 1.15, e = E.inOutExpo ? E.inOutExpo(p) : ioc(p);
-    const M1 = camM(camDrift(t, d2b)).translate(0, 0);
-    g.setTransform(new DOMMatrix().translate(-X * e, 0).multiply(M1)); worldGrid(g, 1, t);
-    g.setTransform(new DOMMatrix().translate(X * (1 - e), 0)); g.fillStyle = WARM; g.fillRect(-W * 0.15, -H, W * 1.3, H * 3); worldGrid(g, 2, t, { bg: false });
-    WHIP = Math.sin(Math.PI * p);
-  }
-  else if (t < d4a) { curM = camM(camDrift(t, d3b, 0.02)); g.setTransform(curM); worldGrid(g, 2, t); }
-  else if (t < d4b) {
-    // Flip-Morph: die gewählte Taschen-Karte dreht sich um und wird zur Futter-Karte
-    const p = seg(t, d4a, d4b), e = ioc(p);
-    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = WARM; g.fillRect(0, 0, W, H);
-    g.save(); g.globalAlpha = 1 - clamp(p * 2.2); g.translate(0, -60 * e); worldGrid(g, 2, t, { bg: false, skip: 0 }); g.restore();
-    worldFutter(g, t, { bg: false, noCard: true });
-    const r0 = cardRect(0), r1 = { x: LIN.x, y: LIN.y, w: LIN.w, h: LIN.h };
-    const s2 = spring(t - d4a, 120, 21), r = { x: lerp(r0.x, r1.x, s2), y: lerp(r0.y, r1.y, s2), w: lerp(r0.w, r1.w, s2), h: lerp(r0.h, r1.h, s2) };
-    const fp = ioc(seg(t, d4a, d4a + 0.5)), sx = Math.max(0.002, Math.abs(Math.cos(Math.PI * fp)));
-    g.save(); g.translate(r.x + r.w / 2, r.y + r.h / 2); g.scale(sx, 1); g.translate(-(r.x + r.w / 2), -(r.y + r.h / 2));
-    if (fp < 0.5) { g.translate(r.x, r.y); g.scale(r.w / r0.w, r.h / r0.h); card(g, { x: 0, y: 0, w: r0.w }, SETS[2].cards[0], { on: 1, tOn: 5, shade: 0.2 * Math.sin(Math.PI * fp) }); }
-    else {
-      g.fillStyle = '#fff'; g.fillRect(r.x, r.y, r.w, r.h);
-      const ih = r.h * (LIN.ih / LIN.h); contain(g, IMG['lining-lined'], r.x + 20 * (r.w / LIN.w), r.y + 16, r.w - 40 * (r.w / LIN.w), ih - 24);
-      g.fillStyle = '#fff'; g.fillRect(r.x, r.y + ih, r.w, r.h - ih); g.fillStyle = LINE; g.fillRect(r.x, r.y + ih, r.w, 1);
-      strokeRect(g, r.x, r.y, r.w, r.h, LINE);
-      g.fillStyle = `rgba(16,16,16,${0.2 * Math.sin(Math.PI * fp)})`; g.fillRect(r.x, r.y, r.w, r.h);
-      if (p > 0.85) { g.globalAlpha = seg(p, 0.85, 1); spaced(g, 'Futter', r.x + r.w / 2, r.y + ih + LIN.th * 0.4, 14, MUTED, 3, 600, 'center'); g.font = `500 25px ${SERIF}`; g.fillStyle = INK; g.textAlign = 'center'; g.fillText('Gefüttert', r.x + r.w / 2, r.y + ih + LIN.th * 0.76); g.textAlign = 'left'; g.globalAlpha = 1; }
+    // 5 · 3D-Karussell: die Kartenreihe dreht sich auf einem Zylinder weiter zu den Taschen
+    const p = seg(t, d3a, d3b), Rr = V ? 860 : 1300, D = (L.cw + L.gap) / Rr, th = 3 * D * ioc(p), kap = Math.sin(Math.PI * p);
+    warmStage(g, t, th * 700); g.setTransform(camM(camDrift(t, d2b)));
+    const items = [];
+    for (const s3 of [1, 2]) SETS[s3].cards.forEach((c, i) => items.push({ s3, i, c, a: (i - 1 + (s3 - 1) * 3) * D - th }));
+    items.sort((A, B) => Math.cos(A.a) - Math.cos(B.a));
+    const r = cardRect(1);
+    for (const it of items) {
+      const al = clamp(((1.5 + 1.4 * kap) * D - Math.abs(it.a)) / (0.45 * D)); if (al <= 0) continue;
+      const xFlat = L.sc.x + (it.a / D) * (L.cw + L.gap), xCyl = L.sc.x + Rr * Math.sin(it.a), z = Rr * (1 - Math.cos(it.a)) * kap;
+      const lay = layer(2, r.w + 120, r.h + 120, (x) => { x.translate(60 - r.x, 60 - r.y); card(x, r, it.c, cardState(it.s3, it.i, t)); });
+      const xx = lerp(xFlat, xCyl, kap), edge = V ? 1 : clamp((xx - 1000) / 140);
+      g.save(); g.globalAlpha = al * edge; persp(g, lay, xx, r.y + r.h / 2, r.w + 120, r.h + 120, { ry: it.a * kap, z }); g.restore();
     }
-    g.restore();
+    WHIP = 0.15 * Math.sin(Math.PI * p);
   }
-  else if (t < d5a) { curM = camM(camDrift(t, d4b, 0.03)); g.setTransform(curM); worldFutter(g, t); }
+  else if (t < d4a) { CAMNOW = camM(camDrift(t, d3b, 0.02)); warmStage(g, t); g.setTransform(CAMNOW); worldGrid(g, 2, t, { bg: false }); }
+  else if (t < d4b) {
+    // 6 · Wendeflip in echter Perspektive: die Tasche dreht sich um – innen liegt das Futter
+    const p = seg(t, d4a, d4b); warmStage(g, t); g.setTransform(1, 0, 0, 1, 0, 0);
+    g.save(); g.globalAlpha = 1 - clamp(p * 2.2); g.translate(0, 90 * ioc(p)); worldGrid(g, 2, t, { bg: false, skip: 0 }); g.restore();
+    worldFutter(g, t, { bg: false, noCard: true });
+    const r0 = cardRect(0), r1 = { x: LIN.x, y: LIN.y, w: LIN.w, h: LIN.h }, s2 = spring(t - d4a, 105, 16), r = rectLerp(r0, r1, s2);
+    const a = Math.PI * ioc(seg(t, d4a, d4a + 0.56)), cx = r.x + r.w / 2, cy = r.y + r.h / 2, cw2 = Math.abs(Math.cos(a));
+    shadowRect(g, cx - r.w * cw2 / 2, r.y, r.w * cw2, r.h, 1.2);
+    if (a < Math.PI / 2) persp(g, layer(1, r0.w, r0.h, (x) => { x.translate(-r0.x, -r0.y); card(x, r0, SETS[2].cards[0], { on: 1, tOn: 5, shadow: false }); }, Math.max(1, r.w / r0.w)), cx, cy, r.w, r.h, { ry: a, f: 1500 });
+    else persp(g, layer(1, LIN.w, LIN.h, (x) => { x.translate(-LIN.x, -LIN.y); worldFutter(x, t, { bg: false, onlyCard: true }); }, 1), cx, cy, r.w, r.h, { ry: a - Math.PI, f: 1500 });
+  }
+  else if (t < d5a) { CAMNOW = camM(camDrift(t, d4b, 0.03)); warmStage(g, t); g.setTransform(CAMNOW); worldFutter(g, t, { bg: false }); }
   else if (t < d5b) {
-    const p = seg(t, d5a, d5b);
-    drawDive(t, p, worldFutter, camM(camDrift(t, d4b, 0.03)), P5(), worldStoff);
-    SMEAR = Math.sin(Math.PI * p); light = p > 0.5;
+    // 7 · Makro-Zoom: die Kamera taucht ins Futter, das Futter wird zum Stoff, Rückzug aus der Webkante
+    const q1 = seg(t, d5a, d5a + 0.44), q2 = seg(t, d5a + 0.44, d5b);
+    if (q1 < 1) {
+      const M0 = camM(camDrift(t, d4b, 0.03)), c = { x: LIN.x + LIN.w / 2, y: LIN.y + LIN.ih * 0.55 }, cs = M0.transformPoint(new DOMPoint(c.x, c.y));
+      const f2 = E.inCubic(q1), Z = Math.exp(Math.log(9) * f2);
+      const MD = new DOMMatrix().translate(lerp(cs.x, W / 2, f2), lerp(cs.y, H / 2, f2)).scale(Z).translate(-cs.x, -cs.y).multiply(M0);
+      warmStage(g, t); g.setTransform(MD); const bl = 12 * f2; if (bl > 0.3) g.filter = `blur(${bl.toFixed(1)}px)`;
+      worldFutter(g, t, { bg: false });
+      const fa = seg(Z, 1.5, 4); if (fa > 0) { g.save(); g.globalAlpha = fa; g.beginPath(); g.rect(LIN.x, LIN.y, LIN.w, LIN.ih); g.clip(); cover(g, IMG['Holland-Sherry-3-scaled'], LIN.x, LIN.y, LIN.w, LIN.ih, 2.2, 0.5, 0.5); g.restore(); }
+      g.filter = 'none'; SMEAR = f2;
+    } else {
+      const kbx = 1 + 2.4 * (1 - E.outExpo(q2)), bl = 12 * (1 - E.outCubic(q2));
+      if (bl > 0.3) g.filter = `blur(${bl.toFixed(1)}px)`; worldStoff(g, t, { kbx, strip: 1 - q2 }); g.filter = 'none'; SMEAR = 1 - q2;
+    }
   }
-  else if (t < d6a) { g.setTransform(1, 0, 0, 1, 0, 0); worldStoff(g, t); light = true; }
+  else if (t < d6a) { CAMNOW = new DOMMatrix(); worldStoff(g, t); }
   else if (t < d6b) {
-    // Zoom-out: das Stoffbild wird zur Vorschau in der Übersicht
-    const p = 1 - seg(t, d6a, d6b);
-    drawDive(t, p, (gg, tt) => worldSum(gg, tt, { noThumb: true }), new DOMMatrix(), P6(), (gg, tt) => worldStoff(gg, tt, { strip: 1 - p }));
-    SMEAR = Math.sin(Math.PI * p); light = p > 0.55;
+    // 8 · Liquid Glass: die Stoffkarte wird zur Glasfläche und wächst zur Übersicht, der Stoff sinkt in die Tiefe; die Nummer fliegt in ihre Zeile (Typo-Morph)
+    const p = seg(t, d6a, d6b), e = ioc(p), s2 = spring(t - d6a, 100, 16);
+    g.setTransform(new DOMMatrix().translate(W / 2, H / 2).scale(1 - 0.14 * e).translate(-W / 2, -H / 2));
+    g.filter = `blur(${(18 * e).toFixed(1)}px)`; worldStoff(g, t, { noCard: true, noOverlay: true }); g.filter = 'none';
+    g.setTransform(1, 0, 0, 1, 0, 0); g.fillStyle = `rgba(10,10,10,${0.35 * e})`; g.fillRect(0, 0, W, H);
+    g.globalAlpha = seg(p, 0.4, 1); warmStage(g, t); g.globalAlpha = 1;
+    const R = rectLerp(SF, SUM, s2);
+    shadowRect(g, R.x, R.y, R.w, R.h, e);
+    g.save(); g.beginPath(); g.rect(R.x, R.y, R.w, R.h); g.clip();
+    g.filter = 'blur(26px)'; worldStoff(g, t, { noCard: true, noOverlay: true }); g.filter = 'none';
+    g.fillStyle = `rgba(255,255,255,${lerp(0.5, 1, seg(p, 0.1, 0.8))})`; g.fillRect(R.x, R.y, R.w, R.h);
+    g.globalAlpha = seg(p, 0.45, 1); worldSum(g, t, { bg: false, noPanel: true, flyChip: true }); g.globalAlpha = 1;
+    g.restore();
+    g.fillStyle = 'rgba(255,255,255,.7)'; g.fillRect(R.x, R.y, R.w, 1.5);
+    strokeRect(g, R.x, R.y, R.w, R.h, `rgba(229,227,222,${0.4 + 0.6 * p})`);
+    glanz(g, R.x, R.y, R.w, R.h, t, d6a + 0.1, { staerke: 0.5, dauer: 0.6 });
+    const btn = SF_BTN(), cy0 = btn.y + btn.h + (V ? 40 : 30), chh = V ? 62 : 56, r0 = rowRect(0), pr = P6();
+    const from = { x: SF.x + 40 + 56, y: cy0 + chh * 0.64 }, to = { x: pr.x + pr.w + 18, y: r0.y + r0.h * 0.76 }, fl = { x: lerp(from.x, to.x, e), y: lerp(from.y, to.y, e) - 70 * Math.sin(Math.PI * e) };
+    g.fillStyle = INK; if (e < 0.5) { g.font = `600 ${V ? 26 : 24}px ${SANS}`; g.letterSpacing = '1.5px'; } else { g.font = `500 ${V ? 25 : 24}px ${SERIF}`; }
+    g.globalAlpha = e < 0.5 ? 1 - seg(e, 0.4, 0.5) : seg(e, 0.5, 0.6); g.fillText(STOFFNR, fl.x, fl.y); g.globalAlpha = 1; g.letterSpacing = '0px';
   }
-  else if (t < T.clickTermin) { curM = camM(camDrift(t, d6b, 0.02)); g.setTransform(curM); worldSum(g, t); }
-  else if (t < T.d8[0]) {
-    // Klick-Flood: das Atelier öffnet sich kreisrund aus dem Knopf
-    const M1 = camM(camDrift(t, d6b, 0.02)); g.setTransform(M1); worldSum(g, t);
-    const ter = { x: BTNS.termin.x + BTNS.termin.w * 0.62, y: BTNS.termin.y + BTNS.termin.h * 0.6 }, sp0 = M1.transformPoint(new DOMPoint(ter.x, ter.y));
-    const R = Math.hypot(W, H) * 1.05 * spring(t - T.clickTermin, 55, 16);
-    g.setTransform(1, 0, 0, 1, 0, 0); g.save(); g.beginPath(); g.arc(sp0.x, sp0.y, Math.max(0.1, R), 0, Math.PI * 2); g.clip(); worldAtelier(g, t); g.restore();
-    FLOOD = { x: sp0.x, y: sp0.y, r: R };
+  else if (t < tc) { CAMNOW = camM(camDrift(t, d6b, 0.02)); warmStage(g, t); g.setTransform(CAMNOW); worldSum(g, t, { bg: false }); }
+  else if (t < TCUT) {
+    // 9 · Scherenschnitt: eine Goldlinie schneidet die Übersicht, die Hälften gleiten auseinander – dahinter das Atelier
+    const M1 = camM(camDrift(t, d6b, 0.02)), C = M1.transformPoint(new DOMPoint(terminPt().x, terminPt().y));
+    const ang = -1.18, d = { x: Math.cos(ang), y: Math.sin(ang) }, n = { x: -d.y, y: d.x }, Lg = DIAG * 2;
+    const lp = ioc(seg(t, tc, tc + 0.2)), sp2 = seg(t, tc + 0.14, TCUT), off = (V ? H : W) * 0.62 * ioc(sp2);
+    g.setTransform(1, 0, 0, 1, 0, 0); worldAtelier(g, t);
+    for (const sg of [1, -1]) {
+      g.save(); g.setTransform(1, 0, 0, 1, 0, 0);
+      const Mh = new DOMMatrix().translate(n.x * off * sg, n.y * off * sg).translate(C.x, C.y).rotate(3 * sg * ioc(sp2)).translate(-C.x, -C.y);
+      g.setTransform(Mh); g.beginPath();
+      g.moveTo(C.x - d.x * Lg, C.y - d.y * Lg); g.lineTo(C.x + d.x * Lg, C.y + d.y * Lg); g.lineTo(C.x + d.x * Lg + n.x * Lg * sg, C.y + d.y * Lg + n.y * Lg * sg); g.lineTo(C.x - d.x * Lg + n.x * Lg * sg, C.y - d.y * Lg + n.y * Lg * sg); g.closePath(); g.clip();
+      if (sp2 > 0) { g.save(); g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 40; g.restore(); }
+      warmStage(g, t); g.setTransform(Mh.multiply(M1)); worldSum(g, t, { bg: false });
+      g.restore();
+      if (sp2 > 0) { g.save(); g.setTransform(Mh); g.strokeStyle = GOLD; g.lineWidth = 2.5; g.beginPath(); g.moveTo(C.x - d.x * Lg, C.y - d.y * Lg); g.lineTo(C.x + d.x * Lg, C.y + d.y * Lg); g.stroke(); g.restore(); }
+    }
+    if (sp2 <= 0) { g.setTransform(1, 0, 0, 1, 0, 0); g.strokeStyle = GOLD; g.lineWidth = 2.5; g.beginPath(); g.moveTo(C.x - d.x * DIAG * lp, C.y - d.y * DIAG * lp); g.lineTo(C.x + d.x * DIAG * lp, C.y + d.y * DIAG * lp); g.stroke(); }
+    FLOOD = { path: (X) => { X.moveTo(C.x - d.x * Lg - n.x * off, C.y - d.y * Lg - n.y * off); X.lineTo(C.x + d.x * Lg - n.x * off, C.y + d.y * Lg - n.y * off); X.lineTo(C.x + d.x * Lg + n.x * off, C.y + d.y * Lg + n.y * off); X.lineTo(C.x - d.x * Lg + n.x * off, C.y - d.y * Lg + n.y * off); X.closePath(); } };
+    WHIP = 0.3 * Math.sin(Math.PI * sp2);
   }
+  else if (t < T.d8[0]) { g.setTransform(1, 0, 0, 1, 0, 0); worldAtelier(g, t); FLOOD = 'all'; }
   else if (t < T.d8[1]) {
-    // Shape-Morph: das Atelierfoto schrumpft zur goldenen Linie der Endkarte
-    const p = seg(t, T.d8[0], T.d8[1]);
-    g.setTransform(1, 0, 0, 1, 0, 0); worldEnd(g, t, { noLine: true });
+    // 10 · Shape-Morph: das Atelierfoto schrumpft zur goldenen Linie der Endkarte
+    darkStage(g, t); g.setTransform(1, 0, 0, 1, 0, 0); worldEnd(g, t, { noLine: true, bg: false });
     const s2 = spring(t - T.d8[0], 110, 20), lr = { x: W / 2 - 50, y: EY.line, w: 100, h: 2 };
-    const r = { x: lerp(0, lr.x, s2), y: lerp(0, lr.y, s2), w: lerp(W, lr.w, s2), h: lerp(H, lr.h, s2) };
-    worldAtelier(g, t, r, 1 - clamp(s2 * 1.3 - 0.2));
-    light = true; FLOOD = 'all';
+    worldAtelier(g, t, rectLerp({ x: 0, y: 0, w: W, h: H }, lr, s2), 1 - clamp(s2 * 1.3 - 0.2));
+    FLOOD = 'all';
   }
-  else if (t < T.loop[0]) { g.setTransform(camM(camDrift(t, T.d8[1], 0.03))); worldEnd(g, t); light = true; }
+  else if (t < T.loop[0]) { darkStage(g, t); g.setTransform(camM(camDrift(t, T.d8[1], 0.03))); worldEnd(g, t, { bg: false }); }
   else {
-    // Loop: Endkarte geht nach oben raus, der Entwurf kommt per Rack-Focus zurück – exakt der erste Frame
-    const p = seg(t, T.loop[0], DUR);
-    g.setTransform(camM(camDrift(t, T.d8[1], 0.03))); worldEnd(g, t, { exitT: t - T.loop[0] });
+    // 11 · Loop: Endkarte steigt aus, der Entwurf kommt per Rack-Focus zurück – exakt der erste Frame
+    darkStage(g, t, heroRy(0) * 420, 0);
+    g.setTransform(camM(camDrift(t, T.d8[1], 0.03))); worldEnd(g, t, { exitT: t - T.loop[0], bg: false });
     const q = seg(t, T.loop[0] + 0.2, DUR), e = 1 - Math.pow(1 - q, 3);
     if (q > 0) {
-      g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = e;
-      const bl = 16 * (1 - e); if (bl > 0.3) g.filter = `blur(${bl.toFixed(1)}px)`;
-      const s = 1.06 - 0.06 * e;
-      g.setTransform(new DOMMatrix().translate(W / 2, H / 2).scale(s).translate(-W / 2, -H / 2).multiply(camM(camHook(0))));
-      worldHook(g, 0); g.restore();
+      g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = e; const bl = 16 * (1 - e); if (bl > 0.3) g.filter = `blur(${bl.toFixed(1)}px)`;
+      g.setTransform(new DOMMatrix().translate(W / 2, H / 2).scale(1.06 - 0.06 * e).translate(-W / 2, -H / 2).multiply(camM(camHook(0)))); worldHook(g, 0); g.restore();
     }
-    light = true;
   }
-  CAMNOW = curM; CAPLIGHT = light;
 }
 
 const GRAIN = [0, 1, 2, 3].map((k) => {
@@ -744,9 +917,10 @@ function draw(t) {
   if (WHIP > 0.05) { [-24, -48, -72, 24].forEach((dx, i) => { G.save(); G.globalAlpha = 0.12 * WHIP; G.drawImage(SC, dx * WHIP, 0); G.restore(); }); }
   // Captions: dunkel, plus helle Fassung im Flood-Kreis (Live-Text-Inversion)
   for (const pg of PAGES.filter((p) => { const f = SPR[p.lines[0][0][1]].worte[p.lines[0][0][2]].t; return t >= f - 0.1 && t <= p.aus() + 0.45; })) {
+    if (pg.glass) glassBehind(pg, t);
     if (pg.flood && FLOOD) {
       caption(G, pg, t, false);
-      G.save(); G.beginPath(); if (FLOOD === 'all') G.rect(0, 0, W, H); else G.arc(FLOOD.x, FLOOD.y, FLOOD.r, 0, Math.PI * 2); G.clip(); caption(G, pg, t, true); G.restore();
+      G.save(); G.beginPath(); if (FLOOD === 'all') G.rect(0, 0, W, H); else FLOOD.path(G); G.clip(); caption(G, pg, t, true); G.restore();
     } else caption(G, pg, t, pg.light ?? false);
   }
   // Cursor
@@ -756,8 +930,6 @@ function draw(t) {
     const pr = Math.max(...CLICKS().map((k) => Math.sin(Math.PI * seg(t, k - 0.05, k + 0.13))));
     for (const k of CLICKS()) { const p = seg(t, k, k + 0.45); if (p > 0 && p < 1) { G.beginPath(); G.arc(sc.x, sc.y, 12 + 40 * E.outCubic(p), 0, Math.PI * 2); G.strokeStyle = `rgba(201,160,99,${0.6 * (1 - p)})`; G.lineWidth = 2.5; G.stroke(); } }
     if (sc.x < W + 40 && sc.y < H + 40) cursorShape(sc.x, sc.y, pr);
-  } else if (t > T.d5b && t < T.d6[0]) {
-    const pr = Math.sin(Math.PI * seg(t, T.clickStoff - 0.05, T.clickStoff + 0.13)); if (c.x < W + 40) cursorShape(c.x, c.y, pr);
   }
   // Film-Finish
   G.globalAlpha = 0.035; G.globalCompositeOperation = 'overlay';
@@ -769,28 +941,44 @@ function draw(t) {
   G.fillStyle = vg; G.fillRect(0, 0, W, H);
 }
 T.d5b = T.d5[1];
+// Liquid Glass hinter einer Caption auf Fotos: unscharfer Ausschnitt, helles Glas, Lichtkante
+function glassBehind(pg, t) {
+  const first = SPR[pg.lines[0][0][1]].worte[pg.lines[0][0][2]].t, aus = pg.aus();
+  const a = p4out((t - first + 0.2) / 0.45) * (1 - p4in((t - aus) / 0.35)); if (a <= 0.01) return;
+  const hs = L.hs, y0 = capY(pg.lines.length), x = L.tx - 44, y = y0 - hs - 92, w2 = V ? W - 2 * (L.tx - 44) : 820, h2 = (pg.lines.length - 1) * hs * 1.14 + hs + 150;
+  const k = 0.94 + 0.06 * a;
+  G.save(); G.translate(x + w2 / 2, y + h2 / 2); G.scale(k, k); G.translate(-(x + w2 / 2), -(y + h2 / 2));
+  G.globalAlpha = a; G.beginPath(); G.rect(x, y, w2, h2); G.clip();
+  G.filter = 'blur(22px)'; G.drawImage(SC, 0, 0); G.filter = 'none';
+  G.fillStyle = 'rgba(255,255,255,.10)'; G.fillRect(x, y, w2, h2);
+  G.fillStyle = 'rgba(10,10,10,.18)'; G.fillRect(x, y, w2, h2);
+  G.fillStyle = 'rgba(255,255,255,.45)'; G.fillRect(x, y, w2, 1.5);
+  G.restore(); G.save(); G.globalAlpha = a; strokeRect(G, x, y, w2, h2, 'rgba(255,255,255,.28)'); G.restore();
+}
 
 // ---------------------------------------------------------------------------
 // Ton-Cues (Filmzeit) für engine/ton-mischen.mjs – Effekte aus der ElevenLabs-Bibliothek
 // ---------------------------------------------------------------------------
 window.CUES = [
   ...TAGS.map((tg) => ({ t: tg.t() + 0.02, type: 'pop', gain: 0.45 })),
-  { t: w('hook', 7), type: 'funken', gain: 0.5 },
-  { t: T.d1[0] + 0.35, type: 'whoosh', gain: 0.9 }, { t: T.d1[1], type: 'thump', gain: 0.35 },
-  ...[0, 1, 2].map((i) => ({ t: T.d1[0] + 0.24 + i * 0.07, type: 'tick', gain: 0.35, pan: (i - 1) * 0.4 })),
+  { t: w('hook', 7), type: 'funken', gain: 0.45 }, { t: w('hook', 7) + 0.05, type: 'papier', gain: 0.35 },
+  { t: T.d1[0] + 0.05, type: 'swish', gain: 0.7 }, { t: T.d1[0] + 0.35, type: 'whoosh', gain: 0.6 },
+  ...[0, 2].map((i, k) => ({ t: T.d1[0] + 0.3 + k * 0.08, type: 'tick', gain: 0.35, pan: (i - 1) * 0.5 })),
   ...CLICKS().map((k) => ({ t: k - 0.02, type: 'click', gain: 0.8 })),
   { t: T.clickRevers + 0.05, type: 'pop', gain: 0.5 }, { t: T.clickKnopf + 0.05, type: 'pop', gain: 0.5 }, { t: T.clickTasche + 0.05, type: 'pop', gain: 0.5 },
-  { t: T.clickRevers + 0.3, type: 'swish', gain: 0.45 },
-  { t: T.d2[0] + 0.33, type: 'whoosh', gain: 0.8 }, { t: T.clickKnopf + 0.04, type: 'chime', gain: 0.35 },
-  { t: T.d3[0] + 0.22, type: 'swish', gain: 1.0, panVon: 0.7, panBis: -0.7 },
-  { t: T.d4[0] + 0.25, type: 'falten', gain: 0.8 },
+  { t: T.clickRevers + 0.3, type: 'swish', gain: 0.4 }, { t: T.ring, type: 'chime', gain: 0.25 },
+  { t: T.d2[0] + 0.05, type: 'riser', gain: 0.35 }, { t: T.d2[0] + 0.3, type: 'flut', gain: 0.55 },
+  { t: T.clickKnopf + 0.04, type: 'chime', gain: 0.3 },
+  { t: T.d3[0] + 0.3, type: 'whoosh', gain: 0.75, panVon: 0.7, panBis: -0.7 }, ...[0, 1, 2].map((i) => ({ t: T.d3[0] + 0.25 + i * 0.09, type: 'tick', gain: 0.25, pan: 0.6 - i * 0.6 })),
+  { t: T.d4[0] + 0.2, type: 'falten', gain: 0.85 }, { t: T.d4[0] + 0.45, type: 'swish', gain: 0.4 },
   ...T.checks.map((tc) => ({ t: tc, type: 'pop', gain: 0.55 })), { t: T.checks[3] + 0.02, type: 'chime', gain: 0.35 },
-  { t: T.d5[0] + 0.33, type: 'whoosh', gain: 0.9 }, { t: T.d5[1] - 0.05, type: 'papier', gain: 0.6 },
+  { t: T.d5[0] + 0.44, type: 'riser', gain: 0.45 }, { t: T.d5[0] + 0.46, type: 'impact', gain: 0.35 }, { t: T.d5[0] + 0.5, type: 'papier', gain: 0.5 },
   { t: T.typ[0], type: 'type', gain: 0.6 }, { t: T.clickStoff + 0.1, type: 'pop', gain: 0.45 },
-  { t: T.d6[0] + 0.32, type: 'whoosh', gain: 0.75 },
+  { t: T.d6[0] + 0.1, type: 'swish', gain: 0.6 }, { t: T.d6[0] + 0.35, type: 'funken', gain: 0.25 },
   ...[1, 2, 3, 4, 5, 6, 7].map((i) => ({ t: w('blick', 0) + (i - 1) * 0.085, type: 'tick', gain: 0.3, pan: (i % 2 - 0.5) * 0.5 })),
   { t: T.clickPdf + 0.35, type: 'chime', gain: 0.35 },
-  { t: T.clickTermin + 0.02, type: 'flut', gain: 0.8 },
+  { t: T.clickTermin + 0.01, type: 'click', gain: 0.9 }, { t: T.clickTermin + 0.09, type: 'click', gain: 0.7 },
+  { t: T.clickTermin + 0.15, type: 'swish', gain: 0.8 }, { t: T.clickTermin + 0.35, type: 'whoosh', gain: 0.55 },
   { t: T.d8[0] + 0.15, type: 'swish', gain: 0.6 },
   { t: w('preis', 0) + 0.1, type: 'logo', gain: 0.75 },
   { t: w('preis', 3), type: 'slot', gain: 0.35 },
