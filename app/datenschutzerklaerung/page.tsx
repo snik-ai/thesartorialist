@@ -137,6 +137,21 @@ export default function DatenschutzPage() {
           Nachricht) werden nicht an DLM Digital übermittelt. Die Daten werden in der
           Schweiz bzw. EU verarbeitet.
         </p>
+        <h3>Eigene Besucherstatistik</h3>
+        <p>
+          Zusätzlich führen wir eine eigene, cookielose Besucherstatistik auf unserem Server.
+          Erfasst werden die aufgerufene Seite, die verweisende Website (nur deren Domain),
+          allfällige Kampagnen-Parameter (utm_source, utm_medium, utm_campaign), der Gerätetyp
+          (Smartphone, Tablet, Computer), die Browsersprache sowie Klicks auf Kontaktwege
+          (Telefon, WhatsApp, E-Mail, Route) und das Absenden von Formularen. Um Besuche zählen
+          zu können, bilden wir aus IP-Adresse, Browserkennung und Tagesdatum zusammen mit
+          einem geheimen Schlüssel einen gekürzten Prüfwert (Hash). Die IP-Adresse selbst wird
+          nicht gespeichert, der Prüfwert wechselt täglich und lässt keinen Rückschluss auf Ihre
+          Person zu; es werden weder Cookies noch andere Speicher in Ihrem Browser verwendet.
+          Die Daten werden ausschliesslich für die eigene Auswertung genutzt, nicht an Dritte
+          weitergegeben und in der Schweiz bzw. EU gespeichert. Rechtsgrundlage ist unser
+          berechtigtes Interesse an einer bedarfsgerechten Gestaltung der Website.
+        </p>
         <h3>Film auf der Startseite (Vimeo)</h3>
         <p>
           Auf der Startseite zeigen wir unseren Film über den Videodienst Vimeo (Vimeo.com
@@ -175,8 +190,12 @@ export default function DatenschutzPage() {
           wir Ihre Angaben (Name, Telefon, E-Mail, Wunschtermin und — falls gewählt — Ihre
           Stil-Auswahl) per E-Mail an unser Atelier und senden Ihnen eine Bestätigung. Für den
           Versand nutzen wir den Dienst Resend (Resend Inc., San Francisco, USA) mit
-          Datenverarbeitung in der EU. Die Daten verwenden wir ausschliesslich zur Bearbeitung
-          Ihrer Anfrage.
+          Datenverarbeitung in der EU. Ihre Angaben speichern wir zudem in unserer
+          Kundendatenbank, damit wir Termin und Beratung vorbereiten und Ihre Anfrage
+          nachverfolgen können. Die Daten verwenden wir ausschliesslich zur Bearbeitung
+          Ihrer Anfrage und zur Betreuung als Kundin oder Kunde. Per WhatsApp oder SMS
+          kontaktieren wir Sie nur, wenn Sie dem ausdrücklich zugestimmt haben; diese
+          Einwilligung können Sie jederzeit widerrufen.
         </p>
         <h3>Anfragen per E-Mail oder Telefon</h3>
         <p>

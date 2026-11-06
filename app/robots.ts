@@ -21,11 +21,14 @@ const AI_CRAWLERS = [
   'Meta-ExternalAgent',
 ];
 
+// Backend und Schnittstellen nie crawlen
+const PRIVAT = ['/admin/', '/api/'];
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: '*', allow: '/' },
-      ...AI_CRAWLERS.map((userAgent) => ({ userAgent, allow: '/' })),
+      { userAgent: '*', allow: '/', disallow: PRIVAT },
+      ...AI_CRAWLERS.map((userAgent) => ({ userAgent, allow: '/', disallow: PRIVAT })),
     ],
     sitemap: `${SITE.url}/sitemap.xml`,
   };

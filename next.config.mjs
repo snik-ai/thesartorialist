@@ -12,6 +12,8 @@ const nextConfig = {
   // als Node-Server: Marketing-Seiten bleiben statisch vorgerendert, Shop-Seiten
   // werden alle 15 Minuten aus Shopify erneuert (ISR). Gleicher Aufbau wie racher.ch.
   output: 'standalone',
+  // Projektordner als Wurzel (sonst landet server.js in Worktrees verschachtelt in .next/standalone/…)
+  outputFileTracingRoot: new URL('.', import.meta.url).pathname,
   trailingSlash: true,
   poweredByHeader: false,
   images: {
