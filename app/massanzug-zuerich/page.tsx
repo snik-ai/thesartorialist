@@ -6,7 +6,7 @@ import Faq from '@/components/Faq';
 import { JsonLd, serviceSchema } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'Massanzug Zürich — Create Your Own Style',
+  title: 'Massanzug Zürich — Preis ab CHF 1’690, Made in Italy',
   description:
     'Massanzug in Zürich anfertigen lassen: Full-Canvas-Verarbeitung, exklusive Stoffe von Loro Piana, Scabal & Cerruti, MTM-Prozess mit persönlicher Beratung — ab CHF 1’690.',
   alternates: { canonical: '/massanzug-zuerich/' },

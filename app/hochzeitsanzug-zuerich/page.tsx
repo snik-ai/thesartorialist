@@ -6,9 +6,9 @@ import Faq from '@/components/Faq';
 import { JsonLd, serviceSchema } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'Hochzeitsanzug Zürich — massgeschneidert',
+  title: 'Hochzeitsanzug Herren Zürich — nach Mass',
   description:
-    'Hochzeitsanzug massgeschneidert in Zürich: perfekte Passform, atmende Naturstoffe, individuelle Details bis zur Stickerei im Innenfutter — The Sartorialist, ab CHF 1’690.',
+    'Hochzeitsanzug für Herren, massgeschneidert in Zürich: perfekte Passform, atmende Naturstoffe, Details bis zur Stickerei im Futter. Für den Bräutigam ab CHF 1’690.',
   alternates: { canonical: '/hochzeitsanzug-zuerich/' },
   openGraph: {
     title: 'Hochzeitsanzug Zürich — The Sartorialist',
@@ -60,7 +60,7 @@ export default function HochzeitsanzugPage() {
       />
       <section className="page-hero">
         <div className="container">
-          <span className="eyebrow">Hochzeit</span>
+          <span className="eyebrow">Hochzeitsanzug für Herren</span>
           <h1 className="display">Hochzeitsanzug Zürich</h1>
           <p className="lead">
             Der perfekte Auftritt für den schönsten Tag Ihres Lebens: ein Anzug, der

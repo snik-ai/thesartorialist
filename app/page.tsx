@@ -94,10 +94,10 @@ export default function HomePage() {
       <section className="hero hero--film">
         <HeroVideo />
         <div className="hero-content">
-          <span className="eyebrow">Herrenausstatter · Zürich</span>
-          <h1 className="display">
+          <h1 className="eyebrow hero-h1">Massanzug &amp; Hochzeitsanzug in Zürich</h1>
+          <p className="display hero-quote">
             «Mode ist vergänglich. <span className="accent">Stil ist für die&nbsp;Ewigkeit.</span>»
-          </h1>
+          </p>
           <p className="lead">
             Massanzüge und exklusive italienische Herrenmode — Full-Canvas-Verarbeitung,
             100&nbsp;% Made in Italy, ab CHF&nbsp;1’690. In 20 Arbeitstagen abholbereit.
