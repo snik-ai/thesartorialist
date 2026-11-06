@@ -3,35 +3,41 @@ import { headers } from 'next/headers';
 import { dbBereit } from '@/lib/db';
 import { angebotGedrosselt, angebotPerToken } from '@/lib/crm/angebot-oeffentlich';
 import { angebotAnzeigeStatus } from '@/lib/crm/belege';
-import { chf, positionBetrag, summen } from '@/lib/crm/geld';
+import { chf } from '@/lib/crm/geld';
 import { firma } from '@/lib/crm/firma';
-import { stilGruppen } from '@/lib/crm/status';
+import { angebotDokument } from '@/lib/beleg/dokument';
+import { logoFuer } from '@/lib/beleg/laden';
+import { blattHtml } from '@/lib/beleg/vorlage';
+import { PAPIER_CSS, SCHRIFTEN_WEB } from '@/lib/beleg/stil';
+import { DOK, datumText, fuell } from '@/lib/beleg/texte';
 import { SITE } from '@/lib/site';
-import { tagDatum } from '@/lib/zeit';
 import AngebotAnnahme from './AngebotAnnahme';
+import { KT } from './texte';
 
+// Kundenansicht des Angebots (nach VoxCRM KundenAnsicht.tsx): dasselbe A4-Blatt wie im Editor und im PDF,
+// daneben bzw. darunter die Annahme. Sprache = Dokumentsprache des Angebots.
 export const metadata: Metadata = { title: 'Ihr Angebot', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 function Ungueltig({ titel, text }: { titel: string; text: string }) {
   return (
-    <main className="ao-seite">
-      <header className="ao-kopf">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/marke/wortmarke-schwarz.png" alt="The Sartorialist Zürich" width={240} height={36} />
-      </header>
-      <section className="ao-karte ao-leer">
-        <h1>{titel}</h1>
-        <p>{text}</p>
-        <div className="ao-knoepfe">
-          <a className="ao-knopf" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
-            {SITE.phone}
-          </a>
-          <a className="ao-knopf linie" href={`mailto:${SITE.email}`}>
-            {SITE.email}
-          </a>
+    <main className="k-seite">
+      <div className="k-wrap">
+        <div className="k-card k-fehlerseite">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="k-logo" src="/images/marke/wortmarke-schwarz.png" alt="The Sartorialist Zürich" />
+          <h1 className="k-h1">{titel}</h1>
+          <p className="k-sub">{text}</p>
+          <div className="k-knoepfe">
+            <a className="k-btn" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
+              {SITE.phone}
+            </a>
+            <a className="k-btn line" href={`mailto:${SITE.email}`}>
+              {SITE.email}
+            </a>
+          </div>
         </div>
-      </section>
+      </div>
     </main>
   );
 }
@@ -45,117 +51,58 @@ export default async function AngebotOeffentlich({ params }: { params: Promise<{
   const t = await angebotPerToken(token, { ansehen: true });
   if (!t) return <Ungueltig titel="Link nicht mehr gültig" text="Dieser Angebotslink ist ungültig oder wurde durch einen neueren ersetzt. Gerne senden wir Ihnen das aktuelle Angebot." />;
   const { a, k } = t;
-  const f = await firma();
+  const [f, logo] = await Promise.all([firma(), logoFuer('web')]);
   const st = angebotAnzeigeStatus(a);
-  const s = summen(a.positionen, { rabattProzent: a.rabattProzent, rabattRp: a.rabattRp, mwstSatz: a.mwstSatz });
-  const anrede = [k.anrede, k.name].filter(Boolean).join(' ');
+  const dok = angebotDokument(a, k, f, logo);
+  const s = a.sprache;
+  const T = KT[s];
+  const D = DOK[s];
+  const gruss = fuell(T.hallo, { name: [k.anrede, k.name].filter(Boolean).join(' ') || k.name });
 
   return (
-    <main className="ao-seite">
-      <header className="ao-kopf">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/marke/wortmarke-schwarz.png" alt="The Sartorialist Zürich" width={240} height={36} />
-        <span>Angebot {a.nummer}</span>
-      </header>
-
-      <section className="ao-held">
-        <span className="ao-kicker">Ihr persönliches Angebot</span>
-        <h1>{a.titel || 'Massanfertigung'}</h1>
-        <p>
-          {anrede ? `Guten Tag ${anrede}. ` : ''}
-          {a.einleitung}
-        </p>
-        <div className="ao-meta">
-          <span>
-            Datum <b>{tagDatum(a.gesendetAm ?? a.erstelltAm)}</b>
+    <main className="k-seite" lang={s}>
+      <style dangerouslySetInnerHTML={{ __html: SCHRIFTEN_WEB + PAPIER_CSS }} />
+      <div className="k-breit">
+        <header className="k-kopf">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="k-logo" src="/images/marke/wortmarke-schwarz.png" alt={f.name} />
+          <span className="k-mut">
+            {D.angebot} {a.nummer}
           </span>
-          {a.gueltigBis && (
-            <span>
-              Gültig bis <b>{tagDatum(a.gueltigBis)}</b>
-            </span>
-          )}
-          <span>
-            Total <b>{chf(s.totalRp)}</b>
-          </span>
-        </div>
-      </section>
-
-      <section className="ao-karte">
-        <h2>Leistungen</h2>
-        <ul className="ao-pos">
-          {a.positionen.map((p) => (
-            <li key={p.id}>
-              <div>
-                <b>
-                  {p.menge !== 1 ? `${p.menge} × ` : ''}
-                  {p.bezeichnung}
-                </b>
-                {(p.beschreibung || p.stoffnummer) && <small>{[p.beschreibung, p.stoffnummer ? `Stoff ${p.stoffnummer}` : '', p.rabattProzent ? `Rabatt ${p.rabattProzent} %` : ''].filter(Boolean).join('\n')}</small>}
+        </header>
+        <div className="k-raster">
+          <section className="k-dokument" aria-label={`${D.angebot} ${a.nummer}`}>
+            <div className="k-blatt bl" dangerouslySetInnerHTML={{ __html: blattHtml(dok, { fussFest: true }) }} />
+          </section>
+          <aside className="k-seitenkarte">
+            <div className="k-card">
+              <p className="k-sub" style={{ margin: '0 0 6px' }}>
+                {gruss}
+              </p>
+              <h1 className="k-h1">{a.titel || D.angebot}</h1>
+              <div className="k-tot">
+                <span>{D.totalChf}</span>
+                <span>{chf(dok.summen.totalRp, false)}</span>
               </div>
-              <span>{chf(positionBetrag(p))}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="ao-summe">
-          {s.rabattRp > 0 && (
-            <>
-              <div>
-                <span>Zwischentotal</span>
-                <span>{chf(s.zwischenRp)}</span>
+              <p className="k-mut k-klein">
+                {[a.mwstSatz > 0 ? D.inklMwst : null, a.gueltigBis ? `${D.gueltigBis} ${datumText(a.gueltigBis, s)}` : null].filter(Boolean).join(' · ')}
+              </p>
+              <AngebotAnnahme token={token} status={st} name={k.name} sprache={s} angenommen={a.angenommenAm ? { name: a.angenommenName ?? k.name, am: datumText(a.angenommenAm, s) } : null} />
+              <a className="k-btn line" href={`/api/angebot/${token}/pdf/`} target="_blank" rel="noopener">
+                {T.pdf}
+              </a>
+              <div className="k-note">
+                <a href={`tel:${f.telefon.replace(/\s/g, '')}`}>{f.telefon}</a>
+                <span>·</span>
+                <a href={`mailto:${f.email}`}>{f.email}</a>
               </div>
-              <div>
-                <span>Rabatt{a.rabattProzent ? ` ${a.rabattProzent} %` : ''}</span>
-                <span>− {chf(s.rabattRp)}</span>
-              </div>
-            </>
-          )}
-          <div className="total">
-            <span>Total</span>
-            <span>{chf(s.totalRp)}</span>
-          </div>
-          {a.mwstSatz > 0 && (
-            <div className="leise">
-              <span>inkl. MWST {String(a.mwstSatz).replace('.', ',')} %</span>
-              <span>{chf(s.mwstRp)}</span>
             </div>
-          )}
+          </aside>
         </div>
-      </section>
-
-      {(a.stil.length > 0 || a.stoffe.length > 0) && (
-        <section className="ao-karte">
-          <h2>Ihre Stil-Auswahl</h2>
-          {a.stoffe.length > 0 && <p className="ao-stoff">Stoff · Holland &amp; Sherry · {a.stoffe.join(' · ')}</p>}
-          <div className="ao-stil">
-            {stilGruppen(a.stil).map((g) => (
-              <div key={g.kategorie}>
-                <h3>{g.kategorie}</h3>
-                <dl>
-                  {g.zeilen.map((z, i) => (
-                    <div key={i}>
-                      <dt>{z.untergruppe}</dt>
-                      <dd>{z.option}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {a.schluss && <p className="ao-schluss">{a.schluss}</p>}
-
-      <AngebotAnnahme token={token} status={st} name={k.name} angenommen={a.angenommenAm ? { name: a.angenommenName ?? k.name, am: tagDatum(a.angenommenAm) } : null} />
-
-      <footer className="ao-fuss">
-        <a href={`/api/angebot/${token}/pdf/`} target="_blank" rel="noopener">
-          Angebot als PDF
-        </a>
-        <span>
-          {f.name} · {f.strasse}, {f.plz} {f.ort} · <a href={`tel:${f.telefon.replace(/\s/g, '')}`}>{f.telefon}</a>
-        </span>
-      </footer>
+        <p className="k-powered">
+          {f.name} · {f.strasse}, {f.plz} {f.ort}
+        </p>
+      </div>
     </main>
   );
 }

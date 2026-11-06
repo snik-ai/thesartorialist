@@ -9,8 +9,8 @@ interface Verlauf<T> { vorher: T[]; jetzt: T | null; nachher: T[] }
  * Wert mit Verlauf. `setze(f, gruppe)` fasst schnelle Änderungen derselben Gruppe (z. B. Tippen im selben Feld)
  * zu einem Schritt zusammen, damit Ctrl/Cmd+Z ganze Wörter statt einzelner Buchstaben zurücknimmt.
  */
-export function useVerlauf<T>() {
-  const s = useRef<Verlauf<T>>({ vorher: [], jetzt: null, nachher: [] });
+export function useVerlauf<T>(anfang: T | null = null) {
+  const s = useRef<Verlauf<T>>({ vorher: [], jetzt: anfang, nachher: [] });
   const letzte = useRef<{ gruppe: string | null; zeit: number }>({ gruppe: null, zeit: 0 });
   const [, neuZeichnen] = useReducer((x: number) => x + 1, 0);
 

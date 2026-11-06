@@ -2,18 +2,18 @@
 // Angebot als Live-Dokument (VoxCRM OfferteSeite.tsx): Das A4-Papier ist die Oberfläche (Briefkopf, Empfänger, Titel,
 // Texte, Positionen, Summen) und wird direkt bearbeitet; gespeichert wird automatisch. Rechts nur, was nicht aufs Papier
 // gehört: Status, Kunde, Sprache, Bedingungen, Versand, Stil-Auswahl, Versionen, Notiz, Verlauf.
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { BelegSprache, Position, StilZeileDb } from '@/lib/db/schema';
 import { angebotDokument, type FirmaKurz, type KontaktKurz } from '@/lib/beleg/dokument';
 import { blattHtml, dokumentHtml } from '@/lib/beleg/vorlage';
 import { DOK } from '@/lib/beleg/texte';
 import { stilGruppen } from '@/lib/crm/status';
-import { Fehlermeldung, Feld, Icon, Knopf, Panel, Pill, ToastBereich, api, geld, heuteIso, plusTage, useToast, type PillArt } from '@/components/vx/ui';
+import { Datum, Fehlermeldung, Feld, Icon, Knopf, Panel, Pill, ToastBereich, api, geld, heuteIso, plusTage, useToast, type PillArt } from '@/components/vx/ui';
 import { DokumentRahmen, Abschnitt, PdfVorschau, SpeicherAnzeige, type Aktion, type Modus } from './Rahmen';
 import { Absenderblock, Angabe, EmpfaengerFeld, Fliesstext, MetaDatum, PapierFuss, PapierStil, PapierSummen, TitelBlock, Unterschrift, ZusatzBlatt } from './Papier';
 import { AutoText, Positionen, mitSchluessel, zumSpeichern, leerePosition, type EPosition } from './Positionen';
-import { SendenPanel, SprachWahl, Versionen, WieWeiter, Zeitleiste, pdfHerunterladen, type VerlaufZeile, type VersionZeile } from './Gemeinsam';
+import { Ablauf, SendenPanel, SprachWahl, Versionen, WieWeiter, Zeitleiste, pdfHerunterladen, type VerlaufZeile, type VersionZeile } from './Gemeinsam';
 import { useAutosave, useEditorTasten, useVerlauf } from './zustand';
 import '@/components/vx/vx.css';
 import './editor.css';
@@ -134,13 +134,18 @@ export default function AngebotSeite(p: AngebotSeiteProps) {
 function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rechnung, verlauf, versionen, stilQuellen, mailBereit }: AngebotSeiteProps) {
   const router = useRouter();
   const toast = useToast();
-  const v = useVerlauf<Stand>();
+  const v = useVerlauf<Stand>(ausDaten(a));
+  const erstes = useRef(true);
   const [kunde, setKunde] = useState(kundeStart);
   const [modus, setModus] = useState<Modus>('bearbeiten');
   const [panel, setPanel] = useState<null | 'senden' | 'annehmen' | 'ablehnen'>(null);
   const [link, setLink] = useState<string | null>(null);
   const [beschaeftigt, setBeschaeftigt] = useState<string | null>(null);
   useEffect(() => {
+    if (erstes.current) {
+      erstes.current = false;
+      return;
+    }
     v.start(ausDaten(a));
   }, [a]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => setKunde(kundeStart), [kundeStart]);
@@ -320,6 +325,7 @@ function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rech
           <Pill art={st.pill}>{st.label}</Pill>
           <b className="num">{geld(dok.summen.totalRp, true)}</b>
         </div>
+        <Ablauf erledigt={a.status === 'angenommen' ? (rechnung ? ['angebot', 'auftrag'] : ['angebot']) : []} aktuell={a.status === 'angenommen' ? (rechnung ? 'rechnung' : 'auftrag') : 'angebot'} links={{ auftrag: auftrag ? `/admin/auftraege/${auftrag.id}/` : null, rechnung: rechnung ? `/admin/rechnungen/${rechnung.id}/` : null }} />
         <div className="dk-zeilen">
           <div>
             <span>Version</span>
@@ -361,13 +367,22 @@ function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rech
         <SprachWahl wert={stand.sprache} gesperrt={!editierbar} onWahl={sprachWechsel} />
         <p className="dk-klein">Blatt, PDF, Kundenseite und E-Mail erscheinen in dieser Sprache. Standardtexte wechseln mit.</p>
       </Abschnitt>
-      <Abschnitt titel="Bedingungen">
-        <div className="dk-zeilen">
-          <div>
-            <span>Gültig bis</span>
-            <b className="num">{stand.gueltigBis ? `${stand.gueltigBis.slice(8, 10)}.${stand.gueltigBis.slice(5, 7)}.${stand.gueltigBis.slice(0, 4)}` : '—'}</b>
+      <Abschnitt titel="Gültigkeit">
+        <Datum feld wert={stand.gueltigBis || null} disabled={!editierbar} onWahl={(w) => set((s) => ({ ...s, gueltigBis: w }))} />
+        {editierbar && (
+          <div className="dk-chips chips-reihe">
+            {[14, 30, 60, 90].map((t) => {
+              const w = plusTage(stand.datum || heuteIso(), t);
+              return (
+                <button key={t} type="button" className={`chip-w ${stand.gueltigBis === w ? 'an' : ''}`} onClick={() => set((s) => ({ ...s, gueltigBis: w }))}>
+                  {t} Tage
+                </button>
+              );
+            })}
           </div>
-        </div>
+        )}
+      </Abschnitt>
+      <Abschnitt titel="Rabatt und Bedingungen">
         {editierbar && (
           <div className="dk-chips chips-reihe">
             {[0, 5, 10].map((r) => (

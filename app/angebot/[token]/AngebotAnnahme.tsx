@@ -1,9 +1,13 @@
 'use client';
-// Annahme auf der Angebotsseite: vollständiger Name + Bestätigung (eigener Schalter, keine native Checkbox), Rückfrage.
+// Annahme in der Kundenansicht (VoxCRM KundenAnsicht): vollständiger Name + Bestätigung (Schalter, keine native Checkbox),
+// Rückfrage ans Atelier. Texte in der Dokumentsprache.
 import { useState } from 'react';
 import { SITE } from '@/lib/site';
+import type { BelegSprache } from '@/lib/db/schema';
+import { KT } from './texte';
 
-export default function AngebotAnnahme({ token, status, name: vorschlag, angenommen }: { token: string; status: string; name: string; angenommen: { name: string; am: string } | null }) {
+export default function AngebotAnnahme({ token, status, name: vorschlag, angenommen, sprache }: { token: string; status: string; name: string; angenommen: { name: string; am: string } | null; sprache: BelegSprache }) {
+  const T = KT[sprache];
   const [name, setName] = useState('');
   const [ok, setOk] = useState(false);
   const [laedt, setLaedt] = useState(false);
@@ -18,7 +22,7 @@ export default function AngebotAnnahme({ token, status, name: vorschlag, angenom
     try {
       const r = await fetch(`/api/angebot/${token}/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const j = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(j.fehler || 'Das hat leider nicht geklappt.');
+      if (!r.ok) throw new Error(j.fehler || T.fehler);
       setFertig(ziel);
     } catch (e) {
       setFehler((e as Error).message);
@@ -29,67 +33,76 @@ export default function AngebotAnnahme({ token, status, name: vorschlag, angenom
 
   if (angenommen || fertig === 'angenommen' || status === 'angenommen')
     return (
-      <section className="ao-annahme ao-danke" role="status">
-        <span className="ao-haken" aria-hidden="true">
-          ✓
-        </span>
-        <h2>Herzlichen Dank{angenommen ? `, ${angenommen.name.split(' ')[0]}` : ''}.</h2>
-        <p>{angenommen ? `Angenommen am ${angenommen.am}.` : 'Ihre Zusage ist bei uns eingegangen.'} Wir bestellen jetzt Ihren Stoff und melden uns für die Anprobe. Eine Bestätigung erhalten Sie per E-Mail.</p>
-      </section>
+      <div className="k-done" role="status">
+        <div className="ring">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5" />
+          </svg>
+        </div>
+        <h2 className="k-h1" style={{ fontSize: 24 }}>
+          {T.danke}
+          {angenommen ? `, ${angenommen.name.split(' ')[0]}` : ''}.
+        </h2>
+        <p className="k-sub">
+          {angenommen ? T.angenommenAm.replace('{datum}', angenommen.am) : T.eingegangen} {T.dankeText}
+        </p>
+      </div>
     );
 
   if (status === 'abgelaufen' || status === 'abgelehnt')
     return (
-      <section className="ao-annahme">
-        <h2>{status === 'abgelaufen' ? 'Dieses Angebot ist abgelaufen' : 'Dieses Angebot ist nicht mehr aktiv'}</h2>
-        <p>Gerne erstellen wir Ihnen ein aktuelles Angebot — rufen Sie uns an oder schreiben Sie uns.</p>
-        <div className="ao-knoepfe">
-          <a className="ao-knopf" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
+      <div className="k-hinweis bad">
+        <div>
+          <b>{status === 'abgelaufen' ? T.abgelaufen : T.inaktiv}</b>
+          <p style={{ margin: '4px 0 10px' }}>{T.neuText}</p>
+          <a className="k-btn" href={`tel:${SITE.phone.replace(/\s/g, '')}`}>
             {SITE.phone}
           </a>
-          <a className="ao-knopf linie" href={SITE.whatsapp} target="_blank" rel="noopener">
-            WhatsApp
-          </a>
         </div>
-      </section>
+      </div>
     );
 
   return (
-    <section className="ao-annahme" aria-labelledby="ao-annahme-titel">
-      <span className="ao-kicker">Angebot annehmen</span>
-      <h2 id="ao-annahme-titel">Passt alles? Dann können Sie hier verbindlich zusagen.</h2>
-      <label className="ao-feld">
-        <span>Ihr vollständiger Name</span>
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder={vorschlag || 'Vor- und Nachname'} autoComplete="name" />
+    <section aria-labelledby="k-annahme-titel">
+      <span className="k-lbl">{T.annehmenKicker}</span>
+      <p id="k-annahme-titel" className="k-sub" style={{ margin: '0 0 12px' }}>
+        {T.annehmenTitel}
+      </p>
+      <label>
+        <span className="k-lbl" style={{ margin: '0 0 6px' }}>
+          {T.name}
+        </span>
+        <input className="k-inp" value={name} onChange={(e) => setName(e.target.value)} placeholder={vorschlag || T.namePlatz} autoComplete="name" />
       </label>
-      <button type="button" className={`ao-schalter${ok ? ' an' : ''}`} role="switch" aria-checked={ok} onClick={() => setOk(!ok)}>
-        <i aria-hidden="true" />
-        <span>Ich nehme dieses Angebot verbindlich an. Die Massanfertigung beginnt nach meiner Zusage.</span>
+      <button type="button" className={`k-tgl ${ok ? 'on' : ''}`} role="switch" aria-checked={ok} onClick={() => setOk(!ok)}>
+        <span className="tg" aria-hidden="true" />
+        <span>{T.bestaetigen}</span>
       </button>
       {fehler && (
-        <p className="ao-fehler" role="alert">
+        <div className="k-hinweis bad" role="alert">
           {fehler}
-        </p>
+        </div>
       )}
-      <button type="button" className="ao-knopf gross" disabled={laedt || name.trim().length < 3 || !ok} onClick={() => senden({ aktion: 'annehmen', name, bestaetigt: ok }, 'angenommen')}>
-        {laedt ? 'Einen Moment …' : 'Angebot annehmen'}
+      <button type="button" className="k-btn" disabled={laedt || name.trim().length < 3 || !ok} onClick={() => senden({ aktion: 'annehmen', name, bestaetigt: ok }, 'angenommen')}>
+        {laedt ? T.moment : T.annehmen}
       </button>
-
-      <div className="ao-frage">
+      <div style={{ marginTop: 10 }}>
         {fertig === 'frage' ? (
-          <p role="status">Danke für Ihre Nachricht — wir melden uns persönlich bei Ihnen.</p>
+          <p className="k-sub" role="status">
+            {T.frageDanke}
+          </p>
         ) : !frageOffen ? (
-          <button type="button" className="ao-link" onClick={() => setFrageOffen(true)}>
-            Noch eine Frage oder ein Änderungswunsch?
+          <button type="button" className="k-link" onClick={() => setFrageOffen(true)}>
+            {T.frage}
           </button>
         ) : (
           <>
-            <label className="ao-feld">
-              <span>Ihre Nachricht an das Atelier</span>
-              <textarea rows={3} value={frage} onChange={(e) => setFrage(e.target.value)} />
+            <label>
+              <span className="k-lbl">{T.frageLabel}</span>
+              <textarea className="k-inp k-ta" rows={3} value={frage} onChange={(e) => setFrage(e.target.value)} />
             </label>
-            <button type="button" className="ao-knopf linie" disabled={laedt || !frage.trim()} onClick={() => senden({ aktion: 'frage', text: frage }, 'frage')}>
-              Nachricht senden
+            <button type="button" className="k-btn line" disabled={laedt || !frage.trim()} onClick={() => senden({ aktion: 'frage', text: frage }, 'frage')}>
+              {T.frageSenden}
             </button>
           </>
         )}

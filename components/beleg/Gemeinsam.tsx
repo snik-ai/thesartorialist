@@ -182,3 +182,33 @@ export async function pdfHerunterladen(pfad: string, vorher?: () => Promise<unkn
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
+
+export type Schritt = 'angebot' | 'auftrag' | 'rechnung' | 'bezahlt';
+/** Ablauf Angebot → Auftrag → Rechnung → Bezahlt (VoxCRM Bausteine.tsx Ablauf) */
+export function Ablauf({ erledigt, aktuell, links }: { erledigt: Schritt[]; aktuell: Schritt | null; links?: Partial<Record<Schritt, string | null>> }) {
+  const schritte: [Schritt, string][] = [
+    ['angebot', 'Angebot'],
+    ['auftrag', 'Auftrag'],
+    ['rechnung', 'Rechnung'],
+    ['bezahlt', 'Bezahlt'],
+  ];
+  return (
+    <div className="flow" role="list" aria-label="Ablauf">
+      {schritte.map(([s, l]) => {
+        const k = erledigt.includes(s) ? 'd' : aktuell === s ? 'c' : '';
+        const href = links?.[s];
+        const inhalt = (
+          <>
+            <i />
+            {l}
+          </>
+        );
+        return (
+          <div key={s} className={k} role="listitem" aria-current={aktuell === s ? 'step' : undefined}>
+            {href ? <a href={href}>{inhalt}</a> : inhalt}
+          </div>
+        );
+      })}
+    </div>
+  );
+}

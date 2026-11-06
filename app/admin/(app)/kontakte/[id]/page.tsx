@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation';
 import { and, desc, eq, gte, isNotNull, sql } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import Icon from '@/components/admin/Icon';
+import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
 import KontaktPanel from '@/components/admin/KontaktPanel';
 import KontaktSchnell, { AngebotNeuKnopf } from '@/components/admin/KontaktSchnell';
 import LeadStatus from '@/components/admin/LeadStatus';
@@ -84,6 +85,10 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
               {k.abgemeldet ? ' · abgemeldet' : ''}
             </span>
           </p>
+        </div>
+        <div className="a-knopfreihe a-akte-neu">
+          <NeuBelegKnopf art="angebot" kontaktId={k.id} />
+          <NeuBelegKnopf art="rechnung" kontaktId={k.id} linie />
         </div>
       </div>
 
@@ -185,7 +190,7 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
           <section className="a-karte">
             <div className="a-karte-kopf">
               <h2>Angebote</h2>
-              <AngebotNeuKnopf kontaktId={k.id} klasse="a-knopf leise klein" text="Neu" />
+              <NeuBelegKnopf art="angebot" kontaktId={k.id} klein linie label="Neu" />
             </div>
             {angebote.length === 0 ? (
               <div className="a-leer klein"><Icon name="dokument" /><p>Noch kein Angebot.</p></div>

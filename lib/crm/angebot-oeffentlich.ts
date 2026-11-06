@@ -1,5 +1,5 @@
 // Öffentliche Angebotsseite /angebot/<token>/: nur mit gültigem Token (32 Byte, sha256 in der DB), gedrosselt.
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import { gedrosselt } from '@/lib/drossel';
 import { aktivitaetLoggen } from './kontakte';
@@ -16,8 +16,8 @@ export async function angebotPerToken(token: string, o: { ansehen?: boolean } = 
   if (!a || !a.kontaktId || a.status === 'entwurf' || a.status === 'storniert') return null;
   const [k] = await db().select().from(schema.kontakt).where(eq(schema.kontakt.id, a.kontaktId)).limit(1);
   if (!k) return null;
+  if (o.ansehen) await db().update(schema.angebot).set({ angesehenAm: new Date(), angesehenAnzahl: sql`${schema.angebot.angesehenAnzahl} + 1` }).where(eq(schema.angebot.id, a.id));
   if (o.ansehen && !a.angesehenAm) {
-    await db().update(schema.angebot).set({ angesehenAm: new Date() }).where(eq(schema.angebot.id, a.id));
     await aktivitaetLoggen(db(), { kontaktId: k.id, kanal: 'system', richtung: 'ein', titel: `Angebot ${a.nummer} online angesehen`, angebotId: a.id });
   }
   return { a, k };

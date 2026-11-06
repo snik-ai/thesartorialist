@@ -3,7 +3,7 @@
 // QR-Zahlteil als zweites Blatt – genau wie im PDF. Entwürfe werden direkt im Blatt bearbeitet und automatisch
 // gespeichert; festgeschriebene Rechnungen sind schreibgeschützt. Rechts: Status, Kunde, Sprache, Zahlungen
 // (auch sofort bar/Karte/TWINT im Store), Mahnwesen, Versand, Versionen, Verlauf.
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Abzug, BelegSprache, Position, RechnungArt } from '@/lib/db/schema';
 import { rechnungDokument, type FirmaKurz } from '@/lib/beleg/dokument';
@@ -14,7 +14,7 @@ import MahnPanel from '@/components/admin/MahnPanel';
 import { DokumentRahmen, Abschnitt, PdfVorschau, SpeicherAnzeige, type Aktion, type Modus } from './Rahmen';
 import { Absenderblock, EmpfaengerFeld, Fliesstext, MetaDatum, PapierFuss, PapierStil, PapierSummen, TitelBlock, ZusatzBlatt, Angabe } from './Papier';
 import { AutoText, Positionen, mitSchluessel, zumSpeichern, type EPosition } from './Positionen';
-import { SendenPanel, SprachWahl, Versionen, WieWeiter, Zeitleiste, pdfHerunterladen, type VerlaufZeile, type VersionZeile } from './Gemeinsam';
+import { Ablauf, SendenPanel, SprachWahl, Versionen, WieWeiter, Zeitleiste, pdfHerunterladen, type VerlaufZeile, type VersionZeile } from './Gemeinsam';
 import type { KundeDaten, Texte } from './AngebotSeite';
 import { useAutosave, useEditorTasten, useVerlauf } from './zustand';
 import '@/components/vx/vx.css';
@@ -105,12 +105,17 @@ export default function RechnungSeite(p: RechnungSeiteProps) {
 function RechnungEditor({ r, kunde: kundeStart, firma, logo, texte, auftrag, zahlungen, verlauf, versionen, mailBereit }: RechnungSeiteProps) {
   const router = useRouter();
   const toast = useToast();
-  const v = useVerlauf<Stand>();
+  const v = useVerlauf<Stand>(ausDaten(r));
+  const erstes = useRef(true);
   const [kunde, setKunde] = useState(kundeStart);
   const [modus, setModus] = useState<Modus>('bearbeiten');
   const [panel, setPanel] = useState<null | 'senden' | 'zahlung'>(null);
   const [beschaeftigt, setBeschaeftigt] = useState<string | null>(null);
   useEffect(() => {
+    if (erstes.current) {
+      erstes.current = false;
+      return;
+    }
     v.start(ausDaten(r));
   }, [r]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => setKunde(kundeStart), [kundeStart]);
@@ -250,6 +255,7 @@ function RechnungEditor({ r, kunde: kundeStart, firma, logo, texte, auftrag, zah
           <Pill art={st.pill}>{st.label}</Pill>
           <b className="num">{geld(r.status === 'bezahlt' ? dok.summen.totalRp : offenRp || dok.summen.totalRp, true)}</b>
         </div>
+        <Ablauf erledigt={r.status === 'bezahlt' ? ['angebot', 'auftrag', 'rechnung', 'bezahlt'] : ['angebot', 'auftrag']} aktuell={r.status === 'bezahlt' ? null : 'rechnung'} links={{ auftrag: auftrag ? `/admin/auftraege/${auftrag.id}/` : null }} />
         <div className="dk-zeilen">
           <div>
             <span>Total</span>

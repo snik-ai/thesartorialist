@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { brauchtAdmin } from '@/lib/admin/zugang';
 import Icon from '@/components/admin/Icon';
 import TaskHaken from '@/components/admin/TaskHaken';
+import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
 import { chf, chfKurz } from '@/lib/crm/geld';
 import { AUFTRAG_SCHRITTE, LEAD_PHASEN } from '@/lib/crm/belege';
 import { faelligText, tageBis, tagKurz, terminKurz, TZ } from '@/lib/zeit';
@@ -91,12 +92,11 @@ export default async function Uebersicht() {
           <p className="a-sub">Das Atelier auf einen Blick — Anfragen, Angebote, Aufträge und Zahlungen.</p>
         </div>
         <div className="a-knopfreihe">
-          <Link href="/admin/kunden/?neu=1" className="a-knopf linie">
-            <Icon name="plus" /> Kontakt
-          </Link>
-          <Link href="/admin/termine/" className="a-knopf">
+          <Link href="/admin/termine/" className="a-knopf linie">
             <Icon name="kalender" /> Anfragen
           </Link>
+          <NeuBelegKnopf art="rechnung" linie />
+          <NeuBelegKnopf art="angebot" />
         </div>
       </div>
 

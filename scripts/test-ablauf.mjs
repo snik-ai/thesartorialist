@@ -41,7 +41,7 @@ async function main() {
   const morgen = new Date(Date.now() + 3 * 86400_000);
   while (morgen.getDay() === 0) morgen.setDate(morgen.getDate() + 1);
   const datum = morgen.toISOString().slice(0, 10);
-  await api('/api/anfrage/', { art: 'termin', name: 'Test Kunde Ablauf', email, telefon: '079 555 12 34', datum, zeit: '14:00', wunsch: `${datum} 14:00`, stil: [{ kategorie: 'Sakko', untergruppe: 'Revers', option: 'Steigendes Revers 9 cm' }], stoffe: ['HS4471'], pfad: '/termin/', sprache: 'de' });
+  await api('/api/anfrage/', { art: 'termin', name: 'Test Kunde Ablauf', email, telefon: `079 ${String(Date.now()).slice(-3)} ${String(Date.now()).slice(-5, -3)} ${String(Math.floor(Math.random() * 90) + 10)}`, datum, zeit: '14:00', wunsch: `${datum} 14:00`, stil: [{ kategorie: 'Sakko', untergruppe: 'Revers', option: 'Steigendes Revers 9 cm' }], stoffe: ['HS4471'], pfad: '/termin/', sprache: 'de' });
   ok(true, 'Anfrage über /api/anfrage/ gespeichert');
 
   // 2. Login (devCode)
@@ -76,6 +76,35 @@ async function main() {
   const pdfA = await api(`/api/admin/angebote/${an.id}/pdf/`, undefined, 'GET');
   ok(Buffer.isBuffer(pdfA) && pdfA.subarray(0, 4).toString() === '%PDF', `Angebots-PDF (${pdfA.length} Bytes)`);
   if (ORDNER) writeFileSync(path.join(ORDNER, 'test-angebot.pdf'), pdfA);
+  // 5b. A4-Editor: Katalogprodukt + individuelle Position (danach als Produkt gespeichert), Zwischentitel, Textblock,
+  //     Sprache, Version – an einer Kopie, damit die Beträge des Ablaufs gleich bleiben
+  const treffer = await api('/api/admin/produkte/suche/?q=Super%20150', undefined, 'GET');
+  const kat = treffer.find((t) => /Super 150/.test(t.name));
+  ok(Boolean(kat) && kat.preisRp > 0, `Produktsuche findet «${kat?.name}» (${kat ? kat.preisRp / 100 : '–'} CHF)`);
+  const kopie = await api(`/api/admin/angebote/${an.id}/`, { aktion: 'duplizieren' });
+  const eigen = `Monogramm handgestickt ${Date.now() % 100000}`;
+  const pk = await api(`/api/admin/angebote/${kopie.id}/`, {
+    sprache: 'en',
+    rabattProzent: 0,
+    positionen: [
+      { art: 'titel', bezeichnung: 'Massanzug' },
+      { art: 'position', bezeichnung: kat.name, menge: 1, einheit: kat.einheit, einzelpreisRp: kat.preisRp, mwstSatz: kat.mwstSatz, produktId: kat.produktId, varianteId: kat.varianteId, stoffnummer: 'HS4471' },
+      { art: 'position', bezeichnung: eigen, beschreibung: 'Initialen im Futter', menge: 1, einheit: 'Stk.', einzelpreisRp: 4500, mwstSatz: 8.1 },
+      { art: 'text', bezeichnung: 'Lieferung', beschreibung: 'Anprobe nach rund vier Wochen.' },
+    ],
+  }, 'PATCH');
+  ok(pk.totalRp === kat.preisRp + 4500, `Kopie im A4-Editor: Katalog + individuelle Position = ${pk.totalRp / 100} CHF`);
+  const prod = await api('/api/admin/produkte/', { name: eigen, kategorie: 'accessoire', beschreibung: 'Initialen im Futter', preisRp: 4500, mwstSatz: 8.1, einheit: 'Stk.', aktiv: true, varianten: [] });
+  const nachher = await api(`/api/admin/produkte/suche/?q=${encodeURIComponent(eigen)}`, undefined, 'GET');
+  ok(nachher.some((t) => t.produktId === prod.produkt.id), 'Individuelle Position als Produkt gespeichert und in der Suche');
+  const pdfEn = await api(`/api/admin/angebote/${kopie.id}/pdf/`, undefined, 'GET');
+  ok(pdfEn.subarray(0, 4).toString() === '%PDF', `Englisches Angebots-PDF (${pdfEn.length} Bytes)`);
+  if (ORDNER) writeFileSync(path.join(ORDNER, 'test-angebot-en.pdf'), pdfEn);
+  await api(`/api/admin/angebote/${kopie.id}/`, { aktion: 'version' });
+  const ed = await seite(`/admin/angebote/${kopie.id}/`);
+  ok(ed.status === 200 && ed.html.includes('dk-papier') && ed.html.includes(eigen) && ed.html.includes('Version 1'), 'A4-Editor zeigt das Blatt mit den Positionen und die gesicherte Version');
+  await api(`/api/admin/angebote/${kopie.id}/`, { aktion: 'stornieren' });
+
   const l = await api(`/api/admin/angebote/${an.id}/`, { aktion: 'link' });
   const token = l.link.split('/angebot/')[1].replace(/\/$/, '');
   ok(token.length >= 43, `Annahme-Link erstellt (Token ${token.length} Zeichen)`);
@@ -84,6 +113,7 @@ async function main() {
   const oeff = await fetch(`${BASIS}/angebot/${token}/`);
   const oeffHtml = await oeff.text();
   ok(oeff.status === 200 && oeffHtml.includes('Massanzug Testlauf') && /noindex/.test(oeffHtml), 'Angebotsseite öffentlich sichtbar, noindex');
+  ok(oeffHtml.includes('bl-brief') && oeffHtml.includes('k-blatt'), 'Kundenansicht zeigt dasselbe A4-Blatt wie Editor und PDF');
   const falsch = await fetch(`${BASIS}/angebot/${'x'.repeat(43)}/`);
   ok((await falsch.text()).includes('Link nicht mehr gültig'), 'Ungültiger Token zeigt keine Daten');
   const r404 = await fetch(`${BASIS}/api/angebot/${'y'.repeat(43)}/`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: BASIS }, body: JSON.stringify({ aktion: 'annehmen', name: 'X', bestaetigt: true }) });
@@ -130,6 +160,7 @@ async function main() {
   if (ORDNER) writeFileSync(path.join(ORDNER, 'test-schlussrechnung.pdf'), pdfR);
   const reSeite = await seite(`/admin/rechnungen/${sr.id}/`);
   ok(reSeite.html.includes('abzüglich Anzahlung') && reSeite.html.includes('1’030.75'), 'Schlussrechnung zieht die Anzahlung ab (zu bezahlen CHF 1’030.75)');
+  ok(reSeite.html.includes('Empfangsschein') && reSeite.html.includes('dk-papier'), 'Rechnung als A4-Blatt mit QR-Zahlteil im Editor');
 
   // 10. Abholung + Restzahlung → abgeschlossen
   await api(`/api/admin/auftraege/${auftragId}/`, { aktion: 'status', status: 'abgeholt' });
@@ -146,7 +177,7 @@ async function main() {
   if (ORDNER) writeFileSync(path.join(ORDNER, 'test-massblatt.pdf'), pdfM);
 
   // 12. Seiten erreichbar
-  for (const s of ['/admin/uebersicht/', '/admin/kunden/', '/admin/angebote/', '/admin/auftraege/', '/admin/auftraege/?ansicht=zeitstrahl', '/admin/rechnungen/', '/admin/massblaetter/', '/admin/einstellungen/', `/admin/massblaetter/${m2.id}/`, `/admin/angebote/${an.id}/`]) {
+  for (const s of ['/admin/uebersicht/', '/admin/kunden/', '/admin/angebote/', '/admin/auftraege/', '/admin/auftraege/?ansicht=zeitstrahl', '/admin/rechnungen/', '/admin/massblaetter/', '/admin/einstellungen/', `/admin/massblaetter/${m2.id}/`, `/admin/angebote/${an.id}/`, '/admin/produkte/', '/admin/produkte/neu/', `/admin/rechnungen/${sr.id}/`, `/admin/rechnungen/${anz.id}/`]) {
     const x = await seite(s);
     ok(x.status === 200 && !x.html.includes('Application error'), `Seite ${s} → ${x.status}`);
   }

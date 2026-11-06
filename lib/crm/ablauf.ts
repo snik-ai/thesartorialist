@@ -53,6 +53,9 @@ export async function angebotErstellen(o: { kontaktId: string; terminId?: string
           .where(and(eq(schema.termin.kontaktId, o.kontaktId), sql`jsonb_array_length(${schema.termin.stil}) > 0`))
           .orderBy(desc(schema.termin.erstelltAm))
           .limit(1);
+    const [kk] = await tx.select({ sprache: schema.kontakt.sprache }).from(schema.kontakt).where(eq(schema.kontakt.id, o.kontaktId)).limit(1);
+    const sprache = belegSprache(kk?.sprache);
+    const texte = belegTexte(f, sprache);
     const nummer = await naechsteNummer(tx, 'AN');
     const [a] = await tx
       .insert(schema.angebot)
@@ -61,8 +64,9 @@ export async function angebotErstellen(o: { kontaktId: string; terminId?: string
         terminId: t?.id ?? null,
         nummer,
         titel: o.titel || (t?.stil.length ? 'Massanfertigung nach Ihrer Stil-Auswahl' : 'Massanfertigung'),
-        einleitung: f.texte.angebotEinleitung,
-        schluss: f.texte.angebotSchluss,
+        einleitung: texte.angebotEinleitung,
+        schluss: texte.angebotSchluss,
+        sprache,
         stil: t?.stil ?? [],
         stoffe: t?.stoffe ?? [],
         mwstSatz: mwstSatzVon(f),

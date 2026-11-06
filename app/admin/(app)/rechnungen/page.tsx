@@ -12,6 +12,7 @@ import { zuMahnen } from '@/lib/crm/mahnung';
 import { firma } from '@/lib/crm/firma';
 import { mailBereit } from '@/lib/mail';
 import { MahnKnopf } from '@/components/admin/MahnPanel';
+import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
 
 export const metadata: Metadata = { title: 'Rechnungen' };
 export const dynamic = 'force-dynamic';
@@ -62,16 +63,33 @@ export default async function RechnungenPage({ searchParams }: { searchParams: P
         <div>
           <span className="a-kicker">Atelier</span>
           <h1>Rechnungen</h1>
-          <p className="a-sub">
-            Offen <span className="zahl">{chfKurz(z.offen_rp)}</span>
-            {z.ueber > 0 && (
-              <>
-                {' '}
-                · davon überfällig <span className="zahl">{chfKurz(z.ueber_rp)}</span>
-              </>
-            )}{' '}
-            · Swiss QR-Rechnung, Anzahlung und Schlussrechnung aus dem Auftrag
-          </p>
+          <p className="a-sub">Swiss QR-Rechnung als A4-Blatt – aus dem Auftrag (Raten, Schlussrechnung) oder direkt für einen Verkauf im Store.</p>
+        </div>
+        <div className="a-knopfreihe">
+          <NeuBelegKnopf art="rechnung" label="Neue Rechnung" />
+        </div>
+      </div>
+
+      <div className="a-vk-kpis a-karte">
+        <div>
+          <small>Offen</small>
+          <b className="zahl">{chfKurz(z.offen_rp)}</b>
+          <span className="zahl">{z.offen} Rechnungen</span>
+        </div>
+        <div className={z.ueber ? 'warn' : ''}>
+          <small>Überfällig</small>
+          <b className="zahl">{chfKurz(z.ueber_rp)}</b>
+          <span className="zahl">{z.ueber} Rechnungen</span>
+        </div>
+        <div className={faelligMahnen.length ? 'warn' : ''}>
+          <small>Zu mahnen</small>
+          <b className="zahl">{faelligMahnen.length}</b>
+          <span>Vorschlag fällig</span>
+        </div>
+        <div>
+          <small>Entwürfe</small>
+          <b className="zahl">{z.entwurf}</b>
+          <span>noch nicht versendet</span>
         </div>
       </div>
 
