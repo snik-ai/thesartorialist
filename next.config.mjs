@@ -63,8 +63,8 @@ const nextConfig = {
   // aus node_modules — nicht bündeln, Datendateien in den Standalone-Build aufnehmen.
   serverExternalPackages: ['pdfkit', 'swissqrbill', 'fontkit'],
   outputFileTracingIncludes: {
-    '/api/admin/**': ['./node_modules/pdfkit/js/data/**'],
-    '/api/angebot/**': ['./node_modules/pdfkit/js/data/**'],
+    '/api/admin/**': ['./node_modules/pdfkit/js/**'],
+    '/api/angebot/**': ['./node_modules/pdfkit/js/**'],
   },
   poweredByHeader: false,
   images: {

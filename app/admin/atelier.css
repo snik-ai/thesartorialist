@@ -12,6 +12,7 @@
 .adm ::selection { background: rgba(201, 160, 99, 0.28); }
 
 /* ---------- Seitenleiste mit Marke ---------- */
+@media (min-width: 901px) { .a-shell { background: linear-gradient(90deg, #0d0d0d var(--a-side), transparent var(--a-side)); } }
 .a-side { padding: 28px 14px 18px; background: #0d0d0d; }
 .a-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 0 12px 28px; margin-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
 .a-brand-mono { width: 46px; height: auto; opacity: 0.96; }
@@ -459,3 +460,5 @@ a.a-kpi.akzent:hover { background: #1b1b1b; }
 .a-login-marke { display: flex; flex-direction: column; gap: 16px; }
 .a-login-marke img.mono { width: 64px; height: auto; }
 .a-login-marke img.wort { width: min(320px, 70%); height: auto; }
+
+.a-dash .a-balken li i { height: 3px; }

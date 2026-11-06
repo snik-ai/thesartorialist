@@ -31,8 +31,8 @@
   font-variant-numeric: tabular-nums;
 }
 .adm *, .adm *::before, .adm *::after { box-sizing: border-box; }
-.adm a { color: inherit; text-decoration: none; }
-.adm button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; }
+:where(.adm) a { color: inherit; text-decoration: none; }
+:where(.adm) button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; }
 .adm .zahl, .adm time, .adm .num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
 .adm h1, .adm h2, .adm h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; }
 

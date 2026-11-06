@@ -101,7 +101,6 @@ async function main() {
 
   // 8. Planung: Tasks, Status, Liefertermin, Anprobe
   let au = await seite(`/admin/auftraege/${auftragId}/`);
-  const taskIds = [...au.html.matchAll(/data-task="([0-9a-f-]{36})"/g)].map((m) => m[1]);
   ok(au.html.includes('Stoff bei Holland &amp; Sherry bestellen'), 'Standard-Aufgaben angelegt');
   await api(`/api/admin/auftraege/${auftragId}/`, { aktion: 'task-neu', titel: 'Knöpfe aus Horn bestätigen', faelligAm: datum });
   await api(`/api/admin/auftraege/${auftragId}/`, { aktion: 'status', status: 'bestellt' });
@@ -117,7 +116,6 @@ async function main() {
   await api(`/api/admin/auftraege/${auftragId}/`, { aktion: 'status', status: 'fertig', mail: false });
   au = await seite(`/admin/auftraege/${auftragId}/`);
   ok(au.html.includes('Fertig · abholbereit') && au.html.includes('Anprobe'), 'Status «abholbereit», Liefertermin und Anprobe geplant');
-  void taskIds;
 
   // 9. Anzahlung + Schlussrechnung mit QR
   const fz = await api('/api/admin/firma/', { schluessel: 'firma', wert: { iban: 'CH93 0076 2011 6238 5295 7' } }, 'PUT');

@@ -13,7 +13,7 @@ Anfragen auf einem Dashboard. Muster und Sicherheit nach VoxCRM (Login, Passkey,
 - **Tabellen:** `admin_user`, `login_code`, `passkey`, `passkey_challenge`, `sitzung`, `kontakt`,
   `termin` (art termin|rueckruf, status angefragt|bestaetigt|vorgeschlagen|abgesagt|erledigt),
   `aktivitaet` (Verlauf: mail/whatsapp/sms/anruf/notiz/formular/system), `ereignis` (Tracking).
-  Phase 2 nur Datenmodell: `angebot`, `auftrag`, `rechnung`, `massblatt` (Seiten zeigen «folgt»).
+  Phase 2: `angebot`, `auftrag`, `auftrag_task`, `rechnung`, `zahlung`, `massblatt` (Versionen), `firma_einstellung`, `nummernkreis` (siehe unten).
 - **Anfragen:** `app/api/anfrage/route.ts` speichert Kontakt + Termin/Rückruf (auch ohne Resend → 200),
   sendet danach wie bisher die Mails, markiert `atelier_mail_am`/`eingang_mail_am`. Weder DB noch
   Resend → 503 (Formular fällt aufs Mailprogramm zurück). Übernimmt optional `firma`, `brandDomain`,
@@ -72,4 +72,84 @@ in der API-Antwort und im Server-Log.
 ## Offen
 - Formulare (BookingWizard, KontaktFab) senden noch keine Einwilligung WhatsApp/SMS, keine Firma und
   keine Marken-Domain — die API nimmt sie an, sobald die Formulare sie mitschicken (Checkbox mit Text).
-- Phase 2: Angebote, Aufträge, Rechnungen, Massblätter ausbauen.
+- ~~Phase 2~~ erledigt (siehe unten).
+
+# Phase 2: Angebot, Auftrag, Rechnung, Massblatt (06.11.2026)
+
+## Gesamtprozess
+1. **Anfrage** (Website-Termin/Rückruf, oder im Backend «Neuer Kontakt») → Kontakt mit Status **Lead**, Phase **neu**.
+   Inaktive Kontakte und verlorene Leads kommen bei einer neuen Anfrage automatisch zurück in die Pipeline.
+2. **Beratungstermin** bestätigen/vorschlagen (Termine oder direkt in der Kundenakte) → Phase **Termin vereinbart**.
+3. **Angebot** aus der Kundenakte (optional «Angebot mit Stil» = Stil-Auswahl und Stoffnummer der Anfrage):
+   Positionen aus der Preisliste (Massanzug, Sakko, Hose, Weste, Hemd, Smoking, Mantel, Änderungen,
+   Stoffzuschlag …) oder frei, Menge, Preis inkl. MWST, Rabatt je Position und aufs Total (% oder CHF),
+   Gültigkeit (eigener Kalender), Einleitung/Schluss aus den Firmeneinstellungen. Total auf 5 Rappen,
+   MWST (8,1 %) wird herausgerechnet und ausgewiesen («inkl. MWST»).
+4. **Versand**: Mail mit PDF (Logo) und **Annahme-Link** `/angebot/<token>/` (32 Byte Zufall, in der DB nur
+   sha256, jeder neue Link ersetzt den alten; Seite noindex, eigenes Root-Layout ohne Tracking, Drosselung
+   40 Aufrufe/10 Min. je IP, ohne gültigen Token keine Daten). Ohne E-Mail: «Link kopieren» bzw. WhatsApp.
+   → Phase **Angebot offen**; erstes Öffnen landet im Verlauf («angesehen»).
+5. **Annahme** online (vollständiger Name + Bestätigungsschalter) oder «im Atelier erfassen» →
+   in einer Transaktion: Angebot angenommen, Kontakt **Kunde** (kunde_seit), **Auftrag AU-…** mit Positionen,
+   Stil, aktivem Massblatt und 9 Standard-Aufgaben (Fälligkeit nach Produktionsdauer in Arbeitstagen).
+   Kunde erhält eine Auftragsbestätigung, das Atelier eine Meldung mit Link zum Auftrag.
+6. **Auftrag**: Statuskette Mass genommen → Stoff & Material bestellt → In Produktion (Liefertermin Pflicht,
+   eigener Kalender) → Eingang im Atelier → Anprobe (Termin direkt mit eintragen) → Änderungen →
+   Fertig · abholbereit (optional Mail an den Kunden) → Abgeholt → Abgeschlossen; Zeitstempel je Schritt.
+   Planung: Liefertermin, Anlass + Datum (Warnung, wenn Liefertermin < 10 Tage vor dem Anlass),
+   Abholung, Zuständig, Bestellnotiz; Termine Massnehmen/Anprobe/Abholung; Aufgaben mit Fälligkeit,
+   Zuständig, Haken; Notizen und Verlauf. Übersicht als **Board**, **Zeitstrahl** (überfällig, diese/nächste
+   Woche, Monate) und **Archiv**.
+7. **Rechnung** aus dem Auftrag: Anzahlung (30/50/100 %, Standard aus Einstellungen) und Schlussrechnung
+   (zieht Anzahlungen ab). Entwurf → festschreiben/senden (Mail mit PDF), Swiss **QR-Zahlteil** (swissqrbill),
+   QR-Referenz bei QR-IBAN, sonst Creditor Reference (RF). Zahlungen (Bank/TWINT/Karte/Bar) → offen /
+   teilbezahlt / bezahlt; überfällig = Fälligkeit vorbei. **Abgeholt + alle Rechnungen bezahlt → Auftrag
+   automatisch abgeschlossen.**
+8. Nummernkreise AN-/AU-/RE-JJJJ-0001 (Tabelle `nummernkreis`, atomar).
+
+## Kundenakte (/admin/kontakte/<id>/)
+Schnellaktionen (Anrufen, WhatsApp/SMS nur mit Einwilligung, E-Mail, Angebot, Massblatt, Termin eintragen),
+Kennzahlen (Umsatz bezahlt, offen, laufende Aufträge, offene Angebote), Anfragen mit Stil-Auswahl und
+Bestätigen/Vorschlagen direkt in der Akte, Termine, Angebote, Aufträge (Fortschritt), Rechnungen, Massblatt
+(Kernmasse, Körperhaltung, Versionen), Verlauf; rechts Status (Lead/Kunde/Inaktiv, Pipeline, Potenzial),
+Kontakt, Einwilligungen, Stammdaten inkl. Anrede und Adresse (für Rechnung/QR).
+Listen: **Leads** (Pipeline-Board mit Potenzial), **Kunden** (Umsatz, offen, laufend), Alle Kontakte.
+
+## Massblätter
+Bereiche Allgemein, Sakko, Hose, Weste, Hemd, Mantel (`lib/crm/massblatt.ts`), grosse Zahlenfelder in cm,
+Tab-Reihenfolge, Körperhaltung/Besonderheiten als Chips, Notizen, Zuordnung zu einem Auftrag. Jede Messung ist
+eine Version (neue Messung übernimmt die Werte der aktuellen), Vergleich mit Differenz zur Vorversion, PDF.
+
+## Termin-Erinnerung
+`lib/crm/erinnerung.ts` + `lib/crm/scheduler.ts` (Start in `instrumentation.ts`, alle 5 Min., Advisory-Lock
+727301): Termine mit Start in den nächsten X Stunden (Standard 2), bestätigt **und** noch unbestätigte
+Wunschtermine (Status angefragt; «vorgeschlagen» nicht, dort gilt der Wunsch nicht mehr), Kontakt mit E-Mail,
+nicht abgemeldet. Vor dem Versand wird `erinnerung_gesendet_am` gesetzt (idempotent), bei Fehler zurückgesetzt.
+Neue Terminzeit setzt die Erinnerung zurück. Mail in der Kundensprache (alle 9 Sprachen), unbestätigt mit
+Hinweis «wir melden uns ggf.». Ein-/ausschaltbar und Vorlauf unter Einstellungen; nur mit Resend.
+`SCHEDULER_AUS=1` schaltet den Scheduler ab. Trockentest: `npx tsx scripts/erinnerung-probe.ts`.
+
+## Einstellungen (DB, `firma_einstellung`)
+Firma & Dokumente (Absender, Rechtsname, MWST-Pflicht/Satz/Nr., IBAN, QR-IBAN, Bank, Zahlungsfrist,
+Angebotsgültigkeit, Anzahlung %, Produktionsdauer, Standardtexte), Preisliste (nur der veröffentlichte Ab-Preis
+des Massanzugs ist vorbelegt, übrige Preise trägt das Atelier ein), Logo für PDFs (PNG/JPEG ≤ 1 MB, Typ aus den
+Bytes geprüft; Standard: Wortmarke), Termin-Erinnerung.
+
+## Technik
+- Migration `0003_crm_phase2.sql` (idempotent). `0002` ist für die Push-Benachrichtigungen reserviert;
+  der Journal-Zeitstempel von 0003 liegt bewusst später, damit 0002 nach dem Merge davor einsortiert ist.
+- PDFs serverseitig mit PDFKit (Noto Sans/Serif aus `public/fonts/pdf`) + swissqrbill, ohne Schatten
+  (`lib/pdf/dokument.ts`). `serverExternalPackages` + `outputFileTracingIncludes` für pdfkit im Standalone-Build.
+- Marke: `public/images/marke/` (Monogramm und Wortmarke mit echtem Alphakanal, weiss/schwarz) — Seitenleiste,
+  Login, Angebotsseite, PDFs.
+- Eigene Steuerelemente: `Auswahl` (Panel mit Suche/Tastatur), `DatumPicker`, Segment-Control, Stepper,
+  Haken — keine nativen select/date/time/checkbox.
+- Tests: `scripts/test-ablauf.mjs <basis-url>` spielt den ganzen Prozess durch (36 Prüfungen),
+  `scripts/pdf-probe.ts` erzeugt Probe-PDFs, `npm run db:seed` legt Demo-Angebote/-Aufträge/-Rechnungen/
+  -Massblätter über den echten Ablauf an.
+
+## Offen (Phase 3)
+- Angebots-/Rechnungsmails und die Angebotsseite sind Deutsch (die Erinnerung ist mehrsprachig).
+- Mahnwesen (Zahlungserinnerung bei überfälligen Rechnungen), Gutschriften/Teilstorno.
+- Drag & Drop im Board (heute: Knopf «weiter» bzw. Statuskette im Auftrag).
+- Rechnungen: Zahlungseingang per camt.054/Bank-Abgleich.

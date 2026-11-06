@@ -77,7 +77,7 @@ export default async function Uebersicht() {
     return { key, label: d.toLocaleDateString('de-CH', { month: 'short', timeZone: 'UTC' }).replace('.', ''), rp: monate.find((m) => m.monat === key)?.rp ?? 0 };
   });
   const maxMonat = Math.max(1, ...zwoelf.map((m) => m.rp));
-  const name = (s.user.name || s.user.email.split('@')[0]).split(/[ .]/)[0];
+  const name = (s.user.name ?? '').trim().split(/\s+/)[0] ?? '';
   const stunde = Number(jetzt.toLocaleString('en-GB', { timeZone: TZ, hour: '2-digit', hourCycle: 'h23' }));
   const gruss = stunde < 11 ? 'Guten Morgen' : stunde < 18 ? 'Guten Tag' : 'Guten Abend';
   const pipeSumme = pipeline.filter((p) => !['gewonnen', 'verloren'].includes(p.phase)).reduce((a, p) => a + p.rp, 0);
@@ -87,9 +87,7 @@ export default async function Uebersicht() {
       <div className="a-kopf">
         <div>
           <span className="a-kicker">{jetzt.toLocaleDateString('de-CH', { timeZone: TZ, weekday: 'long', day: 'numeric', month: 'long' })}</span>
-          <h1>
-            {gruss}, {name.charAt(0).toUpperCase() + name.slice(1)}.
-          </h1>
+          <h1>{name ? `${gruss}, ${name}.` : `${gruss}.`}</h1>
           <p className="a-sub">Das Atelier auf einen Blick — Anfragen, Angebote, Aufträge und Zahlungen.</p>
         </div>
         <div className="a-knopfreihe">
@@ -213,7 +211,8 @@ export default async function Uebersicht() {
               Board
             </Link>
           </div>
-          <ul className="a-balken a-karte-inhalt">
+          <div className="a-karte-inhalt">
+          <ul className="a-balken">
             {schritte.map((x) => {
               const n = auftragStatus.find((a) => a.status === x.key)?.n ?? 0;
               return (
@@ -225,6 +224,7 @@ export default async function Uebersicht() {
               );
             })}
           </ul>
+          </div>
         </section>
 
         <section className="a-karte">
