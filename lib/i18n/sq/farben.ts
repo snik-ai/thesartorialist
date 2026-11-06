@@ -1,92 +1,91 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suit colour pages — English overlay of lib/suitColors.ts (sections: same number and order).
+// Faqet e ngjyrave të kostumeve — mbivendosje shqipe e lib/suitColors.ts (seksionet: i njëjti numër dhe rend).
 export const farben: Woerterbuch['farben'] = {
   'anzug-blau': {
-    name: 'Blue suit',
-    title: 'Blue Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Classic elegance redefined',
+    name: 'Kostum blu',
+    title: 'Kostum blu — Elegancë me porosi në Cyrih',
+    claim: 'Eleganca klasike, e ripërcaktuar',
     metaDescription:
-      'Made-to-measure blue suit in Zurich: from sky blue to navy — tailored by The Sartorialist. Book your appointment now.',
+      'Kostum blu me porosi në Cyrih: nga bluja e qiellit te bluja e errët navy — i qepur nga The Sartorialist. Rezervoni takimin Tuaj tani.',
     sections: [
       {
-        title: 'Classic elegance redefined',
-        text: 'The blue suit is one of the timeless classics of menswear and an elegant alternative to black and grey. In its many shades — from light sky blue to deep navy — a blue suit suits almost every occasion, whether at work or at social events. It combines classic elegance with a modern touch.',
+        title: 'Eleganca klasike, e ripërcaktuar',
+        text: 'Kostumi blu është një nga klasikët e përjetshëm të modës për meshkuj dhe një alternativë elegante ndaj së zezës dhe së hirtës. Në nuancat e tij të shumta — nga bluja e çelët e qiellit deri te bluja e thellë navy — një kostum blu i përshtatet pothuajse çdo rasti, qoftë në punë, qoftë në ngjarje shoqërore. Ai bashkon elegancën klasike me një prekje moderne.',
       },
       {
-        title: 'Why choose a blue suit',
-        text: 'A blue suit is remarkably versatile and lends you a confident, well-groomed look. Blue feels calm and professional while bringing freshness and energy to your wardrobe. Ideal for the office, business meetings or special occasions — and easy to pair with classic and contemporary accessories alike.',
+        title: 'Pse një kostum blu',
+        text: 'Një kostum blu është jashtëzakonisht i gjithanshëm dhe Ju jep një pamje të sigurt e të kujdesshme. Bluja përcjell qetësi dhe profesionalizëm, ndërsa sjell freski dhe energji në garderobën Tuaj. Ideal për zyrën, takimet e biznesit ose rastet e veçanta — dhe lehtësisht i kombinueshëm me aksesorë klasikë dhe bashkëkohorë.',
       },
       {
-        title: 'Made-to-measure excellence',
-        text: 'With us, your blue suit is made individually — fitting perfectly and tailored to your personal style. Our experienced team helps you choose the ideal shade of blue, the right cloth and the perfect cut.',
+        title: 'Përsosmëri me porosi',
+        text: 'Tek ne, kostumi Juaj blu qepet individualisht — me përshtatje të përsosur dhe sipas stilit Tuaj personal. Ekipi ynë me përvojë Ju ndihmon të zgjidhni nuancën ideale të blusë, stofin e duhur dhe prerjen e përsosur.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'We use fine cloths known for their longevity and comfort: from luxurious wool and fine linen to noble cashmere. The choice of cloth shapes not only the look but also the comfort of your suit.',
+        title: 'Stofat dhe përpunimi',
+        text: 'Përdorim stofa të zgjedhur, të njohur për jetëgjatësinë dhe komoditetin e tyre: nga leshi luksoz dhe liri i hollë deri te kashmiri fisnik. Zgjedhja e stofit përcakton jo vetëm pamjen, por edhe komoditetin e kostumit Tuaj.',
       },
       {
-        title: 'Individual design',
-        text: 'Design your blue suit exactly as you envisage it: cloths, cuts and details of your choice — a one-of-a-kind piece that underlines your personality.',
+        title: 'Dizajn individual',
+        text: 'Krijojeni kostumin Tuaj blu pikërisht ashtu siç e përfytyroni: stofa, prerje dhe detaje sipas zgjedhjes Suaj — një vepër unike që nënvizon personalitetin Tuaj.',
       },
     ],
   },
   'anzug-gruen': {
-    name: 'Green suit',
-    title: 'Green Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Fresh accents for your look',
+    name: 'Kostum jeshil',
+    title: 'Kostum jeshil — Elegancë me porosi në Cyrih',
+    claim: 'Theksa të freskët për pamjen Tuaj',
     metaDescription:
-      'Made-to-measure green suit in Zurich: from pastel to deep green — tailored by The Sartorialist. Book your appointment now.',
+      'Kostum jeshil me porosi në Cyrih: nga nuancat pastel te jeshilja e thellë — i qepur nga The Sartorialist. Rezervoni takimin Tuaj tani.',
     sections: [
       {
-        title: 'Fresh accents for your look',
-        text: 'The green suit is a fashionable choice for anyone who wants to lift their look with a touch of colour. Shades of green range from soft pastels to rich, deep tones and offer a modern alternative to the classic colours. A green suit adds fresh accents and makes a distinctive impression.',
+        title: 'Theksa të freskët për pamjen Tuaj',
+        text: 'Kostumi jeshil është një zgjedhje në modë për këdo që dëshiron ta gjallërojë pamjen me një prekje ngjyre. Nuancat e jeshiles shtrihen nga pastelet e buta deri te tonet e plota e të thella dhe ofrojnë një alternativë moderne ndaj ngjyrave klasike. Një kostum jeshil sjell theksa të freskët dhe lë një përshtypje të veçantë.',
       },
       {
-        title: 'Why choose a green suit',
-        text: 'A green suit brings colour to your wardrobe and stands out through its unique character. It is versatile — elegant with neutral colours, fashionable with bold accents. In spring and summer especially, it makes for a lively, dynamic look.',
+        title: 'Pse një kostum jeshil',
+        text: 'Një kostum jeshil i sjell ngjyrë garderobës Suaj dhe dallohet për karakterin e tij unik. Është i gjithanshëm — elegant me ngjyra neutrale, në modë me theksa të guximshëm. Sidomos në pranverë dhe verë krijon një pamje të gjallë e dinamike.',
       },
       {
-        title: 'Made-to-measure exclusivity',
-        text: 'We make your green suit individually, to your wishes and measurements. Our team advises you on the perfect shade of green, the right cloth and the appropriate details of the cut.',
+        title: 'Ekskluzivitet me porosi',
+        text: 'Kostumin Tuaj jeshil e qepim individualisht, sipas dëshirave dhe masave Tuaja. Ekipi ynë Ju këshillon për nuancën e përsosur të jeshiles, stofin e duhur dhe detajet e përshtatshme të prerjes.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Fine wool, noble linen or luxurious cashmere: the choice of cloth determines comfort and longevity. We pay attention to the details that underline the unique character of your green suit.',
+        title: 'Stofat dhe përpunimi',
+        text: 'Lesh i hollë, li fisnik ose kashmir luksoz: zgjedhja e stofit përcakton komoditetin dhe jetëgjatësinë. Ne kujdesemi për detajet që nënvizojnë karakterin unik të kostumit Tuaj jeshil.',
       },
       {
-        title: 'Individual design',
-        text: 'A green suit from us is more than a garment — it is an expression of your personality. Choose from a range of cloths, cuts and details.',
+        title: 'Dizajn individual',
+        text: 'Një kostum jeshil nga ne është më shumë se një veshje — është shprehje e personalitetit Tuaj. Zgjidhni nga një gamë stofash, prerjesh dhe detajesh.',
       },
     ],
   },
   'anzug-beige': {
-    name: 'Beige suit',
-    title: 'Beige Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Timeless refinement in beige',
+    name: 'Kostum bezhë',
+    title: 'Kostum bezhë — Elegancë me porosi në Cyrih',
+    claim: 'Rafinim i përjetshëm në bezhë',
     metaDescription:
-      'Made-to-measure beige suit in Zurich: light, bright and elegant — ideal for summer and weddings. Tailored by The Sartorialist.',
+      'Kostum bezhë me porosi në Cyrih: i lehtë, i çelët dhe elegant — ideal për verën dhe dasmat. I qepur nga The Sartorialist.',
     sections: [
       {
-        title: 'Timeless refinement in beige',
-        text: 'The beige suit is a classic that impresses with its versatility and elegance. It unites timeless refinement with a neutral tone suited to formal and informal occasions alike — ideal for spring and summer, as it looks light and bright.',
+        title: 'Rafinim i përjetshëm në bezhë',
+        text: 'Kostumi bezhë është një klasik që mahnit me gjithanshmërinë dhe elegancën e tij. Ai bashkon rafinimin e përjetshëm me një ton neutral, të përshtatshëm si për raste formale, ashtu edhe joformale — ideal për pranverën dhe verën, sepse duket i lehtë dhe i çelët.',
       },
       {
-        title: 'Why choose a beige suit',
-        text: 'A beige suit pairs effortlessly with a wide range of colours and patterns. Whether a wedding, a business event or a relaxed get-together — it always gives you a stylish, well-groomed look. The light colour reflects sunlight and is particularly pleasant to wear.',
+        title: 'Pse një kostum bezhë',
+        text: 'Një kostum bezhë kombinohet pa mundim me një gamë të gjerë ngjyrash dhe motivesh. Qoftë një dasmë, një ngjarje biznesi apo një takim i shtruar — ai Ju jep gjithmonë një pamje me stil e të kujdesshme. Ngjyra e çelët reflekton dritën e diellit dhe është veçanërisht e këndshme për t’u veshur.',
       },
       {
-        title: 'Made-to-measure perfection',
-        text: 'With us, you design your beige suit exactly as you wish: tailored individually to your measurements and your style, with advice on cloth, fit and details.',
+        title: 'Përsosmëri me porosi',
+        text: 'Tek ne, kostumin Tuaj bezhë e krijoni pikërisht siç e dëshironi: i qepur individualisht sipas masave dhe stilit Tuaj, me këshillim për stofin, përshtatjen dhe detajet.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Only fine cloths that guarantee comfort and longevity — from fine wool and noble linen to luxurious cashmere. Every detail is right, so that you feel entirely at ease.',
+        title: 'Stofat dhe përpunimi',
+        text: 'Vetëm stofa të zgjedhur që garantojnë komoditet dhe jetëgjatësi — nga leshi i hollë dhe liri fisnik deri te kashmiri luksoz. Çdo detaj është në vendin e vet, që të ndiheni plotësisht rehat.',
       },
       {
-        title: 'Individual design',
-        text: 'Choose the cloth, the cut and special details such as buttons and lining — creating a suit that fits perfectly and reflects your personal touch.',
+        title: 'Dizajn individual',
+        text: 'Zgjidhni stofin, prerjen dhe detaje të veçanta si kopsat dhe astarin — për një kostum që përshtatet në mënyrë të përsosur dhe pasqyron prekjen Tuaj personale.',
       },
     ],
   },

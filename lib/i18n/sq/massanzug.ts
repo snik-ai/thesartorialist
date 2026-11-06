@@ -1,85 +1,84 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure suit Zurich
+// Kostum me porosi në Cyrih
 export const massanzug: Woerterbuch['massanzug'] = {
   meta: {
-    titel: 'Made-to-Measure Suit Zurich — from CHF 1’690, Made in Italy',
+    titel: 'Kostum me porosi në Cyrih — nga CHF 1’690, Made in Italy',
     beschreibung:
-      'Made-to-measure suits in Zurich: full-canvas construction, exclusive cloths from Loro Piana, Scabal & Cerruti and a personal fitting service — from CHF 1’690.',
-    ogTitel: 'Made-to-Measure Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'Full canvas, exclusive Italian cloths, from CHF 1’690.',
+      'Kostume me porosi në Cyrih: ndërtim me kanavacë të plotë (full canvas), stofa ekskluzivë nga Loro Piana, Scabal & Cerruti dhe shërbim personal prove — nga CHF 1’690.',
+    ogTitel: 'Kostum me porosi në Cyrih — The Sartorialist',
+    ogBeschreibung: 'Kanavacë e plotë (full canvas), stofa ekskluzivë italianë, nga CHF 1’690.',
   },
-  breadcrumb: 'Made-to-measure suit Zurich',
+  breadcrumb: 'Kostum me porosi në Cyrih',
   hero: {
-    eyebrow: 'Made to Measure',
-    h1: 'Made-to-Measure Suits Zurich',
-    lead: 'Create your own style: at The Sartorialist you become your own designer — exclusive tailoring from renowned, long-established Italian houses, cut precisely to your measurements.',
+    eyebrow: 'Me porosi',
+    h1: 'Kostume me porosi në Cyrih',
+    lead: 'Krijoni stilin Tuaj: te The Sartorialist Ju bëheni vetë stilisti Juaj — rrobaqepësi ekskluzive nga shtëpi italiane të njohura dhe me traditë të gjatë, e prerë saktësisht sipas masave Tuaja.',
   },
   luxus: {
-    bildAlt: 'Made-to-measure suit in Zurich — tailored by The Sartorialist',
-    titel: 'The ultimate luxury: a suit cut to your measurements',
+    bildAlt: 'Kostum me porosi në Cyrih — i qepur nga The Sartorialist',
+    titel: 'Luksi i vërtetë: një kostum i prerë sipas masave Tuaja',
     absaetze: [
-      'There is nothing quite like wearing a suit cut precisely to your own measurements. A made-to-measure suit is a lasting piece of quality of life — an investment every gentleman should make.',
-      'The made-to-measure journey begins with try-on sizes, entirely redeveloped to deliver an even better fit. Our made-to-measure programme offers a collection of cloths for every occasion — year-round suits, jackets and eveningwear, complemented by exclusive seasonal collections.',
+      'Nuk ka asgjë të krahasueshme me veshjen e një kostumi të prerë saktësisht sipas masave Tuaja. Një kostum me porosi është një copë e qëndrueshme e cilësisë së jetës — një investim që çdo zotëri duhet ta bëjë.',
+      'Rruga drejt kostumit me porosi fillon me masat e provës, të rizhvilluara plotësisht për një rënie edhe më të mirë. Programi ynë me porosi ofron një koleksion stofash për çdo rast — kostume për gjithë vitin, xhaketa dhe veshje mbrëmjeje, të plotësuara nga koleksione ekskluzive sezonale.',
     ],
-    knopf: 'Book an appointment',
+    knopf: 'Rezervoni një takim',
   },
   verarbeitung: [
     {
-      eyebrow: 'Construction',
-      titel: 'Built to last with full canvas',
-      text: 'In full-canvas construction, the canvas interlining is stitched rather than glued — from the collar to the hem. The jacket moulds itself beautifully to your body, breathes and lasts considerably longer. It is the finest construction there is, and you feel it every time you wear it.',
+      eyebrow: 'Ndërtimi',
+      titel: 'I ndërtuar për të zgjatur, me kanavacë të plotë',
+      text: 'Në ndërtimin me kanavacë të plotë (full canvas), shtresa e brendshme prej kanavace qepet dhe nuk ngjitet — nga jaka deri në fund. Xhaketa merr bukur formën e trupit Tuaj, merr frymë dhe zgjat dukshëm më shumë. Është ndërtimi më i hollë që ekziston, dhe e ndieni sa herë që e vishni.',
     },
     {
-      eyebrow: 'Tailoring',
-      titel: 'Jackets — light yet shapely',
-      text: 'The quality of a gentleman’s jacket is measured by how it feels to wear: the lightness and shape retention of the cloth. Canvas — an interlining of linen or cotton — gives the fine, light outer cloth its structure, through pad stitching rather than heat-fused bonding.',
+      eyebrow: 'Rrobaqepësia',
+      titel: 'Xhaketa — të lehta, por me formë',
+      text: 'Cilësia e një xhakete zotërie matet nga ndjesia gjatë veshjes: lehtësia dhe ruajtja e formës së stofit. Kanavaca — një shtresë e brendshme prej liri ose pambuku — i jep strukturë stofit të hollë dhe të lehtë të jashtëm, përmes qepjes me dorë (pad stitching) dhe jo përmes ngjitjes me nxehtësi.',
     },
   ],
   konfigurator: {
-    eyebrow: 'Style configurator',
-    titel: 'Put your suit together from the comfort of home.',
-    lead: 'Lapels, buttons, pockets, shoulders, lining, waistband and hem: choose what you like online at your leisure, save your selection as a PDF and bring it along to your appointment.',
-    knopf: 'Open the configurator',
+    eyebrow: 'Konfiguruesi i stilit',
+    titel: 'Përbëni kostumin Tuaj në rehatinë e shtëpisë.',
+    lead: 'Jakat, kopsat, xhepat, supet, astari, brezi dhe fundi i pantallonave: zgjidhni me qetësi online atë që Ju pëlqen, ruajeni përzgjedhjen si PDF dhe sillni atë në takimin Tuaj.',
+    knopf: 'Hapni konfiguruesin',
   },
-  faqTitel: 'The made-to-measure process',
+  faqTitel: 'Procesi i punës me porosi',
   faq: [
     {
-      q: 'Where can I have a made-to-measure suit made in Zurich?',
+      q: 'Ku mund të porosis një kostum me porosi në Cyrih?',
       a: [
-        'At The Sartorialist Zurich you do not receive an off-the-peg suit with minor alterations, but a one-off cut entirely for you. We begin with a consultation about your wishes, the occasion, your style and your build — then you choose from an exclusive collection of fine wools, silk blends, linen, cashmere and mohair.',
-        'Our focus is on the finest cloths in Europe: we work with Loro Piana, Scabal, Cerruti and other renowned mills.',
+        'Te The Sartorialist Cyrih nuk merrni një kostum të gatshëm me disa ndreqje të vogla, por një krijim unik të prerë tërësisht për Ju. Fillojmë me një konsultë për dëshirat Tuaja, rastin, stilin dhe trupin Tuaj — pastaj zgjidhni nga një koleksion ekskluziv leshrash të hollë, përzierjesh me mëndafsh, liri, kashmiri dhe moheri.',
+        'Fokusi ynë janë stofat më të hollë të Evropës: punojmë me Loro Piana, Scabal, Cerruti dhe fabrika të tjera të njohura.',
       ],
     },
     {
-      q: 'What does full canvas mean — and why is it better?',
+      q: 'Çfarë do të thotë kanavacë e plotë (full canvas) — dhe pse është më e mirë?',
       a: [
-        'In ready-to-wear, the materials are mechanically bonded under high pressure before sewing. In full-canvas construction, by contrast, the interlining is stitched rather than glued — along its entire length, from the collar to the hem. The canvas has more freedom to move and moulds itself to your body as you wear it.',
-        'The stitched construction lets the jacket breathe and makes it last far longer — the finest and most durable choice for your made-to-measure suit.',
+        'Te veshjet e gatshme, materialet ngjiten mekanikisht nën presion të lartë para qepjes. Në ndërtimin me kanavacë të plotë, përkundrazi, shtresa e brendshme qepet dhe nuk ngjitet — në të gjithë gjatësinë e saj, nga jaka deri në fund. Kanavaca ka më shumë liri lëvizjeje dhe merr formën e trupit Tuaj ndërsa e vishni.',
+        'Ndërtimi i qepur e lejon xhaketën të marrë frymë dhe e bën atë të zgjasë shumë më gjatë — zgjedhja më e hollë dhe më e qëndrueshme për kostumin Tuaj me porosi.',
       ],
     },
     {
-      q: 'How does the made-to-measure process work?',
+      q: 'Si funksionon procesi i punës me porosi?',
       a: [
-        'Your first consultation has three steps: choosing the cloth, taking your measurements and selecting the details. You decide on lapel style and width, lining colour, side adjusters, trouser turn-ups, pocket style, buttons and much more.',
-        'Three to six weeks later your suit arrives in our store — at the final fitting we make every adjustment needed until it fits perfectly. On request, we are also happy to advise you at your office or at home.',
+        'Konsulta Juaj e parë ka tri hapa: zgjedhjen e stofit, marrjen e masave dhe përzgjedhjen e detajeve. Ju vendosni për stilin dhe gjerësinë e jakës, ngjyrën e astarit, rregulluesit anësorë (side adjusters), kthesat e pantallonave (turn-ups), stilin e xhepave, kopsat dhe shumë më tepër.',
+        'Tri deri në gjashtë javë më vonë kostumi Juaj mbërrin në dyqanin tonë — në provën përfundimtare bëjmë çdo rregullim të nevojshëm derisa të bjerë në mënyrë të përsosur. Me kërkesë, Ju këshillojmë me kënaqësi edhe në zyrën Tuaj ose në shtëpi.',
       ],
     },
     {
-      q: 'Which cloths can I choose from?',
+      q: 'Nga cilët stofa mund të zgjedh?',
       a: [
-        'From superfine wools and soft flannels to airy seersucker for summer suits; densely woven flannels for eveningwear and velvet as a refined choice for the winter wardrobe. Then colour, weave and pattern — chalk stripes, bold or subtle checks and more.',
+        'Nga leshrat superfine dhe flanelat e buta deri te seersucker-i i ajrosur për kostumet e verës; flanela me endje të dendur për veshjet e mbrëmjes dhe kadifeja si zgjedhje e rafinuar për garderobën e dimrit. Pastaj ngjyra, endja dhe modeli — vija shkumësi (chalk stripes), kuadrate të theksuara ose diskrete dhe më shumë.',
       ],
     },
   ],
   cta: {
-    titel: 'Your made-to-measure suit — from CHF 1’690, ready in 20 working days.',
-    text: 'Made-to-measure suits are the perfect choice for the modern gentleman who values style and individuality.',
+    titel: 'Kostumi Juaj me porosi — nga CHF 1’690, gati në 20 ditë pune.',
+    text: 'Kostumet me porosi janë zgjedhja e përsosur për zotërinë modern që vlerëson stilin dhe individualitetin.',
   },
   schema: {
-    name: 'Made-to-measure suits Zurich',
+    name: 'Kostume me porosi në Cyrih',
     beschreibung:
-      'Full-canvas made-to-measure suits in exclusive Italian cloths — a personal made-to-measure service in Zurich, from CHF 1’690.',
+      'Kostume me porosi me kanavacë të plotë (full canvas) në stofa ekskluzivë italianë — shërbim personal me porosi në Cyrih, nga CHF 1’690.',
   },
 };

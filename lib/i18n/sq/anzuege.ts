@@ -1,44 +1,43 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suits Zurich
+// Kostume në Cyrih
 export const anzuege: Woerterbuch['anzuege'] = {
   meta: {
-    titel: 'Suits Zurich — Exclusive Suits & Expert Advice',
+    titel: 'Kostume në Cyrih — kostume ekskluzive & këshillim profesional',
     beschreibung:
-      'Suits in Zurich: exclusive suits, jackets, shirts and trousers from The Sartorialist — handcrafted Italian tailoring meets contemporary style. Visit us at Kuttelgasse 7.',
-    ogTitel: 'Suits Zurich — The Sartorialist',
-    ogBeschreibung: 'What may well be the finest suits in Zurich — with advice of the highest standard.',
+      'Kostume në Cyrih: kostume ekskluzive, xhaketa, këmisha dhe pantallona nga The Sartorialist — rrobaqepësia italiane e punuar me dorë takon stilin bashkëkohor. Na vizitoni në Kuttelgasse 7.',
+    ogTitel: 'Kostume në Cyrih — The Sartorialist',
+    ogBeschreibung: 'Ndoshta kostumet më të hollë në Cyrih — me këshillim të nivelit më të lartë.',
   },
-  breadcrumb: 'Suits Zurich',
+  breadcrumb: 'Kostume në Cyrih',
   hero: {
-    eyebrow: 'Gentlemen’s outfitter in the heart of Zurich',
-    h1: 'Suits Zurich',
-    lead: 'At The Sartorialist you will find what may well be the finest suits in Zurich. Our advice is expert, personal and of the highest standard — handcrafted Italian tailoring meets contemporary style.',
-    gestalten: 'Design your suit',
-    termin: 'Book an appointment',
+    eyebrow: 'Veshje për zotërinj në zemër të Cyrihut',
+    h1: 'Kostume në Cyrih',
+    lead: 'Te The Sartorialist do të gjeni ndoshta kostumet më të hollë në Cyrih. Këshillimi ynë është profesional, personal dhe i nivelit më të lartë — rrobaqepësia italiane e punuar me dorë takon stilin bashkëkohor.',
+    gestalten: 'Krijoni kostumin Tuaj',
+    termin: 'Rezervoni një takim',
   },
   abschnitte: [
     {
-      titel: 'Genuine brand expertise',
-      text: 'We offer exclusive suits, jackets, denim shirts and trousers — complemented by elegant accessories and cashmere of the finest quality. Our carefully selected exclusive brands guarantee the best materials and cuts. Fifteen years of experience in fashion, including at the menswear powerhouse Tom Ford, are your guarantee of the finest suits in Zurich.',
+      titel: 'Njohuri e vërtetë e markave',
+      text: 'Ofrojmë kostume ekskluzive, xhaketa, këmisha xhins dhe pantallona — të plotësuara nga aksesorë elegantë dhe kashmir i cilësisë më të lartë. Markat tona ekskluzive, të përzgjedhura me kujdes, garantojnë materialet dhe prerjet më të mira. Pesëmbëdhjetë vjet përvojë në modë, mes të tjerash në shtëpinë e madhe të modës për meshkuj Tom Ford, janë garancia Juaj për kostumet më të hollë në Cyrih.',
     },
     {
-      titel: 'How a quality suit comes to life',
-      text: 'First, you tell us what you have in mind and we take your exact measurements. Our tailoring team designs and sews the suit to fit you precisely — on average this takes just 15 to 20 days. After a final fitting we make any adjustments needed until the suit fits perfectly and meets every wish.',
+      titel: 'Si lind një kostum cilësor',
+      text: 'Së pari, Ju na tregoni çfarë keni në mendje dhe ne marrim masat Tuaja të sakta. Ekipi ynë i rrobaqepësisë e dizajnon dhe e qep kostumin që të bjerë saktësisht në trupin Tuaj — mesatarisht kjo zgjat vetëm 15 deri në 20 ditë. Pas një prove përfundimtare bëjmë çdo rregullim të nevojshëm derisa kostumi të bjerë në mënyrë të përsosur dhe të përmbushë çdo dëshirë.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Whether a modern double-breasted or a single-breasted suit, for business, a wedding or the opera: a suit is like a second skin. Beyond the style of the suit, fit, cloth and colour play a decisive role. We watch every detail closely to ensure you receive the perfect suit for your personal style.',
+      titel: 'Cili kostum është i duhuri për mua?',
+      text: 'Qoftë një kostum modern me dy rreshta kopsash apo me një rresht kopsash, për biznes, dasmë apo operë: një kostum është si një lëkurë e dytë. Përveç stilit të kostumit, rënia, stofi dhe ngjyra luajnë një rol vendimtar. Ne ndjekim nga afër çdo detaj, që Ju të merrni kostumin e përsosur për stilin Tuaj personal.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'An exclusive suit has its price — and we make sure the investment pays off. We advise against cheap off-the-peg suits: they never achieve the comfort and quality of a made-to-measure suit. Our prices are always fair and transparent.',
+      titel: 'Çmimet & kushtet',
+      text: 'Një kostum ekskluziv ka çmimin e vet — dhe ne kujdesemi që investimi të shpërblehet. Nuk Ju rekomandojmë kostumet e lira të gatshme: ato nuk arrijnë kurrë rehatinë dhe cilësinë e një kostumi me porosi. Çmimet tona janë gjithmonë të drejta dhe transparente.',
     },
   ],
   schema: {
-    name: 'Suits Zurich',
+    name: 'Kostume në Cyrih',
     beschreibung:
-      'Exclusive suits, jackets, shirts and trousers in Zurich — advice of the highest standard at The Sartorialist.',
+      'Kostume ekskluzive, xhaketa, këmisha dhe pantallona në Cyrih — këshillim i nivelit më të lartë te The Sartorialist.',
   },
 };

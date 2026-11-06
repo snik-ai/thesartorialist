@@ -1,43 +1,42 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Services (alterations)
+// Shërbimet (ndryshime rrobash)
 export const services: Woerterbuch['services'] = {
   meta: {
-    titel: 'Tailoring Alterations Zurich — Services',
+    titel: 'Ndryshime rrobaqepësie në Cyrih — Shërbimet',
     beschreibung:
-      'Alterations at The Sartorialist Zurich: our long-standing partner tailor alters anything that fits under a sewing machine — jackets, coats, trousers and shirts at fair prices.',
-    ogTitel: 'Services — The Sartorialist Zurich',
-    ogBeschreibung: 'Alterations for jackets, coats, trousers and shirts.',
+      'Ndryshime te The Sartorialist Cyrih: rrobaqepësi ynë partner prej shumë vitesh ndryshon gjithçka që hyn nën një makinë qepëse — xhaketa, pallto, pantallona dhe këmisha me çmime të drejta.',
+    ogTitel: 'Shërbimet — The Sartorialist Cyrih',
+    ogBeschreibung: 'Ndryshime për xhaketa, pallto, pantallona dhe këmisha.',
   },
-  breadcrumb: 'Services',
+  breadcrumb: 'Shërbimet',
   hero: {
-    eyebrow: 'Alterations & adjustments',
-    h1: 'Services',
-    lead: 'Our long-standing partner alterations tailor can handle anything that fits under a sewing machine — and at sensible prices.',
+    eyebrow: 'Ndryshime & përshtatje',
+    h1: 'Shërbimet',
+    lead: 'Rrobaqepësi ynë partner për ndryshime, me të cilin punojmë prej shumë vitesh, merret me gjithçka që hyn nën një makinë qepëse — dhe me çmime të arsyeshme.',
   },
   leistungen: [
     {
-      titel: 'Jacket / coat',
-      text: 'Shortening or lengthening sleeves, taking in the waist, correcting the shoulders — after alteration, your jacket or coat fits as if made to measure.',
+      titel: 'Xhaketë / pallto',
+      text: 'Shkurtimi ose zgjatja e mëngëve, ngushtimi i belit, korrigjimi i supeve — pas ndryshimit, xhaketa ose palltoja Juaj bie sikur të ishte qepur me porosi.',
     },
     {
-      titel: 'Trousers',
-      text: 'Length, waist, turn-ups or a slimmer leg line — quick, precise adjustments for the perfect silhouette.',
+      titel: 'Pantallona',
+      text: 'Gjatësia, beli, kthesat (turn-ups) ose një vijë më e hollë e këmbës — përshtatje të shpejta dhe të sakta për siluetën e përsosur.',
     },
     {
-      titel: 'Shirt',
-      text: 'Tapering, shortening sleeves, renewing collars or cuffs — so that even your favourite shirt fits impeccably once again.',
+      titel: 'Këmishë',
+      text: 'Ngushtimi, shkurtimi i mëngëve, rinovimi i jakave ose i manshetave — që edhe këmisha Juaj e preferuar të bjerë sërish në mënyrë të patëmetë.',
     },
   ],
-  hinweis: 'Simply bring your garment to our store — or [book an appointment](termin).',
+  hinweis: 'Thjesht sillni veshjen Tuaj në dyqanin tonë — ose [rezervoni një takim](termin).',
   cta: {
-    titel: 'Need an alteration? We will take care of it.',
-    text: 'Kuttelgasse 7, 8001 Zurich — Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
+    titel: 'Ju duhet një ndryshim? Ne kujdesemi për të.',
+    text: 'Kuttelgasse 7, 8001 Cyrih — E hënë–e premte 10:00–19:00, e shtunë 10:00–17:00.',
   },
   schema: {
-    name: 'Tailoring alterations Zurich',
+    name: 'Ndryshime rrobaqepësie në Cyrih',
     beschreibung:
-      'Alterations for jackets, coats, trousers and shirts — the partner alterations tailor of The Sartorialist Zurich.',
+      'Ndryshime për xhaketa, pallto, pantallona dhe këmisha — rrobaqepësi partner për ndryshime i The Sartorialist Cyrih.',
   },
 };

@@ -1,92 +1,91 @@
-// TODO übersetzen (Albanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Wedding suit Zurich
+// Kostum dasme në Cyrih
 export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
   meta: {
-    titel: 'Men’s Wedding Suit Zurich — Made to Measure',
+    titel: 'Kostum dasme për meshkuj në Cyrih — me porosi',
     beschreibung:
-      'Men’s wedding suits made to measure in Zurich: a perfect fit, breathable natural cloths and personal details down to embroidery in the lining. For the groom from CHF 1’690.',
-    ogTitel: 'Wedding Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'The perfect look for the most beautiful day of your life.',
+      'Kostume dasme për meshkuj me porosi në Cyrih: rënie e përsosur, stofa natyralë që marrin frymë dhe detaje personale deri te qëndisja në astar. Për dhëndrin nga CHF 1’690.',
+    ogTitel: 'Kostum dasme në Cyrih — The Sartorialist',
+    ogBeschreibung: 'Pamja e përsosur për ditën më të bukur të jetës Suaj.',
   },
-  breadcrumb: 'Wedding suit Zurich',
+  breadcrumb: 'Kostum dasme në Cyrih',
   hero: {
-    eyebrow: 'Wedding suits for men',
-    h1: 'Wedding Suits Zurich',
-    lead: 'The perfect look for the most beautiful day of your life: a suit that fits impeccably, lets your personality shine and moves with you every step of the way.',
+    eyebrow: 'Kostume dasme për meshkuj',
+    h1: 'Kostume dasme në Cyrih',
+    lead: 'Pamja e përsosur për ditën më të bukur të jetës Suaj: një kostum që bie në mënyrë të patëmetë, lë të shkëlqejë personalitetin Tuaj dhe lëviz me Ju në çdo hap.',
   },
   warum: {
-    bildAlt: 'Made-to-measure wedding suit by The Sartorialist Zurich',
-    titel: 'Why choose The Sartorialist for your wedding suit?',
+    bildAlt: 'Kostum dasme me porosi nga The Sartorialist Cyrih',
+    titel: 'Pse të zgjidhni The Sartorialist për kostumin Tuaj të dasmës?',
     liste: [
-      '15 years of experience — your guarantee of the finest wedding suits in Zurich and beyond',
-      'We love fashion — and we love advising our clients in person',
-      'Current trends, exclusive materials and fair terms',
-      'Full canvas for made-to-measure suits that fit perfectly',
+      '15 vjet përvojë — garancia Juaj për kostumet më të hollë të dasmës në Cyrih dhe më gjerë',
+      'E duam modën — dhe e duam këshillimin personal të klientëve tanë',
+      'Trende aktuale, materiale ekskluzive dhe kushte të drejta',
+      'Kanavacë e plotë (full canvas) për kostume me porosi që bien në mënyrë të përsosur',
     ],
-    text: 'At The Sartorialist, your made-to-measure wedding suit fulfils every wish, is crafted from the finest cloths and, thanks to its distinctive details, is a true one-off — at a fair price.',
-    knopf: 'Arrange a no-obligation consultation',
+    text: 'Te The Sartorialist, kostumi Juaj i dasmës me porosi përmbush çdo dëshirë, punohet nga stofat më të hollë dhe, falë detajeve të tij të veçanta, është një krijim i vërtetë unik — me një çmim të drejtë.',
+    knopf: 'Caktoni një konsultë pa detyrim',
   },
   bloecke: [
     {
-      eyebrow: 'Fit',
-      titel: 'Fit and comfort — essential for every wedding',
+      eyebrow: 'Rënia',
+      titel: 'Rënia dhe rehatia — thelbësore për çdo dasmë',
       absaetze: [
-        'On your wedding day, your body is on the move from morning to night: the nervous wait before the ceremony, kneeling in church, the photo shoot, the first dance, the long wedding breakfast, the party that follows. Off-the-peg suits rarely keep up — they crease, bag and constrict.',
-        'A made-to-measure wedding suit from The Sartorialist accompanies you perfectly through every moment: thanks to an impeccable fit and exceptionally fine natural cloths, your suit breathes with you and reliably wicks away heat and moisture.',
+        'Në ditën e dasmës, trupi Juaj është në lëvizje nga mëngjesi deri në mbrëmje: pritja e emocionuar para ceremonisë, gjunjëzimi në kishë, fotografitë, vallja e parë, darka e gjatë e dasmës, festa që pason. Kostumet e gatshme rrallë ia dalin — rrudhen, deformohen dhe shtrëngojnë.',
+        'Një kostum dasme me porosi nga The Sartorialist Ju shoqëron në mënyrë të përsosur në çdo moment: falë një rënieje të patëmetë dhe stofave natyralë jashtëzakonisht të hollë, kostumi Juaj merr frymë bashkë me Ju dhe largon me siguri nxehtësinë dhe lagështinë.',
       ],
     },
     {
-      eyebrow: 'Details',
-      titel: 'You choose the details — and create a one-off',
+      eyebrow: 'Detajet',
+      titel: 'Ju zgjidhni detajet — dhe krijoni një vepër unike',
       absaetze: [
-        'Choose from a range of button shapes and finishes, and have your bride’s name, a motto or your wedding date embroidered into the lining. Luxurious cufflinks add a touch of brilliance to the moment you exchange rings.',
-        'Complete the look with a wide selection of ties, braces and bow ties — and, if you wish, a made-to-measure shirt cut to your exact measurements.',
+        'Zgjidhni nga një gamë formash dhe përfundimesh kopsash, dhe qëndisni në astar emrin e nuses, një moto ose datën e dasmës. Mansheta luksoze i japin një shkëlqim të veçantë momentit të shkëmbimit të unazave.',
+        'Plotësoni pamjen me një përzgjedhje të gjerë kravatash, aski dhe papijonësh — dhe, nëse dëshironi, me një këmishë me porosi të prerë saktësisht sipas masave Tuaja.',
       ],
     },
   ],
-  faqTitel: 'Frequently asked questions about wedding suits',
+  faqTitel: 'Pyetje të shpeshta për kostumet e dasmës',
   faq: [
     {
-      q: 'What is the difference between a wedding suit and a business suit?',
+      q: 'Cili është ndryshimi mes një kostumi dasme dhe një kostumi biznesi?',
       a: [
-        'A wedding suit is not simply an ordinary suit — it is a statement. While a business suit is functional and understated, a wedding suit takes centre stage on one of the most emotional days of your life. It must fit perfectly, reflect your character, suit the style of the wedding and stand the test of time, both in photographs and in memory.',
+        'Një kostum dasme nuk është thjesht një kostum i zakonshëm — është një deklaratë. Ndërsa kostumi i biznesit është funksional dhe i përmbajtur, kostumi i dasmës del në plan të parë në një nga ditët më emocionuese të jetës Suaj. Ai duhet të bjerë në mënyrë të përsosur, të pasqyrojë karakterin Tuaj, të përshtatet me stilin e dasmës dhe t’i rezistojë kohës, si në fotografi ashtu edhe në kujtime.',
       ],
     },
     {
-      q: 'How far in advance should I have my wedding suit made?',
+      q: 'Sa kohë përpara duhet të porosis kostumin e dasmës?',
       a: [
-        'We recommend booking your appointment at least 8 to 10 weeks before the wedding — earlier is better. That leaves ample time for choosing the cloth, taking measurements, the first fitting, any alterations and the final personal touches. Short-notice requests are possible in exceptional cases — just ask us.',
+        'Ju rekomandojmë të rezervoni takimin të paktën 8 deri në 10 javë para dasmës — sa më herët, aq më mirë. Kështu mbetet kohë e mjaftueshme për zgjedhjen e stofit, marrjen e masave, provën e parë, ndryshimet e mundshme dhe prekjet përfundimtare personale. Kërkesat në afat të shkurtër janë të mundshme në raste të veçanta — thjesht na pyesni.',
       ],
     },
     {
-      q: 'Which suit styles are popular for weddings?',
+      q: 'Cilat stile kostumesh janë të preferuara për dasma?',
       a: [
-        'The classic three-piece suit with waistcoat (timelessly elegant), the modern slim-fit suit (a sleek silhouette), the Italian linen suit (ideal for summer weddings), the dinner suit or dinner jacket (black tie), the vintage suit in tweed or checks (for rustic settings), as well as coloured suits in dark green, burgundy or beige.',
-        'You set the direction — we make sure it is executed to perfection.',
+        'Kostumi klasik me tri pjesë me jelek (elegancë e përjetshme), kostumi modern slim fit (siluetë e hollë), kostumi italian prej liri (ideal për dasmat e verës), smokingu ose xhaketa e smokingut (Black Tie), kostumi vintage në tweed ose me kuadrate (për ambiente rustike), si dhe kostume me ngjyrë në jeshil të errët, bordo ose bezhë.',
+        'Ju përcaktoni drejtimin — ne kujdesemi që gjithçka të realizohet në mënyrë të përsosur.',
       ],
     },
     {
-      q: 'Can I still wear my made-to-measure suit after the wedding?',
+      q: 'A mund ta vesh kostumin me porosi edhe pas dasmës?',
       a: [
-        'Yes — that is precisely one of its advantages. From the very first consultation we make sure your suit stays versatile: classic colours such as navy, charcoal or dark green, understated cloths, and the option to wear the waistcoat or accessories separately. Italian cloths keep their shape and elegance for years to come.',
+        'Po — pikërisht ky është një nga avantazhet e tij. Që nga konsulta e parë kujdesemi që kostumi Juaj të mbetet i gjithanshëm: ngjyra klasike si navy, charcoal ose jeshil i errët, stofa të përmbajtur dhe mundësia për ta veshur jelekun ose aksesorët veçmas. Stofat italianë e ruajnë formën dhe elegancën për shumë vite.',
       ],
     },
     {
-      q: 'Which accessories go with a wedding suit?',
+      q: 'Cilët aksesorë shkojnë me një kostum dasme?',
       a: [
-        'We offer a carefully curated selection of bow ties, ties, pocket squares, cufflinks, waistcoats and leather belts, all perfectly matched to your suit. We are also happy to coordinate colours with the bridal gown or the décor.',
+        'Ofrojmë një përzgjedhje të kujdesshme papijonësh, kravatash, shamish xhepi, manshetash, jelekësh dhe rripash lëkure, të gjitha të harmonizuara në mënyrë të përsosur me kostumin Tuaj. Me kënaqësi i përshtatim ngjyrat edhe me fustanin e nuses ose me dekorin.',
       ],
     },
   ],
   cta: {
-    titel: 'Your wedding suit — book 8–10 weeks before the big day.',
+    titel: 'Kostumi Juaj i dasmës — rezervoni 8–10 javë para ditës së madhe.',
     text: '',
   },
   schema: {
-    name: 'Wedding suits Zurich',
+    name: 'Kostume dasme në Cyrih',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: a perfect fit, fine natural cloths and individual details — The Sartorialist.',
+      'Kostume dasme me porosi në Cyrih: rënie e përsosur, stofa natyralë të hollë dhe detaje individuale — The Sartorialist.',
   },
 };
