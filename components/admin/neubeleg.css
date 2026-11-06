@@ -54,7 +54,7 @@
 .a-vk-kpis > div{padding:16px 20px;border-right:1px solid var(--a-line);min-width:0}
 .a-vk-kpis > div:last-child{border-right:0}
 .a-vk-kpis small{display:block;font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--a-muted)}
-.a-vk-kpis b{display:block;font-family:var(--serif);font-size:26px;font-weight:600;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.a-vk-kpis b{display:block;font-family:var(--sans);font-variant-numeric:tabular-nums;font-size:24px;font-weight:600;letter-spacing:-.01em;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .a-vk-kpis span{display:block;font-size:12.5px;color:var(--a-muted);margin-top:2px}
 .a-vk-kpis .warn b{color:var(--a-bad)}
 @media (max-width:900px){.a-vk-kpis{grid-template-columns:1fr 1fr}.a-vk-kpis > div{border-bottom:1px solid var(--a-line);padding:12px 14px}.a-vk-kpis > div:nth-child(2n){border-right:0}.a-vk-kpis > div:nth-last-child(-n+2){border-bottom:0}.a-vk-kpis b{font-size:21px}}

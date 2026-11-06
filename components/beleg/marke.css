@@ -15,7 +15,8 @@
 
 /* Papier */
 .dk-papier{--farbe:#c9a063;font-family:"BL Sans",Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;font-variant-numeric:normal}
-.dk-papier .num,.dk-papier .dk-zahl,.dk-papier .dk-tot,.dk-papier .dk-total,.dk-papier .dk-held b{font-variant-numeric:tabular-nums}
+.dk-papier .dk-zahl,.dk-papier .dk-tot>div>span:last-child,.dk-papier .dk-total,.dk-papier .dk-held b{font-variant-numeric:tabular-nums}
+.dk-papier .dk-tot,.dk-papier .dk-zahlinfo,.dk-papier .dk-angabe-w .num{font-variant-numeric:normal}
 .dk-logo{display:block}
 .dk-logo img{height:11mm;max-height:none;width:auto;max-width:78mm}
 .dk-logo .dk-wort{font-family:"BL Serif","Playfair Display",Georgia,serif;font-weight:600;font-size:17pt;letter-spacing:.04em;text-transform:uppercase}
@@ -72,3 +73,6 @@
   .dk-z.titel .dk-feld,.dk-z.titel .dk-titel-in{font-size:17px}
 }
 @media (max-width:480px){.dk-zusatz{zoom:.43}}
+
+/* Bedienelemente in der UI-Schrift (das Admin setzt Überschriften sonst in Playfair) */
+.vx .dk-ab h3,.vx .dk-titel,.vx .panel-kopf h2,.vx .dk-schublade header b{font-family:var(--f-ui)}

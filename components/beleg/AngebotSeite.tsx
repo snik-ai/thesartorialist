@@ -158,7 +158,7 @@ function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rech
     const r = await api<{ kontakt?: KundeDaten }>(`/api/admin/angebote/${a.id}/`, nutzlast(stand), 'PATCH');
     if (r.kontakt) setKunde(r.kontakt);
   }, [stand, a.id]);
-  const auto = useAutosave(schluessel, speichere, { aktiv: editierbar });
+  const auto = useAutosave(schluessel, speichere, { aktiv: editierbar, start: editierbar ? JSON.stringify(nutzlast(ausDaten(a))) : null });
   useEffect(() => {
     auto.basis(JSON.stringify(nutzlast(ausDaten(a))));
   }, [a]); // eslint-disable-line react-hooks/exhaustive-deps

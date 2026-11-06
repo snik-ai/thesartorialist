@@ -26,7 +26,7 @@ export const PAPIER_CSS = `
   font-family:"BL Sans",Inter,"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:9pt;line-height:1.5;color:var(--tinte);font-weight:400;
   -webkit-print-color-adjust:exact;print-color-adjust:exact;-webkit-font-smoothing:antialiased;text-align:left;letter-spacing:0}
 .bl *{box-sizing:border-box}
-.bl .r,.bl .num,.bl-held b,.bl-tot,.bl td.nr,.bl-qr-betrag{font-variant-numeric:tabular-nums}
+.bl .r,.bl .num,.bl-held b,.bl-tot>div>span:last-child,.bl td.nr,.bl-qr-betrag{font-variant-numeric:tabular-nums}
 .bl p{margin:0;orphans:2;widows:2}
 .bl b{font-weight:600}
 .bl-serif{font-family:"BL Serif","Playfair Display",Georgia,serif}

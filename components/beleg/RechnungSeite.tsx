@@ -127,7 +127,7 @@ function RechnungEditor({ r, kunde: kundeStart, firma, logo, texte, auftrag, zah
     const x = await api<{ kontakt?: KundeDaten }>(`/api/admin/rechnungen/${r.id}/`, nutzlast(stand), 'PATCH');
     if (x.kontakt) setKunde(x.kontakt);
   }, [stand, r.id]);
-  const auto = useAutosave(schluessel, speichere, { aktiv: editierbar });
+  const auto = useAutosave(schluessel, speichere, { aktiv: editierbar, start: editierbar ? JSON.stringify(nutzlast(ausDaten(r))) : null });
   useEffect(() => {
     auto.basis(JSON.stringify(nutzlast(ausDaten(r))));
   }, [r]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -255,7 +255,7 @@ function RechnungEditor({ r, kunde: kundeStart, firma, logo, texte, auftrag, zah
           <Pill art={st.pill}>{st.label}</Pill>
           <b className="num">{geld(r.status === 'bezahlt' ? dok.summen.totalRp : offenRp || dok.summen.totalRp, true)}</b>
         </div>
-        <Ablauf erledigt={r.status === 'bezahlt' ? ['angebot', 'auftrag', 'rechnung', 'bezahlt'] : ['angebot', 'auftrag']} aktuell={r.status === 'bezahlt' ? null : 'rechnung'} links={{ auftrag: auftrag ? `/admin/auftraege/${auftrag.id}/` : null }} />
+        <Ablauf erledigt={[...(auftrag ? (['angebot', 'auftrag'] as const) : []), ...(r.status === 'bezahlt' ? (['rechnung', 'bezahlt'] as const) : [])]} aktuell={r.status === 'bezahlt' ? null : 'rechnung'} links={{ auftrag: auftrag ? `/admin/auftraege/${auftrag.id}/` : null }} />
         <div className="dk-zeilen">
           <div>
             <span>Total</span>

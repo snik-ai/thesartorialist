@@ -59,9 +59,9 @@ export interface SpeicherStatus { art: SpeicherArt; zeit: number | null; fehler:
  * `schluessel = null` heisst «noch nicht speicherbar» (z. B. kein Kunde gewählt). `jetztSpeichern()` speichert sofort
  * (vor Senden, Vorschau, PDF) und wartet, bis alles gespeichert ist.
  */
-export function useAutosave(schluessel: string | null, speichere: () => Promise<void>, opts: { aktiv: boolean; verzoegerung?: number }) {
+export function useAutosave(schluessel: string | null, speichere: () => Promise<void>, opts: { aktiv: boolean; verzoegerung?: number; start?: string | null }) {
   const [status, setStatus] = useState<SpeicherStatus>({ art: "aus", zeit: null, fehler: null });
-  const gespeichert = useRef<string | null>(null);
+  const gespeichert = useRef<string | null>(opts.start ?? null);
   const aktuell = useRef(schluessel);
   aktuell.current = schluessel;
   const fn = useRef(speichere);
