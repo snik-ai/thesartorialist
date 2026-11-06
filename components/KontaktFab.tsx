@@ -99,9 +99,30 @@ export default function KontaktFab() {
   }, [open]);
 
   const telOk = tel.replace(/\D/g, '').length >= 9;
-  const sendeRueckruf = (e: React.FormEvent) => {
+  const sendeRueckruf = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!telOk) return;
+    // Server-Versand (Resend); ohne Konfiguration oder bei Fehler: Mailprogramm
+    try {
+      const res = await fetch('/api/anfrage/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          art: 'rueckruf',
+          name,
+          telefon: tel,
+          wunsch: zeit,
+          pfad: window.location.pathname,
+          _dlmsid: (window as Window & { dlmPx?: { sid?: () => string } }).dlmPx?.sid?.(),
+        }),
+      });
+      if (res.ok) {
+        setGesendet(true);
+        return;
+      }
+    } catch {
+      /* weiter mit Mailprogramm */
+    }
     const body = [`Bitte um Rückruf`, '', `Name: ${name || '–'}`, `Telefon: ${tel}`, `Wunschzeit: ${zeit || 'egal'}`].join('\n');
     window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(`Rückrufbitte — ${name || tel}`)}&body=${encodeURIComponent(body)}`;
     setGesendet(true);

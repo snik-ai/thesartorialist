@@ -41,7 +41,7 @@ export default function GlossarPage() {
       <section className="container glossar-hub">
         <GlossarSuche
           begriffe={GLOSSAR.map((b) => ({ slug: b.slug, begriff: b.begriff, gruppe: b.gruppe, kurz: b.kurz, auch: b.auchGenannt ?? [] }))}
-          gruppen={GRUPPEN}
+          gruppen={GRUPPEN.filter((g) => GLOSSAR.some((b) => b.gruppe === g))}
         />
 
         <nav className="glossar-az" aria-label="Alphabet">

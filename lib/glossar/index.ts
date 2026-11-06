@@ -11,7 +11,7 @@ export const GLOSSAR: GlossarBegriff[] = [...TEIL_1, ...TEIL_2, ...TEIL_3, ...TE
   a.begriff.localeCompare(b.begriff, 'de'),
 );
 
-export const GRUPPEN: GlossarGruppe[] = ['Grundlagen', 'Sakko', 'Hose', 'Weste & Anlass', 'Stoffe', 'Muster', 'Accessoires'];
+export const GRUPPEN: GlossarGruppe[] = ['Grundlagen', 'Passform', 'Sakko', 'Hose', 'Weste & Anlass', 'Hochzeit', 'Stoffe', 'Muster', 'Hemd', 'Accessoires', 'Pflege'];
 
 export const getBegriff = (slug: string) => GLOSSAR.find((b) => b.slug === slug);
 

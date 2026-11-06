@@ -169,6 +169,15 @@ export default function DatenschutzPage() {
           Kaufvertrags. Shopify kann Daten auch in Ländern ausserhalb der Schweiz und der EU
           bearbeiten; dafür bestehen Standardvertragsklauseln.
         </p>
+        <h3>Terminanfrage und Rückruf über die Website</h3>
+        <p>
+          Wenn Sie über die Website einen Termin anfragen oder um einen Rückruf bitten, übermitteln
+          wir Ihre Angaben (Name, Telefon, E-Mail, Wunschtermin und — falls gewählt — Ihre
+          Stil-Auswahl) per E-Mail an unser Atelier und senden Ihnen eine Bestätigung. Für den
+          Versand nutzen wir den Dienst Resend (Resend Inc., San Francisco, USA) mit
+          Datenverarbeitung in der EU. Die Daten verwenden wir ausschliesslich zur Bearbeitung
+          Ihrer Anfrage.
+        </p>
         <h3>Anfragen per E-Mail oder Telefon</h3>
         <p>
           Wenn Sie uns per E-Mail oder Telefon kontaktieren (z.&nbsp;B. für eine

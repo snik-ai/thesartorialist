@@ -4,11 +4,11 @@ import path from 'node:path';
 import { GLOSSAR, woerter } from '../lib/glossar/index.ts';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const ERLAUBT = ['/massanzug-zuerich/', '/massanzug-konfigurator/', '/hochzeitsanzug-zuerich/', '/anzuege-zuerich/', '/termin/', '/services/', '/loro-piana/', '/holland-sherry/', '/orazio-luciano/', '/maria-santangelo/', '/gran-sasso/', '/woolrich/', '/anzug-blau/', '/anzug-gruen/', '/anzug-beige/', '/shop/strick/', '/shop/parkas/', '/shop/sakkos-hosen/', '/kontakt/'];
+const ERLAUBT = ['/massanzug-zuerich/', '/massanzug-konfigurator/', '/hochzeitsanzug-zuerich/', '/anzuege-zuerich/', '/termin/', '/services/', '/loro-piana/', '/holland-sherry/', '/orazio-luciano/', '/maria-santangelo/', '/gran-sasso/', '/woolrich/', '/anzug-blau/', '/anzug-gruen/', '/anzug-beige/', '/shop/strick/', '/shop/parkas/', '/shop/sakkos-hosen/', '/kontakt/', '/hochzeit-anzug-2024/', '/glossar/'];
 const slugs = new Set(GLOSSAR.map((b) => b.slug));
 let fehler = 0;
 const f = (b: string, m: string) => { fehler++; console.log(`✗ ${b}: ${m}`); };
-if (GLOSSAR.length !== 60) f('GESAMT', `${GLOSSAR.length} statt 60 Begriffe`);
+if (GLOSSAR.length !== 100) f('GESAMT', `${GLOSSAR.length} statt 100 Begriffe`);
 if (slugs.size !== GLOSSAR.length) f('GESAMT', 'doppelte Slugs');
 const zahlen: number[] = [];
 for (const b of GLOSSAR) {

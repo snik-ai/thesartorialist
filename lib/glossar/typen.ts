@@ -1,5 +1,5 @@
 // Glossar: ein Begriff = eine eigene Seite unter /glossar/<slug>/ (Hausregel).
-export type GlossarGruppe = 'Grundlagen' | 'Sakko' | 'Hose' | 'Weste & Anlass' | 'Stoffe' | 'Muster' | 'Accessoires';
+export type GlossarGruppe = 'Grundlagen' | 'Passform' | 'Sakko' | 'Hose' | 'Weste & Anlass' | 'Hochzeit' | 'Stoffe' | 'Muster' | 'Hemd' | 'Accessoires' | 'Pflege';
 
 export type GlossarBegriff = {
   /** URL-Slug, klein, ohne Umlaute (ae/oe/ue), Bindestriche */

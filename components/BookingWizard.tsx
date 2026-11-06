@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { SITE } from '@/lib/site';
-import { alsText, aufloesen, ladeAuswahl, ladeStoffe, type Gewaehlt } from '@/lib/konfigurator/auswahl';
+import { alsText, aufloesen, ladeAuswahl, ladeStoffe, optionText, type Gewaehlt } from '@/lib/konfigurator/auswahl';
 
 // Moderner Buchungs-Wizard in 3 Schritten: Wunschtermin (Kalender) → Uhrzeit →
 // persönliche Angaben. Regeln: Sonntag geschlossen, Samstag nur 10:00–16:00,
@@ -101,8 +101,48 @@ export default function BookingWizard() {
       })
     : '';
 
-  function submit(e: React.FormEvent) {
+  const [busy, setBusy] = useState(false);
+  const [fehler, setFehler] = useState('');
+  const [honig, setHonig] = useState('');
+
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
+    setBusy(true);
+    setFehler('');
+    // 1. Versand über den Server (Resend) — bei fehlender Konfiguration/Fehler: Mailprogramm
+    try {
+      const res = await fetch('/api/anfrage/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          art: 'termin',
+          name: `${vorname} ${name}`.trim(),
+          telefon: tel,
+          email,
+          wunsch: `${dateLong}, ${time} Uhr`,
+          datum: date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : undefined,
+          zeit: time,
+          stil: stilMit ? stil.map((g) => ({ kategorie: g.kategorie, untergruppe: g.untergruppe, option: optionText(g) })) : [],
+          stoffe: stilMit ? stoffe : [],
+          website: honig,
+          _dlmsid: (window as Window & { dlmPx?: { sid?: () => string } }).dlmPx?.sid?.(),
+        }),
+      });
+      if (res.ok) {
+        setSent(true);
+        setBusy(false);
+        return;
+      }
+      if (res.status === 400 || res.status === 429) {
+        const j = await res.json().catch(() => ({}));
+        setFehler(j.fehler || 'Bitte Angaben prüfen.');
+        setBusy(false);
+        return;
+      }
+    } catch {
+      /* weiter mit Mailprogramm */
+    }
+    setBusy(false);
     const subject = `Terminanfrage — Wunschtermin ${dateLong}, ${time} Uhr`;
     const body = [
       `Wunschtermin: ${dateLong}, ${time} Uhr`,
@@ -311,8 +351,11 @@ export default function BookingWizard() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn--wide">
-            Wunschtermin anfragen
+          {/* Honeypot gegen Bots (unsichtbar) */}
+          <input type="text" name="website" value={honig} onChange={(e) => setHonig(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1 }} />
+          {fehler && <p className="buybox-error">{fehler}</p>}
+          <button type="submit" className="btn btn--wide" disabled={busy}>
+            {busy ? 'Wird gesendet …' : 'Wunschtermin anfragen'}
           </button>
           <button type="button" className="text-link wizard-back" onClick={() => setTime('')}>
             Andere Uhrzeit wählen
