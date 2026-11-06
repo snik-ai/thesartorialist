@@ -13,6 +13,10 @@ export type TerminDaten = {
   wunschText?: string; // lesbar, z. B. «Montag, 10. November 2026, 14:30 Uhr»
   stil: StilZeile[];
   stoffe: string[];
+  firma?: string;
+  brandDomain?: string;
+  /** Einwilligung: Terminbestätigung und Erinnerung auch per WhatsApp/SMS */
+  einwilligung?: boolean;
 };
 
 const INK = '#101010';
@@ -190,6 +194,8 @@ export function mailTerminAtelier(d: TerminDaten) {
         ['Name', d.name],
         ['Telefon', d.telefon || ''],
         ['E-Mail', d.email || ''],
+        ['Firma', [d.firma, d.brandDomain && d.brandDomain !== d.firma ? `(${d.brandDomain})` : ''].filter(Boolean).join(' ')],
+        ['WhatsApp/SMS', d.einwilligung ? 'Ja, Bestätigung und Erinnerung erwünscht' : 'Nein'],
       ])}</td></tr>` +
       `<tr><td style="padding:22px 36px 18px">${aktionen}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">Kalendereintrag im Anhang (Termin.ics) · Antworten gehen direkt an den Kunden.</div></td></tr>` +
       stilBlock(d),
@@ -200,6 +206,8 @@ export function mailTerminAtelier(d: TerminDaten) {
     `Name: ${d.name}`,
     `Telefon: ${d.telefon || '–'}`,
     `E-Mail: ${d.email || '–'}`,
+    d.firma || d.brandDomain ? `Firma: ${[d.firma, d.brandDomain].filter(Boolean).join(' · ')}` : '',
+    `WhatsApp/SMS: ${d.einwilligung ? 'ja' : 'nein'}`,
     d.stoffe.length ? `Stoff: ${d.stoffe.join(', ')}` : '',
     ...d.stil.map((s) => `${s.kategorie} · ${s.untergruppe}: ${s.option}`),
   ]

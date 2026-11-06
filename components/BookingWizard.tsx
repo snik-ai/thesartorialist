@@ -4,6 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { SITE } from '@/lib/site';
 import { alsText, aufloesen, ladeAuswahl, ladeStoffe, optionText, type Gewaehlt } from '@/lib/konfigurator/auswahl';
+import { EmailFeld } from '@/components/formular/EmailFeld';
+import { TelefonFeld } from '@/components/formular/TelefonFeld';
+import { MarkenChip, MarkenLogo, useMarke } from '@/components/formular/Marke';
+import { Einwilligung } from '@/components/formular/Einwilligung';
+import { emailGueltig, emailVorschlag } from '@/lib/formular/email';
+import { telefonFormatieren, telefonGueltig } from '@/lib/formular/telefon';
+
+const EINWILLIGUNG_TEXT = 'Ich möchte Terminbestätigung und Erinnerung auch per WhatsApp/SMS erhalten.';
 
 // Moderner Buchungs-Wizard in 3 Schritten: Wunschtermin (Kalender) → Uhrzeit →
 // persönliche Angaben. Regeln: Sonntag geschlossen, Samstag nur 10:00–16:00,
@@ -53,7 +61,18 @@ export default function BookingWizard() {
   const [name, setName] = useState('');
   const [tel, setTel] = useState('');
   const [email, setEmail] = useState('');
+  const [firma, setFirma] = useState('');
+  const [firmaSelbst, setFirmaSelbst] = useState(false);
+  const [einwilligung, setEinwilligung] = useState(false);
+  const [fehlerFeld, setFehlerFeld] = useState<'' | 'name' | 'email' | 'tel'>('');
   const [sent, setSent] = useState(false);
+  // Firmenerkennung aus der E-Mail-Domain (Freemailer ergeben nichts); Firmenname wird vorgeschlagen, bleibt überschreibbar
+  // Bei vermutetem Tippfehler («gmial.com») nichts suchen, erst nach der Korrektur
+  const suche = useMarke(emailVorschlag(email) ? null : email);
+  const markeName = suche.marke?.name ?? '';
+  useEffect(() => {
+    if (!firmaSelbst) setFirma(markeName);
+  }, [markeName, firmaSelbst]);
   // Stil-Auswahl aus dem Massanzug-Konfigurator (liegt im Browser) geht mit der Anfrage mit
   const [stil, setStil] = useState<Gewaehlt[]>([]);
   const [stilMit, setStilMit] = useState(true);
@@ -107,8 +126,19 @@ export default function BookingWizard() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setBusy(true);
     setFehler('');
+    // Eigene, freundliche Prüfung (statt Browser-Blasen): Name, E-Mail und Telefon sind Pflicht
+    const feld = !vorname.trim() || !name.trim() ? 'name' : !emailGueltig(email) ? 'email' : !tel.trim() || !telefonGueltig(tel) ? 'tel' : '';
+    setFehlerFeld(feld);
+    if (feld) {
+      // E-Mail und Telefon zeigen ihren Hinweis direkt am Feld
+      if (feld === 'name') setFehler('Bitte Vorname und Name angeben.');
+      document.getElementById(feld === 'name' ? (vorname.trim() ? 'bw-name' : 'bw-vorname') : feld === 'email' ? 'bw-email' : 'bw-tel')?.focus();
+      return;
+    }
+    const telefon = telefonFormatieren(tel);
+    setTel(telefon);
+    setBusy(true);
     // 1. Versand über den Server (Resend) — bei fehlender Konfiguration/Fehler: Mailprogramm
     try {
       const res = await fetch('/api/anfrage/', {
@@ -117,8 +147,12 @@ export default function BookingWizard() {
         body: JSON.stringify({
           art: 'termin',
           name: `${vorname} ${name}`.trim(),
-          telefon: tel,
+          telefon,
           email,
+          firma: firma.trim() || undefined,
+          brandDomain: suche.domain ?? undefined,
+          einwilligung,
+          einwilligungText: EINWILLIGUNG_TEXT,
           wunsch: `${dateLong}, ${time} Uhr`,
           datum: date ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : undefined,
           zeit: time,
@@ -149,8 +183,10 @@ export default function BookingWizard() {
       '',
       `Vorname: ${vorname}`,
       `Name: ${name}`,
-      `Telefon: ${tel}`,
+      `Telefon: ${telefon}`,
       `E-Mail: ${email}`,
+      ...(firma.trim() ? [`Firma: ${firma.trim()}`] : []),
+      `WhatsApp/SMS-Bestätigung: ${einwilligung ? 'ja' : 'nein'}`,
       ...((stil.length || stoffe.length) && stilMit
         ? ['', `Meine Stil-Auswahl aus dem Konfigurator (${stil.length} Details):`, '', alsText(stil, stoffe)]
         : []),
@@ -304,12 +340,13 @@ export default function BookingWizard() {
       )}
 
       {step === 2 && (
-        <form className="form-grid" onSubmit={submit}>
+        <form className="form-grid" onSubmit={submit} noValidate>
           <div className="grid-2" style={{ gap: '1.1rem' }}>
             <div>
               <label htmlFor="bw-vorname">Vorname</label>
               <input
                 id="bw-vorname"
+                className="feld__eingabe"
                 type="text"
                 required
                 autoComplete="given-name"
@@ -321,6 +358,7 @@ export default function BookingWizard() {
               <label htmlFor="bw-name">Name</label>
               <input
                 id="bw-name"
+                className="feld__eingabe"
                 type="text"
                 required
                 autoComplete="family-name"
@@ -329,28 +367,26 @@ export default function BookingWizard() {
               />
             </div>
           </div>
-          <div>
-            <label htmlFor="bw-tel">Telefon</label>
-            <input
-              id="bw-tel"
-              type="tel"
-              required
-              autoComplete="tel"
-              value={tel}
-              onChange={(e) => setTel(e.target.value)}
-            />
+          <EmailFeld id="bw-email" wert={email} setWert={(v) => { setEmail(v); if (fehlerFeld === 'email') setFehlerFeld(''); }}
+            fehlerAktiv={fehlerFeld === 'email'} kinder={<MarkenChip suche={suche} />} />
+          <TelefonFeld id="bw-tel" wert={tel} setWert={(v) => { setTel(v); if (fehlerFeld === 'tel') setFehlerFeld(''); }}
+            fehlerAktiv={fehlerFeld === 'tel'} />
+          <div className="feld">
+            <label className="feld__label" htmlFor="bw-firma">Firma <i>(optional)</i></label>
+            <div className={`feld__huelle ${suche.marke && firma.trim() ? 'feld__huelle--marke' : ''}`}>
+              {suche.marke && firma.trim() && <MarkenLogo marke={suche.marke} groesse={34} />}
+              <input id="bw-firma" className="feld__eingabe" type="text" autoComplete="organization" value={firma}
+                onChange={(e) => { setFirma(e.target.value); setFirmaSelbst(true); }} />
+            </div>
+            {suche.marke?.name && !firmaSelbst && firma === suche.marke.name && (
+              <span className="feld__vorgeschlagen">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                Aus Ihrer E-Mail-Adresse übernommen, gerne anpassen.
+              </span>
+            )}
           </div>
-          <div>
-            <label htmlFor="bw-email">E-Mail</label>
-            <input
-              id="bw-email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+          <Einwilligung id="bw-einwilligung" an={einwilligung} setAn={setEinwilligung} text={EINWILLIGUNG_TEXT}
+            hinweis="Freiwillig. Sie können das jederzeit widerrufen." />
           {/* Honeypot gegen Bots (unsichtbar) */}
           <input type="text" name="website" value={honig} onChange={(e) => setHonig(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1 }} />
           {fehler && <p className="buybox-error">{fehler}</p>}

@@ -54,9 +54,15 @@ export async function POST(req: Request) {
     : [];
   const stoffe = Array.isArray(b.stoffe) ? (b.stoffe as unknown[]).map((x) => text(x, 20)).filter((x) => /^[A-Z0-9-]{3,20}$/i.test(x)).slice(0, 12) : [];
   const sid = text(b._dlmsid, 80) || undefined;
+  // Lead-Formular-Standard: Firma (vorgeschlagen aus der Firmenerkennung), erkannte Domain, Einwilligung WhatsApp/SMS
+  const firma = text(b.firma, 120) || undefined;
+  const brandDomain = /^(?=.{4,120}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,24}$/.test(text(b.brandDomain, 120).toLowerCase()) ? text(b.brandDomain, 120).toLowerCase() : undefined;
+  const einwilligung = b.einwilligung === true;
+  // Wortlaut der Einwilligung (Nachweis), für die Speicherung in der Datenbank
+  const einwilligungText = einwilligung ? text(b.einwilligungText, 300) || undefined : undefined;
 
-  if (art === 'termin' && (!name || (!emailOk(email) && !telOk(tel)))) {
-    return NextResponse.json({ ok: false, fehler: 'Bitte Name und E-Mail oder Telefon angeben.' }, { status: 400 });
+  if (art === 'termin' && (!name || !emailOk(email) || !telOk(tel))) {
+    return NextResponse.json({ ok: false, fehler: 'Bitte Name, E-Mail und Telefon angeben.' }, { status: 400 });
   }
   if (art === 'rueckruf' && !telOk(tel)) {
     return NextResponse.json({ ok: false, fehler: 'Bitte eine gültige Telefonnummer angeben.' }, { status: 400 });
@@ -65,7 +71,7 @@ export async function POST(req: Request) {
 
   try {
     if (art === 'termin') {
-      const d = { name, email: emailOk(email) ? email : undefined, telefon: tel || undefined, datum, zeit, wunschText: wunsch || 'nach Absprache', stil, stoffe };
+      const d = { name, email: emailOk(email) ? email : undefined, telefon: tel || undefined, datum, zeit, wunschText: wunsch || 'nach Absprache', stil, stoffe, firma, brandDomain, einwilligung };
       const atelier = mailTerminAtelier(d);
       const icsA = icsDatei(d, 'atelier');
       await sendeMail({ to: empfaenger(), subject: atelier.subject, text: atelier.text, html: atelier.html, replyTo: d.email, anhaenge: icsA ? [{ filename: 'Termin.ics', content: icsA }] : undefined });

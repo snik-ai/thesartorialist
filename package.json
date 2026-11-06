@@ -8,7 +8,8 @@
     "start": "node .next/standalone/server.js",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "schrank": "node scripts/schrank-freistellen.mjs"
+    "schrank": "node scripts/schrank-freistellen.mjs",
+    "test:formular": "node --experimental-strip-types --no-warnings --test test/formular.test.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
