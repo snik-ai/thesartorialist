@@ -1,85 +1,84 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure suit Zurich
+// Костюм на заказ, Цюрих
 export const massanzug: Woerterbuch['massanzug'] = {
   meta: {
-    titel: 'Made-to-Measure Suit Zurich — from CHF 1’690, Made in Italy',
+    titel: 'Костюм на заказ в Цюрихе — от CHF 1’690, сделано в Италии',
     beschreibung:
-      'Made-to-measure suits in Zurich: full-canvas construction, exclusive cloths from Loro Piana, Scabal & Cerruti and a personal fitting service — from CHF 1’690.',
-    ogTitel: 'Made-to-Measure Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'Full canvas, exclusive Italian cloths, from CHF 1’690.',
+      'Костюмы на заказ в Цюрихе: конструкция full canvas, эксклюзивные ткани Loro Piana, Scabal и Cerruti и персональный сервис примерок — от CHF 1’690.',
+    ogTitel: 'Костюм на заказ в Цюрихе — The Sartorialist',
+    ogBeschreibung: 'Full canvas, эксклюзивные итальянские ткани, от CHF 1’690.',
   },
-  breadcrumb: 'Made-to-measure suit Zurich',
+  breadcrumb: 'Костюм на заказ в Цюрихе',
   hero: {
-    eyebrow: 'Made to Measure',
-    h1: 'Made-to-Measure Suits Zurich',
-    lead: 'Create your own style: at The Sartorialist you become your own designer — exclusive tailoring from renowned, long-established Italian houses, cut precisely to your measurements.',
+    eyebrow: 'Пошив на заказ',
+    h1: 'Костюмы на заказ в Цюрихе',
+    lead: 'Создайте свой собственный стиль: в The Sartorialist Вы сами становитесь дизайнером — эксклюзивный пошив от известных итальянских домов с давними традициями, скроенный точно по Вашим меркам.',
   },
   luxus: {
-    bildAlt: 'Made-to-measure suit in Zurich — tailored by The Sartorialist',
-    titel: 'The ultimate luxury: a suit cut to your measurements',
+    bildAlt: 'Костюм на заказ в Цюрихе — пошит The Sartorialist',
+    titel: 'Высшая роскошь: костюм, скроенный по Вашим меркам',
     absaetze: [
-      'There is nothing quite like wearing a suit cut precisely to your own measurements. A made-to-measure suit is a lasting piece of quality of life — an investment every gentleman should make.',
-      'The made-to-measure journey begins with try-on sizes, entirely redeveloped to deliver an even better fit. Our made-to-measure programme offers a collection of cloths for every occasion — year-round suits, jackets and eveningwear, complemented by exclusive seasonal collections.',
+      'Ничто не сравнится с ощущением костюма, скроенного точно по Вашим меркам. Костюм на заказ — это долговечная часть качества жизни, инвестиция, которую должен сделать каждый джентльмен.',
+      'Путь к костюму на заказ начинается с примерочных размеров, полностью переработанных для ещё лучшей посадки. Наша программа пошива на заказ предлагает коллекцию тканей для любого случая — всесезонные костюмы, пиджаки и вечерняя одежда, дополненные эксклюзивными сезонными коллекциями.',
     ],
-    knopf: 'Book an appointment',
+    knopf: 'Записаться на встречу',
   },
   verarbeitung: [
     {
-      eyebrow: 'Construction',
-      titel: 'Built to last with full canvas',
-      text: 'In full-canvas construction, the canvas interlining is stitched rather than glued — from the collar to the hem. The jacket moulds itself beautifully to your body, breathes and lasts considerably longer. It is the finest construction there is, and you feel it every time you wear it.',
+      eyebrow: 'Конструкция',
+      titel: 'Долговечность благодаря full canvas',
+      text: 'В конструкции full canvas бортовая прокладка не приклеивается, а пришивается — от воротника до низа. Пиджак красиво принимает форму Вашего тела, дышит и служит значительно дольше. Это лучшая конструкция из существующих, и Вы чувствуете это каждый раз, когда его надеваете.',
     },
     {
-      eyebrow: 'Tailoring',
-      titel: 'Jackets — light yet shapely',
-      text: 'The quality of a gentleman’s jacket is measured by how it feels to wear: the lightness and shape retention of the cloth. Canvas — an interlining of linen or cotton — gives the fine, light outer cloth its structure, through pad stitching rather than heat-fused bonding.',
+      eyebrow: 'Пошив',
+      titel: 'Пиджаки — лёгкие и при этом держат форму',
+      text: 'Качество мужского пиджака определяется ощущением в носке: лёгкостью ткани и её способностью держать форму. Холст — прокладка из льна или хлопка — придаёт тонкой, лёгкой верхней ткани структуру за счёт ручной подшивки (пад-стежков), а не горячего дублирования клеем.',
     },
   ],
   konfigurator: {
-    eyebrow: 'Style configurator',
-    titel: 'Put your suit together from the comfort of home.',
-    lead: 'Lapels, buttons, pockets, shoulders, lining, waistband and hem: choose what you like online at your leisure, save your selection as a PDF and bring it along to your appointment.',
-    knopf: 'Open the configurator',
+    eyebrow: 'Конфигуратор стиля',
+    titel: 'Соберите свой костюм, не выходя из дома.',
+    lead: 'Лацканы, пуговицы, карманы, плечи, подкладка, пояс и низ брюк: спокойно выберите онлайн то, что Вам нравится, сохраните выбор в PDF и возьмите его с собой на встречу.',
+    knopf: 'Открыть конфигуратор',
   },
-  faqTitel: 'The made-to-measure process',
+  faqTitel: 'Как проходит пошив на заказ',
   faq: [
     {
-      q: 'Where can I have a made-to-measure suit made in Zurich?',
+      q: 'Где в Цюрихе можно заказать костюм по индивидуальным меркам?',
       a: [
-        'At The Sartorialist Zurich you do not receive an off-the-peg suit with minor alterations, but a one-off cut entirely for you. We begin with a consultation about your wishes, the occasion, your style and your build — then you choose from an exclusive collection of fine wools, silk blends, linen, cashmere and mohair.',
-        'Our focus is on the finest cloths in Europe: we work with Loro Piana, Scabal, Cerruti and other renowned mills.',
+        'В The Sartorialist в Цюрихе Вы получаете не готовый костюм с небольшими переделками, а уникальное изделие, скроенное только для Вас. Мы начинаем с беседы о Ваших пожеланиях, поводе, стиле и телосложении — затем Вы выбираете из эксклюзивной коллекции тонкой шерсти, шёлковых смесей, льна, кашемира и мохера.',
+        'Мы делаем ставку на лучшие ткани Европы: работаем с Loro Piana, Scabal, Cerruti и другими известными фабриками.',
       ],
     },
     {
-      q: 'What does full canvas mean — and why is it better?',
+      q: 'Что означает full canvas и почему это лучше?',
       a: [
-        'In ready-to-wear, the materials are mechanically bonded under high pressure before sewing. In full-canvas construction, by contrast, the interlining is stitched rather than glued — along its entire length, from the collar to the hem. The canvas has more freedom to move and moulds itself to your body as you wear it.',
-        'The stitched construction lets the jacket breathe and makes it last far longer — the finest and most durable choice for your made-to-measure suit.',
+        'В готовой одежде материалы перед шитьём механически склеиваются под высоким давлением. В конструкции full canvas, напротив, прокладка не приклеивается, а пришивается — по всей длине, от воротника до низа. У холста больше свободы движения, и в носке он принимает форму Вашего тела.',
+        'Пришивная конструкция позволяет пиджаку дышать и делает его гораздо долговечнее — это самый тонкий и надёжный выбор для Вашего костюма на заказ.',
       ],
     },
     {
-      q: 'How does the made-to-measure process work?',
+      q: 'Как проходит процесс пошива на заказ?',
       a: [
-        'Your first consultation has three steps: choosing the cloth, taking your measurements and selecting the details. You decide on lapel style and width, lining colour, side adjusters, trouser turn-ups, pocket style, buttons and much more.',
-        'Three to six weeks later your suit arrives in our store — at the final fitting we make every adjustment needed until it fits perfectly. On request, we are also happy to advise you at your office or at home.',
+        'Первая консультация состоит из трёх шагов: выбор ткани, снятие мерок и выбор деталей. Вы определяете форму и ширину лацкана, цвет подкладки, боковые регуляторы, отвороты брюк, тип карманов, пуговицы и многое другое.',
+        'Через три-шесть недель Ваш костюм поступает в наш магазин — на финальной примерке мы вносим все необходимые изменения, пока он не будет сидеть идеально. По желанию мы с удовольствием проконсультируем Вас в офисе или у Вас дома.',
       ],
     },
     {
-      q: 'Which cloths can I choose from?',
+      q: 'Из каких тканей можно выбирать?',
       a: [
-        'From superfine wools and soft flannels to airy seersucker for summer suits; densely woven flannels for eveningwear and velvet as a refined choice for the winter wardrobe. Then colour, weave and pattern — chalk stripes, bold or subtle checks and more.',
+        'От сверхтонкой шерсти и мягких фланелей до воздушного сирсакера для летних костюмов; плотная фланель для вечерней одежды и бархат как изысканный выбор для зимнего гардероба. Далее — цвет, переплетение и узор: меловая полоска, яркая или сдержанная клетка и многое другое.',
       ],
     },
   ],
   cta: {
-    titel: 'Your made-to-measure suit — from CHF 1’690, ready in 20 working days.',
-    text: 'Made-to-measure suits are the perfect choice for the modern gentleman who values style and individuality.',
+    titel: 'Ваш костюм на заказ — от CHF 1’690, готов через 20 рабочих дней.',
+    text: 'Костюм на заказ — идеальный выбор для современного джентльмена, который ценит стиль и индивидуальность.',
   },
   schema: {
-    name: 'Made-to-measure suits Zurich',
+    name: 'Костюмы на заказ в Цюрихе',
     beschreibung:
-      'Full-canvas made-to-measure suits in exclusive Italian cloths — a personal made-to-measure service in Zurich, from CHF 1’690.',
+      'Костюмы на заказ в конструкции full canvas из эксклюзивных итальянских тканей — персональный сервис индивидуального пошива в Цюрихе, от CHF 1’690.',
   },
 };

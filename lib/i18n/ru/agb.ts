@@ -1,110 +1,109 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Terms and conditions / payment in instalments
+// Общие условия / оплата в рассрочку
 export const agb: Woerterbuch['agb'] = {
   meta: {
-    titel: 'Terms & Conditions / Payment in Instalments',
+    titel: 'Общие условия / оплата в рассрочку',
     beschreibung:
-      'General terms and conditions of The Sartorialist Zurich — including payment in instalments at 0% interest via HeidiPay.',
+      'Общие условия The Sartorialist, Цюрих, — включая оплату в рассрочку под 0 % через HeidiPay.',
   },
-  breadcrumb: 'Terms & Conditions',
-  h1: 'Terms & Conditions / Payment in Instalments',
+  breadcrumb: 'Общие условия',
+  h1: 'Общие условия / оплата в рассрочку',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/allgemeine-geschaeftsbedingungen/).',
+    'Русский перевод предоставляется исключительно для удобства. Юридическую силу имеет немецкая версия: [читать немецкую версию](/allgemeine-geschaeftsbedingungen/).',
   einleitung:
-    'These General Terms and Conditions (hereinafter “GTC”) govern the conclusion, content and performance of contracts between thesartorialist.ch and its customers (hereinafter “Customer”) in connection with the sale of goods. All orders and deliveries are based without exception on these terms and conditions, which the Customer accepts at the time of placing an order.',
+    'Настоящие Общие условия (далее — «Условия») регулируют заключение, содержание и исполнение договоров между thesartorialist.ch и его клиентами (далее — «Клиент») в связи с продажей товаров. Все заказы и поставки без исключения осуществляются на основании настоящих условий, которые Клиент принимает в момент оформления заказа.',
   abschnitte: [
     {
-      titel: 'Conclusion of contract',
+      titel: 'Заключение договора',
       bloecke: [
         {
-          p: 'The presentation of the products does not constitute a legally binding offer but a non-binding catalogue. By placing a binding order, you submit an order for the selected goods. Receipt of your order is confirmed, together with its acceptance, by an automated email immediately after the order is submitted. The purchase contract is concluded upon this email confirmation.',
+          p: 'Представление товаров не является юридически обязывающей офертой, а представляет собой необязывающий каталог. Оформляя обязывающий заказ, Вы направляете заказ на выбранные товары. Получение Вашего заказа и его принятие подтверждаются автоматическим письмом сразу после отправки заказа. Договор купли-продажи считается заключённым с момента получения этого подтверждения.',
         },
       ],
     },
     {
-      titel: 'Complaints (in the event of defects) / right of return',
+      titel: 'Рекламации (при наличии дефектов) / право на возврат',
       bloecke: [
         {
-          p: 'On receipt of the parcel, the Customer must inspect the contents of the delivery without delay. In the case of items that are damaged or do not correspond to the order, the Customer has the right to lodge a complaint within 7 (seven) days of receipt of the goods. The shipping costs of the return are borne by the Customer. After receiving and inspecting the returned goods (unused items only), thesartorialist.ch will provide a free exchange or, on request, a refund of the amount paid. For products already paid for, a refund will be made to the Customer’s bank account; no cash refunds are made.',
+          p: 'При получении посылки Клиент обязан незамедлительно проверить содержимое поставки. В случае повреждённых или не соответствующих заказу товаров Клиент вправе предъявить рекламацию в течение 7 (семи) дней с момента получения товара. Расходы на обратную пересылку несёт Клиент. После получения и проверки возвращённого товара (только неиспользованные изделия) thesartorialist.ch бесплатно произведёт обмен или, по желанию, вернёт уплаченную сумму. За уже оплаченные товары возврат производится на банковский счёт Клиента; возврат наличными не производится.',
         },
         {
-          p: 'Accessories and swimwear cannot be exchanged — for reasons of hygiene, these products are excluded from exchange. Ordered items are delivered within 1–4 working days of receipt of payment. The choice of carrier is the responsibility of thesartorialist.ch.',
+          p: 'Аксессуары и купальные изделия обмену не подлежат — по гигиеническим причинам эти товары исключены из обмена. Заказанные товары доставляются в течение 1–4 рабочих дней после поступления оплаты. Выбор службы доставки остаётся за thesartorialist.ch.',
         },
         {
-          p: 'thesartorialist.ch can only deliver individual goods while stocks last and is entitled to make partial deliveries. In the event of delivery disruptions due to circumstances such as strikes, shortages of materials or transport problems, thesartorialist.ch is entitled to cancel confirmed orders; in this case the Customer is entitled to a refund of any purchase price already paid. If redelivery is required because of an incorrect address or failure to collect, the recipient bears the additional shipping costs.',
+          p: 'thesartorialist.ch может поставлять отдельные товары только в пределах наличия и вправе осуществлять частичные поставки. В случае нарушений поставок по таким причинам, как забастовки, нехватка материалов или транспортные проблемы, thesartorialist.ch вправе аннулировать подтверждённые заказы; в этом случае Клиент имеет право на возврат уже уплаченной покупной цены. Если повторная доставка требуется из-за неверного адреса или неполучения посылки, дополнительные расходы на пересылку несёт получатель.',
         },
       ],
     },
     {
-      titel: 'Delivery outside Switzerland',
-      bloecke: [{ p: 'Customers from Germany or Austria are kindly asked to contact us by email at [{email}](mailto:{email}).' }],
+      titel: 'Доставка за пределы Швейцарии',
+      bloecke: [{ p: 'Клиентов из Германии или Австрии мы просим связаться с нами по электронной почте [{email}](mailto:{email}).' }],
     },
     {
-      titel: 'Prices and special offers',
+      titel: 'Цены и специальные предложения',
       bloecke: [
         {
-          p: 'All prices are stated in CHF (Swiss francs). Additional costs such as packaging and shipping are not included in the prices. thesartorialist.ch reserves the right to change prices at any time. The prices published at the time of ordering apply to the Customer.',
+          p: 'Все цены указаны в CHF (швейцарских франках). Дополнительные расходы, такие как упаковка и доставка, в цены не входят. thesartorialist.ch оставляет за собой право изменять цены в любое время. Для Клиента действуют цены, опубликованные на момент заказа.',
         },
       ],
     },
     {
-      titel: 'Payment, warranty and liability',
+      titel: 'Оплата, гарантия и ответственность',
       bloecke: [
         {
-          p: 'Orders are payable by bank transfer or in advance by credit card or PostFinance Card. Responsibility for the selection, use and application of the products lies with the Customer. The Customer is entitled solely to any manufacturer’s warranty, which must be claimed directly from the manufacturer. The products delivered remain the property of thesartorialist.ch until paid for in full.',
+          p: 'Заказы оплачиваются банковским переводом или заранее кредитной картой либо картой PostFinance. Ответственность за выбор, использование и применение товаров несёт Клиент. Клиент имеет право исключительно на гарантию производителя, которую необходимо предъявлять непосредственно производителю. Поставленные товары остаются собственностью thesartorialist.ch до их полной оплаты.',
         },
       ],
     },
     {
-      titel: 'Data protection',
+      titel: 'Защита данных',
       bloecke: [
         {
-          p: 'thesartorialist.ch does not pass on any personal customer data to third parties and is responsible for data protection. Data that is essential for processing the order (e.g. disclosure to the carrier) may be passed on. All customer data is treated in strict confidence.',
+          p: 'thesartorialist.ch не передаёт персональные данные клиентов третьим лицам и отвечает за защиту данных. Данные, необходимые для исполнения заказа (например, передача службе доставки), могут быть переданы. Все данные клиентов обрабатываются строго конфиденциально.',
         },
       ],
     },
     {
-      titel: 'Image rights',
+      titel: 'Права на изображения',
       bloecke: [
         {
-          p: 'The images of the products shown are the property of thesartorialist.ch and may not be used for third-party blogs, social media, the press or any other media.',
+          p: 'Изображения представленных товаров являются собственностью thesartorialist.ch и не могут использоваться в сторонних блогах, социальных сетях, прессе или иных СМИ.',
         },
       ],
     },
     {
-      titel: 'Final provisions',
+      titel: 'Заключительные положения',
       bloecke: [
         {
-          p: 'thesartorialist.ch may amend these GTC at any time. Should one or more of these provisions be void or invalid, the validity of the remaining provisions shall remain unaffected. These GTC are drawn up in German; in the event of any discrepancy, the German version shall prevail. The place of jurisdiction is Zurich; Swiss law applies.',
+          p: 'thesartorialist.ch может в любое время изменять настоящие Условия. Если одно или несколько положений окажутся ничтожными или недействительными, это не затрагивает действительности остальных положений. Настоящие Условия составлены на немецком языке; в случае расхождений преимущественную силу имеет немецкая версия. Место рассмотрения споров — Цюрих; применяется швейцарское право.',
         },
       ],
     },
     {
-      titel: 'Payment in instalments — buy now, pay later — 0% interest',
+      titel: 'Оплата в рассрочку — купите сейчас, платите потом — 0 %',
       bloecke: [
         {
           schritte: [
-            'Add the items you would like to your basket',
-            'Choose HeidiPay as your payment method at checkout',
-            'Enter your card details',
-            'Pay in interest-free monthly instalments',
+            'Добавьте нужные товары в корзину',
+            'При оформлении заказа выберите способ оплаты HeidiPay',
+            'Введите данные Вашей карты',
+            'Оплачивайте беспроцентными ежемесячными платежами',
           ],
         },
         {
-          p: 'The first instalment is paid at the time of purchase. The remaining instalments are debited automatically from your card every 30 days.',
+          p: 'Первый платёж вносится в момент покупки. Остальные платежи автоматически списываются с Вашей карты каждые 30 дней.',
         },
-        { h3: 'Requirements' },
+        { h3: 'Условия' },
         {
           liste: [
-            'You are between 18 and 70 years old',
-            'You are resident in Switzerland',
-            'You are a Swiss citizen or have held a C or B residence permit for at least 1 year',
+            'Вам от 18 до 70 лет',
+            'Вы проживаете в Швейцарии',
+            'Вы гражданин Швейцарии или не менее 1 года имеете вид на жительство категории C или B',
           ],
         },
         {
-          p: 'We check with the credit agency CRIF AG that you are registered at the residential address provided. If your address cannot be found, please contact CRIF AG by telephone on +41 44 913 50 58 or send proof of address by email to support.ch@crif.com. See the terms and conditions and privacy policy at www.heidipay.com.',
+          p: 'Через кредитное бюро CRIF AG мы проверяем, зарегистрированы ли Вы по указанному адресу проживания. Если Ваш адрес не найден, свяжитесь с CRIF AG по телефону +41 44 913 50 58 или отправьте подтверждение адреса по электронной почте на support.ch@crif.com. Условия и политика конфиденциальности — на www.heidipay.com.',
         },
       ],
     },

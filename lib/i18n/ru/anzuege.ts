@@ -1,44 +1,43 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suits Zurich
+// Костюмы, Цюрих
 export const anzuege: Woerterbuch['anzuege'] = {
   meta: {
-    titel: 'Suits Zurich — Exclusive Suits & Expert Advice',
+    titel: 'Костюмы в Цюрихе — эксклюзивные костюмы и профессиональная консультация',
     beschreibung:
-      'Suits in Zurich: exclusive suits, jackets, shirts and trousers from The Sartorialist — handcrafted Italian tailoring meets contemporary style. Visit us at Kuttelgasse 7.',
-    ogTitel: 'Suits Zurich — The Sartorialist',
-    ogBeschreibung: 'What may well be the finest suits in Zurich — with advice of the highest standard.',
+      'Костюмы в Цюрихе: эксклюзивные костюмы, пиджаки, рубашки и брюки от The Sartorialist — итальянское ручное мастерство встречается с современным стилем. Ждём Вас на Kuttelgasse 7.',
+    ogTitel: 'Костюмы в Цюрихе — The Sartorialist',
+    ogBeschreibung: 'Пожалуй, лучшие костюмы в Цюрихе — с консультацией высочайшего уровня.',
   },
-  breadcrumb: 'Suits Zurich',
+  breadcrumb: 'Костюмы в Цюрихе',
   hero: {
-    eyebrow: 'Gentlemen’s outfitter in the heart of Zurich',
-    h1: 'Suits Zurich',
-    lead: 'At The Sartorialist you will find what may well be the finest suits in Zurich. Our advice is expert, personal and of the highest standard — handcrafted Italian tailoring meets contemporary style.',
-    gestalten: 'Design your suit',
-    termin: 'Book an appointment',
+    eyebrow: 'Мужское ателье в самом сердце Цюриха',
+    h1: 'Костюмы в Цюрихе',
+    lead: 'В The Sartorialist Вас ждут, пожалуй, лучшие костюмы в Цюрихе. Наша консультация профессиональна, персональна и отвечает высочайшим требованиям — итальянское ручное мастерство встречается с современным стилем.',
+    gestalten: 'Создать свой костюм',
+    termin: 'Записаться на встречу',
   },
   abschnitte: [
     {
-      titel: 'Genuine brand expertise',
-      text: 'We offer exclusive suits, jackets, denim shirts and trousers — complemented by elegant accessories and cashmere of the finest quality. Our carefully selected exclusive brands guarantee the best materials and cuts. Fifteen years of experience in fashion, including at the menswear powerhouse Tom Ford, are your guarantee of the finest suits in Zurich.',
+      titel: 'Настоящая экспертиза в брендах',
+      text: 'Мы предлагаем эксклюзивные костюмы, пиджаки, джинсовые рубашки и брюки — в дополнение к элегантным аксессуарам и кашемиру высшего качества. Тщательно отобранные эксклюзивные бренды гарантируют лучшие материалы и крой. Пятнадцать лет опыта в моде, в том числе в ведущем доме мужской моды Tom Ford, — Ваша гарантия лучших костюмов в Цюрихе.',
     },
     {
-      titel: 'How a quality suit comes to life',
-      text: 'First, you tell us what you have in mind and we take your exact measurements. Our tailoring team designs and sews the suit to fit you precisely — on average this takes just 15 to 20 days. After a final fitting we make any adjustments needed until the suit fits perfectly and meets every wish.',
+      titel: 'Как рождается качественный костюм',
+      text: 'Сначала Вы рассказываете нам о своих пожеланиях, и мы снимаем точные мерки. Наша команда портных конструирует и шьёт костюм точно по Вашей фигуре — в среднем это занимает всего 15–20 дней. После финальной примерки мы вносим необходимые изменения, пока костюм не будет сидеть идеально и отвечать всем Вашим желаниям.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Whether a modern double-breasted or a single-breasted suit, for business, a wedding or the opera: a suit is like a second skin. Beyond the style of the suit, fit, cloth and colour play a decisive role. We watch every detail closely to ensure you receive the perfect suit for your personal style.',
+      titel: 'Какой костюм подходит мне?',
+      text: 'Современный двубортный или однобортный костюм, для бизнеса, свадьбы или оперы: костюм — словно вторая кожа. Помимо фасона, решающую роль играют посадка, ткань и цвет. Мы внимательно следим за каждой деталью, чтобы Вы получили идеальный костюм для своего личного стиля.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'An exclusive suit has its price — and we make sure the investment pays off. We advise against cheap off-the-peg suits: they never achieve the comfort and quality of a made-to-measure suit. Our prices are always fair and transparent.',
+      titel: 'Цены и условия',
+      text: 'У эксклюзивного костюма есть своя цена — и мы заботимся о том, чтобы эта инвестиция окупилась. Мы не советуем дешёвые готовые костюмы: они никогда не достигают комфорта и качества костюма на заказ. Наши цены всегда честные и прозрачные.',
     },
   ],
   schema: {
-    name: 'Suits Zurich',
+    name: 'Костюмы в Цюрихе',
     beschreibung:
-      'Exclusive suits, jackets, shirts and trousers in Zurich — advice of the highest standard at The Sartorialist.',
+      'Эксклюзивные костюмы, пиджаки, рубашки и брюки в Цюрихе — консультация высочайшего уровня в The Sartorialist.',
   },
 };

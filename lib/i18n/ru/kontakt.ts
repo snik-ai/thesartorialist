@@ -1,36 +1,35 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Contact & directions
+// Контакты и как добраться
 export const kontakt: Woerterbuch['kontakt'] = {
   meta: {
-    titel: 'Contact & Directions — Kuttelgasse 7, Zurich',
+    titel: 'Контакты и как добраться — Kuttelgasse 7, Цюрих',
     beschreibung:
-      'The Sartorialist Zurich: Kuttelgasse 7, 8001 Zürich. Telephone +41 43 243 02 77, store@thesartorialist.ch. Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
-    ogTitel: 'Contact — The Sartorialist Zurich',
-    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — our showroom in the heart of Zurich.',
+      'The Sartorialist Цюрих: Kuttelgasse 7, 8001 Zürich. Телефон +41 43 243 02 77, store@thesartorialist.ch. Пн–пт 10:00–19:00, сб 10:00–17:00.',
+    ogTitel: 'Контакты — The Sartorialist Цюрих',
+    ogBeschreibung: 'Kuttelgasse 7, 8001 Zürich — наш шоурум в самом сердце Цюриха.',
   },
-  breadcrumb: 'Contact',
+  breadcrumb: 'Контакты',
   hero: {
-    eyebrow: 'Contact & directions',
-    h1: 'Your menswear boutique, style adviser & tailor',
-    lead: 'Visit our boutique and, over a fine coffee, let us show you what we mean — with no obligation. Ideally, book an appointment so that we can devote our full attention to you.',
+    eyebrow: 'Контакты и как добраться',
+    h1: 'Ваш бутик мужской одежды, стилист и портной',
+    lead: 'Посетите наш бутик, и за чашкой хорошего кофе мы покажем Вам, что имеем в виду, — без каких-либо обязательств. Лучше заранее запишитесь на встречу, чтобы мы могли уделить Вам всё своё внимание.',
   },
-  bildAlt: 'The Sartorialist boutique at Kuttelgasse 7 in Zurich',
+  bildAlt: 'Бутик The Sartorialist на Kuttelgasse 7 в Цюрихе',
   info: {
-    adresse: 'Address',
-    route: 'Directions on Google Maps',
-    telefon: 'Telephone',
-    email: 'Email',
+    adresse: 'Адрес',
+    route: 'Маршрут в Google Maps',
+    telefon: 'Телефон',
+    email: 'Эл. почта',
     instagram: 'Instagram',
-    oeffnungszeiten: 'Opening hours',
+    oeffnungszeiten: 'Часы работы',
   },
-  wunschtermin: 'Your preferred appointment',
-  ablauf: 'More about the consultation',
+  wunschtermin: 'Удобное для Вас время встречи',
+  ablauf: 'Подробнее о консультации',
   alternativ: {
-    frage: 'No suitable time available?',
-    rueckruf: 'Request a call back',
+    frage: 'Не нашли подходящего времени?',
+    rueckruf: 'Заказать обратный звонок',
     whatsapp: 'WhatsApp',
-    waText: 'Hello, I would like to book a consultation.',
+    waText: 'Здравствуйте! Я хотел бы записаться на консультацию.',
   },
 };

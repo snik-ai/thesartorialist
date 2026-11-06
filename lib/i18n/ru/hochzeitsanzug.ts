@@ -1,92 +1,91 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Wedding suit Zurich
+// Свадебный костюм, Цюрих
 export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
   meta: {
-    titel: 'Men’s Wedding Suit Zurich — Made to Measure',
+    titel: 'Мужской свадебный костюм в Цюрихе — на заказ',
     beschreibung:
-      'Men’s wedding suits made to measure in Zurich: a perfect fit, breathable natural cloths and personal details down to embroidery in the lining. For the groom from CHF 1’690.',
-    ogTitel: 'Wedding Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'The perfect look for the most beautiful day of your life.',
+      'Мужские свадебные костюмы на заказ в Цюрихе: безупречная посадка, дышащие натуральные ткани и личные детали вплоть до вышивки на подкладке. Для жениха — от CHF 1’690.',
+    ogTitel: 'Свадебный костюм в Цюрихе — The Sartorialist',
+    ogBeschreibung: 'Идеальный образ для самого прекрасного дня в Вашей жизни.',
   },
-  breadcrumb: 'Wedding suit Zurich',
+  breadcrumb: 'Свадебный костюм в Цюрихе',
   hero: {
-    eyebrow: 'Wedding suits for men',
-    h1: 'Wedding Suits Zurich',
-    lead: 'The perfect look for the most beautiful day of your life: a suit that fits impeccably, lets your personality shine and moves with you every step of the way.',
+    eyebrow: 'Мужские свадебные костюмы',
+    h1: 'Свадебные костюмы в Цюрихе',
+    lead: 'Идеальный образ для самого прекрасного дня в Вашей жизни: костюм, который безупречно сидит, подчёркивает Вашу индивидуальность и сопровождает Вас на каждом шагу.',
   },
   warum: {
-    bildAlt: 'Made-to-measure wedding suit by The Sartorialist Zurich',
-    titel: 'Why choose The Sartorialist for your wedding suit?',
+    bildAlt: 'Свадебный костюм на заказ от The Sartorialist, Цюрих',
+    titel: 'Почему свадебный костюм стоит заказать в The Sartorialist?',
     liste: [
-      '15 years of experience — your guarantee of the finest wedding suits in Zurich and beyond',
-      'We love fashion — and we love advising our clients in person',
-      'Current trends, exclusive materials and fair terms',
-      'Full canvas for made-to-measure suits that fit perfectly',
+      '15 лет опыта — Ваша гарантия лучших свадебных костюмов в Цюрихе и за его пределами',
+      'Мы любим моду — и любим лично консультировать наших клиентов',
+      'Актуальные тренды, эксклюзивные материалы и честные условия',
+      'Full canvas для идеально сидящих костюмов на заказ',
     ],
-    text: 'At The Sartorialist, your made-to-measure wedding suit fulfils every wish, is crafted from the finest cloths and, thanks to its distinctive details, is a true one-off — at a fair price.',
-    knopf: 'Arrange a no-obligation consultation',
+    text: 'В The Sartorialist Ваш свадебный костюм на заказ исполняет любое желание, шьётся из лучших тканей и благодаря особым деталям становится настоящим уникальным изделием — по честной цене.',
+    knopf: 'Договориться о консультации без обязательств',
   },
   bloecke: [
     {
-      eyebrow: 'Fit',
-      titel: 'Fit and comfort — essential for every wedding',
+      eyebrow: 'Посадка',
+      titel: 'Посадка и комфорт — главное на любой свадьбе',
       absaetze: [
-        'On your wedding day, your body is on the move from morning to night: the nervous wait before the ceremony, kneeling in church, the photo shoot, the first dance, the long wedding breakfast, the party that follows. Off-the-peg suits rarely keep up — they crease, bag and constrict.',
-        'A made-to-measure wedding suit from The Sartorialist accompanies you perfectly through every moment: thanks to an impeccable fit and exceptionally fine natural cloths, your suit breathes with you and reliably wicks away heat and moisture.',
+        'В день свадьбы Вы в движении с утра до ночи: волнительное ожидание перед церемонией, венчание, фотосессия, первый танец, долгий праздничный ужин, вечеринка после него. Готовые костюмы редко с этим справляются — они мнутся, вытягиваются и сковывают движения.',
+        'Свадебный костюм на заказ от The Sartorialist идеально сопровождает Вас в каждый момент: благодаря безупречной посадке и исключительно тонким натуральным тканям костюм дышит вместе с Вами и надёжно отводит тепло и влагу.',
       ],
     },
     {
-      eyebrow: 'Details',
-      titel: 'You choose the details — and create a one-off',
+      eyebrow: 'Детали',
+      titel: 'Детали выбираете Вы — и создаёте уникальную вещь',
       absaetze: [
-        'Choose from a range of button shapes and finishes, and have your bride’s name, a motto or your wedding date embroidered into the lining. Luxurious cufflinks add a touch of brilliance to the moment you exchange rings.',
-        'Complete the look with a wide selection of ties, braces and bow ties — and, if you wish, a made-to-measure shirt cut to your exact measurements.',
+        'Выберите форму и отделку пуговиц и закажите вышивку на подкладке — имя невесты, девиз или дату свадьбы. Роскошные запонки добавят блеска моменту обмена кольцами.',
+        'Дополните образ из широкого выбора галстуков, подтяжек и бабочек — и, по желанию, рубашкой на заказ, скроенной точно по Вашим меркам.',
       ],
     },
   ],
-  faqTitel: 'Frequently asked questions about wedding suits',
+  faqTitel: 'Часто задаваемые вопросы о свадебных костюмах',
   faq: [
     {
-      q: 'What is the difference between a wedding suit and a business suit?',
+      q: 'Чем свадебный костюм отличается от делового?',
       a: [
-        'A wedding suit is not simply an ordinary suit — it is a statement. While a business suit is functional and understated, a wedding suit takes centre stage on one of the most emotional days of your life. It must fit perfectly, reflect your character, suit the style of the wedding and stand the test of time, both in photographs and in memory.',
+        'Свадебный костюм — это не просто обычный костюм, это заявление. Если деловой костюм функционален и сдержан, то свадебный оказывается в центре внимания в один из самых эмоциональных дней Вашей жизни. Он должен идеально сидеть, отражать Ваш характер, соответствовать стилю свадьбы и выдержать испытание временем — и на фотографиях, и в воспоминаниях.',
       ],
     },
     {
-      q: 'How far in advance should I have my wedding suit made?',
+      q: 'За какое время до свадьбы нужно заказать костюм?',
       a: [
-        'We recommend booking your appointment at least 8 to 10 weeks before the wedding — earlier is better. That leaves ample time for choosing the cloth, taking measurements, the first fitting, any alterations and the final personal touches. Short-notice requests are possible in exceptional cases — just ask us.',
+        'Мы рекомендуем записаться не позднее чем за 8–10 недель до свадьбы — а лучше раньше. Тогда остаётся достаточно времени на выбор ткани, снятие мерок, первую примерку, возможные изменения и последние личные штрихи. В исключительных случаях возможны и срочные заказы — просто спросите нас.',
       ],
     },
     {
-      q: 'Which suit styles are popular for weddings?',
+      q: 'Какие фасоны костюмов популярны для свадьбы?',
       a: [
-        'The classic three-piece suit with waistcoat (timelessly elegant), the modern slim-fit suit (a sleek silhouette), the Italian linen suit (ideal for summer weddings), the dinner suit or dinner jacket (black tie), the vintage suit in tweed or checks (for rustic settings), as well as coloured suits in dark green, burgundy or beige.',
-        'You set the direction — we make sure it is executed to perfection.',
+        'Классическая тройка с жилетом (элегантность вне времени), современный костюм slim fit (стройный силуэт), итальянский льняной костюм (идеален для летней свадьбы), смокинг или вечерний пиджак (black tie), винтажный костюм из твида или в клетку (для деревенской обстановки), а также цветные костюмы тёмно-зелёного, бордового или бежевого цвета.',
+        'Направление задаёте Вы — мы позаботимся о безупречном исполнении.',
       ],
     },
     {
-      q: 'Can I still wear my made-to-measure suit after the wedding?',
+      q: 'Можно ли носить костюм на заказ и после свадьбы?',
       a: [
-        'Yes — that is precisely one of its advantages. From the very first consultation we make sure your suit stays versatile: classic colours such as navy, charcoal or dark green, understated cloths, and the option to wear the waistcoat or accessories separately. Italian cloths keep their shape and elegance for years to come.',
+        'Да — именно в этом одно из его преимуществ. Уже на первой консультации мы следим за тем, чтобы костюм оставался универсальным: классические цвета, такие как тёмно-синий, антрацитовый или тёмно-зелёный, сдержанные ткани и возможность носить жилет или аксессуары отдельно. Итальянские ткани сохраняют форму и элегантность долгие годы.',
       ],
     },
     {
-      q: 'Which accessories go with a wedding suit?',
+      q: 'Какие аксессуары подходят к свадебному костюму?',
       a: [
-        'We offer a carefully curated selection of bow ties, ties, pocket squares, cufflinks, waistcoats and leather belts, all perfectly matched to your suit. We are also happy to coordinate colours with the bridal gown or the décor.',
+        'Мы предлагаем тщательно подобранный ассортимент бабочек, галстуков, нагрудных платков, запонок, жилетов и кожаных ремней, идеально сочетающихся с Вашим костюмом. С удовольствием согласуем и цвета с платьем невесты или оформлением праздника.',
       ],
     },
   ],
   cta: {
-    titel: 'Your wedding suit — book 8–10 weeks before the big day.',
+    titel: 'Ваш свадебный костюм — запишитесь за 8–10 недель до торжества.',
     text: '',
   },
   schema: {
-    name: 'Wedding suits Zurich',
+    name: 'Свадебные костюмы в Цюрихе',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: a perfect fit, fine natural cloths and individual details — The Sartorialist.',
+      'Свадебные костюмы на заказ в Цюрихе: безупречная посадка, тонкие натуральные ткани и индивидуальные детали — The Sartorialist.',
   },
 };
