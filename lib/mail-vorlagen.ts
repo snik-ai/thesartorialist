@@ -44,7 +44,7 @@ function zeitraum(d: TerminDaten) {
   return { start, ende };
 }
 
-export function icsDatei(d: TerminDaten, fuer: 'kunde' | 'atelier') {
+export function icsDatei(d: TerminDaten, fuer: 'kunde' | 'atelier', status: 'TENTATIVE' | 'CONFIRMED' = 'TENTATIVE') {
   const z = zeitraum(d);
   if (!z) return null;
   const titel = fuer === 'kunde' ? 'Beratung Massanzug — The Sartorialist Zürich' : `Beratung: ${d.name}`;
@@ -86,7 +86,7 @@ export function icsDatei(d: TerminDaten, fuer: 'kunde' | 'atelier') {
     `SUMMARY:${titel}`,
     `LOCATION:${SITE.name}\\, ${SITE.address.street}\\, ${SITE.address.postalCode} ${SITE.address.city}`,
     `DESCRIPTION:${beschr}`,
-    'STATUS:TENTATIVE',
+    `STATUS:${status}`,
     'END:VEVENT',
     'END:VCALENDAR',
   ].join('\r\n');
@@ -272,4 +272,68 @@ export function mailRueckruf(d: { name: string; telefon: string; wunsch: string;
       `<tr><td style="padding:22px 36px 32px">${knopf(telHref(d.telefon), `Jetzt anrufen`)}${knopf(waHref(d.telefon, `Grüezi${d.name ? ` ${d.name.split(' ')[0]}` : ''}, hier ist The Sartorialist Zürich — Sie hatten um einen Rückruf gebeten.`), 'WhatsApp', 'line')}</td></tr>`,
   );
   return { html, text: `Bitte um Rückruf\nName: ${d.name || '–'}\nTelefon: ${d.telefon}\nWunschzeit: ${d.wunsch || 'egal'}\nSeite: ${d.pfad}`, subject: `Rückrufbitte — ${d.name || d.telefon}` };
+}
+
+/* ---------- Admin: Login, Bestätigung, Vorschläge ---------- */
+
+/** Login-Code für das Backend (6 Stellen, 10 Minuten gültig) */
+export function mailLoginCode(code: string) {
+  const html = rahmen(
+    `${code} ist Ihr Anmeldecode`,
+    titelZeile('Ihr Anmeldecode', 'Geben Sie diesen Code im Backend ein. Er ist 10 Minuten gültig und nur einmal verwendbar.') +
+      `<tr><td style="padding:18px 36px 10px"><div style="padding:22px;background:${INK};color:#ffffff;text-align:center;font:700 34px/1 Helvetica,Arial,sans-serif;letter-spacing:12px">${esc(code)}</div></td></tr>` +
+      `<tr><td style="padding:14px 36px 32px;font:13px/1.6 Helvetica,Arial,sans-serif;color:${MUTED}">Sie haben keinen Code angefordert? Dann können Sie diese E-Mail ignorieren.</td></tr>`,
+  );
+  return { html, text: `Ihr Anmeldecode: ${code}\n\nGültig für 10 Minuten.`, subject: `${code} ist Ihr Anmeldecode — The Sartorialist` };
+}
+
+/** An den Kunden: Termin verbindlich bestätigt (mit .ics, STATUS:CONFIRMED) */
+export function mailTerminBestaetigt(d: TerminDaten & { nachricht?: string }) {
+  const vorname = d.name.split(' ')[0];
+  const gcal = googleKalender(d);
+  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(`Grüezi, ich möchte meinen Termin vom ${d.wunschText} verschieben.`)}`;
+  const html = rahmen(
+    `Ihr Termin am ${d.wunschText} ist bestätigt`,
+    titelZeile(`Ihr Termin ist bestätigt, ${vorname}.`, d.nachricht || 'Wir freuen uns auf Ihren Besuch im Atelier.') +
+      `<tr><td style="padding:18px 36px 6px">${kicker('Ihr Termin')}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(
+        d.wunschText || '',
+      )}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">Persönliche Beratung · 60–90 Minuten · ${esc(SITE.address.street)}, ${esc(SITE.address.city)}</div></div></td></tr>` +
+      `<tr><td style="padding:22px 36px 6px">${gcal ? knopf(gcal, 'In Google Kalender', 'ink') : ''}${knopf(MAPS, 'Route planen', 'line')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">Für Apple- und Outlook-Kalender: Anhang «Termin.ics» öffnen.</div></td></tr>` +
+      stilBlock(d) +
+      `<tr><td style="padding:6px 36px 32px">${kicker('Termin verschieben?')}<p style="margin:0 0 14px;font:14px/1.6 Helvetica,Arial,sans-serif;color:${SOFT}">Kein Problem — schreiben Sie uns kurz oder rufen Sie an.</p>${knopf(wa, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+  );
+  const text = [
+    `Grüezi ${d.name}`,
+    '',
+    `Ihr Termin ist bestätigt: ${d.wunschText}.`,
+    d.nachricht || '',
+    '',
+    `Atelier: ${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`,
+    `Telefon: ${SITE.phone}`,
+    '',
+    'Freundliche Grüsse',
+    'The Sartorialist Zürich',
+  ].join('\n');
+  return { html, text, subject: `Termin bestätigt — ${d.wunschText}` };
+}
+
+/** An den Kunden: neue Terminvorschläge (1–3) */
+export function mailTerminVorschlag(d: { name: string; vorschlaege: string[]; nachricht?: string }) {
+  const vorname = d.name.split(' ')[0];
+  const html = rahmen(
+    'Neue Terminvorschläge',
+    titelZeile(
+      `Grüezi ${vorname}`,
+      d.nachricht || 'Leider passt Ihr Wunschtermin nicht ganz. Gerne schlagen wir Ihnen folgende Termine vor — antworten Sie einfach mit Ihrer Wahl.',
+    ) +
+      `<tr><td style="padding:18px 36px 10px">${kicker('Unsere Vorschläge')}${d.vorschlaege
+        .map(
+          (v, i) =>
+            `<div style="padding:16px 20px;margin:0 0 8px;background:${i === 0 ? INK : WARM};color:${i === 0 ? '#ffffff' : INK};font:700 18px/1.35 Georgia,'Times New Roman',serif">${esc(v)}</div>`,
+        )
+        .join('')}</td></tr>` +
+      `<tr><td style="padding:14px 36px 32px">${knopf(`mailto:${SITE.email}?subject=${encodeURIComponent('Terminwahl')}`, 'Per E-Mail antworten')}${knopf(SITE.whatsapp, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
+  );
+  const text = [`Grüezi ${d.name}`, '', d.nachricht || 'Gerne schlagen wir Ihnen folgende Termine vor:', '', ...d.vorschlaege.map((v) => `– ${v}`), '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  return { html, text, subject: 'Terminvorschläge — The Sartorialist Zürich' };
 }

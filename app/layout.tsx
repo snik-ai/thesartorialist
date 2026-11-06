@@ -8,6 +8,8 @@ import CartProvider from '@/components/shop/CartProvider';
 import CartDrawer from '@/components/shop/CartDrawer';
 import StudioFab from '@/components/konfigurator/StudioFab';
 import KontaktFab from '@/components/KontaktFab';
+import NurOeffentlich from '@/components/NurOeffentlich';
+import { TRACKING_SKRIPT } from '@/lib/tracking/skript';
 import { JsonLd, organizationSchema, websiteSchema } from '@/components/JsonLd';
 import { SITE } from '@/lib/site';
 import './globals.css';
@@ -57,18 +59,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="de-CH" className={`${playfair.variable} ${inter.variable}`}>
       <body>
         <CartProvider>
-          <Header />
+          <NurOeffentlich>
+            <Header />
+          </NurOeffentlich>
           <main>{children}</main>
-          <Footer />
-          <CartDrawer />
-          <StudioFab />
-          <KontaktFab />
+          <NurOeffentlich>
+            <Footer />
+            <CartDrawer />
+            <StudioFab />
+            <KontaktFab />
+          </NurOeffentlich>
         </CartProvider>
-        <Reveal />
-        <JsonLd data={organizationSchema()} />
-        <JsonLd data={websiteSchema()} />
-        {/* DLM-Pixel: cookie-freie Reichweitenmessung durch DLM Digital (Vertrag v2). */}
-        <Script src="https://dlm-digital.ch/px.js" data-site="the-sartorialist" strategy="afterInteractive" />
+        <NurOeffentlich>
+          <Reveal />
+          <JsonLd data={organizationSchema()} />
+          <JsonLd data={websiteSchema()} />
+          {/* DLM-Pixel: cookie-freie Reichweitenmessung durch DLM Digital (Vertrag v2). */}
+          <Script src="https://dlm-digital.ch/px.js" data-site="the-sartorialist" strategy="afterInteractive" />
+          {/* Eigene, cookielose Messung für das Backend (Besucher, Kontakt-Klicks) — /api/t/ */}
+          <Script id="ts-t" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: TRACKING_SKRIPT }} />
+        </NurOeffentlich>
       </body>
     </html>
   );
