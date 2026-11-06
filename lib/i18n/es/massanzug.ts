@@ -1,85 +1,84 @@
-// TODO übersetzen (Spanisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure suit Zurich
+// Traje a medida en Zúrich
 export const massanzug: Woerterbuch['massanzug'] = {
   meta: {
-    titel: 'Made-to-Measure Suit Zurich — from CHF 1’690, Made in Italy',
+    titel: 'Traje a medida en Zúrich — desde CHF 1’690, hecho en Italia',
     beschreibung:
-      'Made-to-measure suits in Zurich: full-canvas construction, exclusive cloths from Loro Piana, Scabal & Cerruti and a personal fitting service — from CHF 1’690.',
-    ogTitel: 'Made-to-Measure Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'Full canvas, exclusive Italian cloths, from CHF 1’690.',
+      'Trajes a medida en Zúrich: confección con entretela completa, tejidos exclusivos de Loro Piana, Scabal y Cerruti y un servicio de prueba personal, desde CHF 1’690.',
+    ogTitel: 'Traje a medida en Zúrich — The Sartorialist',
+    ogBeschreibung: 'Entretela completa, tejidos italianos exclusivos, desde CHF 1’690.',
   },
-  breadcrumb: 'Made-to-measure suit Zurich',
+  breadcrumb: 'Traje a medida en Zúrich',
   hero: {
-    eyebrow: 'Made to Measure',
-    h1: 'Made-to-Measure Suits Zurich',
-    lead: 'Create your own style: at The Sartorialist you become your own designer — exclusive tailoring from renowned, long-established Italian houses, cut precisely to your measurements.',
+    eyebrow: 'A medida',
+    h1: 'Trajes a medida en Zúrich',
+    lead: 'Create your own style: en The Sartorialist usted se convierte en su propio diseñador, con una sastrería exclusiva de renombradas casas italianas de larga tradición, cortada con precisión según sus medidas.',
   },
   luxus: {
-    bildAlt: 'Made-to-measure suit in Zurich — tailored by The Sartorialist',
-    titel: 'The ultimate luxury: a suit cut to your measurements',
+    bildAlt: 'Traje a medida en Zúrich, confeccionado por The Sartorialist',
+    titel: 'El lujo por excelencia: un traje cortado a su medida',
     absaetze: [
-      'There is nothing quite like wearing a suit cut precisely to your own measurements. A made-to-measure suit is a lasting piece of quality of life — an investment every gentleman should make.',
-      'The made-to-measure journey begins with try-on sizes, entirely redeveloped to deliver an even better fit. Our made-to-measure programme offers a collection of cloths for every occasion — year-round suits, jackets and eveningwear, complemented by exclusive seasonal collections.',
+      'No hay nada comparable a llevar un traje cortado exactamente a sus medidas. Un traje a medida es una pieza duradera de calidad de vida, una inversión que todo caballero debería hacer.',
+      'El camino hacia el traje a medida empieza con tallas de prueba, completamente rediseñadas para lograr un ajuste aún mejor. Nuestro programa a medida ofrece una colección de tejidos para cada ocasión: trajes para todo el año, americanas y ropa de noche, complementados con exclusivas colecciones de temporada.',
     ],
-    knopf: 'Book an appointment',
+    knopf: 'Reservar una cita',
   },
   verarbeitung: [
     {
-      eyebrow: 'Construction',
-      titel: 'Built to last with full canvas',
-      text: 'In full-canvas construction, the canvas interlining is stitched rather than glued — from the collar to the hem. The jacket moulds itself beautifully to your body, breathes and lasts considerably longer. It is the finest construction there is, and you feel it every time you wear it.',
+      eyebrow: 'Confección',
+      titel: 'Hecho para durar, con entretela completa',
+      text: 'En la confección con entretela completa («full canvas»), la entretela no se pega, sino que se cose, del cuello al bajo. La americana se adapta maravillosamente a su cuerpo, transpira y dura considerablemente más. Es la confección más fina que existe, y se nota cada vez que la lleva.',
     },
     {
-      eyebrow: 'Tailoring',
-      titel: 'Jackets — light yet shapely',
-      text: 'The quality of a gentleman’s jacket is measured by how it feels to wear: the lightness and shape retention of the cloth. Canvas — an interlining of linen or cotton — gives the fine, light outer cloth its structure, through pad stitching rather than heat-fused bonding.',
+      eyebrow: 'Sastrería',
+      titel: 'Americanas: ligeras y con forma',
+      text: 'La calidad de una americana de caballero se mide por la sensación al llevarla: la ligereza y la estabilidad de forma del tejido. La entretela, de lino o algodón, da estructura al tejido exterior fino y ligero mediante el picado a mano, y no mediante un termofijado.',
     },
   ],
   konfigurator: {
-    eyebrow: 'Style configurator',
-    titel: 'Put your suit together from the comfort of home.',
-    lead: 'Lapels, buttons, pockets, shoulders, lining, waistband and hem: choose what you like online at your leisure, save your selection as a PDF and bring it along to your appointment.',
-    knopf: 'Open the configurator',
+    eyebrow: 'Configurador de estilo',
+    titel: 'Componga su traje cómodamente desde casa.',
+    lead: 'Solapas, botones, bolsillos, hombros, forro, pretina y bajo: elija en línea y con calma lo que le guste, guarde su selección en PDF y tráigala a su cita.',
+    knopf: 'Abrir el configurador',
   },
-  faqTitel: 'The made-to-measure process',
+  faqTitel: 'El proceso a medida',
   faq: [
     {
-      q: 'Where can I have a made-to-measure suit made in Zurich?',
+      q: '¿Dónde puedo encargar un traje a medida en Zúrich?',
       a: [
-        'At The Sartorialist Zurich you do not receive an off-the-peg suit with minor alterations, but a one-off cut entirely for you. We begin with a consultation about your wishes, the occasion, your style and your build — then you choose from an exclusive collection of fine wools, silk blends, linen, cashmere and mohair.',
-        'Our focus is on the finest cloths in Europe: we work with Loro Piana, Scabal, Cerruti and other renowned mills.',
+        'En The Sartorialist Zúrich no recibe un traje de confección con pequeños arreglos, sino una pieza única cortada íntegramente para usted. Empezamos con una conversación sobre sus deseos, la ocasión, su estilo y su complexión; después elige entre una colección exclusiva de lanas finas, mezclas de seda, lino, cachemir y mohair.',
+        'Nos centramos en los tejidos más finos de Europa: trabajamos con Loro Piana, Scabal, Cerruti y otras tejedurías de renombre.',
       ],
     },
     {
-      q: 'What does full canvas mean — and why is it better?',
+      q: '¿Qué significa entretela completa y por qué es mejor?',
       a: [
-        'In ready-to-wear, the materials are mechanically bonded under high pressure before sewing. In full-canvas construction, by contrast, the interlining is stitched rather than glued — along its entire length, from the collar to the hem. The canvas has more freedom to move and moulds itself to your body as you wear it.',
-        'The stitched construction lets the jacket breathe and makes it last far longer — the finest and most durable choice for your made-to-measure suit.',
+        'En la confección industrial, los materiales se unen mecánicamente a alta presión antes de coserse. En la confección con entretela completa, en cambio, la entretela no se pega, sino que se cose a lo largo de toda la pieza, del cuello al bajo. La entretela tiene más libertad de movimiento y se adapta a su cuerpo con el uso.',
+        'La construcción cosida permite que la americana transpire y hace que dure mucho más: la opción más fina y duradera para su traje a medida.',
       ],
     },
     {
-      q: 'How does the made-to-measure process work?',
+      q: '¿Cómo funciona el proceso a medida?',
       a: [
-        'Your first consultation has three steps: choosing the cloth, taking your measurements and selecting the details. You decide on lapel style and width, lining colour, side adjusters, trouser turn-ups, pocket style, buttons and much more.',
-        'Three to six weeks later your suit arrives in our store — at the final fitting we make every adjustment needed until it fits perfectly. On request, we are also happy to advise you at your office or at home.',
+        'Su primera consulta tiene tres pasos: la elección del tejido, la toma de medidas y la selección de los detalles. Usted decide el estilo y el ancho de la solapa, el color del forro, los ajustadores laterales, las vueltas del pantalón, el estilo de los bolsillos, los botones y mucho más.',
+        'Entre tres y seis semanas después, su traje llega a nuestra tienda: en la prueba final realizamos todos los ajustes necesarios hasta que siente a la perfección. Si lo desea, también le asesoramos con gusto en su oficina o en su domicilio.',
       ],
     },
     {
-      q: 'Which cloths can I choose from?',
+      q: '¿Entre qué tejidos puedo elegir?',
       a: [
-        'From superfine wools and soft flannels to airy seersucker for summer suits; densely woven flannels for eveningwear and velvet as a refined choice for the winter wardrobe. Then colour, weave and pattern — chalk stripes, bold or subtle checks and more.',
+        'Desde lanas superfinas y franelas suaves hasta el ligero seersucker para los trajes de verano; franelas de tejido denso para la ropa de noche y terciopelo como opción refinada para el guardarropa de invierno. Después, el color, el ligamento y el dibujo: rayas diplomáticas, cuadros llamativos o discretos y mucho más.',
       ],
     },
   ],
   cta: {
-    titel: 'Your made-to-measure suit — from CHF 1’690, ready in 20 working days.',
-    text: 'Made-to-measure suits are the perfect choice for the modern gentleman who values style and individuality.',
+    titel: 'Su traje a medida: desde CHF 1’690, listo en 20 días laborables.',
+    text: 'Los trajes a medida son la elección perfecta para el caballero moderno que valora el estilo y la individualidad.',
   },
   schema: {
-    name: 'Made-to-measure suits Zurich',
+    name: 'Trajes a medida en Zúrich',
     beschreibung:
-      'Full-canvas made-to-measure suits in exclusive Italian cloths — a personal made-to-measure service in Zurich, from CHF 1’690.',
+      'Trajes a medida con entretela completa en tejidos italianos exclusivos: un servicio a medida personal en Zúrich, desde CHF 1’690.',
   },
 };
