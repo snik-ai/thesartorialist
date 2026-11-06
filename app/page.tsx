@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { BRANDS } from '@/lib/brands';
 import CtaBand from '@/components/CtaBand';
 import InstagramBand from '@/components/InstagramBand';
+import KonfiguratorFilm from '@/components/KonfiguratorFilm';
 import Faq from '@/components/Faq';
 import { SITE } from '@/lib/site';
 import HeroVideo from '@/components/HeroVideo';
@@ -162,6 +163,7 @@ export default function HomePage() {
               alles festlegen — den Rest besprechen wir im Atelier, wo wir Mass nehmen und mit Ihnen den Stoff wählen.
             </p>
           </div>
+          <KonfiguratorFilm />
           <div className="styles-row">
             {TEASER.map((t) => (
               <Link key={t.id} href={`/massanzug-konfigurator/#${t.kat}`} className="styles-card">

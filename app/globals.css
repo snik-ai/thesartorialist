@@ -2459,3 +2459,11 @@ html, body { overflow-x: clip; }
 
 /* Footer-Kontaktlinks: genug Tippfläche */
 .footer p a { display: inline-block; padding: 5px 0; }
+
+/* Konfigurator-Film auf der Startseite */
+.konf-film { margin: clamp(2rem, 4vw, 3rem) auto clamp(2.5rem, 5vw, 3.5rem); max-width: 1100px; }
+.konf-film-link { position: relative; display: block; background: #0d0d0d; border: 1px solid var(--line); overflow: hidden; }
+.konf-film video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.konf-film-cta { position: absolute; right: 1rem; bottom: 1rem; padding: 0.7rem 1.1rem; background: rgba(255, 255, 255, 0.94); color: var(--ink); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; transition: background 0.2s ease, color 0.2s ease; }
+.konf-film-link:hover .konf-film-cta { background: var(--ink); color: var(--paper); }
+@media (max-width: 600px) { .konf-film-cta { position: static; display: block; text-align: center; padding: 0.85rem; background: var(--ink); color: var(--paper); } }
