@@ -1,56 +1,55 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Made-to-measure wedding suit (page "wedding-suit-2024")
+// Fato de casamento por medida (página «fato-de-casamento-2024»)
 export const hochzeit2024: Woerterbuch['hochzeit2024'] = {
   meta: {
-    titel: 'Made-to-Measure Wedding Suit — Zurich',
+    titel: 'Fato de Casamento por Medida — Zurique',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: classic design meets modern style — tailored for every celebration, venue and style. Complimentary measuring at The Sartorialist.',
-    ogTitel: 'Made-to-Measure Wedding Suit — The Sartorialist Zurich',
-    ogBeschreibung: 'Made-to-measure wedding suits in the heart of Zurich.',
+      'Fatos de casamento por medida em Zurique: design clássico e estilo moderno — feitos para cada celebração, local e estilo. Medição gratuita no The Sartorialist.',
+    ogTitel: 'Fato de Casamento por Medida — The Sartorialist Zurique',
+    ogBeschreibung: 'Fatos de casamento por medida no coração de Zurique.',
   },
-  breadcrumb: 'Wedding suit',
+  breadcrumb: 'Fato de casamento',
   hero: {
-    eyebrow: 'Weddings · Made to measure',
-    h1: 'Made-to-Measure Wedding Suits',
-    lead: 'At The Sartorialist you will find what may well be the finest wedding suits in Zurich — with expert, personal advice of the highest standard.',
-    knopf: 'Book a complimentary measuring',
+    eyebrow: 'Casamentos · Por medida',
+    h1: 'Fatos de Casamento por Medida',
+    lead: 'No The Sartorialist encontra aqueles que serão, porventura, os mais belos fatos de casamento de Zurique — com um aconselhamento pessoal e especializado do mais alto nível.',
+    knopf: 'Marcar uma medição gratuita',
   },
-  bildAlt: 'Made-to-measure wedding suit — a groom at The Sartorialist Zurich',
+  bildAlt: 'Fato de casamento por medida — um noivo no The Sartorialist Zurique',
   abschnitte: [
     {
-      titel: 'Wedding suits by The Sartorialist in Zurich',
-      text: 'A wedding day is a unique occasion, and the perfect suit underlines the significance of the moment. Our collection unites classic design with modern style. A made-to-measure suit does not merely fit perfectly — it conveys a special sense of luxury and individuality, tailored to your build and your style so that it remains comfortable all day long.',
+      titel: 'Fatos de casamento do The Sartorialist em Zurique',
+      text: 'O dia do casamento é uma ocasião única, e o fato perfeito sublinha a importância do momento. A nossa coleção une o design clássico ao estilo moderno. Um fato por medida não se limita a assentar na perfeição — transmite uma sensação especial de luxo e individualidade, feito à medida da sua constituição e do seu estilo, para que se mantenha confortável durante todo o dia.',
     },
     {
-      titel: 'Made for every celebration',
-      text: 'Whether an intimate gathering or a grand wedding, an elegant ballroom, a rustic barn or a ceremony in the open air — our suits ensure you always look your best. Our wedding suits are made from the finest cloths such as noble wool, silk or linen: light and breathable for summer weddings, warmer and more structured for the cooler seasons.',
+      titel: 'Feito para cada celebração',
+      text: 'Seja uma reunião íntima ou um grande casamento, um salão de baile elegante, um celeiro rústico ou uma cerimónia ao ar livre — os nossos fatos garantem que está sempre impecável. Os nossos fatos de casamento são confecionados com os tecidos mais finos, como lã nobre, seda ou linho: leves e respiráveis para casamentos de verão, mais quentes e estruturados para as estações mais frias.',
     },
     {
-      titel: 'Individual design',
-      text: 'Every wedding is unique — and so should your suit be. From the choice of cloth and the cut to personal details such as embroidery or special buttons, the result is an unmistakable garment that reflects exactly what you have in mind.',
+      titel: 'Design individual',
+      text: 'Cada casamento é único — e o seu fato também deve sê-lo. Da escolha do tecido e do corte aos detalhes pessoais, como bordados ou botões especiais, o resultado é uma peça inconfundível que reflete exatamente o que idealizou.',
     },
     {
-      titel: 'Which suit is right for me?',
-      text: 'Choosing the perfect suit depends on your style, your build and the occasion. Whether classically elegant or modern and contemporary — our team helps you select the cut, cloth and details that best express your personality.',
+      titel: 'Que fato é o certo para mim?',
+      text: 'A escolha do fato perfeito depende do seu estilo, da sua constituição e da ocasião. Clássico e elegante ou moderno e contemporâneo — a nossa equipa ajuda-o a escolher o corte, o tecido e os detalhes que melhor exprimem a sua personalidade.',
     },
     {
-      titel: 'Prices & terms',
-      text: 'Our prices depend on the cloth you choose, the details and the individual design — every suit is a one-off. The service includes comprehensive advice, made-to-measure tailoring and all necessary alterations. For a personal quotation, visit us at our atelier in Zurich.',
+      titel: 'Preços e condições',
+      text: 'Os nossos preços dependem do tecido escolhido, dos detalhes e do design individual — cada fato é uma peça única. O serviço inclui aconselhamento completo, confeção por medida e todos os ajustes necessários. Para um orçamento personalizado, visite-nos no nosso atelier em Zurique.',
     },
     {
-      titel: 'We love suits!',
-      text: 'A perfectly fitting suit leaves a lasting impression. It is our passion to advise our clients attentively and thoroughly — in our store at Kuttelgasse 7 in Zurich. The finest selection, warm and personal advice, and fair prices.',
+      titel: 'Adoramos fatos!',
+      text: 'Um fato que assenta na perfeição deixa uma impressão duradoura. A nossa paixão é aconselhar os nossos clientes com atenção e rigor — na nossa loja da Kuttelgasse 7, em Zurique. A melhor seleção, um aconselhamento caloroso e pessoal e preços justos.',
     },
   ],
   cta: {
-    titel: 'Have your measurements taken — complimentary.',
-    text: 'No-obligation measuring and advice at our atelier, Kuttelgasse 7, Zurich.',
+    titel: 'Mande tirar as suas medidas — gratuitamente.',
+    text: 'Medição e aconselhamento sem compromisso no nosso atelier, Kuttelgasse 7, Zurique.',
   },
   schema: {
-    name: 'Made-to-measure wedding suits',
+    name: 'Fatos de casamento por medida',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich — classic design, modern style, complimentary measuring.',
+      'Fatos de casamento por medida em Zurique — design clássico, estilo moderno, medição gratuita.',
   },
 };

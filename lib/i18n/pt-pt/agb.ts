@@ -1,110 +1,109 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Terms and conditions / payment in instalments
+// Condições gerais / pagamento em prestações
 export const agb: Woerterbuch['agb'] = {
   meta: {
-    titel: 'Terms & Conditions / Payment in Instalments',
+    titel: 'Condições Gerais / Pagamento em Prestações',
     beschreibung:
-      'General terms and conditions of The Sartorialist Zurich — including payment in instalments at 0% interest via HeidiPay.',
+      'Condições gerais do The Sartorialist Zurique — incluindo pagamento em prestações com 0% de juros através da HeidiPay.',
   },
-  breadcrumb: 'Terms & Conditions',
-  h1: 'Terms & Conditions / Payment in Instalments',
+  breadcrumb: 'Condições gerais',
+  h1: 'Condições Gerais / Pagamento em Prestações',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/allgemeine-geschaeftsbedingungen/).',
+    'Esta tradução para português é disponibilizada apenas para sua conveniência. A versão alemã é a juridicamente vinculativa: [ler a versão alemã](/allgemeine-geschaeftsbedingungen/).',
   einleitung:
-    'These General Terms and Conditions (hereinafter “GTC”) govern the conclusion, content and performance of contracts between thesartorialist.ch and its customers (hereinafter “Customer”) in connection with the sale of goods. All orders and deliveries are based without exception on these terms and conditions, which the Customer accepts at the time of placing an order.',
+    'As presentes Condições Gerais (doravante «CG») regulam a celebração, o conteúdo e a execução dos contratos entre a thesartorialist.ch e os seus clientes (doravante «Cliente») relativos à venda de mercadorias. Todas as encomendas e entregas baseiam-se, sem exceção, nestas condições, que o Cliente aceita no momento em que efetua a encomenda.',
   abschnitte: [
     {
-      titel: 'Conclusion of contract',
+      titel: 'Celebração do contrato',
       bloecke: [
         {
-          p: 'The presentation of the products does not constitute a legally binding offer but a non-binding catalogue. By placing a binding order, you submit an order for the selected goods. Receipt of your order is confirmed, together with its acceptance, by an automated email immediately after the order is submitted. The purchase contract is concluded upon this email confirmation.',
+          p: 'A apresentação dos produtos não constitui uma proposta juridicamente vinculativa, mas sim um catálogo sem compromisso. Ao efetuar uma encomenda vinculativa, apresenta uma encomenda das mercadorias selecionadas. A receção da sua encomenda é confirmada, juntamente com a sua aceitação, por um e-mail automático imediatamente após o envio da encomenda. O contrato de compra é celebrado com esta confirmação por e-mail.',
         },
       ],
     },
     {
-      titel: 'Complaints (in the event of defects) / right of return',
+      titel: 'Reclamações (em caso de defeitos) / direito de devolução',
       bloecke: [
         {
-          p: 'On receipt of the parcel, the Customer must inspect the contents of the delivery without delay. In the case of items that are damaged or do not correspond to the order, the Customer has the right to lodge a complaint within 7 (seven) days of receipt of the goods. The shipping costs of the return are borne by the Customer. After receiving and inspecting the returned goods (unused items only), thesartorialist.ch will provide a free exchange or, on request, a refund of the amount paid. For products already paid for, a refund will be made to the Customer’s bank account; no cash refunds are made.',
+          p: 'Ao receber a encomenda, o Cliente deve verificar de imediato o conteúdo da entrega. No caso de artigos danificados ou que não correspondam à encomenda, o Cliente tem o direito de apresentar reclamação no prazo de 7 (sete) dias a contar da receção da mercadoria. Os custos de envio da devolução são suportados pelo Cliente. Após a receção e verificação da mercadoria devolvida (apenas artigos não utilizados), a thesartorialist.ch procede a uma troca gratuita ou, a pedido, ao reembolso do montante pago. No caso de produtos já pagos, o reembolso é efetuado para a conta bancária do Cliente; não são efetuados reembolsos em numerário.',
         },
         {
-          p: 'Accessories and swimwear cannot be exchanged — for reasons of hygiene, these products are excluded from exchange. Ordered items are delivered within 1–4 working days of receipt of payment. The choice of carrier is the responsibility of thesartorialist.ch.',
+          p: 'Os acessórios e a roupa de banho não podem ser trocados — por razões de higiene, estes produtos estão excluídos da troca. Os artigos encomendados são entregues no prazo de 1–4 dias úteis após a receção do pagamento. A escolha da transportadora cabe à thesartorialist.ch.',
         },
         {
-          p: 'thesartorialist.ch can only deliver individual goods while stocks last and is entitled to make partial deliveries. In the event of delivery disruptions due to circumstances such as strikes, shortages of materials or transport problems, thesartorialist.ch is entitled to cancel confirmed orders; in this case the Customer is entitled to a refund of any purchase price already paid. If redelivery is required because of an incorrect address or failure to collect, the recipient bears the additional shipping costs.',
+          p: 'A thesartorialist.ch só pode entregar mercadorias individuais até ao esgotamento do stock e tem o direito de efetuar entregas parciais. Em caso de perturbações na entrega devidas a circunstâncias como greves, falta de materiais ou problemas de transporte, a thesartorialist.ch tem o direito de anular encomendas confirmadas; neste caso, o Cliente tem direito ao reembolso do preço de compra eventualmente já pago. Se for necessária uma nova entrega devido a uma morada incorreta ou à falta de levantamento, o destinatário suporta os custos de envio adicionais.',
         },
       ],
     },
     {
-      titel: 'Delivery outside Switzerland',
-      bloecke: [{ p: 'Customers from Germany or Austria are kindly asked to contact us by email at [{email}](mailto:{email}).' }],
+      titel: 'Entrega fora da Suíça',
+      bloecke: [{ p: 'Pedimos aos clientes da Alemanha ou da Áustria que nos contactem por e-mail para [{email}](mailto:{email}).' }],
     },
     {
-      titel: 'Prices and special offers',
+      titel: 'Preços e ofertas especiais',
       bloecke: [
         {
-          p: 'All prices are stated in CHF (Swiss francs). Additional costs such as packaging and shipping are not included in the prices. thesartorialist.ch reserves the right to change prices at any time. The prices published at the time of ordering apply to the Customer.',
+          p: 'Todos os preços são indicados em CHF (francos suíços). Os custos adicionais, como embalagem e envio, não estão incluídos nos preços. A thesartorialist.ch reserva-se o direito de alterar os preços a qualquer momento. Aplicam-se ao Cliente os preços publicados no momento da encomenda.',
         },
       ],
     },
     {
-      titel: 'Payment, warranty and liability',
+      titel: 'Pagamento, garantia e responsabilidade',
       bloecke: [
         {
-          p: 'Orders are payable by bank transfer or in advance by credit card or PostFinance Card. Responsibility for the selection, use and application of the products lies with the Customer. The Customer is entitled solely to any manufacturer’s warranty, which must be claimed directly from the manufacturer. The products delivered remain the property of thesartorialist.ch until paid for in full.',
+          p: 'As encomendas são pagáveis por transferência bancária ou antecipadamente por cartão de crédito ou PostFinance Card. A responsabilidade pela seleção, utilização e aplicação dos produtos cabe ao Cliente. O Cliente tem direito exclusivamente à eventual garantia do fabricante, que deve ser acionada diretamente junto do fabricante. Os produtos entregues permanecem propriedade da thesartorialist.ch até ao seu pagamento integral.',
         },
       ],
     },
     {
-      titel: 'Data protection',
+      titel: 'Proteção de dados',
       bloecke: [
         {
-          p: 'thesartorialist.ch does not pass on any personal customer data to third parties and is responsible for data protection. Data that is essential for processing the order (e.g. disclosure to the carrier) may be passed on. All customer data is treated in strict confidence.',
+          p: 'A thesartorialist.ch não transmite quaisquer dados pessoais de clientes a terceiros e é responsável pela proteção de dados. Podem ser transmitidos os dados indispensáveis ao processamento da encomenda (por exemplo, à transportadora). Todos os dados de clientes são tratados com estrita confidencialidade.',
         },
       ],
     },
     {
-      titel: 'Image rights',
+      titel: 'Direitos de imagem',
       bloecke: [
         {
-          p: 'The images of the products shown are the property of thesartorialist.ch and may not be used for third-party blogs, social media, the press or any other media.',
+          p: 'As imagens dos produtos apresentados são propriedade da thesartorialist.ch e não podem ser utilizadas em blogues de terceiros, redes sociais, imprensa ou quaisquer outros meios.',
         },
       ],
     },
     {
-      titel: 'Final provisions',
+      titel: 'Disposições finais',
       bloecke: [
         {
-          p: 'thesartorialist.ch may amend these GTC at any time. Should one or more of these provisions be void or invalid, the validity of the remaining provisions shall remain unaffected. These GTC are drawn up in German; in the event of any discrepancy, the German version shall prevail. The place of jurisdiction is Zurich; Swiss law applies.',
+          p: 'A thesartorialist.ch pode alterar estas CG a qualquer momento. Caso uma ou mais destas disposições sejam nulas ou inválidas, a validade das restantes disposições não é afetada. Estas CG são redigidas em alemão; em caso de divergência, prevalece a versão alemã. O foro competente é Zurique; aplica-se o direito suíço.',
         },
       ],
     },
     {
-      titel: 'Payment in instalments — buy now, pay later — 0% interest',
+      titel: 'Pagamento em prestações — compre agora, pague depois — 0% de juros',
       bloecke: [
         {
           schritte: [
-            'Add the items you would like to your basket',
-            'Choose HeidiPay as your payment method at checkout',
-            'Enter your card details',
-            'Pay in interest-free monthly instalments',
+            'Adicione ao cesto os artigos que deseja',
+            'No checkout, escolha a HeidiPay como método de pagamento',
+            'Introduza os dados do seu cartão',
+            'Pague em prestações mensais sem juros',
           ],
         },
         {
-          p: 'The first instalment is paid at the time of purchase. The remaining instalments are debited automatically from your card every 30 days.',
+          p: 'A primeira prestação é paga no momento da compra. As restantes prestações são debitadas automaticamente no seu cartão a cada 30 dias.',
         },
-        { h3: 'Requirements' },
+        { h3: 'Requisitos' },
         {
           liste: [
-            'You are between 18 and 70 years old',
-            'You are resident in Switzerland',
-            'You are a Swiss citizen or have held a C or B residence permit for at least 1 year',
+            'Tem entre 18 e 70 anos de idade',
+            'Tem residência na Suíça',
+            'É cidadão suíço ou possui, há pelo menos 1 ano, uma autorização de residência C ou B',
           ],
         },
         {
-          p: 'We check with the credit agency CRIF AG that you are registered at the residential address provided. If your address cannot be found, please contact CRIF AG by telephone on +41 44 913 50 58 or send proof of address by email to support.ch@crif.com. See the terms and conditions and privacy policy at www.heidipay.com.',
+          p: 'Verificamos junto da agência de crédito CRIF AG se está registado na morada de residência indicada. Se a sua morada não puder ser encontrada, contacte a CRIF AG por telefone através do +41 44 913 50 58 ou envie um comprovativo de morada por e-mail para support.ch@crif.com. Consulte as condições gerais e a política de privacidade em www.heidipay.com.',
         },
       ],
     },

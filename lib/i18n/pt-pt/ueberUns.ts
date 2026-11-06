@@ -1,35 +1,34 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// About us
+// Sobre nós
 export const ueberUns: Woerterbuch['ueberUns'] = {
   meta: {
-    titel: 'About Us — 15 Years at Tom Ford & Prada',
+    titel: 'Sobre Nós — 15 Anos na Tom Ford e na Prada',
     beschreibung:
-      'The Sartorialist Zurich: exclusive designer and luxury labels and handmade tailoring — founded by Alexander Shubin after more than 15 years in senior positions at Tom Ford and Prada.',
-    ogTitel: 'About Us — The Sartorialist Zurich',
-    ogBeschreibung: 'A vision realised after 15 years at Tom Ford and Prada.',
+      'The Sartorialist Zurique: marcas exclusivas de designer e de luxo e alfaiataria feita à mão — fundado por Alexander Shubin após mais de 15 anos em cargos de direção na Tom Ford e na Prada.',
+    ogTitel: 'Sobre Nós — The Sartorialist Zurique',
+    ogBeschreibung: 'Uma visão concretizada após 15 anos na Tom Ford e na Prada.',
   },
-  breadcrumb: 'About us',
+  breadcrumb: 'Sobre nós',
   hero: {
-    eyebrow: 'The house',
-    h1: 'About us',
-    lead: 'Here you will find a curated selection of exclusive designer and luxury labels that pair the highest quality and individuality with a certain effortless chic.',
+    eyebrow: 'A casa',
+    h1: 'Sobre nós',
+    lead: 'Aqui encontra uma seleção criteriosa de marcas exclusivas de designer e de luxo, que aliam a mais alta qualidade e individualidade a um certo chique descontraído.',
   },
   gruender: {
-    bildAlt: '{gruender}, founder of The Sartorialist Zurich',
-    eyebrow: 'The founder',
-    titel: 'From Tom Ford Zurich to personal outfitter',
+    bildAlt: '{gruender}, fundador do The Sartorialist Zurique',
+    eyebrow: 'O fundador',
+    titel: 'Da Tom Ford Zurique a alfaiate pessoal',
     absaetze: [
-      'I am Alexander Shubin, founder of “The Sartorialist” in Zurich — a menswear maker with passion, experience and the closest ties to traditional Italian textile houses. As long-standing managing director of Europe’s first Tom Ford store, here in Zurich, I devoted myself heart and soul to the finest menswear — until I felt the wish to open my own exclusive menswear boutique in the heart of the city.',
-      'From the very beginning, that particular “Italian touch” in making and selling suits — as well as shirts, jeans and accessories — has been close to my heart, as has a keen eye for new trends. At “The Sartorialist” you benefit from my many years of wide-ranging experience as managing director of the Tom Ford store in Zurich.',
-      'Every house I have chosen is run by masters of their craft and looks back on decades of tradition. With me, you get to know the real faces behind the brands — which is why my prices are fair and reasonable, so that a fine luxury suit need not remain a distant dream.',
+      'Sou Alexander Shubin, fundador do «The Sartorialist» em Zurique — um criador de moda masculina com paixão, experiência e laços muito estreitos com casas têxteis italianas de tradição. Como diretor-geral de longa data da primeira loja Tom Ford da Europa, aqui em Zurique, dediquei-me de corpo e alma à mais fina moda masculina — até sentir o desejo de abrir a minha própria boutique exclusiva de moda masculina no coração da cidade.',
+      'Desde o início, aquele especial «toque italiano» na confeção e na venda de fatos — bem como de camisas, jeans e acessórios — esteve sempre próximo do meu coração, tal como um olhar atento às novas tendências. No «The Sartorialist», beneficia dos meus muitos anos de experiência diversificada como diretor-geral da loja Tom Ford em Zurique.',
+      'Cada casa que escolhi é dirigida por mestres do seu ofício e conta com décadas de tradição. Comigo, conhece os verdadeiros rostos por detrás das marcas — e é por isso que os meus preços são justos e razoáveis, para que um fino fato de luxo não tenha de ficar um sonho distante.',
     ],
-    termin: 'Book an appointment',
+    termin: 'Marcar uma consulta',
   },
   galerie: {
-    eyebrow: 'Style & craftsmanship',
-    titel: 'Made-to-measure suits by The Sartorialist',
-    bildAlt: 'Made-to-measure suit and craftsmanship at The Sartorialist Zurich — image {n}',
+    eyebrow: 'Estilo e artesanato',
+    titel: 'Fatos por medida do The Sartorialist',
+    bildAlt: 'Fato por medida e trabalho artesanal no The Sartorialist Zurique — imagem {n}',
   },
 };

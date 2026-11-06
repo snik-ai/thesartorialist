@@ -1,92 +1,91 @@
-// TODO übersetzen (Portugiesisch (Portugal)) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Wedding suit Zurich
+// Fato de noivo em Zurique
 export const hochzeitsanzug: Woerterbuch['hochzeitsanzug'] = {
   meta: {
-    titel: 'Men’s Wedding Suit Zurich — Made to Measure',
+    titel: 'Fato de Noivo em Zurique — Por Medida',
     beschreibung:
-      'Men’s wedding suits made to measure in Zurich: a perfect fit, breathable natural cloths and personal details down to embroidery in the lining. For the groom from CHF 1’690.',
-    ogTitel: 'Wedding Suit Zurich — The Sartorialist',
-    ogBeschreibung: 'The perfect look for the most beautiful day of your life.',
+      'Fatos de noivo por medida em Zurique: caimento perfeito, tecidos naturais respiráveis e detalhes pessoais até ao bordado no forro. Para o noivo, a partir de CHF 1’690.',
+    ogTitel: 'Fato de Noivo em Zurique — The Sartorialist',
+    ogBeschreibung: 'O visual perfeito para o dia mais bonito da sua vida.',
   },
-  breadcrumb: 'Wedding suit Zurich',
+  breadcrumb: 'Fato de noivo em Zurique',
   hero: {
-    eyebrow: 'Wedding suits for men',
-    h1: 'Wedding Suits Zurich',
-    lead: 'The perfect look for the most beautiful day of your life: a suit that fits impeccably, lets your personality shine and moves with you every step of the way.',
+    eyebrow: 'Fatos de noivo para homem',
+    h1: 'Fatos de Noivo em Zurique',
+    lead: 'O visual perfeito para o dia mais bonito da sua vida: um fato que assenta de forma impecável, faz brilhar a sua personalidade e o acompanha em cada passo.',
   },
   warum: {
-    bildAlt: 'Made-to-measure wedding suit by The Sartorialist Zurich',
-    titel: 'Why choose The Sartorialist for your wedding suit?',
+    bildAlt: 'Fato de noivo por medida do The Sartorialist Zurique',
+    titel: 'Porquê escolher o The Sartorialist para o seu fato de noivo?',
     liste: [
-      '15 years of experience — your guarantee of the finest wedding suits in Zurich and beyond',
-      'We love fashion — and we love advising our clients in person',
-      'Current trends, exclusive materials and fair terms',
-      'Full canvas for made-to-measure suits that fit perfectly',
+      '15 anos de experiência — a sua garantia dos melhores fatos de noivo em Zurique e não só',
+      'Adoramos moda — e adoramos aconselhar pessoalmente os nossos clientes',
+      'Tendências atuais, materiais exclusivos e condições justas',
+      'Full canvas, para fatos por medida que assentam na perfeição',
     ],
-    text: 'At The Sartorialist, your made-to-measure wedding suit fulfils every wish, is crafted from the finest cloths and, thanks to its distinctive details, is a true one-off — at a fair price.',
-    knopf: 'Arrange a no-obligation consultation',
+    text: 'No The Sartorialist, o seu fato de noivo por medida satisfaz todos os desejos, é confecionado com os tecidos mais finos e, graças aos seus detalhes distintivos, é uma verdadeira peça única — a um preço justo.',
+    knopf: 'Marcar uma consulta sem compromisso',
   },
   bloecke: [
     {
-      eyebrow: 'Fit',
-      titel: 'Fit and comfort — essential for every wedding',
+      eyebrow: 'Caimento',
+      titel: 'Caimento e conforto — essenciais em qualquer casamento',
       absaetze: [
-        'On your wedding day, your body is on the move from morning to night: the nervous wait before the ceremony, kneeling in church, the photo shoot, the first dance, the long wedding breakfast, the party that follows. Off-the-peg suits rarely keep up — they crease, bag and constrict.',
-        'A made-to-measure wedding suit from The Sartorialist accompanies you perfectly through every moment: thanks to an impeccable fit and exceptionally fine natural cloths, your suit breathes with you and reliably wicks away heat and moisture.',
+        'No dia do seu casamento, o seu corpo está em movimento da manhã à noite: a espera nervosa antes da cerimónia, ajoelhar-se na igreja, a sessão fotográfica, a primeira dança, o longo banquete, a festa que se segue. Os fatos de pronto-a-vestir raramente acompanham — enrugam, deformam e apertam.',
+        'Um fato de noivo por medida do The Sartorialist acompanha-o na perfeição em todos os momentos: graças a um caimento impecável e a tecidos naturais excecionalmente finos, o seu fato respira consigo e afasta de forma fiável o calor e a humidade.',
       ],
     },
     {
-      eyebrow: 'Details',
-      titel: 'You choose the details — and create a one-off',
+      eyebrow: 'Detalhes',
+      titel: 'O senhor escolhe os detalhes — e cria uma peça única',
       absaetze: [
-        'Choose from a range of button shapes and finishes, and have your bride’s name, a motto or your wedding date embroidered into the lining. Luxurious cufflinks add a touch of brilliance to the moment you exchange rings.',
-        'Complete the look with a wide selection of ties, braces and bow ties — and, if you wish, a made-to-measure shirt cut to your exact measurements.',
+        'Escolha entre uma variedade de formas e acabamentos de botões e mande bordar no forro o nome da sua noiva, um lema ou a data do casamento. Botões de punho luxuosos acrescentam um toque de brilho ao momento da troca de alianças.',
+        'Complete o visual com uma vasta seleção de gravatas, suspensórios e laços — e, se o desejar, uma camisa por medida cortada exatamente às suas medidas.',
       ],
     },
   ],
-  faqTitel: 'Frequently asked questions about wedding suits',
+  faqTitel: 'Perguntas frequentes sobre fatos de noivo',
   faq: [
     {
-      q: 'What is the difference between a wedding suit and a business suit?',
+      q: 'Qual é a diferença entre um fato de noivo e um fato de trabalho?',
       a: [
-        'A wedding suit is not simply an ordinary suit — it is a statement. While a business suit is functional and understated, a wedding suit takes centre stage on one of the most emotional days of your life. It must fit perfectly, reflect your character, suit the style of the wedding and stand the test of time, both in photographs and in memory.',
+        'Um fato de noivo não é simplesmente um fato comum — é uma afirmação. Enquanto o fato de trabalho é funcional e discreto, o fato de noivo ocupa o centro das atenções num dos dias mais emotivos da sua vida. Tem de assentar na perfeição, refletir o seu carácter, condizer com o estilo do casamento e resistir ao tempo, tanto nas fotografias como na memória.',
       ],
     },
     {
-      q: 'How far in advance should I have my wedding suit made?',
+      q: 'Com quanta antecedência devo mandar fazer o meu fato de noivo?',
       a: [
-        'We recommend booking your appointment at least 8 to 10 weeks before the wedding — earlier is better. That leaves ample time for choosing the cloth, taking measurements, the first fitting, any alterations and the final personal touches. Short-notice requests are possible in exceptional cases — just ask us.',
+        'Recomendamos que marque a sua consulta pelo menos 8 a 10 semanas antes do casamento — quanto mais cedo, melhor. Assim há tempo suficiente para a escolha do tecido, a tomada de medidas, a primeira prova, eventuais ajustes e os toques pessoais finais. Pedidos de última hora são possíveis em casos excecionais — basta perguntar-nos.',
       ],
     },
     {
-      q: 'Which suit styles are popular for weddings?',
+      q: 'Que estilos de fato são procurados para casamentos?',
       a: [
-        'The classic three-piece suit with waistcoat (timelessly elegant), the modern slim-fit suit (a sleek silhouette), the Italian linen suit (ideal for summer weddings), the dinner suit or dinner jacket (black tie), the vintage suit in tweed or checks (for rustic settings), as well as coloured suits in dark green, burgundy or beige.',
-        'You set the direction — we make sure it is executed to perfection.',
+        'O clássico fato de três peças com colete (de elegância intemporal), o fato slim fit moderno (uma silhueta esguia), o fato italiano de linho (ideal para casamentos de verão), o smoking ou o casaco de smoking (black tie), o fato vintage em tweed ou xadrez (para ambientes rústicos), bem como fatos de cor em verde-escuro, bordeaux ou bege.',
+        'O senhor define a direção — nós garantimos que é executada na perfeição.',
       ],
     },
     {
-      q: 'Can I still wear my made-to-measure suit after the wedding?',
+      q: 'Posso continuar a usar o meu fato por medida depois do casamento?',
       a: [
-        'Yes — that is precisely one of its advantages. From the very first consultation we make sure your suit stays versatile: classic colours such as navy, charcoal or dark green, understated cloths, and the option to wear the waistcoat or accessories separately. Italian cloths keep their shape and elegance for years to come.',
+        'Sim — essa é precisamente uma das suas vantagens. Desde a primeira consulta garantimos que o seu fato se mantém versátil: cores clássicas como azul-marinho, antracite ou verde-escuro, tecidos discretos e a possibilidade de usar o colete ou os acessórios separadamente. Os tecidos italianos mantêm a forma e a elegância durante muitos anos.',
       ],
     },
     {
-      q: 'Which accessories go with a wedding suit?',
+      q: 'Que acessórios combinam com um fato de noivo?',
       a: [
-        'We offer a carefully curated selection of bow ties, ties, pocket squares, cufflinks, waistcoats and leather belts, all perfectly matched to your suit. We are also happy to coordinate colours with the bridal gown or the décor.',
+        'Oferecemos uma seleção cuidadosa de laços, gravatas, lenços de bolso, botões de punho, coletes e cintos de pele, todos perfeitamente coordenados com o seu fato. Também teremos todo o gosto em harmonizar as cores com o vestido da noiva ou com a decoração.',
       ],
     },
   ],
   cta: {
-    titel: 'Your wedding suit — book 8–10 weeks before the big day.',
+    titel: 'O seu fato de noivo — marque 8–10 semanas antes do grande dia.',
     text: '',
   },
   schema: {
-    name: 'Wedding suits Zurich',
+    name: 'Fatos de noivo em Zurique',
     beschreibung:
-      'Made-to-measure wedding suits in Zurich: a perfect fit, fine natural cloths and individual details — The Sartorialist.',
+      'Fatos de noivo por medida em Zurique: caimento perfeito, tecidos naturais finos e detalhes individuais — The Sartorialist.',
   },
 };
