@@ -41,12 +41,13 @@ export const SITE = {
 export type NavItem = { label: string; href: string };
 
 export const PRIMARY_NAV: NavItem[] = [
-  { label: 'Kollektion', href: '/kollektion/' },
+  { label: 'Über uns', href: '/ueber-uns/' },
+  { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
   { label: 'Massanzug', href: '/massanzug-zuerich/' },
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
   { label: 'Shop', href: '/shop/' },
   { label: 'Brands', href: '/category/brand/' },
-  { label: 'Über uns', href: '/ueber-uns/' },
+  { label: 'Kontakt', href: '/kontakt/' },
 ];
 
 export const FOOTER_NAV: { title: string; items: NavItem[] }[] = [
@@ -62,9 +63,8 @@ export const FOOTER_NAV: { title: string; items: NavItem[] }[] = [
     ],
   },
   {
-    title: 'Kollektion',
+    title: 'Anzüge',
     items: [
-      { label: 'Alle Anzüge', href: '/kollektion/' },
       { label: 'Anzug blau', href: '/anzug-blau/' },
       { label: 'Anzug grün', href: '/anzug-gruen/' },
       { label: 'Anzug beige', href: '/anzug-beige/' },

@@ -8,29 +8,18 @@ import { SITE } from '@/lib/site';
 import Wordmark from './Wordmark';
 import CartButton from './shop/CartButton';
 
+// Reihenfolge laut Kunde: Über uns, Styles & Options, Massanzug, Hochzeitsanzug | Shop, Brands, Kontakt
 const NAV_LEFT = [
-  { label: 'Kollektion', href: '/kollektion/' },
-  { label: 'Massanzug', href: '/massanzug-zuerich/' },
+  { label: 'Über uns', href: '/ueber-uns/' },
   { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
+  { label: 'Massanzug', href: '/massanzug-zuerich/' },
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
 ];
 
-// Shop bewusst zuletzt: Fokus der Website ist der Massanzug
 const NAV_RIGHT = [
-  { label: 'Brands', href: '/category/brand/' },
-  { label: 'Über uns', href: '/ueber-uns/' },
   { label: 'Shop', href: '/shop/' },
-];
-
-// Untermenüs für das mobile Fullscreen-Menü (seitlich slidend).
-const SUB_KOLLEKTION = [
-  { label: 'Alle Anzüge', href: '/kollektion/' },
-  { label: 'Massanzug Zürich', href: '/massanzug-zuerich/' },
-  { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
-  { label: 'Hochzeitsanzug Zürich', href: '/hochzeitsanzug-zuerich/' },
-  { label: 'Anzug blau', href: '/anzug-blau/' },
-  { label: 'Anzug grün', href: '/anzug-gruen/' },
-  { label: 'Anzug beige', href: '/anzug-beige/' },
+  { label: 'Brands', href: '/category/brand/' },
+  { label: 'Kontakt', href: '/kontakt/' },
 ];
 
 const SUB_BRANDS = [
@@ -55,7 +44,7 @@ function IconBack() {
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [sub, setSub] = useState<null | 'kollektion' | 'brands'>(null);
+  const [sub, setSub] = useState<null | 'brands'>(null);
   const pathname = usePathname();
 
   // Menü bei Routenwechsel schliessen
@@ -92,8 +81,8 @@ export default function Header() {
     </Link>
   );
 
-  const subItems = sub === 'kollektion' ? SUB_KOLLEKTION : SUB_BRANDS;
-  const subTitle = sub === 'kollektion' ? 'Kollektion' : 'Brands';
+  const subItems = SUB_BRANDS;
+  const subTitle = 'Brands';
 
   return (
     <>
@@ -166,27 +155,25 @@ export default function Header() {
           <div className="fs-panel fs-panel--main">
             <span className="fs-kicker">Menü</span>
             <div className="fs-list">
-              <button
-                type="button"
-                className="fs-row"
-                aria-haspopup="true"
-                onClick={() => setSub('kollektion')}
-              >
+              <Link className="fs-row" href="/ueber-uns/" onClick={close}>
                 <span className="fs-num">01</span>
-                <span className="fs-lbl">Kollektion</span>
-                <span className="fs-arr"><IconArrow /></span>
-              </button>
-              <Link className="fs-row" href="/massanzug-zuerich/" onClick={close}>
-                <span className="fs-num">02</span>
-                <span className="fs-lbl">Massanzug</span>
+                <span className="fs-lbl">Über uns</span>
               </Link>
               <Link className="fs-row" href="/massanzug-konfigurator/" onClick={close}>
-                <span className="fs-num">03</span>
+                <span className="fs-num">02</span>
                 <span className="fs-lbl">Styles & Options</span>
+              </Link>
+              <Link className="fs-row" href="/massanzug-zuerich/" onClick={close}>
+                <span className="fs-num">03</span>
+                <span className="fs-lbl">Massanzug</span>
               </Link>
               <Link className="fs-row" href="/hochzeitsanzug-zuerich/" onClick={close}>
                 <span className="fs-num">04</span>
                 <span className="fs-lbl">Hochzeitsanzug</span>
+              </Link>
+              <Link className="fs-row" href="/shop/" onClick={close}>
+                <span className="fs-num">05</span>
+                <span className="fs-lbl">Shop</span>
               </Link>
               <button
                 type="button"
@@ -194,25 +181,13 @@ export default function Header() {
                 aria-haspopup="true"
                 onClick={() => setSub('brands')}
               >
-                <span className="fs-num">05</span>
+                <span className="fs-num">06</span>
                 <span className="fs-lbl">Brands</span>
                 <span className="fs-arr"><IconArrow /></span>
               </button>
-              <Link className="fs-row" href="/ueber-uns/" onClick={close}>
-                <span className="fs-num">06</span>
-                <span className="fs-lbl">Über uns</span>
-              </Link>
-              <Link className="fs-row" href="/services/" onClick={close}>
-                <span className="fs-num">07</span>
-                <span className="fs-lbl">Services</span>
-              </Link>
               <Link className="fs-row" href="/kontakt/" onClick={close}>
-                <span className="fs-num">08</span>
+                <span className="fs-num">07</span>
                 <span className="fs-lbl">Kontakt</span>
-              </Link>
-              <Link className="fs-row" href="/shop/" onClick={close}>
-                <span className="fs-num">09</span>
-                <span className="fs-lbl">Shop</span>
               </Link>
             </div>
 

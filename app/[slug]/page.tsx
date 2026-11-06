@@ -183,7 +183,7 @@ function SuitColorPage({ color }: { color: NonNullable<ReturnType<typeof getSuit
     <>
       <Breadcrumbs
         items={[
-          { name: 'Kollektion', href: '/kollektion/' },
+          { name: 'Massanzug', href: '/massanzug-zuerich/' },
           { name: color.name, href: `/${color.slug}/` },
         ]}
       />

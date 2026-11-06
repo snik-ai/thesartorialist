@@ -14,6 +14,9 @@ const nextConfig = {
       // Ausgelistete Marken (vorher über public/serve.json beim statischen Export)
       { source: '/jacob-cohen/', destination: '/', permanent: true },
       { source: '/paul-and-shark/', destination: '/', permanent: true },
+      // Kollektion entfernt (kein Content): auf die Massanzug-Seite
+      { source: '/kollektion/', destination: '/massanzug-zuerich/', permanent: true },
+      { source: '/kollektion/:slug/', destination: '/massanzug-zuerich/', permanent: true },
       // Shopify-Pfade unter /shop, falls jemand die Theme-Struktur aufruft
       { source: '/shop/collections/', destination: '/shop/', permanent: true },
       { source: '/shop/collections/all/', destination: '/shop/', permanent: true },

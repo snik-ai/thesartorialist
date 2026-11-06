@@ -181,7 +181,6 @@ export default function Konfigurator() {
                                 </>
                               )}
                             </span>
-                            {o.badge && <span className="konf-badge">{o.badge}</span>}
                             <span className="konf-tick" aria-hidden="true">
                               <Check />
                             </span>
@@ -333,7 +332,6 @@ function DetailDialog({ d, on, onToggle, onClose }: { d: Detail; on: boolean; on
             {o.label}
           </h3>
           {o.code && <p className="konf-code">Code {o.code}</p>}
-          {o.badge && <span className="konf-badge konf-badge--static">{o.badge}</span>}
           {o.subLabel && <p className="konf-modal-sub">{o.subLabel}</p>}
           {o.pocketSpec && (
             <p className="konf-modal-sub">

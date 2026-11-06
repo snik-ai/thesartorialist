@@ -1865,8 +1865,6 @@ body.sheet-open { overflow: hidden; }
 .konf-card.is-on .konf-card-text { background: var(--paper-warm); }
 .konf-code { font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
 .konf-label { font-family: var(--serif); font-size: 0.98rem; line-height: 1.25; }
-.konf-badge { position: absolute; top: 0.6rem; left: 0.6rem; padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--paper-warm); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
-.konf-badge--static { position: static; align-self: flex-start; margin: 0.25rem 0 0.5rem; }
 .konf-tick { position: absolute; top: 0.6rem; right: 0.6rem; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; transform: scale(0); transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
 .konf-card.is-on .konf-tick { transform: scale(1); }
 .konf-card.is-pop .konf-card-main { animation: konfPop 0.45s var(--easing); }
@@ -2103,3 +2101,35 @@ body.cart-open .studio-fab, body.sheet-open .studio-fab { opacity: 0; pointer-ev
 .split-text { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); }
 .split-text p { margin-top: 1rem; color: var(--ink-soft); }
 @media (max-width: 800px) { .split-text { grid-template-columns: 1fr; } }
+
+/* Konfigurator-Karten: eckig, klar lesbar, moderne Sans (Kundenwunsch 06.11.2026).
+   Block-Layout statt Grid im <button>, damit Safari die Bezeichnung nicht abschneidet. */
+.konf-card-main {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  border-radius: 0;
+  border: 1px solid var(--line);
+}
+.konf-card-main:hover { transform: none; border-color: var(--ink); }
+.konf-card.is-on .konf-card-main { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.konf-card-img { display: block; flex: none; width: 100%; padding: 1rem 1rem 0.5rem; }
+.konf-card-text { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: none; padding: 0.85rem 0.75rem 1rem; min-height: 4.6rem; }
+.konf-code { font-family: var(--sans); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; color: var(--muted); line-height: 1.2; }
+.konf-label { font-family: var(--sans); font-size: 0.95rem; font-weight: 500; letter-spacing: 0.01em; line-height: 1.3; color: var(--ink); }
+.konf-tick { border-radius: 0; top: 0.75rem; right: 0.75rem; width: 24px; height: 24px; }
+.konf-info { border-radius: 0; top: auto; bottom: calc(4.6rem + 0.5rem); right: 0.5rem; background: transparent; }
+.konf-card.is-on .konf-info { color: var(--ink); }
+.konf-card.is-pop .konf-card-main { animation: none; }
+.konf-card.is-on .konf-card-text { background: var(--paper-warm); }
+.konf-sum-item, .konf-sum-img, .konf-summary { border-radius: 0; }
+.konf-modal-box { border-radius: 0; }
+.styles-card-img { border-radius: 0; }
+.styles-card-l { font-family: var(--sans); font-size: 0.95rem; font-weight: 500; }
+.konf-card { display: flex; }
+.konf-card-main { flex: 1; width: 100%; }
+.konf-card-img { position: relative; aspect-ratio: 4 / 5; padding: 0; }
+.konf-card-img img { position: absolute; top: 1rem; left: 1rem; width: calc(100% - 2rem); height: calc(100% - 1.5rem); object-fit: contain; }
+.konf-card-text { flex: 1; justify-content: flex-start; }
+.konf-sum-link, .konf-count, .konf-dock, .konf-dock-n, .konf-dock-go, .konf-dock-thumbs img, .konf-hints li, .konf-hints li::before, .konf-tab-prog, .konf-modal-x, .konf-sum-x, .konf-info { border-radius: 0; }
+@media (max-width: 640px) { .konf-dock { border-radius: 0; } }

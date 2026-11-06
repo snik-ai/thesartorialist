@@ -10,7 +10,6 @@ export interface KonfigOption {
   subLabel?: string;
   image: string;
   description?: string;
-  badge?: string;
   pocketSpec?: {
     chest: string;
     side: string;
@@ -61,7 +60,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Zwei Knöpfe",
             subLabel: "Der klassische Business-Standard",
             image: "/konfigurator/jacket/sb-2b.webp",
-            badge: "Beliebt",
             description: "Der zeitlose Standard der Schweizer Herrenschneiderei.",
           },
           {
@@ -70,7 +68,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Drei auf zwei",
             subLabel: "Neapolitanisch weich gerollt",
             image: "/konfigurator/jacket/sb-3-2b.webp",
-            badge: "Italienisch",
             description: "Der oberste Knopf verschwindet elegant im weich gerollten Revers.",
           },
           {
@@ -102,7 +99,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Sechs auf zwei",
             subLabel: "Der Savile-Row-Klassiker",
             image: "/konfigurator/jacket/db-6x2.webp",
-            badge: "Klassiker",
             description: "Klassische Silhouette mit sechs Knöpfen, davon zwei zum Schliessen.",
           },
         ],
@@ -126,7 +122,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Normal (8.0 cm)",
             subLabel: "8.0 cm breit",
             image: "/konfigurator/jacket/lapel-sb-notch-regular.webp",
-            badge: "Empfehlung",
             description: "Ausgewogene Proportionen, ideal zu klassischen Krawatten und Hemdkragen.",
           },
           {
@@ -158,7 +153,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Normal (8.0 cm)",
             subLabel: "8.0 cm breit",
             image: "/konfigurator/jacket/lapel-sb-peak-regular.webp",
-            badge: "Beliebt",
             description: "Klassisches steigendes Revers in italienischer Manier.",
           },
           {
@@ -190,7 +184,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Normal (6.0 cm)",
             subLabel: "6.0 cm breit",
             image: "/konfigurator/jacket/lapel-sb-shawl-regular.webp",
-            badge: "Abend",
             description: "Durchgehend elegante Rundung für Smoking und Samtsakko.",
           },
         ],
@@ -214,7 +207,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Normal (10.0 cm)",
             subLabel: "10.0 cm breit",
             image: "/konfigurator/jacket/lapel-db-peak-regular.webp",
-            badge: "Empfehlung",
             description: "Volles steigendes Revers für die klassische Eleganz des Zweireihers.",
           },
           {
@@ -251,7 +243,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Barchetta & Pattentasche",
             pocketSpec: { chest: "Barchetta", side: "Pattentasche" },
             image: "/konfigurator/jacket/pocket-barchetta-flap.webp",
-            badge: "Business",
             description: "Vielseitige gerade Pattentaschen; die Patten lassen sich auch einstecken.",
           },
           {
@@ -273,7 +264,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Aufgesetzt & aufgesetzt",
             pocketSpec: { chest: "Aufgesetzte Tasche", side: "Aufgesetzte Tasche" },
             image: "/konfigurator/jacket/pocket-patch-patch.webp",
-            badge: "Freizeit",
             description: "Lässiger Blazer-Stil mit sichtbarer Steppnaht.",
           },
           {
@@ -281,7 +271,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Safari & Safari",
             pocketSpec: { chest: "Safari", side: "Safari" },
             image: "/konfigurator/jacket/pocket-safari.webp",
-            badge: "Sportlich",
             description: "Funktionale Blasebalgtaschen mit Falte und mittigem Knopfverschluss.",
           },
         ],
@@ -296,7 +285,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Ticket-Tasche mit Patte",
             pocketSpec: { chest: "Barchetta", side: "Ticket-Tasche mit Patte" },
             image: "/konfigurator/jacket/pocket-ticket-flap-clean.webp",
-            badge: "Britisch",
             description: "Traditionelle englische Ticket-Tasche über der rechten Pattentasche.",
           },
           {
@@ -333,7 +321,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Ohne Schlitz",
             subLabel: "Glatt durchgehender Rücken",
             image: "/konfigurator/jacket/back-ventless.webp",
-            badge: "Formell",
             description: "Besonders formeller, glatter Rücken, Smoking und Abendsakko vorbehalten.",
           },
           {
@@ -350,7 +337,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Seitenschlitze",
             subLabel: "Zwei seitliche Schlitze",
             image: "/konfigurator/jacket/back-side-vents.webp",
-            badge: "Empfehlung",
             description: "Fällt im Sitzen tadellos; die Hände finden Platz in den Taschen, ohne dass das Sakko spannt.",
           },
         ],
@@ -366,7 +352,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Weiche Schulter",
             subLabel: "Dünnes Polster · ohne Ärmelfisch · natürlich",
             image: "/konfigurator/jacket/shoulder-soft.webp",
-            badge: "Neapolitanisch",
             description: "Nähte nach innen gebügelt, für einen leichten, unkonstruierten und natürlichen Fall.",
           },
           {
@@ -375,7 +360,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Klassische Schulter",
             subLabel: "Mittleres Polster · mittlerer Ärmelfisch",
             image: "/konfigurator/jacket/shoulder-traditional.webp",
-            badge: "Klassiker",
             description: "Nähte nach aussen gebügelt, für eine saubere, gepflegte Linie über die Schulter.",
           },
           {
@@ -384,7 +368,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Rollino",
             subLabel: "Starkes Polster · kräftiger Ärmelfisch · Pagode",
             image: "/konfigurator/jacket/shoulder-roped.webp",
-            badge: "Markant",
             description: "Nähte nach aussen gebügelt, mit ausgeprägt erhöhtem Ärmelansatz (con rollino).",
           },
         ],
@@ -400,7 +383,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Weiche Einlage",
             subLabel: "Flexible, schwebende Rosshaar-Brusteinlage",
             image: "/konfigurator/jacket/canvas-soft.webp",
-            badge: "Komfort",
             description: "Leichte Einlage, die sich rasch dem Körper anpasst und angenehm bequem trägt.",
           },
           {
@@ -409,7 +391,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Klassische Einlage",
             subLabel: "Formgebende, ganzflächige Rosshaar-Einlage",
             image: "/konfigurator/jacket/canvas-traditional.webp",
-            badge: "Formstabil",
             description: "Präzise Reversrolle und klar geformte Brust, die Jahrzehnte überdauern.",
           },
         ],
@@ -425,7 +406,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Gefüttert",
             subLabel: "Futter in Körper und Ärmeln",
             image: "/konfigurator/jacket/lining-lined.webp",
-            badge: "Ganzjährig",
             description: "Gleitet mühelos über das Hemd und schützt das Innere vollständig.",
           },
           {
@@ -442,7 +422,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Ungefüttert",
             subLabel: "Weder Körper noch Ärmel gefüttert",
             image: "/konfigurator/jacket/lining-fully-unlined.webp",
-            badge: "Sommer",
             description: "Maximale Luftzirkulation, Innennähte sauber mit Band eingefasst.",
           },
         ],
@@ -474,7 +453,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Vier Knöpfe",
             subLabel: "Massschneider-Standard",
             image: "/konfigurator/jacket/cuff-4b.webp",
-            badge: "Standard",
             description: "Der allgemeine Massstab für Ärmel in der Massschneiderei.",
           },
           {
@@ -498,7 +476,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Kissing Buttons (überlappend)",
             subLabel: "Knöpfe überlappen sich (Cascata)",
             image: "/konfigurator/jacket/cuff-kissing.webp",
-            badge: "Italienisch",
             description: "Echte handgearbeitete Kaskade am Ärmel.",
           },
           {
@@ -522,7 +499,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Kantenstich (2 mm)",
             subLabel: "Vorderkante, Revers, Kragen und Taschen",
             image: "/konfigurator/jacket/topstitch-edge-2mm-front.webp",
-            badge: "Beliebt",
             description: "Feiner Handstich im Abstand von 2 mm, der die Kanten zeichnet und die Reversrolle stabilisiert.",
           },
           {
@@ -539,7 +515,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Abgesteppte Naht (5 mm)",
             subLabel: "Markante Steppnaht für das sportliche Sakko",
             image: "/konfigurator/jacket/topstitch-raised-5mm-front.webp",
-            badge: "Freizeit",
             description: "Ausgeprägte Steppnaht im Abstand von 5 mm, ideal für strukturierten Hopsack, Flanell und Tweed.",
           },
           {
@@ -579,7 +554,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Milanese Knopfloch",
             subLabel: "Seide ohne Knoten gewickelt · erhaben",
             image: "/konfigurator/jacket/buttonhole-milanese.webp",
-            badge: "Handwerk",
             description: "Die Krönung der Handarbeit: glänzende Seide, lückenlos über eine Gimpe gewickelt.",
           },
         ],
@@ -595,7 +569,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Monogramm im Futter",
             subLabel: "Unter der inneren Brusttasche gestickt",
             image: "/konfigurator/jacket/monogram-lined.webp",
-            badge: "Persönlich",
             description: "Initialen nach Wunsch, von Hand oder maschinell auf den Futterbesatz gestickt.",
           },
           {
@@ -628,7 +601,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Ohne Bundfalte",
             subLabel: "Glatt und modern",
             image: "/konfigurator/trousers/front-flat.webp",
-            badge: "Modern",
             description: "Glatte, klare Vorderpartie ohne Falten für eine schlanke, gestreckte Silhouette.",
           },
           {
@@ -645,7 +617,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Zwei Bundfalten",
             subLabel: "Erste 2 cm · zweite 1.25 cm",
             image: "/konfigurator/trousers/front-double-pleat.webp",
-            badge: "Klassiker",
             description: "Grosszügige Eleganz mit hohem Bund, voller Bewegungsfreiheit und schönem Fall.",
           },
         ],
@@ -669,7 +640,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Knopfleiste — Standard",
             subLabel: "Hosenschlitz mit Hornknöpfen",
             image: "/konfigurator/trousers/closure-standard.webp",
-            badge: "Klassiker",
             description: "Traditionelle, puristische Machart; kein Aufwerfen wie beim Reissverschluss im Sitzen.",
           },
           {
@@ -678,7 +648,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Doppelter Bund",
             subLabel: "Verlängerter Verschluss mit zwei Knöpfen",
             image: "/konfigurator/trousers/closure-double-belt.webp",
-            badge: "Italienisch",
             description: "Hoher Bund mit zwei Knöpfen, inspiriert von der Florentiner Massschneiderei.",
           },
         ],
@@ -694,7 +663,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Seitenregulierer",
             subLabel: "Messingschnallen · ohne Gürtelschlaufen",
             image: "/konfigurator/trousers/waistband-side-adjusters.webp",
-            badge: "Empfehlung",
             description: "Klarer Bund mit seitlichen Regulierlaschen, ganz ohne Gürtel.",
           },
           {
@@ -726,7 +694,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Schräg",
             subLabel: "Natürlicher Eingriff",
             image: "/konfigurator/trousers/pocket-slanted.webp",
-            badge: "Beliebt",
             description: "Ergonomisch schräger Eingriff, die Hand findet natürlich hinein, ohne dass der Stoff spannt.",
           },
           {
@@ -759,7 +726,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Froschmaul",
             subLabel: "Waagrechter Eingriff vorne",
             image: "/konfigurator/trousers/pocket-frog-mouth.webp",
-            badge: "Vintage",
             description: "Waagrechter Eingriff nach vorne, wie bei den massgeschneiderten Kavalleriehosen der Jahrhundertmitte.",
           },
         ],
@@ -775,7 +741,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Keine",
             subLabel: "Völlig glatte Rückseite",
             image: "/konfigurator/trousers/back-pocket-none.webp",
-            badge: "Puristisch",
             description: "Ohne Gesässtaschen, für einen ununterbrochenen, glatten Fall über das Gesäss.",
           },
           {
@@ -800,7 +765,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Zwei Taschen",
             subLabel: "Zwei symmetrische Paspeltaschen",
             image: "/konfigurator/trousers/back-pocket-two.webp",
-            badge: "Standard",
             description: "Klassische Paspeltaschen auf beiden Seiten, mit Knopfverschluss.",
           },
         ],
@@ -816,7 +780,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Ungefüttert",
             subLabel: "Reiner Stoff, atmungsaktiv",
             image: "/konfigurator/trousers/lining-unlined.webp",
-            badge: "Sommer",
             description: "Ganz ohne Innenfutter, für maximale Atmungsaktivität an warmen Tagen.",
           },
           {
@@ -825,7 +788,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Halbgefüttert",
             subLabel: "Vorne bis unter das Knie gefüttert",
             image: "/konfigurator/trousers/lining-half-lined.webp",
-            badge: "Standard",
             description: "Glattes Cupro-Futter über dem Knie verhindert Reibung und ausgebeulte Knie.",
           },
           {
@@ -849,7 +811,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Glatter Saum",
             subLabel: "Hinten leicht schräg abfallend",
             image: "/konfigurator/trousers/hem-plain-bottom.webp",
-            badge: "Klassiker",
             description: "Klarer, gerader Abschluss, hinten zur Ferse hin etwas länger geschnitten.",
           },
           {
@@ -874,7 +835,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Umschlag (4.0 cm)",
             subLabel: "Klassische Massschneider-Breite",
             image: "/konfigurator/trousers/hem-turnup-4cm.webp",
-            badge: "Empfehlung",
             description: "Der bewährte Standard der Massschneiderei, für idealen Fall und saubere Bügelfalte.",
           },
           {
@@ -906,7 +866,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Kantenstich (2 mm)",
             subLabel: "2 mm AMF an Taschen und Seitennaht",
             image: "/konfigurator/trousers/topstitching-edge-stitch.webp",
-            badge: "Handwerk",
             description: "Handstich-Optik im Abstand von 2 mm, durchgehend bis hinunter an der äusseren Seitennaht.",
           },
         ],
@@ -930,7 +889,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Falten + Hosenträgerknöpfe",
             subLabel: "Innere Hornknöpfe für Hosenträger",
             image: "/konfigurator/trousers/inside-waistband-pleated-brace.webp",
-            badge: "Puristisch",
             description: "Gefältelter Innenbund mit sechs inneren Hornknöpfen für Hosenträger zum Knöpfen.",
           },
           {
@@ -947,7 +905,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Hemdstopper + Hosenträgerknöpfe",
             subLabel: "Haftstreifen und Hosenträgerknöpfe",
             image: "/konfigurator/trousers/inside-waistband-shirt-stay-brace.webp",
-            badge: "Komfort",
             description: "Höchster Komfort: Haftstreifen und Knöpfe für Hosenträger kombiniert.",
           },
         ],
@@ -979,7 +936,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Fünf Knöpfe",
             subLabel: "Die klassische Weste",
             image: "/konfigurator/waistcoat/sb-5b.webp",
-            badge: "Klassiker",
             description: "Die klassische europäische Weste zum Dreiteiler, mit ausgewogenem Knopfstand.",
           },
           {
@@ -996,7 +952,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Hufeisen",
             subLabel: "Tiefer U-Ausschnitt, formell",
             image: "/konfigurator/waistcoat/sb-horseshoe.webp",
-            badge: "Abend",
             description: "Geformter U-Ausschnitt, der Smokinghemd mit Plissee und Fliege zur Geltung bringt.",
           },
           {
@@ -1013,7 +968,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Schalkragen",
             subLabel: "Weich gerundeter Kragen",
             image: "/konfigurator/waistcoat/sb-shawl-lapel.webp",
-            badge: "Abend",
             description: "Weich durchgehend gerundeter Kragen, wie bei historischen Abendwesten.",
           },
         ],
@@ -1029,7 +983,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Zweireiher, sechs Knöpfe",
             subLabel: "Gerade abgeschlossen",
             image: "/konfigurator/waistcoat/db-6b.webp",
-            badge: "Formell",
             description: "Stattlicher zweireihiger Schnitt mit gerader, waagrechter Unterkante.",
           },
           {
@@ -1046,7 +999,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Zweireiher, Schalkragen",
             subLabel: "Durchgehend gerundeter Kragen",
             image: "/konfigurator/waistcoat/db-shawl-lapel.webp",
-            badge: "Festlich",
             description: "Zweireihig mit weit geschwungenem Schalkragen.",
           },
           {
@@ -1070,7 +1022,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Paspeltaschen",
             subLabel: "Zwei feine Paspeltaschen",
             image: "/konfigurator/waistcoat/pocket-jetted.webp",
-            badge: "Puristisch",
             description: "Besonders flache, doppelt paspelierte Taschen für eine messerscharfe Taillenlinie.",
           },
           {
@@ -1079,7 +1030,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "2 Leistentaschen",
             subLabel: "Zwei klassische Leistentaschen",
             image: "/konfigurator/waistcoat/pocket-2-welt.webp",
-            badge: "Klassiker",
             description: "Klassische untere Leistentaschen.",
           },
           {
@@ -1088,7 +1038,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "4 Leistentaschen",
             subLabel: "Zwei oben, zwei unten",
             image: "/konfigurator/waistcoat/pocket-4-welt.webp",
-            badge: "Taschenuhr",
             description: "Vier Leistentaschen, mit Platz für Taschenuhr und Uhrkette.",
           },
         ],
@@ -1104,7 +1053,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Stoffrücken",
             subLabel: "Anzugstoff vorne und hinten",
             image: "/konfigurator/waistcoat/back-cloth.webp",
-            badge: "Solo tragbar",
             description: "Lässt sich stilvoll auch ohne Sakko als eigenständige Weste tragen.",
           },
           {
@@ -1121,7 +1069,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Futter + Riegel",
             subLabel: "Cupro-Rücken mit Schnallenriegel",
             image: "/konfigurator/waistcoat/back-lining-strap.webp",
-            badge: "Standard",
             description: "Der Riegel am Rücken erlaubt feinstes Nachregulieren für eine exakt taillierte Silhouette.",
           },
         ],
@@ -1145,7 +1092,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Kantenstich (2 mm)",
             subLabel: "2 mm AMF-Handstich an den Kanten",
             image: "/konfigurator/waistcoat/topstitching-edge-2mm.webp",
-            badge: "Empfehlung",
             description: "Feiner Handstich im Abstand von 2 mm, der Vorderkante und Kragenrolle zeichnet.",
           },
           {
@@ -1185,7 +1131,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Handgenäht",
             subLabel: "Von Hand gearbeitete Knopflöcher",
             image: "/konfigurator/waistcoat/buttonholes-hand.webp",
-            badge: "Handwerk",
             description: "Von Hand mit reinem Seidengarn über eine Gimpe gearbeitet.",
           },
         ],
@@ -1209,7 +1154,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Smoking mit Schalkragen",
             subLabel: "Gerundeter Seidenspiegel · ein Knopf",
             image: "/konfigurator/black-tie/tux-shawl.webp",
-            badge: "Klassiker",
             description: "Durchgehend gerundeter Seidenkragen mit einem einzelnen bezogenen Knopf.",
           },
           {
@@ -1241,7 +1185,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Satin",
             subLabel: "Glänzender Seidensatin an Revers und Knöpfen",
             image: "/konfigurator/black-tie/facing-satin-v2.webp",
-            badge: "Klassiker",
             description: "Hochglänzende reine Seide, die das Kerzenlicht und den Glanz der Lüster einfängt.",
           },
           {
@@ -1250,7 +1193,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Ripsband",
             subLabel: "Matt gerippte Seide an Revers und Knöpfen",
             image: "/konfigurator/black-tie/facing-grosgrain-v2.webp",
-            badge: "Kenner",
             description: "Fein gerippte Seide für zurückhaltende Abendeleganz mit Tiefe und Struktur.",
           },
         ],
@@ -1266,7 +1208,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Seidengalon",
             subLabel: "Passender Seidenstreifen entlang der Seitennaht",
             image: "/konfigurator/black-tie/trousers-braid-stripe.webp",
-            badge: "Pflicht",
             description: "Senkrechtes Satin- oder Ripsband über der äusseren Seitennaht.",
           },
           {
@@ -1283,7 +1224,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Smokingbund",
             subLabel: "Seidenbesetzter Bund ohne Gürtelschlaufen",
             image: "/konfigurator/black-tie/trousers-dinner-waistband.webp",
-            badge: "Abend",
             description: "Mit passender Seide besetzt, mit inneren Hosenträgerknöpfen.",
           },
           {
@@ -1307,7 +1247,6 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             label: "Hufeisen-Abendweste",
             subLabel: "Tiefer Ausschnitt, zeigt die Hemdbrust",
             image: "/konfigurator/waistcoat/sb-horseshoe.webp",
-            badge: "Festlich",
             description: "Traditioneller, tiefer Hufeisenausschnitt für die festliche Abendgarderobe.",
           },
         ],

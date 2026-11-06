@@ -13,8 +13,8 @@ export default function NotFound() {
           <Link href="/" className="btn">
             Zur Startseite
           </Link>
-          <Link href="/kollektion/" className="btn btn--ghost">
-            Kollektion ansehen
+          <Link href="/massanzug-konfigurator/" className="btn btn--ghost">
+            Anzug gestalten
           </Link>
         </div>
       </div>

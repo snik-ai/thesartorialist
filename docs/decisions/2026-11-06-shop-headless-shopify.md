@@ -84,3 +84,10 @@ Das Schritt-für-Schritt-Stil-Studio war zu lang («Leute klicken sich nicht dur
 - SEO: Seite ergänzt «Massanzug selbst gestalten», «Anzug nach Mass Zürich» (30/Mt.), «Anzug massgeschneidert
   Zürich» (50/Mt., Keyword-DB); «Massanzug Zürich» bleibt bei `/massanzug-zuerich/` (keine Kannibalisierung).
 - «vis-à-vis Park Hyatt» auf Wunsch überall entfernt (Seiten, Meta, llms.txt, ai.txt, Video-Quelle).
+
+## Kollektion entfernt, Navigation, Karten-Design (06.11.2026)
+- Kollektion (kein Content): `/kollektion/` und Unterseiten gelöscht, 308 auf `/massanzug-zuerich/`, aus Sitemap,
+  Startseite, Footer (Spalte heisst jetzt «Anzüge»: blau/grün/beige) und Menü entfernt.
+- Navigation: Über uns · Styles & Options · Massanzug · Hochzeitsanzug | Shop · Brands · Kontakt (Desktop + Mobile).
+- Konfigurator-Karten: eckig, Bezeichnungen in Inter (Sans), gleich hohe Karten, Block-Layout (Safari schnitt Text ab).
+  Badges («Beliebt», «Italienisch» …) überall entfernt (Daten und Anzeige).

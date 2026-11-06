@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { COLLECTION } from '@/lib/collection';
 import { BRANDS } from '@/lib/brands';
-import ProductCard from '@/components/ProductCard';
 import CtaBand from '@/components/CtaBand';
 import Faq from '@/components/Faq';
 import { SITE } from '@/lib/site';
@@ -180,30 +178,6 @@ export default function HomePage() {
             </Link>
             <span className="muted">118 Optionen für Sakko, Hose, Weste und Smoking</span>
           </div>
-        </div>
-      </section>
-
-      {/* Kollektion */}
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow">Die Kollektion</span>
-            <h2 className="h2">Anzüge, die man nicht kauft — sondern bucht.</h2>
-            <p className="lead mt-1">
-              Jedes Stück wird in Ihrer persönlichen Grösse gefertigt. Wählen Sie Ihren
-              Favoriten und buchen Sie Ihren Termin im Showroom.
-            </p>
-          </div>
-          <div className="product-grid">
-            {COLLECTION.slice(0, 6).map((piece, i) => (
-              <ProductCard key={piece.slug} piece={piece} lazy={i > 2} />
-            ))}
-          </div>
-          <p style={{ textAlign: 'center', marginTop: '3rem' }}>
-            <Link href="/kollektion/" className="text-link">
-              Gesamte Kollektion ansehen
-            </Link>
-          </p>
         </div>
       </section>
 

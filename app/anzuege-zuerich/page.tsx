@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CtaBand from '@/components/CtaBand';
-import ProductCard from '@/components/ProductCard';
-import { COLLECTION } from '@/lib/collection';
 import { JsonLd, serviceSchema } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
@@ -51,8 +49,8 @@ export default function AnzuegeZuerichPage() {
             Schneiderkunst aus Italien trifft aktuelle Modetrends.
           </p>
           <div className="hero-cta">
-            <Link href="/kollektion/" className="btn">
-              Kollektion entdecken
+            <Link href="/massanzug-konfigurator/" className="btn">
+              Anzug gestalten
             </Link>
             <Link href="/termin/" className="btn btn--ghost">
               Termin buchen
@@ -71,20 +69,6 @@ export default function AnzuegeZuerichPage() {
               <p>{s.text}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="section section--warm">
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow">Wir lieben Anzüge</span>
-            <h2 className="h2">Eine Auswahl aus der Kollektion</h2>
-          </div>
-          <div className="product-grid">
-            {COLLECTION.slice(0, 3).map((piece) => (
-              <ProductCard key={piece.slug} piece={piece} />
-            ))}
-          </div>
         </div>
       </section>
 
