@@ -1,0 +1,127 @@
+{
+ "klick": {
+  "spitze": 0.008,
+  "dauer": 0.48,
+  "pegel": 0.181
+ },
+ "klick-2": {
+  "spitze": 0.207,
+  "dauer": 0.48,
+  "pegel": 0.119
+ },
+ "tick": {
+  "spitze": 0.098,
+  "dauer": 0.48,
+  "pegel": 0.112
+ },
+ "tick-2": {
+  "spitze": 0.082,
+  "dauer": 0.48,
+  "pegel": 0.008
+ },
+ "pop": {
+  "spitze": 0.003,
+  "dauer": 0.48,
+  "pegel": 0.84
+ },
+ "pop-2": {
+  "spitze": 0.003,
+  "dauer": 0.48,
+  "pegel": 0.613
+ },
+ "pop-3": {
+  "spitze": 0.018,
+  "dauer": 0.48,
+  "pegel": 0.953
+ },
+ "tippen": {
+  "spitze": 1.117,
+  "dauer": 1.48,
+  "pegel": 0.258
+ },
+ "whoosh": {
+  "spitze": 0.156,
+  "dauer": 1,
+  "pegel": 1.2
+ },
+ "whoosh-2": {
+  "spitze": 0.067,
+  "dauer": 1,
+  "pegel": 1.069
+ },
+ "swish": {
+  "spitze": 0.133,
+  "dauer": 0.6,
+  "pegel": 0.241
+ },
+ "swish-2": {
+  "spitze": 0.257,
+  "dauer": 0.6,
+  "pegel": 0.953
+ },
+ "riser": {
+  "spitze": 0.99,
+  "dauer": 1.48,
+  "pegel": 1.276
+ },
+ "revcym": {
+  "spitze": 1.072,
+  "dauer": 1.2,
+  "pegel": 0.245
+ },
+ "impact": {
+  "spitze": 0.026,
+  "dauer": 2,
+  "pegel": 1.236
+ },
+ "thump": {
+  "spitze": 0.053,
+  "dauer": 0.6,
+  "pegel": 1.37
+ },
+ "thump-2": {
+  "spitze": 0.016,
+  "dauer": 0.6,
+  "pegel": 1.396
+ },
+ "flut": {
+  "spitze": 0.119,
+  "dauer": 1.48,
+  "pegel": 1.172
+ },
+ "slot": {
+  "spitze": 0.004,
+  "dauer": 1,
+  "pegel": 0.275
+ },
+ "chime": {
+  "spitze": 0.001,
+  "dauer": 1.48,
+  "pegel": 0.447
+ },
+ "push": {
+  "spitze": 0.04,
+  "dauer": 1.2,
+  "pegel": 0.909
+ },
+ "funken": {
+  "spitze": 0.001,
+  "dauer": 0.8,
+  "pegel": 0.057
+ },
+ "falten": {
+  "spitze": 0.147,
+  "dauer": 0.8,
+  "pegel": 0.921
+ },
+ "papier": {
+  "spitze": 0.419,
+  "dauer": 0.8,
+  "pegel": 0.272
+ },
+ "logo": {
+  "spitze": 0.618,
+  "dauer": 3,
+  "pegel": 1.295
+ }
+}

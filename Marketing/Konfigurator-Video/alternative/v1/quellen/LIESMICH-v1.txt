@@ -1,0 +1,64 @@
+The Sartorialist Zürich – Konfigurator-Video «Styles & Options»
+================================================================
+
+Inhalt
+------
+Motion-Film zum Massanzug-Konfigurator (/massanzug-konfigurator/), 29.33 s, 90 BPM (44 Schläge).
+Ruhig, edel, Typografie Playfair Display + Inter, Schwarz/Warmweiss, Gold #c9a063 sparsam.
+Alle Illustrationen sind echte Konfigurator-Bilder aus public/konfigurator/**, das Stoffbild stammt aus
+public/images (Holland & Sherry). Optionen und Texte aus lib/konfigurator/daten.ts bzw. Konfigurator.tsx.
+
+Szenen (Zeitmarken)
+  0.00– 3.33  Ergebnis zuerst: fertiger Entwurf (Einreiher, steigendes Revers) mit Gold-Callouts
+  3.33        Vorhang (Ink hebt sich) + Zoom → Konfigurator
+  3.33– 7.33  Revers: Klick auf «Steigend», Digital Zoom auf das Revers, Detail-Karte
+  7.33        Whip-Pan
+  7.33–10.67  Vorderteil: «Zwei Knöpfe», Snap Zoom auf «zwei Knöpfen» (Gold-Unterstrich)
+ 10.67        3D-Flip der Karten (gestaffelt)
+ 10.67–14.00  Taschen: «Barchetta & Patte»
+ 14.00        Push nach oben
+ 14.00–17.33  Futter & Details: Checklist Pop (Gefüttert, Handgenäht, Kissing Buttons, Monogramm)
+ 17.33        Zoom-Through mit Rack-Focus
+ 17.33–20.67  Stoff von Holland & Sherry: Stoffnummer tippen, «Hinzufügen», Chip
+ 20.67        Carrier: Stoffbild schrumpft in die erste Zeile der Übersicht
+ 20.67–24.00  Übersicht «Ihr Massanzug in 7 Details», «PDF herunterladen», Klick auf «Termin …»
+ 24.00        Klick-Flood (Ink) → Endkarte
+ 24.00–28.33  Endkarte: Logo, «Ihr Massanzug. Ab CHF 1’690.», «Styles & Options auf thesartorialist.ch»
+ 28.33–29.33  Loop-Rebuild: der letzte Frame geht nahtlos in den ersten über (Web-Loop)
+
+Hinweis: Die Stoffnummer «4521 08» ist ein Beispielwert für die Animation (keine echte Artikelnummer).
+
+Formate / Ergebnisse
+--------------------
+  ../The-Sartorialist-Konfigurator-16x9.mp4   1920×1080, 60 fps, mit Ton (AAC)
+  ../The-Sartorialist-Konfigurator-9x16.mp4   1080×1920, 60 fps, mit Ton (Safe Zones TikTok/Reels beachtet)
+  public/videos/konfigurator-16x9.mp4         Web, 1600×900, H.264, stumm, faststart, nahtloser Loop
+  public/videos/konfigurator-16x9.webm        Web, 1600×900, VP9, stumm
+  public/videos/konfigurator-poster.webp      Poster (erster Frame = Ergebnis)
+
+Dateien
+-------
+  film.html       seek(t)-Film (Canvas). 16:9 Standard, 9:16 mit ?f=9x16. Im Browser öffnen = Live-Vorschau.
+  motion.js       Federn/Easings (aus dem Skill motion-reel)
+  make-score.js   erzeugt score.json (Musik + Sounddesign, synthetisiert)
+  score.json      Partitur für ~/.claude/skills/motion-reel/engine/audio.mjs
+  fonts/          Playfair Display + Inter (woff2, Google Fonts)
+  img/            Kopien der verwendeten Illustrationen, Stoffbild, Logo
+  stills.sh, sheet.sh   Kontrollbilder / Kontaktbogen
+  out/            Zwischen-Renders (nicht in Git)
+
+Neu erzeugen
+------------
+  Voraussetzung: Playwright (npm i playwright) + Google Chrome; NODE_PATH auf dessen node_modules setzen.
+  E=~/.claude/skills/motion-reel/engine
+  node $E/render.mjs --page film.html --w 1920 --h 1080 --fps 60 --sub 4 --dur 29.33333333 --out out/silent-16x9.mp4
+  node $E/render.mjs --page film.html --w 1080 --h 1920 --q f=9x16 --fps 60 --sub 4 --dur 29.33333333 --out out/silent-9x16.mp4
+  node make-score.js && node $E/audio.mjs score.json out/score.wav
+  ffmpeg -i out/silent-16x9.mp4 -i out/score.wav -map 0:v -map 1:a -c:v copy \
+    -af "loudnorm=I=-14:TP=-1.5:LRA=11,volume=-1.6dB,alimiter=limit=0.84" -c:a aac -b:a 256k -shortest \
+    ../The-Sartorialist-Konfigurator-16x9.mp4      (9:16 analog)
+  Web (stumm, Loop):
+  ffmpeg -i out/silent-16x9.mp4 -an -vf "scale=1600:900:flags=lanczos,fps=30" -c:v libx264 -profile:v high \
+    -preset veryslow -crf 26 -pix_fmt yuv420p -movflags +faststart public/videos/konfigurator-16x9.mp4
+  ffmpeg -i out/silent-16x9.mp4 -an -vf "scale=1600:900:flags=lanczos,fps=30" -c:v libvpx-vp9 -b:v 0 -crf 40 \
+    -row-mt 1 -pix_fmt yuv420p public/videos/konfigurator-16x9.webm   (2-Pass, siehe Bericht)

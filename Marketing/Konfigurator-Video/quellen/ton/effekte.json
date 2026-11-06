@@ -1,0 +1,21 @@
+{
+  "_hinweis": "Soundeffekt-Bibliothek für alle VoxCRM-Filme. Erzeugen: node ../engine/ton-effekte.mjs (nur fehlende). anker: wo der Kontakt im Klang liegt – 'start' (Kontakt am Anfang), 'spitze' (lauteste Stelle = Kontakt, automatisch gemessen), 'ende' (Klang endet auf dem Kontakt, z. B. Riser).",
+  "klick":    { "text": "Single crisp premium trackpad click, very short and clean, tight, no reverb, no room", "dauer": 0.5, "einfluss": 0.7, "anker": "start", "varianten": 2 },
+  "tick":     { "text": "Tiny soft digital UI tick, very short subtle high blip, clean, no reverb", "dauer": 0.5, "einfluss": 0.7, "anker": "start", "varianten": 2 },
+  "pop":      { "text": "Soft gentle bubbly UI pop for an interface card element appearing, short, clean, premium app sound", "dauer": 0.5, "einfluss": 0.6, "anker": "start", "varianten": 3 },
+  "tippen":   { "text": "Quiet fast typing on a premium laptop keyboard, about eight soft keystrokes, close and clean, no room", "dauer": 1.5, "einfluss": 0.6, "anker": "start" },
+  "whoosh":   { "text": "Smooth fast airy whoosh transition for motion graphics, modern and clean, short tail, no hiss", "dauer": 1.0, "einfluss": 0.6, "anker": "spitze", "varianten": 2 },
+  "swish":    { "text": "Short soft subtle swish, quick UI swipe of air, light and clean", "dauer": 0.6, "einfluss": 0.6, "anker": "spitze", "varianten": 2 },
+  "riser":    { "text": "Short airy synth riser swelling up with tension, cinematic but subtle, stops right at the peak", "dauer": 1.5, "einfluss": 0.5, "anker": "ende" },
+  "revcym":   { "text": "Reverse cymbal swell, airy and bright, ends sharply", "dauer": 1.2, "einfluss": 0.6, "anker": "ende" },
+  "impact":   { "text": "Deep soft cinematic sub boom hit, clean and premium, short natural tail", "dauer": 2.0, "einfluss": 0.5, "anker": "spitze" },
+  "thump":    { "text": "Punchy tight low thud for kinetic typography word slam, short and clean", "dauer": 0.6, "einfluss": 0.6, "anker": "spitze", "varianten": 2 },
+  "flut":     { "text": "Liquid fill transition: deep soft whoosh swelling into a warm low impact, premium cinematic", "dauer": 1.5, "einfluss": 0.5, "anker": "spitze" },
+  "slot":     { "text": "Digital counter reel spinning, rapid clicking ticks that slow down and stop, slot machine numbers, clean", "dauer": 1.0, "einfluss": 0.6, "anker": "start" },
+  "chime":    { "text": "Elegant soft success chime, single gentle bell ding, premium UI confirmation sound", "dauer": 1.5, "einfluss": 0.6, "anker": "start" },
+  "push":     { "text": "Modern smartphone notification sound, soft two-note chime, clean and friendly", "dauer": 1.2, "einfluss": 0.6, "anker": "start" },
+  "funken":   { "text": "Tiny magical sparkle shimmer, short glittery twinkle, subtle and light", "dauer": 0.8, "einfluss": 0.6, "anker": "start" },
+  "falten":   { "text": "Crisp sheet of paper being folded once, quick paper fold", "dauer": 0.8, "einfluss": 0.6, "anker": "spitze" },
+  "papier":   { "text": "Sheet of paper sliding onto a desk, soft paper swoosh", "dauer": 0.8, "einfluss": 0.6, "anker": "spitze" },
+  "logo":     { "text": "Premium brand logo reveal: warm deep boom with a shimmering elegant synth sparkle tail, Apple keynote style, clean", "dauer": 3.0, "einfluss": 0.5, "anker": "spitze" }
+}
