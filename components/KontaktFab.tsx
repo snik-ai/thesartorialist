@@ -4,7 +4,6 @@
 // mit Live-Öffnungszeiten (Zeitzone Zürich). Geöffnet: WhatsApp, Anrufen, Termin.
 // Geschlossen: WhatsApp, Rückruf anfordern, Terminanfrage.
 // Rückruf läuft wie die Terminbuchung über eine vorbefüllte E-Mail (kein Server).
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { SITE } from '@/lib/site';
@@ -56,15 +55,22 @@ const IconWa = () => (
     <path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z" />
   </svg>
 );
-const IconCal = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <rect x="3.5" y="5" width="17" height="15" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.5" />
-  </svg>
-);
 const IconTel = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path d="M6.6 3.5h3l1.5 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.5v3a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+  </svg>
+);
+
+const IconPin = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="12" cy="10" r="2.3" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
+const IconUhr = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M12 7.5V12l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
 
@@ -148,7 +154,7 @@ export default function KontaktFab() {
 
   const offen = status?.offen ?? false;
   const wa = `${SITE.whatsapp}?text=${encodeURIComponent(t.waText)}`;
-  const terminPfad = pfad(lang, 'termin');
+  const karte = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${SITE.name}, ${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`)}`;
 
   return (
     <div className={`kfab${open ? ' is-open' : ''}${path.startsWith(pfad(lang, 'konfigurator')) ? ' kfab--hoch' : ''}`} ref={box}>
@@ -164,38 +170,25 @@ export default function KontaktFab() {
         </div>
 
         {!rueckruf ? (
-          <div className="kfab-actions">
-            <a className="kfab-btn kfab-btn--wa" href={wa} target="_blank" rel="noopener" tabIndex={open ? 0 : -1}>
+          <div className="kfab-tiles">
+            <a className="kfab-tile kfab-tile--wa" href={wa} target="_blank" rel="noopener" tabIndex={open ? 0 : -1}>
               <IconWa />
-              <span>
-                <strong>WhatsApp</strong>
-                <small>{offen ? t.waSofort : t.waSpaeter}</small>
-              </span>
+              <strong>WhatsApp</strong>
+              <small>{offen ? t.waSofort : t.waSpaeter}</small>
             </a>
             {offen ? (
-              <a className="kfab-btn" href={SITE.phoneHref} tabIndex={open ? 0 : -1}>
+              <a className="kfab-tile" href={SITE.phoneHref} tabIndex={open ? 0 : -1}>
                 <IconTel />
-                <span>
-                  <strong>{t.anrufen}</strong>
-                  <small>{SITE.phone}</small>
-                </span>
+                <strong>{t.anrufen}</strong>
+                <small className="num">{SITE.phone}</small>
               </a>
             ) : (
-              <button type="button" className="kfab-btn" onClick={() => setRueckruf(true)} tabIndex={open ? 0 : -1}>
+              <button type="button" className="kfab-tile" onClick={() => setRueckruf(true)} tabIndex={open ? 0 : -1}>
                 <IconTel />
-                <span>
-                  <strong>{t.rueckruf}</strong>
-                  <small>{t.rueckrufKurz}</small>
-                </span>
+                <strong>{t.rueckruf}</strong>
+                <small>{t.rueckrufKurz}</small>
               </button>
             )}
-            <Link className="kfab-btn kfab-btn--ink" href={terminPfad} tabIndex={open ? 0 : -1}>
-              <IconCal />
-              <span>
-                <strong>{offen ? t.terminBuchen : t.terminanfrage}</strong>
-                <small>{t.terminText}</small>
-              </span>
-            </Link>
           </div>
         ) : gesendet ? (
           <div className="kfab-done">
@@ -234,20 +227,25 @@ export default function KontaktFab() {
           </form>
         )}
 
-        <details className="kfab-hours">
-          <summary>{t.oeffnungszeiten}</summary>
-          <ul>
-            {alle.oeffnungszeiten.map((h) => (
-              <li key={h.tage}>
-                <span>{h.tage}</span>
-                <span className="num">{h.zeit}</span>
-              </li>
-            ))}
-          </ul>
-          <p>
-            {SITE.address.street}, {SITE.address.postalCode} {SITE.address.city}
-          </p>
-        </details>
+        <div className="kfab-info">
+          <a className="kfab-info-row" href={karte} target="_blank" rel="noopener" tabIndex={open ? 0 : -1}>
+            <IconPin />
+            <span>
+              {SITE.address.street}, {SITE.address.city}
+            </span>
+            <span className="kfab-info-link" aria-hidden="true">↗</span>
+          </a>
+          <div className="kfab-info-row">
+            <IconUhr />
+            <span className="kfab-zeiten">
+              {alle.oeffnungszeiten.map((h) => (
+                <span key={h.tage}>
+                  {h.tage} <span className="num">{h.zeit}</span>
+                </span>
+              ))}
+            </span>
+          </div>
+        </div>
       </div>
 
       <button type="button" className="kfab-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? t.schliessen : t.oeffnen}>

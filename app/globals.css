@@ -2549,3 +2549,26 @@ body.cart-open .fab-leiste, body.sheet-open .fab-leiste, body.menu-open .fab-lei
 /* Shop-Hero: Text bündig zum Seiteninhalt, nie angeschnitten */
 .wardrobe-copy { left: max(var(--pad), calc((100vw - var(--maxw)) / 2 + var(--pad))); }
 .page-hero .eyebrow { display: inline-flex; justify-content: center; }
+
+/* ---------- Kontakt-Panel kompakt: zwei Kacheln + Infozeilen ---------- */
+.kfab-panel { width: min(340px, calc(100vw - 2rem)); }
+.kfab-head { display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 1.1rem 0.85rem; }
+.kfab-status { display: inline-flex; align-self: flex-start; padding: 0.25rem 0.6rem; border-radius: 999px; background: #fbeee9; margin-top: 0; font-size: 0.76rem; }
+.kfab-status.is-open { background: #e8f5ec; }
+.kfab-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; padding: 0.9rem 1rem 0.4rem; }
+.kfab-tile { display: grid; justify-items: start; align-content: start; gap: 0.15rem; min-height: 104px; padding: 0.9rem 0.85rem; border: 1px solid var(--line); background: var(--paper); color: var(--ink); text-align: left; text-decoration: none; font: inherit; cursor: pointer; transition: border-color 0.2s ease, transform 0.2s var(--easing), background 0.2s ease; }
+.kfab-tile svg { margin-bottom: 0.45rem; }
+.kfab-tile strong { font-size: 0.95rem; font-weight: 600; }
+.kfab-tile small { font-size: 0.74rem; color: var(--muted); line-height: 1.3; }
+.kfab-tile:hover { border-color: var(--ink); transform: translateY(-1px); }
+.kfab-tile--wa { background: #25d366; border-color: #25d366; color: #fff; }
+.kfab-tile--wa small { color: rgba(255, 255, 255, 0.88); }
+.kfab-tile--wa:hover { background: #1ebe5b; border-color: #1ebe5b; }
+.kfab-info { display: grid; gap: 0.1rem; padding: 0.5rem 1rem 0.9rem; }
+.kfab-info-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.15rem; font-size: 0.8rem; color: var(--ink-soft, #3a3a3a); text-decoration: none; }
+.kfab-info-row svg { flex: none; color: var(--muted); }
+a.kfab-info-row:hover { color: var(--ink); }
+.kfab-info-link { margin-left: auto; color: var(--muted); }
+.kfab-zeiten { display: flex; flex-wrap: wrap; gap: 0.1rem 0.9rem; }
+.kfab-zeiten .num { color: var(--ink); font-weight: 500; }
+.kfab-form, .kfab-done { padding-bottom: 0.5rem; }
