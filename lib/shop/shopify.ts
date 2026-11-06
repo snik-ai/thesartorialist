@@ -27,6 +27,9 @@ type Opts = {
 
 export class ShopifyError extends Error {}
 
+/** Einmal von Shopify abgelehnt → für diesen Prozess ohne Token arbeiten. */
+let tokenUngueltig = false;
+
 /**
  * Schweizer Schreibweise: «ß» aus Shopify-Daten (z. B. Farbnamen der Hersteller wie «Titanweiß»)
  * wird überall als «ss» angezeigt. Adressen, IDs und Bild-URLs bleiben unverändert.
@@ -47,7 +50,7 @@ function swiss<T>(v: T): T {
 export async function shopify<T>(query: string, variables: Record<string, unknown> = {}, opts: Opts = {}): Promise<T> {
   const { revalidate = 900, tags = [] } = opts;
   const headers: Record<string, string> = { 'Content-Type': 'application/json', Accept: 'application/json', ...opts.headers };
-  if (TOKEN) headers['X-Shopify-Storefront-Access-Token'] = TOKEN;
+  if (TOKEN && !tokenUngueltig) headers['X-Shopify-Storefront-Access-Token'] = TOKEN;
 
   let lastErr: unknown;
   // Kurze Wiederholung bei Drosselung (429) oder Netzfehlern, z. B. im Build
@@ -66,7 +69,16 @@ export async function shopify<T>(query: string, variables: Record<string, unknow
       const json = (await res.json()) as { data?: T; errors?: { message: string; extensions?: { code?: string } }[] };
       // Drosselung meldet die Storefront API auch als GraphQL-Fehler mit Status 200
       if (json.errors?.some((e) => e.extensions?.code === 'THROTTLED')) throw new ShopifyError('Shopify 429 THROTTLED');
-      if (json.errors?.length) throw new ShopifyError(json.errors.map((e) => e.message).join('; '));
+      // Falscher Storefront-Token (z. B. Admin-Token in SHOPIFY_STOREFRONT_TOKEN): ohne Token weiter
+      // (tokenless funktioniert für Produkte, Collections, Warenkorb) statt den ganzen Shop lahmzulegen.
+      if ((res.status === 401 || json.errors?.some((e) => e.extensions?.code === 'UNAUTHORIZED')) && headers['X-Shopify-Storefront-Access-Token']) {
+        if (!tokenUngueltig) console.warn('[shop] SHOPIFY_STOREFRONT_TOKEN wird von Shopify abgelehnt (UNAUTHORIZED) — es geht ohne Token weiter. Bitte die Variable in Coolify entfernen oder korrigieren.');
+        tokenUngueltig = true;
+        delete headers['X-Shopify-Storefront-Access-Token'];
+        attempt--;
+        continue;
+      }
+      if (json.errors?.length) throw new ShopifyError(json.errors.map((e) => e.message || e.extensions?.code || 'unbekannt').join('; ') || `Shopify ${res.status}`);
       return swiss(json.data as T);
     } catch (e) {
       lastErr = e;
