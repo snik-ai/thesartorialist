@@ -41,7 +41,6 @@ export const SITE = {
 export type NavItem = { label: string; href: string };
 
 export const PRIMARY_NAV: NavItem[] = [
-  { label: 'Über uns', href: '/ueber-uns/' },
   { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
   { label: 'Massanzug', href: '/massanzug-zuerich/' },
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },

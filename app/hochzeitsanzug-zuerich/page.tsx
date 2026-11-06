@@ -141,7 +141,7 @@ export default function HochzeitsanzugPage() {
       <Faq items={FAQ} title="Häufige Fragen zum Hochzeitsanzug" />
       <CtaBand
         title="Ihr Hochzeitsanzug — buchen Sie 8–10 Wochen vor dem grossen Tag."
-        text="Wer früh kommt, bekommt die volle Auswahl und den besten Service."
+        text=""
       />
       <JsonLd
         data={serviceSchema({

@@ -8,9 +8,8 @@ import { SITE } from '@/lib/site';
 import Wordmark from './Wordmark';
 import CartButton from './shop/CartButton';
 
-// Reihenfolge laut Kunde: Über uns, Styles & Options, Massanzug, Hochzeitsanzug | Shop, Brands, Kontakt
+// Reihenfolge laut Kunde: Styles & Options, Massanzug, Hochzeitsanzug | Shop, Brands, Kontakt
 const NAV_LEFT = [
-  { label: 'Über uns', href: '/ueber-uns/' },
   { label: 'Styles & Options', href: '/massanzug-konfigurator/' },
   { label: 'Massanzug', href: '/massanzug-zuerich/' },
   { label: 'Hochzeitsanzug', href: '/hochzeitsanzug-zuerich/' },
@@ -155,24 +154,20 @@ export default function Header() {
           <div className="fs-panel fs-panel--main">
             <span className="fs-kicker">Menü</span>
             <div className="fs-list">
-              <Link className="fs-row" href="/ueber-uns/" onClick={close}>
-                <span className="fs-num">01</span>
-                <span className="fs-lbl">Über uns</span>
-              </Link>
               <Link className="fs-row" href="/massanzug-konfigurator/" onClick={close}>
-                <span className="fs-num">02</span>
+                <span className="fs-num">01</span>
                 <span className="fs-lbl">Styles & Options</span>
               </Link>
               <Link className="fs-row" href="/massanzug-zuerich/" onClick={close}>
-                <span className="fs-num">03</span>
+                <span className="fs-num">02</span>
                 <span className="fs-lbl">Massanzug</span>
               </Link>
               <Link className="fs-row" href="/hochzeitsanzug-zuerich/" onClick={close}>
-                <span className="fs-num">04</span>
+                <span className="fs-num">03</span>
                 <span className="fs-lbl">Hochzeitsanzug</span>
               </Link>
               <Link className="fs-row" href="/shop/" onClick={close}>
-                <span className="fs-num">05</span>
+                <span className="fs-num">04</span>
                 <span className="fs-lbl">Shop</span>
               </Link>
               <button
@@ -181,12 +176,12 @@ export default function Header() {
                 aria-haspopup="true"
                 onClick={() => setSub('brands')}
               >
-                <span className="fs-num">06</span>
+                <span className="fs-num">05</span>
                 <span className="fs-lbl">Brands</span>
                 <span className="fs-arr"><IconArrow /></span>
               </button>
               <Link className="fs-row" href="/kontakt/" onClick={close}>
-                <span className="fs-num">07</span>
+                <span className="fs-num">06</span>
                 <span className="fs-lbl">Kontakt</span>
               </Link>
             </div>

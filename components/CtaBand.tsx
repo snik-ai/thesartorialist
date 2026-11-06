@@ -12,7 +12,7 @@ export default function CtaBand({
       <div className="container">
         <span className="eyebrow">Termin buchen</span>
         <h2 className="h2">{title}</h2>
-        <p className="muted">{text}</p>
+        {text && <p className="muted">{text}</p>}
         <div className="hero-cta">
           <Link href="/termin/" className="btn btn--light">
             Termin buchen
