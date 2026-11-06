@@ -1,23 +1,22 @@
 'use client';
-// Rahmen des Backends: Seitenleiste (Desktop), Kopf- und Tab-Leiste (Mobil), Service-Worker, Abmelden.
+// Rahmen des Backends: Seitenleiste mit Monogramm (Desktop), Kopf- und Tab-Leiste (Mobil), Service-Worker, Abmelden.
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Icon from './Icon';
 
-const HAUPT = [
-  { href: '/admin/termine/', label: 'Termine', icon: 'kalender', badge: true },
-  { href: '/admin/kontakte/', label: 'Kontakte', icon: 'kontakte' },
-  { href: '/admin/reichweite/', label: 'Reichweite', icon: 'chart' },
-];
-const FOLGT = [
-  { href: '/admin/angebote/', label: 'Angebote', icon: 'dokument' },
-  { href: '/admin/auftraege/', label: 'Aufträge', icon: 'auftrag' },
-  { href: '/admin/rechnungen/', label: 'Rechnungen', icon: 'rechnung' },
-  { href: '/admin/massblaetter/', label: 'Massblätter', icon: 'mass' },
+import { NAV, type Eintrag, type Zaehler } from './navigation';
+
+export type { Zaehler };
+
+const TABS: Eintrag[] = [
+  { href: '/admin/uebersicht/', label: 'Übersicht', icon: 'uebersicht' },
+  { href: '/admin/termine/', label: 'Termine', icon: 'kalender', zahl: 'termine' },
+  { href: '/admin/kunden/', label: 'Kunden', icon: 'kunde' },
+  { href: '/admin/auftraege/', label: 'Aufträge', icon: 'auftrag', zahl: 'tasks' },
 ];
 
-export default function Shell({ email, offen, children }: { email: string; offen: number; children: React.ReactNode }) {
+export default function Shell({ email, zaehler, children }: { email: string; zaehler: Zaehler; children: React.ReactNode }) {
   const pfad = usePathname() ?? '';
   const router = useRouter();
   const aktiv = (href: string) => (pfad.startsWith(href) ? 'page' : undefined);
@@ -32,37 +31,35 @@ export default function Shell({ email, offen, children }: { email: string; offen
     router.refresh();
   }
 
-  const badge = offen > 0 ? <span className="a-badge zahl">{offen}</span> : null;
+  const badge = (e: Eintrag) => {
+    const n = e.zahl ? zaehler[e.zahl] : 0;
+    return n > 0 ? <span className={`a-badge zahl${e.warn ? ' rot' : ''}`}>{n}</span> : null;
+  };
+  const tabAktiv = TABS.some((t) => pfad.startsWith(t.href));
 
   return (
     <div className="a-shell">
       <aside className="a-side">
-        <Link href="/admin/termine/" className="a-brand">
-          <b>THE SARTORIALIST</b>
-          <span>Backend</span>
-          <i />
+        <Link href="/admin/uebersicht/" className="a-brand" aria-label="The Sartorialist — Übersicht">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/marke/monogramm-weiss.png" alt="" className="a-brand-mono" width={44} height={35} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/marke/wortmarke-weiss.png" alt="The Sartorialist Zürich" className="a-brand-wort" width={168} height={25} />
+          <span>Atelier · Backend</span>
         </Link>
         <nav className="a-nav" aria-label="Backend">
-          {HAUPT.map((n) => (
-            <Link key={n.href} href={n.href} aria-current={aktiv(n.href)}>
-              <Icon name={n.icon} />
-              {n.label}
-              {n.badge && badge}
-            </Link>
+          {NAV.map((g, i) => (
+            <div key={i} className="a-nav-gruppe">
+              {g.titel && <div className="a-nav-titel">{g.titel}</div>}
+              {g.eintraege.map((n) => (
+                <Link key={n.href} href={n.href} aria-current={aktiv(n.href)}>
+                  <Icon name={n.icon} />
+                  {n.label}
+                  {badge(n)}
+                </Link>
+              ))}
+            </div>
           ))}
-          <div className="a-nav-titel">Atelier · folgt</div>
-          {FOLGT.map((n) => (
-            <Link key={n.href} href={n.href} aria-current={aktiv(n.href)} className="a-folgt">
-              <Icon name={n.icon} />
-              {n.label}
-              <em>folgt</em>
-            </Link>
-          ))}
-          <div className="a-nav-titel">Konto</div>
-          <Link href="/admin/einstellungen/" aria-current={aktiv('/admin/einstellungen/')}>
-            <Icon name="einstellungen" />
-            Einstellungen
-          </Link>
         </nav>
         <div className="a-side-fuss">
           <div className="a-wer" title={email}>
@@ -75,11 +72,13 @@ export default function Shell({ email, offen, children }: { email: string; offen
       </aside>
 
       <header className="a-topbar">
-        <Link href="/admin/termine/">
-          <b>THE SARTORIALIST</b>
-          <small>BACKEND</small>
+        <Link href="/admin/uebersicht/" className="a-topbar-marke" aria-label="Übersicht">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/marke/monogramm-weiss.png" alt="" width={34} height={27} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/marke/wortmarke-weiss.png" alt="The Sartorialist" width={128} height={19} className="wort" />
         </Link>
-        <button type="button" onClick={abmelden} aria-label="Abmelden" style={{ color: '#cfcac0', display: 'inline-flex' }}>
+        <button type="button" onClick={abmelden} aria-label="Abmelden" className="a-topbar-knopf">
           <Icon name="abmelden" width={22} height={22} />
         </button>
       </header>
@@ -87,14 +86,14 @@ export default function Shell({ email, offen, children }: { email: string; offen
       <div className="a-main">{children}</div>
 
       <nav className="a-tabbar" aria-label="Backend mobil">
-        {HAUPT.map((n) => (
+        {TABS.map((n) => (
           <Link key={n.href} href={n.href} aria-current={aktiv(n.href)}>
             <Icon name={n.icon} />
             {n.label}
-            {n.badge && badge}
+            {badge(n)}
           </Link>
         ))}
-        <Link href="/admin/einstellungen/" aria-current={aktiv('/admin/einstellungen/') ?? (FOLGT.some((f) => pfad.startsWith(f.href)) ? 'page' : undefined)}>
+        <Link href="/admin/mehr/" aria-current={!tabAktiv ? 'page' : undefined}>
           <Icon name="mehr" />
           Mehr
         </Link>

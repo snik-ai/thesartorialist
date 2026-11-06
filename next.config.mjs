@@ -54,11 +54,20 @@ const nextConfig = {
   // als Node-Server: Marketing-Seiten bleiben statisch vorgerendert, Shop-Seiten
   // werden alle 15 Minuten aus Shopify erneuert (ISR). Gleicher Aufbau wie racher.ch.
   output: 'standalone',
+  // Lokale Tests: zweiter Dev-Server mit eigenem Build-Ordner, ohne den Produktions-Build zu überschreiben
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   // Projektordner als Wurzel (sonst landet server.js in Worktrees verschachtelt in .next/standalone/…)
   outputFileTracingRoot: new URL('.', import.meta.url).pathname,
   trailingSlash: true,
   // Mehrere Root-Layouts (je Sprache): unbekannte URLs rendert app/global-not-found.tsx
   experimental: { globalNotFound: true },
+  // PDF-Belege (Angebot, Rechnung mit QR-Zahlteil, Massblatt): PDFKit liest seine Schriftmetriken zur Laufzeit
+  // aus node_modules — nicht bündeln, Datendateien in den Standalone-Build aufnehmen.
+  serverExternalPackages: ['pdfkit', 'swissqrbill', 'fontkit'],
+  outputFileTracingIncludes: {
+    '/api/admin/**': ['./node_modules/pdfkit/js/**'],
+    '/api/angebot/**': ['./node_modules/pdfkit/js/**'],
+  },
   poweredByHeader: false,
   images: {
     unoptimized: true,

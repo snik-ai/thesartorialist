@@ -345,3 +345,100 @@ export function mailTerminVorschlag(d: { name: string; vorschlaege: string[]; na
   const text = [f(t.gruss, { name: d.name }), '', d.nachricht || v.textKurz, '', ...d.vorschlaege.map((x) => `– ${x}`), '', t.grussFormel, t.signatur].join('\n');
   return { html, text, subject: v.betreff };
 }
+
+/* ---------- Termin-Erinnerung (2 h vorher), in der Sprache des Kunden ---------- */
+
+export type ErinnerungZweck = 'beratung' | 'massnehmen' | 'anprobe' | 'abholung';
+
+/** An den Kunden: Erinnerung kurz vor dem Termin. Unbestätigt = Wunschtermin mit Hinweis, dass wir uns ggf. melden. */
+export function mailTerminErinnerung(d: TerminDaten & { bestaetigt: boolean; zweck: ErinnerungZweck }, t: MailTexte = MAIL_DE) {
+  const e = t.erinnerung;
+  const vorname = d.name.split(' ')[0] || d.name;
+  const termin = d.wunschText ?? '';
+  const wa = `${SITE.whatsapp}?text=${encodeURIComponent(f(t.waVerschieben, { termin }))}`;
+  const html = rahmen(
+    f(e.vorschau, { termin }),
+    titelZeile(f(e.titel, { vorname }), d.bestaetigt ? e.text : e.textWunsch) +
+      `<tr><td style="padding:18px 36px 6px">${kicker(d.bestaetigt ? e.kicker : e.kickerWunsch)}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(
+        termin,
+      )}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">${esc(`${e.zweck[d.zweck]} · ${adresse()}`)}</div></div></td></tr>` +
+      `<tr><td style="padding:22px 36px 32px">${knopf(MAPS, t.routePlanen, 'ink')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}${knopf(wa, 'WhatsApp', 'gold')}</td></tr>`,
+    t,
+  );
+  const text = [f(t.gruss, { name: d.name }), '', d.bestaetigt ? e.text : e.textWunsch, '', `${termin} — ${e.zweck[d.zweck]}`, adresse(), f(t.eingang.textTelefon, { telefon: SITE.phone }), '', t.grussFormel, t.signatur].join('\n');
+  return { html, text, subject: f(d.bestaetigt ? e.betreff : e.betreffWunsch, { termin }) };
+}
+
+/* ---------- Angebot, Auftrag, Rechnung (Deutsch) ---------- */
+
+const chfMail = (rp: number) => `CHF ${(rp / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '’')}`;
+const anredeName = (name: string, anrede?: string | null) => (anrede ? `${anrede} ${name.split(' ').slice(-1)[0]}` : name);
+
+/** An den Kunden: Angebot mit Online-Annahme-Link und PDF im Anhang */
+export function mailAngebot(d: { name: string; anrede?: string | null; nummer: string; titel: string; totalRp: number; gueltigBis?: string; link: string; nachricht?: string }) {
+  const html = rahmen(
+    `Ihr Angebot ${d.nummer} — ${d.titel}`,
+    titelZeile(`Ihr Angebot, ${anredeName(d.name, d.anrede)}.`, d.nachricht || 'Vielen Dank für Ihren Besuch. Gerne senden wir Ihnen unser Angebot für Ihre Massanfertigung — Sie können es online ansehen und mit einem Klick annehmen.') +
+      `<tr><td style="padding:18px 36px 6px">${kicker(`Angebot ${d.nummer}`)}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(d.titel)}</div><div style="font:600 17px/1.5 Helvetica,Arial,sans-serif;color:#ffffff;margin-top:8px">${esc(chfMail(d.totalRp))}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:2px">${esc(d.gueltigBis ? `inkl. MWST · gültig bis ${d.gueltigBis}` : 'inkl. MWST')}</div></div></td></tr>` +
+      `<tr><td style="padding:22px 36px 8px">${knopf(d.link, 'Angebot ansehen & annehmen', 'gold')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">Das Angebot liegt zusätzlich als PDF bei.</div></td></tr>` +
+      `<tr><td style="padding:14px 36px 32px">${kicker('Fragen zum Angebot?')}<p style="margin:0 0 14px;font:14px/1.6 Helvetica,Arial,sans-serif;color:${SOFT}">Antworten Sie einfach auf diese E-Mail oder rufen Sie uns an.</p>${knopf(telHref(SITE.phone), SITE.phone, 'line')}${knopf(SITE.whatsapp, 'WhatsApp', 'line')}</td></tr>`,
+  );
+  const text = [`Grüezi ${d.name}`, '', d.nachricht || 'Gerne senden wir Ihnen unser Angebot für Ihre Massanfertigung.', '', `Angebot ${d.nummer}: ${d.titel}`, `Total ${chfMail(d.totalRp)} inkl. MWST${d.gueltigBis ? `, gültig bis ${d.gueltigBis}` : ''}`, '', `Online ansehen und annehmen: ${d.link}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  return { html, text, subject: `Ihr Angebot ${d.nummer} — The Sartorialist Zürich` };
+}
+
+/** An den Kunden: Bestätigung nach der Annahme (Auftragsbestätigung) */
+export function mailAuftragBestaetigt(d: { name: string; anrede?: string | null; angebotNummer: string; auftragNummer: string; titel: string; totalRp: number }) {
+  const html = rahmen(
+    `Auftrag ${d.auftragNummer} bestätigt`,
+    titelZeile(`Herzlichen Dank, ${anredeName(d.name, d.anrede)}.`, 'Wir haben Ihre Zusage erhalten und beginnen mit Ihrer Massanfertigung. Als Nächstes bestellen wir den Stoff und melden uns für die Anprobe.') +
+      `<tr><td style="padding:18px 36px 6px">${kicker('Ihr Auftrag')}${zeilen([
+        ['Auftrag', d.auftragNummer],
+        ['Angebot', d.angebotNummer],
+        ['Bezeichnung', d.titel],
+        ['Total', `${chfMail(d.totalRp)} inkl. MWST`],
+      ])}</td></tr>` +
+      `<tr><td style="padding:22px 36px 32px">${kicker('So geht es weiter')}<p style="margin:0;font:14px/1.7 Helvetica,Arial,sans-serif;color:${SOFT}">1 · Stoff und Material werden bestellt<br>2 · Fertigung in Italien<br>3 · Anprobe im Atelier, Feinanpassungen<br>4 · Abholung — wir melden uns, sobald alles bereit ist</p></td></tr>`,
+  );
+  const text = [`Grüezi ${d.name}`, '', 'Herzlichen Dank für Ihre Zusage. Wir beginnen mit Ihrer Massanfertigung.', '', `Auftrag: ${d.auftragNummer}`, `Angebot: ${d.angebotNummer}`, `${d.titel} — ${chfMail(d.totalRp)} inkl. MWST`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  return { html, text, subject: `Auftragsbestätigung ${d.auftragNummer} — The Sartorialist Zürich` };
+}
+
+/** Ans Atelier: Angebot wurde online angenommen */
+export function mailAngebotAngenommenAtelier(d: { name: string; angebotNummer: string; auftragNummer: string; titel: string; totalRp: number; link: string }) {
+  const html = rahmen(
+    `Angebot ${d.angebotNummer} angenommen`,
+    titelZeile('Angebot angenommen', `${d.name} hat das Angebot ${d.angebotNummer} online angenommen. Der Auftrag ${d.auftragNummer} ist eröffnet.`) +
+      `<tr><td style="padding:18px 36px 6px">${zeilen([
+        ['Kunde', d.name],
+        ['Angebot', `${d.angebotNummer} · ${d.titel}`],
+        ['Total', chfMail(d.totalRp)],
+        ['Auftrag', d.auftragNummer],
+      ])}</td></tr><tr><td style="padding:22px 36px 32px">${knopf(d.link, 'Auftrag öffnen')}</td></tr>`,
+  );
+  return { html, text: `${d.name} hat das Angebot ${d.angebotNummer} angenommen (${chfMail(d.totalRp)}). Auftrag ${d.auftragNummer}: ${d.link}`, subject: `Angenommen: ${d.angebotNummer} — ${d.name}` };
+}
+
+/** An den Kunden: Rechnung (PDF mit QR-Zahlteil im Anhang) */
+export function mailRechnung(d: { name: string; anrede?: string | null; nummer: string; art: 'rechnung' | 'anzahlung' | 'schluss'; titel: string; betragRp: number; faellig?: string; nachricht?: string }) {
+  const artText = d.art === 'anzahlung' ? 'Anzahlungsrechnung' : d.art === 'schluss' ? 'Schlussrechnung' : 'Rechnung';
+  const html = rahmen(
+    `${artText} ${d.nummer}`,
+    titelZeile(`Ihre ${artText}, ${anredeName(d.name, d.anrede)}.`, d.nachricht || 'Herzlichen Dank für Ihren Auftrag. Im Anhang finden Sie die Rechnung mit QR-Zahlteil — scannen Sie den Code einfach mit Ihrer Banking-App.') +
+      `<tr><td style="padding:18px 36px 6px">${kicker(`${artText} ${d.nummer}`)}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(chfMail(d.betragRp))}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">${esc([d.titel, d.faellig ? `zahlbar bis ${d.faellig}` : ''].filter(Boolean).join(' · '))}</div></div></td></tr>` +
+      `<tr><td style="padding:22px 36px 32px;font:13px/1.6 Helvetica,Arial,sans-serif;color:${MUTED}">Fragen zur Rechnung? Antworten Sie einfach auf diese E-Mail.</td></tr>`,
+  );
+  const text = [`Grüezi ${d.name}`, '', d.nachricht || 'Im Anhang finden Sie die Rechnung mit QR-Zahlteil.', '', `${artText} ${d.nummer}: ${chfMail(d.betragRp)}${d.faellig ? `, zahlbar bis ${d.faellig}` : ''}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  return { html, text, subject: `${artText} ${d.nummer} — The Sartorialist Zürich` };
+}
+
+/** An den Kunden: Massanfertigung ist abholbereit */
+export function mailAbholbereit(d: { name: string; anrede?: string | null; titel: string; auftragNummer: string }) {
+  const html = rahmen(
+    'Ihre Massanfertigung ist bereit',
+    titelZeile(`Es ist so weit, ${anredeName(d.name, d.anrede)}.`, `Ihre Massanfertigung «${d.titel}» ist fertig und wartet im Atelier auf Sie. Wann passt es Ihnen für die Abholung?`) +
+      `<tr><td style="padding:18px 36px 32px">${knopf(telHref(SITE.phone), SITE.phone, 'ink')}${knopf(SITE.whatsapp, 'WhatsApp', 'gold')}${knopf(MAPS, 'Route planen', 'line')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:6px">Auftrag ${esc(d.auftragNummer)} · ${esc(adresse())}</div></td></tr>`,
+  );
+  const text = [`Grüezi ${d.name}`, '', `Ihre Massanfertigung «${d.titel}» ist abholbereit. Wann passt es Ihnen?`, `Atelier: ${adresse()}`, `Telefon: ${SITE.phone}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  return { html, text, subject: 'Ihre Massanfertigung ist abholbereit — The Sartorialist Zürich' };
+}

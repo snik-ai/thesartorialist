@@ -4,6 +4,7 @@ import { eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import { apiAdmin, fehler, jsonBody, txt, UUID } from '@/lib/admin/zugang';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
+import { leadPhaseSetzen } from '@/lib/crm/ablauf';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
 import { icsDatei, mailTerminBestaetigt, mailTerminKunde, mailTerminVorschlag, type TerminDaten } from '@/lib/mail-vorlagen';
 import { kundenTexte, terminTextFuer } from '@/lib/i18n/kundenmail';
@@ -45,7 +46,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     case 'bestaetigen': {
       const start = datumOk(b.start);
       if (!start) return fehler('Bitte einen Termin wählen.');
-      await setzeStatus('bestaetigt', { bestaetigtStart: start });
+      // Neue Zeit → Erinnerung neu fällig
+      await setzeStatus('bestaetigt', { bestaetigtStart: start, erinnerungGesendetAm: t.bestaetigtStart?.getTime() === start.getTime() ? t.erinnerungGesendetAm : null });
+      await leadPhaseSetzen(db(), k.id, 'termin');
       const lang = terminLang(start);
       let mailMeldung = '';
       let mailFehler = false;
@@ -104,6 +107,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     case 'erledigt':
     case 'abgesagt': {
       await setzeStatus(b.aktion);
+      if (b.aktion === 'erledigt' && t.art === 'termin') await leadPhaseSetzen(db(), k.id, 'termin');
       await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: 'system', titel: b.aktion === 'erledigt' ? 'Als erledigt markiert' : 'Abgesagt', adminUserId: wer });
       return NextResponse.json({ ok: true, meldung: b.aktion === 'erledigt' ? 'Als erledigt markiert.' : 'Abgesagt.' });
     }

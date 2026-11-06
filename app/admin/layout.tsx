@@ -3,6 +3,7 @@ import { schriftKlassen } from '@/lib/fonts';
 import { SITE } from '@/lib/site';
 import '@/app/globals.css';
 import './admin.css';
+import './atelier.css';
 
 // Eigenes Root-Layout fürs Backend (seit die Website je Sprache ein Root-Layout hat):
 // ohne Header, Footer, Pixel und Tracking der öffentlichen Seite.

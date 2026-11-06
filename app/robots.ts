@@ -22,7 +22,7 @@ const AI_CRAWLERS = [
 ];
 
 // Backend und Schnittstellen nie crawlen
-const PRIVAT = ['/admin/', '/api/'];
+const PRIVAT = ['/admin/', '/api/', '/angebot/'];
 
 export default function robots(): MetadataRoute.Robots {
   return {

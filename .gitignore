@@ -27,3 +27,4 @@ next-env.d.ts
 # Marketing: Zwischen-Renders
 Marketing/**/out/
 Marketing/**/frames-*/
+.next-dev/

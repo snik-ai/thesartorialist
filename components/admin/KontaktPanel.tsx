@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import KontaktKanaele, { type KanalKontakt } from './KontaktKanaele';
 import { textAllgemein } from '@/lib/crm/nachrichten';
 
-type Daten = { name: string; email: string; telefon: string; firma: string; brandDomain: string; notiz: string };
+type Daten = { name: string; email: string; telefon: string; firma: string; brandDomain: string; notiz: string; anrede: string; strasse: string; plz: string; ort: string };
 
 export default function KontaktPanel({ k, daten, whatsapp, sms, abgemeldet }: { k: KanalKontakt; daten: Daten; whatsapp: boolean; sms: boolean; abgemeldet: boolean }) {
   const router = useRouter();
@@ -109,11 +109,21 @@ export default function KontaktPanel({ k, daten, whatsapp, sms, abgemeldet }: { 
         </div>
         {bearbeiten && (
           <div className="a-karte-inhalt">
+            <div className="a-segment" role="group" aria-label="Anrede" style={{ marginBottom: 14 }}>
+              {['', 'Herr', 'Frau'].map((a) => (
+                <button key={a || 'keine'} type="button" aria-pressed={form.anrede === a} onClick={() => setForm({ ...form, anrede: a })}>
+                  {a || 'Ohne Anrede'}
+                </button>
+              ))}
+            </div>
             {feld('name', 'Name', { autoComplete: 'off' })}
             {feld('email', 'E-Mail', { type: 'email', inputMode: 'email', autoCapitalize: 'none', spellCheck: false })}
             {feld('telefon', 'Telefon', { type: 'tel', inputMode: 'tel' })}
             {feld('firma', 'Firma')}
             {feld('brandDomain', 'Website der Firma (für das Logo)', { placeholder: 'firma.ch', autoCapitalize: 'none', spellCheck: false })}
+            {feld('strasse', 'Strasse und Nr. (für Rechnung und QR-Zahlteil)', { autoComplete: 'street-address' })}
+            {feld('plz', 'PLZ', { inputMode: 'numeric', autoComplete: 'postal-code' })}
+            {feld('ort', 'Ort', { autoComplete: 'address-level2' })}
             <label className="a-feld">
               <span>Interne Notiz</span>
               <textarea className="a-input" value={form.notiz} onChange={(e) => setForm({ ...form, notiz: e.target.value })} />

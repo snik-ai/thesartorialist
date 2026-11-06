@@ -8,6 +8,8 @@ import { TZ } from '@/lib/zeit';
 import Passkeys from '@/components/admin/Passkeys';
 import Admins from '@/components/admin/Admins';
 import Benachrichtigungen from '@/components/admin/Benachrichtigungen';
+import { FirmaForm, KatalogForm, LogoForm } from '@/components/admin/FirmaEinstellungen';
+import { firma, katalog, logoDaten } from '@/lib/crm/firma';
 
 export const metadata: Metadata = { title: 'Einstellungen' };
 export const dynamic = 'force-dynamic';
@@ -19,7 +21,7 @@ export default async function EinstellungenPage() {
     .from(schema.passkey)
     .where(eq(schema.passkey.adminUserId, s.user.id))
     .orderBy(asc(schema.passkey.erstelltAm));
-  const admins = await db().select().from(schema.adminUser).orderBy(asc(schema.adminUser.erstelltAm));
+  const [admins, f, kat, logo] = await Promise.all([db().select().from(schema.adminUser).orderBy(asc(schema.adminUser.erstelltAm)), firma(), katalog(), logoDaten()]);
   const fmt = (d: Date | null) => (d ? d.toLocaleString('de-CH', { timeZone: TZ, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : null);
 
   return (
@@ -48,11 +50,20 @@ export default async function EinstellungenPage() {
               <dd>{s.methode === 'passkey' ? 'mit Passkey' : 'mit E-Mail-Code'}</dd>
               <dt>Admins</dt>
               <dd>werden in der Datenbank verwaltet (Karte «Admins»)</dd>
-              <dt>Weitere Module</dt>
-              <dd>Angebote, Aufträge, Rechnungen und Massblätter folgen.</dd>
+              <dt>Termin-Erinnerung</dt>
+              <dd>{f.erinnerungAktiv ? `${String(f.erinnerungStunden).replace('.', ',')} Std. vorher${mailBereit() ? '' : ' (wartet auf Mailversand)'}` : 'ausgeschaltet'}</dd>
+              <dt>QR-Rechnung</dt>
+              <dd>{f.qrIban ? 'QR-IBAN mit QR-Referenz' : f.iban ? 'IBAN mit Creditor Reference (RF)' : 'IBAN fehlt — unter «Firma & Dokumente» erfassen'}</dd>
             </dl>
           </div>
         </div>
+      </div>
+      <div style={{ marginTop: 20 }}>
+        <FirmaForm firma={f} />
+      </div>
+      <div className="a-zwei" style={{ marginTop: 20 }}>
+        <KatalogForm katalog={kat} />
+        <LogoForm eigenes={Boolean(logo)} />
       </div>
       <div className="a-zwei" style={{ marginTop: 20 }}>
         <Admins liste={admins.map((a) => ({ id: a.id, email: a.email, name: a.name, aktiv: a.aktiv, zuletzt: fmt(a.letzteAnmeldung), ich: a.id === s.user.id }))} />
