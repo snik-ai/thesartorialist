@@ -1,0 +1,127 @@
+/* Lead-Formulare (Hausstandard, portiert aus VoxCRM apps/website): E-Mail- und Telefon-Feld (Häkchen, Tippfehler-
+   Vorschlag, Länder-Präfix), Firmenerkennung (Logo-Kachel, Lichtstreif) und Einwilligungs-Schalter.
+   Projekt-Design: Schwarz/Weiss, eckige Felder, Inter/Playfair, Gold-Akzent für Fokus. Keine Schatten-Kaskaden. */
+
+.form-grid, .feld { --gold: #c9a063; --gold-soft: rgba(201, 160, 99, 0.14); --ok: #2f7d4f; --rot: #9a3b1e;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); }
+.feld { display: grid; gap: 0.5rem; min-width: 0; }
+.feld .sr, .einw .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.feld__label { margin-bottom: 0 !important; }
+.feld__label i { font-style: normal; font-weight: 500; letter-spacing: 0.08em; text-transform: none; color: var(--muted); opacity: 0.8; }
+
+/* Grosse, ruhige Eingabe mit Gold-Fokus */
+.form-grid .feld__eingabe { min-height: 56px; padding: 0.95rem 1.1rem; font-size: 1.02rem; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--paper); transition: border-color 0.2s, box-shadow 0.2s, padding-left 0.25s var(--ease-out); }
+.form-grid .feld__eingabe:hover { border-color: #cfccc5; }
+.form-grid .feld__eingabe:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); }
+.form-grid .feld__eingabe::placeholder { color: #b3afa8; }
+
+/* Hülle um Eingabe + Häkchen (+ Präfix) */
+.feld__huelle { position: relative; display: flex; align-items: stretch; }
+.feld__huelle .feld__eingabe { padding-right: 52px; }
+.form-grid .feld__eingabe[aria-invalid="true"] { border-color: var(--rot); }
+.form-grid .feld__eingabe[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgba(154, 59, 30, 0.12); }
+.feld__ok { position: absolute; right: 16px; top: 50%; width: 24px; height: 24px; margin-top: -12px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ok); color: #fff; opacity: 0; transform: scale(0.4) rotate(-30deg); transition: opacity 0.25s, transform 0.45s var(--ease-out); pointer-events: none; }
+.feld__huelle--ok .feld__ok { opacity: 1; transform: none; }
+.form-grid .feld__huelle--ok .feld__eingabe:not(:focus) { border-color: rgba(47, 125, 79, 0.5); }
+
+.feld__fehler { font-size: 0.84rem; color: var(--rot); font-weight: 500; animation: feld-rein 0.35s var(--ease-out) both; }
+.feld__hinweis { font-size: 0.82rem; color: var(--muted); }
+
+/* «Meinten Sie …?» – ein Klick übernimmt */
+.feld__vorschlag { justify-self: start; display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 0.6rem 0.9rem; border-radius: var(--radius);
+  background: var(--gold-soft); border: 1px solid rgba(201, 160, 99, 0.45); color: var(--ink); font: 500 0.9rem var(--sans); text-align: left; cursor: pointer;
+  animation: feld-rein 0.4s var(--ease-out) both; transition: border-color 0.2s, background 0.2s; }
+.feld__vorschlag svg { color: #9b7840; flex: none; }
+.feld__vorschlag span { min-width: 0; overflow-wrap: anywhere; }
+.feld__vorschlag b { font-weight: 700; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.feld__vorschlag:hover { border-color: var(--gold); background: rgba(201, 160, 99, 0.22); }
+
+/* Länder-Präfix im Telefon-Feld (eigene Auswahl statt select) */
+.form-grid .feld__huelle--praefix .feld__eingabe { padding-left: 104px; }
+.form-grid .feld__huelle--intl .feld__eingabe { padding-left: 72px; }
+.tel-land { position: absolute; left: 6px; top: 6px; bottom: 6px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; padding: 0 10px 0 12px;
+  border: 0; border-right: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-warm); color: var(--ink); font: 600 0.9rem var(--sans);
+  cursor: pointer; transition: background 0.2s; }
+.tel-land:hover, .tel-land[aria-expanded="true"] { background: #ecebe6; }
+.tel-land__code { font-size: 0.66rem; letter-spacing: 0.14em; color: var(--muted); }
+.tel-land__vorwahl { font-variant-numeric: tabular-nums; }
+.tel-land svg { color: var(--muted); transition: transform 0.3s var(--ease-out); }
+.tel-land[aria-expanded="true"] svg { transform: rotate(180deg); }
+.tel-laender { position: absolute; left: 0; top: calc(100% + 6px); z-index: 20; min-width: min(100%, 300px); margin: 0; padding: 6px; list-style: none;
+  background: var(--paper); border: 1px solid var(--ink); border-radius: var(--radius); outline: none; animation: feld-rein 0.3s var(--ease-out) both; }
+.tel-laender:focus-visible { border-color: var(--gold); }
+.tel-laender li { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; padding: 0.7rem 0.75rem; cursor: pointer; font-size: 0.95rem; }
+.tel-laender li.aktiv { background: var(--paper-warm); }
+.tel-laender li[aria-selected="true"] { font-weight: 600; box-shadow: inset 2px 0 0 var(--gold); }
+.tel-laender__code { font-size: 0.68rem; letter-spacing: 0.14em; color: var(--muted); font-weight: 600; }
+.tel-laender__vorwahl { font-variant-numeric: tabular-nums; color: var(--muted); }
+
+/* ── Firmenerkennung ───────────────────────────────────────────────────────────── */
+.marke-logo { position: relative; flex: none; display: inline-grid; place-items: center; overflow: hidden; border-radius: var(--radius); background: #fff;
+  border: 1px solid var(--line); color: var(--ink); font-family: var(--serif); font-weight: 600; line-height: 1; }
+.marke-logo img { width: 78%; height: 78%; object-fit: contain; }
+/* Kachel ausgefüllt: volles Logo randlos, Logo mit transparentem Rand gross auf getönter eigener Farbe */
+.marke-logo--voll { border-color: transparent; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06); }
+.marke-logo--voll img { width: 100%; height: 100%; object-fit: cover; }
+.marke-logo--getoent { border-color: transparent; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05); }
+.marke-logo--getoent img { width: 84%; height: 84%; }
+.marke-logo--leer { width: 40px; height: 40px; background: linear-gradient(100deg, var(--paper-warm) 30%, #fff 50%, var(--paper-warm) 70%); background-size: 220% 100%;
+  animation: marke-schimmer 1.3s linear infinite; }
+
+.marke-chip { --gold: #c9a063; --ease-out: cubic-bezier(0.16, 1, 0.3, 1); position: relative; display: flex; align-items: flex-start; gap: 0.9rem;
+  padding: 0.7rem 0.85rem 0.7rem 0.7rem; overflow: hidden; border: 1px solid var(--line); border-left: 2px solid var(--gold); border-radius: var(--radius);
+  background: linear-gradient(180deg, #fff, var(--paper-warm)); animation: marke-rein 0.7s var(--ease-out) both; }
+/* Feiner goldener Lichtstreif einmal über die Karte, wenn die Firma erkannt ist */
+.marke-chip::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(201, 160, 99, 0.28) 50%, transparent 65%);
+  transform: translateX(-100%); animation: marke-streif 1.4s 0.25s var(--ease-out) both; pointer-events: none; }
+.marke-chip .marke-logo { animation: marke-logo 0.8s 0.05s var(--ease-out) both; }
+.marke-chip__text { min-width: 0; display: grid; gap: 2px; line-height: 1.3; }
+.marke-chip__kicker { display: inline-flex; align-items: center; gap: 5px; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #2f7d4f; animation: feld-rein 0.5s 0.35s var(--ease-out) both; }
+.marke-chip__kicker .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.marke-chip__zeile { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.4rem; min-width: 0; }
+.marke-chip__zeile b { font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.marke-chip__domain { font-size: 0.82rem; color: var(--muted); overflow-wrap: anywhere; }
+.marke-chip__zeile b + .marke-chip__domain::before { content: "· "; }
+.marke-chip--sucht .marke-chip__domain { white-space: nowrap; }
+@media (max-width: 520px) {
+  .marke-chip__zeile { display: grid; }
+  .marke-chip__zeile b + .marke-chip__domain::before { content: none; }
+}
+.marke-chip__gruss { font-family: var(--serif); font-style: italic; font-size: 0.92rem; color: var(--ink-soft); margin-top: 2px; animation: feld-rein 0.6s 0.5s var(--ease-out) both; }
+.marke-chip--sucht { align-items: center; border-style: dashed; border-left-style: dashed; background: transparent; animation: feld-rein 0.3s var(--ease-out) both; }
+.marke-chip--sucht::after { display: none; }
+
+/* Logo als Präfix im Firmenfeld */
+.form-grid .feld__huelle--marke .feld__eingabe { padding-left: 58px; }
+.feld__huelle--marke .marke-logo { position: absolute; left: 11px; top: 50%; margin-top: -17px; z-index: 1; animation: marke-logo 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.feld__vorgeschlagen { font-size: 0.82rem; color: #2f7d4f; display: inline-flex; align-items: center; gap: 6px; animation: feld-rein 0.4s var(--ease-out) both; }
+
+/* ── Einwilligung: eigener Schalter statt Checkbox ─────────────────────────────── */
+.einw { --gold: #c9a063; display: flex; align-items: flex-start; gap: 0.9rem; width: 100%; padding: 0.95rem 1rem; text-align: left; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); color: var(--ink); font: 400 0.92rem/1.5 var(--sans);
+  transition: border-color 0.2s, background 0.2s; }
+.einw:hover { border-color: #cfccc5; }
+.einw:focus-visible { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.14); }
+.einw[aria-checked="true"] { border-color: var(--ink); background: var(--paper-warm); }
+.einw__schalter { position: relative; flex: none; width: 44px; height: 24px; margin-top: 1px; border-radius: 999px; background: #d9d6cf; transition: background 0.25s; }
+.einw__schalter::after { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.einw[aria-checked="true"] .einw__schalter { background: var(--ink); }
+.einw[aria-checked="true"] .einw__schalter::after { transform: translateX(20px); background: var(--gold); }
+.einw__text { display: grid; gap: 2px; }
+.einw__text small { font-size: 0.78rem; color: var(--muted); }
+
+@keyframes feld-rein { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@keyframes marke-rein { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes marke-logo { from { opacity: 0; transform: scale(0.6) rotate(-8deg); filter: blur(6px); } 60% { filter: blur(0); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes marke-streif { to { transform: translateX(100%); } }
+@keyframes marke-schimmer { to { background-position: -120% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .feld__ok, .marke-chip, .marke-chip::after, .marke-chip .marke-logo, .feld__huelle--marke .marke-logo, .feld__vorschlag, .feld__fehler, .marke-chip__kicker,
+  .marke-chip__gruss, .tel-laender, .feld__vorgeschlagen, .marke-logo--leer, .einw__schalter::after { animation: none; transition: none; }
+  .marke-chip::after { display: none; }
+}
