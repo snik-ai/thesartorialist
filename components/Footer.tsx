@@ -29,7 +29,7 @@ export default function Footer() {
           </div>
           {FOOTER_NAV.map((col) => (
             <div key={col.title}>
-              <h4>{col.title}</h4>
+              <p className="footer-h">{col.title}</p>
               <ul className="footer-nav">
                 {col.items.map((item) => (
                   <li key={item.href}>

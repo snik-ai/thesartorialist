@@ -797,7 +797,7 @@ body.menu-open { overflow: hidden; }
 
 .footer-brandcol p { font-size: 0.88rem; color: rgba(255, 255, 255, 0.65); margin-top: 1.25rem; max-width: 26rem; }
 
-.footer h4 {
+.footer h4, .footer .footer-h {
   font-family: var(--sans);
   font-size: 0.72rem;
   font-weight: 600;
@@ -2455,3 +2455,6 @@ html, body { overflow-x: clip; }
 /* Geschlossenes Panel darf keine Klicks auf der Seite abfangen */
 .kfab { pointer-events: none; }
 .kfab-toggle, .kfab.is-open .kfab-panel { pointer-events: auto; }
+
+/* Footer-Kontaktlinks: genug Tippfläche */
+.footer p a { display: inline-block; padding: 5px 0; }

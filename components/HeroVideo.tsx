@@ -3,7 +3,7 @@
 // Film «Create your own Style!» (Vimeo, von thesartorialist.ch) als ruhiger
 // Hintergrund im Hero: ohne Ton, Endlosschleife, ohne Bedienelemente und mit
 // «dnt» (keine Vimeo-Cookies, kein Tracking). Zuerst steht das Standbild (LCP),
-// der Film lädt erst nach dem Seitenaufbau und blendet weich ein. Bei
+// der Film lädt erst bei der ersten Interaktion und blendet weich ein. Bei
 // «Bewegung reduzieren» oder Datensparmodus bleibt es beim Standbild.
 // «Film ansehen» öffnet ihn mit Ton im Vollbild.
 import { useEffect, useRef, useState } from 'react';
@@ -45,15 +45,16 @@ export default function HeroVideo() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const save = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     if (reduce || save) return;
-    const go = () => setLoad(true);
-    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-    if (document.readyState === 'complete') {
-      ric ? ric(go, { timeout: 2000 }) : setTimeout(go, 800);
-    } else {
-      const on = () => (ric ? ric(go, { timeout: 2000 }) : setTimeout(go, 800));
-      window.addEventListener('load', on, { once: true });
-      return () => window.removeEventListener('load', on);
-    }
+    // Film erst bei der ersten Interaktion (Maus, Scrollen, Tippen, Taste) laden:
+    // Das Standbild bleibt das LCP-Element, und ohne Interaktion setzt Vimeo keine
+    // Drittanbieter-Cookies und blockiert kein Netzwerk.
+    const evs = ['pointermove', 'pointerdown', 'scroll', 'touchstart', 'keydown', 'wheel'] as const;
+    const go = () => {
+      setLoad(true);
+      evs.forEach((e) => window.removeEventListener(e, go));
+    };
+    evs.forEach((e) => window.addEventListener(e, go, { once: true, passive: true }));
+    return () => evs.forEach((e) => window.removeEventListener(e, go));
   }, []);
 
   useEffect(() => {
