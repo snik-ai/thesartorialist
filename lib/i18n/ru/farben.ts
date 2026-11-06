@@ -1,92 +1,91 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Suit colour pages — English overlay of lib/suitColors.ts (sections: same number and order).
+// Страницы цветов костюмов — русская надстройка над lib/suitColors.ts (разделы: то же количество и порядок).
 export const farben: Woerterbuch['farben'] = {
   'anzug-blau': {
-    name: 'Blue suit',
-    title: 'Blue Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Classic elegance redefined',
+    name: 'Синий костюм',
+    title: 'Синий костюм — элегантность на заказ в Цюрихе',
+    claim: 'Классическая элегантность по-новому',
     metaDescription:
-      'Made-to-measure blue suit in Zurich: from sky blue to navy — tailored by The Sartorialist. Book your appointment now.',
+      'Синий костюм на заказ в Цюрихе: от небесно-голубого до тёмно-синего — пошив от The Sartorialist. Запишитесь на встречу.',
     sections: [
       {
-        title: 'Classic elegance redefined',
-        text: 'The blue suit is one of the timeless classics of menswear and an elegant alternative to black and grey. In its many shades — from light sky blue to deep navy — a blue suit suits almost every occasion, whether at work or at social events. It combines classic elegance with a modern touch.',
+        title: 'Классическая элегантность по-новому',
+        text: 'Синий костюм — одна из вечных классик мужской моды и элегантная альтернатива чёрному и серому. Во множестве оттенков — от светлого небесно-голубого до глубокого тёмно-синего — синий костюм подходит почти для любого случая, будь то работа или светские мероприятия. Он сочетает классическую элегантность с современной ноткой.',
       },
       {
-        title: 'Why choose a blue suit',
-        text: 'A blue suit is remarkably versatile and lends you a confident, well-groomed look. Blue feels calm and professional while bringing freshness and energy to your wardrobe. Ideal for the office, business meetings or special occasions — and easy to pair with classic and contemporary accessories alike.',
+        title: 'Почему стоит выбрать синий костюм',
+        text: 'Синий костюм удивительно универсален и придаёт Вам уверенный, ухоженный вид. Синий воспринимается спокойным и профессиональным и при этом привносит в гардероб свежесть и энергию. Идеален для офиса, деловых встреч или особых случаев — и легко сочетается как с классическими, так и с современными аксессуарами.',
       },
       {
-        title: 'Made-to-measure excellence',
-        text: 'With us, your blue suit is made individually — fitting perfectly and tailored to your personal style. Our experienced team helps you choose the ideal shade of blue, the right cloth and the perfect cut.',
+        title: 'Совершенство пошива на заказ',
+        text: 'У нас Ваш синий костюм шьётся индивидуально — он идеально сидит и отвечает Вашему личному стилю. Наша опытная команда поможет выбрать идеальный оттенок синего, подходящую ткань и безупречный крой.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'We use fine cloths known for their longevity and comfort: from luxurious wool and fine linen to noble cashmere. The choice of cloth shapes not only the look but also the comfort of your suit.',
+        title: 'Ткани и отделка',
+        text: 'Мы используем тонкие ткани, известные своей долговечностью и комфортом: от роскошной шерсти и тонкого льна до благородного кашемира. Выбор ткани определяет не только внешний вид, но и комфорт Вашего костюма.',
       },
       {
-        title: 'Individual design',
-        text: 'Design your blue suit exactly as you envisage it: cloths, cuts and details of your choice — a one-of-a-kind piece that underlines your personality.',
+        title: 'Индивидуальный дизайн',
+        text: 'Создайте свой синий костюм именно таким, каким Вы его видите: ткани, крой и детали на Ваш выбор — уникальная вещь, подчёркивающая Вашу индивидуальность.',
       },
     ],
   },
   'anzug-gruen': {
-    name: 'Green suit',
-    title: 'Green Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Fresh accents for your look',
+    name: 'Зелёный костюм',
+    title: 'Зелёный костюм — элегантность на заказ в Цюрихе',
+    claim: 'Свежие акценты для Вашего образа',
     metaDescription:
-      'Made-to-measure green suit in Zurich: from pastel to deep green — tailored by The Sartorialist. Book your appointment now.',
+      'Зелёный костюм на заказ в Цюрихе: от пастельного до глубокого зелёного — пошив от The Sartorialist. Запишитесь на встречу.',
     sections: [
       {
-        title: 'Fresh accents for your look',
-        text: 'The green suit is a fashionable choice for anyone who wants to lift their look with a touch of colour. Shades of green range from soft pastels to rich, deep tones and offer a modern alternative to the classic colours. A green suit adds fresh accents and makes a distinctive impression.',
+        title: 'Свежие акценты для Вашего образа',
+        text: 'Зелёный костюм — модный выбор для тех, кто хочет оживить образ ноткой цвета. Оттенки зелёного простираются от мягких пастельных до насыщенных глубоких тонов и предлагают современную альтернативу классическим цветам. Зелёный костюм добавляет свежие акценты и производит особое впечатление.',
       },
       {
-        title: 'Why choose a green suit',
-        text: 'A green suit brings colour to your wardrobe and stands out through its unique character. It is versatile — elegant with neutral colours, fashionable with bold accents. In spring and summer especially, it makes for a lively, dynamic look.',
+        title: 'Почему стоит выбрать зелёный костюм',
+        text: 'Зелёный костюм вносит цвет в Ваш гардероб и выделяется своим неповторимым характером. Он универсален: элегантен с нейтральными цветами, моден с яркими акцентами. Особенно весной и летом он создаёт живой, динамичный образ.',
       },
       {
-        title: 'Made-to-measure exclusivity',
-        text: 'We make your green suit individually, to your wishes and measurements. Our team advises you on the perfect shade of green, the right cloth and the appropriate details of the cut.',
+        title: 'Эксклюзивность пошива на заказ',
+        text: 'Мы шьём Ваш зелёный костюм индивидуально — по Вашим пожеланиям и меркам. Наша команда посоветует идеальный оттенок зелёного, подходящую ткань и уместные детали кроя.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Fine wool, noble linen or luxurious cashmere: the choice of cloth determines comfort and longevity. We pay attention to the details that underline the unique character of your green suit.',
+        title: 'Ткани и отделка',
+        text: 'Тонкая шерсть, благородный лён или роскошный кашемир: выбор ткани определяет комфорт и долговечность. Мы внимательны к деталям, которые подчёркивают неповторимый характер Вашего зелёного костюма.',
       },
       {
-        title: 'Individual design',
-        text: 'A green suit from us is more than a garment — it is an expression of your personality. Choose from a range of cloths, cuts and details.',
+        title: 'Индивидуальный дизайн',
+        text: 'Зелёный костюм от нас — больше, чем одежда: это выражение Вашей индивидуальности. Выбирайте из множества тканей, фасонов и деталей.',
       },
     ],
   },
   'anzug-beige': {
-    name: 'Beige suit',
-    title: 'Beige Suit — Made-to-Measure Elegance in Zurich',
-    claim: 'Timeless refinement in beige',
+    name: 'Бежевый костюм',
+    title: 'Бежевый костюм — элегантность на заказ в Цюрихе',
+    claim: 'Утончённость вне времени в бежевом',
     metaDescription:
-      'Made-to-measure beige suit in Zurich: light, bright and elegant — ideal for summer and weddings. Tailored by The Sartorialist.',
+      'Бежевый костюм на заказ в Цюрихе: лёгкий, светлый и элегантный — идеален для лета и свадьбы. Пошив от The Sartorialist.',
     sections: [
       {
-        title: 'Timeless refinement in beige',
-        text: 'The beige suit is a classic that impresses with its versatility and elegance. It unites timeless refinement with a neutral tone suited to formal and informal occasions alike — ideal for spring and summer, as it looks light and bright.',
+        title: 'Утончённость вне времени в бежевом',
+        text: 'Бежевый костюм — классика, которая впечатляет универсальностью и элегантностью. Он объединяет утончённость вне времени с нейтральным тоном, подходящим как для официальных, так и для неформальных поводов, — идеален для весны и лета, ведь он выглядит лёгким и светлым.',
       },
       {
-        title: 'Why choose a beige suit',
-        text: 'A beige suit pairs effortlessly with a wide range of colours and patterns. Whether a wedding, a business event or a relaxed get-together — it always gives you a stylish, well-groomed look. The light colour reflects sunlight and is particularly pleasant to wear.',
+        title: 'Почему стоит выбрать бежевый костюм',
+        text: 'Бежевый костюм без труда сочетается с самыми разными цветами и узорами. Свадьба, деловое мероприятие или непринуждённая встреча — он всегда придаёт Вам стильный, ухоженный вид. Светлый цвет отражает солнечные лучи, и носить его особенно приятно.',
       },
       {
-        title: 'Made-to-measure perfection',
-        text: 'With us, you design your beige suit exactly as you wish: tailored individually to your measurements and your style, with advice on cloth, fit and details.',
+        title: 'Совершенство пошива на заказ',
+        text: 'У нас Вы создаёте свой бежевый костюм именно таким, каким хотите: он шьётся индивидуально по Вашим меркам и в Вашем стиле, с консультацией по ткани, посадке и деталям.',
       },
       {
-        title: 'Cloths and finishes',
-        text: 'Only fine cloths that guarantee comfort and longevity — from fine wool and noble linen to luxurious cashmere. Every detail is right, so that you feel entirely at ease.',
+        title: 'Ткани и отделка',
+        text: 'Только тонкие ткани, гарантирующие комфорт и долговечность, — от тонкой шерсти и благородного льна до роскошного кашемира. Каждая деталь продумана, чтобы Вы чувствовали себя совершенно комфортно.',
       },
       {
-        title: 'Individual design',
-        text: 'Choose the cloth, the cut and special details such as buttons and lining — creating a suit that fits perfectly and reflects your personal touch.',
+        title: 'Индивидуальный дизайн',
+        text: 'Выберите ткань, крой и особые детали, такие как пуговицы и подкладка, — и получите костюм, который идеально сидит и отражает Ваш личный почерк.',
       },
     ],
   },

@@ -1,23 +1,22 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Newsletter
+// Рассылка
 export const newsletter: Woerterbuch['newsletter'] = {
   meta: {
-    titel: 'Newsletter — Offers & New Arrivals',
+    titel: 'Рассылка — предложения и новинки',
     beschreibung:
-      'Subscribe to The Sartorialist Zurich newsletter and receive our latest offers — unsubscribe at any time.',
-    ogTitel: 'Newsletter — The Sartorialist Zurich',
-    ogBeschreibung: 'New arrivals, collections and offers delivered straight to your inbox.',
+      'Подпишитесь на рассылку The Sartorialist, Цюрих, и получайте наши актуальные предложения — отписаться можно в любой момент.',
+    ogTitel: 'Рассылка — The Sartorialist Цюрих',
+    ogBeschreibung: 'Новинки, коллекции и предложения — прямо в Ваш почтовый ящик.',
   },
-  breadcrumb: 'Newsletter',
-  eyebrow: 'Stay informed',
-  h1: 'Newsletter',
-  lead: 'Subscribe to our newsletter and receive our latest offers, collections and invitations. You can unsubscribe at any time.',
-  knopf: 'Subscribe now',
-  hinweis: 'Subscribing opens a pre-filled email to {email}.',
+  breadcrumb: 'Рассылка',
+  eyebrow: 'Будьте в курсе',
+  h1: 'Рассылка',
+  lead: 'Подпишитесь на нашу рассылку и получайте актуальные предложения, коллекции и приглашения. Отписаться можно в любой момент.',
+  knopf: 'Подписаться',
+  hinweis: 'При подписке откроется заполненное письмо на адрес {email}.',
   mail: {
-    betreff: 'Newsletter subscription',
-    text: 'Hello\n\nI would like to subscribe to The Sartorialist newsletter.\n\nName:\nEmail:\n\nKind regards',
+    betreff: 'Подписка на рассылку',
+    text: 'Здравствуйте!\n\nЯ хотел бы подписаться на рассылку The Sartorialist.\n\nИмя:\nЭл. почта:\n\nС уважением',
   },
 };

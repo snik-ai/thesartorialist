@@ -1,115 +1,114 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Privacy policy
+// Политика конфиденциальности
 export const datenschutz: Woerterbuch['datenschutz'] = {
   meta: {
-    titel: 'Privacy Policy',
+    titel: 'Политика конфиденциальности',
     beschreibung:
-      'Privacy policy of The Sartorialist Zurich — information on the collection and processing of personal data.',
+      'Политика конфиденциальности The Sartorialist, Цюрих, — сведения о сборе и обработке персональных данных.',
   },
-  h1: 'Privacy Policy',
+  h1: 'Политика конфиденциальности',
   hinweisMassgeblich:
-    'This English translation is provided for convenience only. The German version is legally binding: [read the German version](/datenschutzerklaerung/).',
-  adresse: { land: 'Switzerland', telefon: 'Telephone: ', email: 'Email: ' },
+    'Русский перевод предоставляется исключительно для удобства. Юридическую силу имеет немецкая версия: [читать немецкую версию](/datenschutzerklaerung/).',
+  adresse: { land: 'Швейцария', telefon: 'Телефон: ', email: 'Эл. почта: ' },
   abschnitte: [
     {
-      titel: '1. Data protection at a glance',
+      titel: '1. Защита данных вкратце',
       bloecke: [
-        { h3: 'General information' },
+        { h3: 'Общие сведения' },
         {
-          p: 'The following information provides a simple overview of what happens to your personal data when you visit this website. Personal data is any data by which you can be personally identified.',
+          p: 'Следующие сведения дают простой обзор того, что происходит с Вашими персональными данными, когда Вы посещаете этот сайт. Персональные данные — это любые данные, по которым Вас можно лично идентифицировать.',
         },
-        { h3: 'Data collection on this website' },
+        { h3: 'Сбор данных на этом сайте' },
         {
-          p: 'Data on this website is processed by the website operator, whose contact details can be found in the [imprint](impressum) of this website. On the pages outside the shop, no cookies are set and no third-party content (e.g. videos or external fonts) is loaded. The exceptions are the anonymous audience measurement carried out by our web agency (see section 4, “Audience measurement”), the film on the home page (Vimeo, see section 4, “Film on the home page”) and the online shop at /shop, which is operated with Shopify (see section 4, “Online shop”).',
+          p: 'Данные на этом сайте обрабатывает оператор сайта, контактные данные которого указаны в [выходных данных](impressum) этого сайта. На страницах за пределами магазина не устанавливаются файлы cookie и не загружается содержимое третьих лиц (например, видео или внешние шрифты). Исключения — анонимное измерение посещаемости, которое проводит наше веб-агентство (см. раздел 4, «Измерение посещаемости»), фильм на главной странице (Vimeo, см. раздел 4, «Фильм на главной странице») и интернет-магазин по адресу /shop, работающий на Shopify (см. раздел 4, «Интернет-магазин»).',
         },
         {
-          p: 'Some data is collected when you provide it to us — for example, when you send us an appointment request by email or telephone. Other data is collected automatically by the hosting provider’s IT systems when you visit the website (above all technical data such as your web browser, operating system or the time the page was accessed).',
+          p: 'Часть данных собирается, когда Вы сами нам их сообщаете, — например, когда Вы отправляете запрос на встречу по электронной почте или по телефону. Другие данные автоматически собираются ИТ-системами хостинг-провайдера при посещении сайта (прежде всего технические данные, такие как веб-браузер, операционная система или время открытия страницы).',
         },
       ],
     },
     {
-      titel: '2. Hosting',
+      titel: '2. Хостинг',
       bloecke: [
         {
-          p: 'This website is hosted by an external service provider (host). The data collected when you visit the website is stored on the host’s servers. This consists above all of IP addresses, metadata and communication data, and website access data. We use the host in the interest of providing our website securely, quickly and efficiently. Our host processes your data only to the extent necessary to fulfil its contractual obligations.',
+          p: 'Этот сайт размещается у внешнего поставщика услуг (хостера). Данные, собираемые при посещении сайта, хранятся на серверах хостера. Прежде всего это IP-адреса, метаданные и данные коммуникации, а также данные о доступе к сайту. Мы пользуемся услугами хостера в интересах безопасного, быстрого и эффективного предоставления нашего сайта. Наш хостер обрабатывает Ваши данные только в той мере, в какой это необходимо для выполнения его договорных обязательств.',
         },
       ],
     },
     {
-      titel: '3. General information and mandatory disclosures',
+      titel: '3. Общие сведения и обязательная информация',
       bloecke: [
-        { h3: 'Data protection' },
+        { h3: 'Защита данных' },
         {
-          p: 'The operators of these pages take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with the statutory data protection regulations (in particular the Swiss Federal Act on Data Protection (FADP) and — where applicable — the EU General Data Protection Regulation (GDPR)) and this privacy policy.',
+          p: 'Операторы этих страниц очень серьёзно относятся к защите Ваших персональных данных. Мы обращаемся с Вашими персональными данными конфиденциально и в соответствии с законодательными предписаниями о защите данных (в частности, Федеральным законом Швейцарии о защите данных (FADP/DSG) и — где применимо — Общим регламентом ЕС по защите данных (GDPR)), а также настоящей политикой конфиденциальности.',
         },
         {
-          p: 'Please note that data transmitted over the internet (e.g. when communicating by email) may be subject to security vulnerabilities. Complete protection of data against access by third parties is not possible.',
+          p: 'Обращаем Ваше внимание, что передача данных через интернет (например, при общении по электронной почте) может иметь уязвимости. Полная защита данных от доступа третьих лиц невозможна.',
         },
-        { h3: 'Controller' },
-        { p: 'The controller responsible for data processing on this website is:' },
+        { h3: 'Ответственное лицо' },
+        { p: 'Ответственным за обработку данных на этом сайте является:' },
         { adresse: true },
-        { h3: 'Your rights' },
+        { h3: 'Ваши права' },
         {
-          p: 'You have the right at any time to obtain information, free of charge, about the origin, recipients and purpose of your stored personal data. You also have the right to have this data corrected or erased, to restrict its processing and to data portability. You may withdraw any consent you have given to data processing at any time with effect for the future. You also have the right to lodge a complaint with the competent supervisory authority (in Switzerland: the Federal Data Protection and Information Commissioner, FDPIC).',
+          p: 'Вы вправе в любое время бесплатно получить информацию о происхождении, получателях и цели обработки Ваших сохранённых персональных данных. Вы также вправе требовать исправления или удаления этих данных, ограничения их обработки и переносимости данных. Данное Вами согласие на обработку данных Вы можете в любое время отозвать на будущее. Кроме того, Вы вправе подать жалобу в компетентный надзорный орган (в Швейцарии — Федеральному уполномоченному по защите данных и информации, EDÖB/FDPIC).',
         },
-        { h3: 'SSL/TLS encryption' },
+        { h3: 'Шифрование SSL/TLS' },
         {
-          p: 'For security reasons and to protect the transmission of confidential content, this site uses SSL/TLS encryption. You can recognise an encrypted connection by the address bar of your browser changing from “http://” to “https://” and by the padlock symbol in your browser bar.',
+          p: 'Из соображений безопасности и для защиты передачи конфиденциального содержимого этот сайт использует шифрование SSL/TLS. Зашифрованное соединение можно узнать по тому, что адресная строка браузера меняется с «http://» на «https://», и по значку замка в строке браузера.',
         },
       ],
     },
     {
-      titel: '4. Data collection on this website',
+      titel: '4. Сбор данных на этом сайте',
       bloecke: [
-        { h3: 'Server log files' },
+        { h3: 'Файлы журнала сервера' },
         {
-          p: 'The provider of these pages automatically collects and stores information in so-called server log files, which your browser transmits automatically:',
+          p: 'Поставщик этих страниц автоматически собирает и сохраняет в так называемых файлах журнала сервера информацию, которую Ваш браузер передаёт автоматически:',
         },
         {
           liste: [
-            'Browser type and browser version',
-            'Operating system used',
-            'Referrer URL',
-            'Host name of the accessing computer',
-            'Time of the server request',
-            'IP address',
+            'Тип и версия браузера',
+            'Используемая операционная система',
+            'URL источника перехода (referrer)',
+            'Имя хоста обращающегося компьютера',
+            'Время запроса к серверу',
+            'IP-адрес',
           ],
         },
         {
-          p: 'This data is not combined with other data sources. The website operator has a legitimate interest in the technically error-free presentation and optimisation of its website — for this purpose, the server log files must be recorded.',
+          p: 'Эти данные не объединяются с другими источниками данных. Оператор сайта имеет законный интерес в технически безошибочном представлении и оптимизации своего сайта — для этого необходимо вести файлы журнала сервера.',
         },
-        { h3: 'Audience measurement' },
+        { h3: 'Измерение посещаемости' },
         {
-          p: 'To improve this website, our web agency DLM Digital (Zurich, Switzerland) measures anonymously, on our behalf, which pages are viewed and which contact channels (telephone, WhatsApp, email, form) are used. No cookies are set and no IP addresses are stored for this purpose; recognition beyond the same day is not possible. The content of forms (e.g. name, email, message) is not transmitted to DLM Digital. The data is processed in Switzerland or the EU.',
+          p: 'Для улучшения этого сайта наше веб-агентство DLM Digital (Цюрих, Швейцария) по нашему поручению анонимно измеряет, какие страницы просматриваются и какие каналы связи (телефон, WhatsApp, электронная почта, форма) используются. Для этого не устанавливаются файлы cookie и не сохраняются IP-адреса; распознавание посетителя дольше одного дня невозможно. Содержимое форм (например, имя, электронная почта, сообщение) DLM Digital не передаётся. Данные обрабатываются в Швейцарии или ЕС.',
         },
-        { h3: 'Our own visitor statistics' },
+        { h3: 'Наша собственная статистика посещений' },
         {
-          p: 'In addition, we keep our own cookie-free visitor statistics on our server. We record the page viewed, the referring website (its domain only), any campaign parameters (utm_source, utm_medium, utm_campaign), the device type (smartphone, tablet, computer), the browser language, as well as clicks on contact channels (telephone, WhatsApp, email, directions) and form submissions. To be able to count visits, we create a truncated check value (hash) from the IP address, browser identifier and the date, combined with a secret key. The IP address itself is not stored; the check value changes daily and does not allow any conclusions to be drawn about you personally. Neither cookies nor any other storage in your browser are used. The data is used exclusively for our own analysis, is not passed on to third parties and is stored in Switzerland or the EU. The legal basis is our legitimate interest in designing the website to meet visitors’ needs.',
+          p: 'Кроме того, мы ведём на своём сервере собственную статистику посещений без файлов cookie. Мы фиксируем просмотренную страницу, сайт-источник перехода (только его домен), возможные параметры кампании (utm_source, utm_medium, utm_campaign), тип устройства (смартфон, планшет, компьютер), язык браузера, а также клики по каналам связи (телефон, WhatsApp, электронная почта, маршрут) и отправку форм. Чтобы подсчитывать посещения, мы формируем из IP-адреса, идентификатора браузера и даты с использованием секретного ключа укороченное контрольное значение (хеш). Сам IP-адрес не сохраняется; контрольное значение меняется ежедневно и не позволяет сделать выводы о Вас лично. Ни файлы cookie, ни иное хранилище в Вашем браузере не используются. Данные служат исключительно для нашего собственного анализа, не передаются третьим лицам и хранятся в Швейцарии или ЕС. Правовое основание — наш законный интерес в том, чтобы сайт отвечал потребностям посетителей.',
         },
-        { h3: 'Film on the home page (Vimeo)' },
+        { h3: 'Фильм на главной странице (Vimeo)' },
         {
-          p: 'On the home page we show our film via the video service Vimeo (Vimeo.com Inc., New York, USA). We embed it with the “Do Not Track” setting: Vimeo does not set any cookies and does not create usage profiles. When the film is loaded, Vimeo necessarily receives your IP address and information about your browser for technical reasons.',
+          p: 'На главной странице мы показываем наш фильм через видеосервис Vimeo (Vimeo.com Inc., Нью-Йорк, США). Мы встраиваем его с настройкой «Do Not Track»: Vimeo не устанавливает файлы cookie и не создаёт профили использования. При загрузке фильма Vimeo по техническим причинам неизбежно получает Ваш IP-адрес и сведения о Вашем браузере.',
         },
-        { h3: 'Made-to-measure suit configurator' },
+        { h3: 'Конфигуратор костюма на заказ' },
         {
-          p: 'Your selection in the made-to-measure suit configurator (“Styles & Options”) is stored exclusively in your browser (localStorage) and is not transmitted to us. We only receive it if you send it with an appointment request or send us the PDF. You can delete your selection at any time via “Reset all”.',
+          p: 'Ваш выбор в конфигураторе костюма на заказ («Стили и опции») хранится исключительно в Вашем браузере (localStorage) и нам не передаётся. Мы получаем его только в том случае, если Вы отправите его вместе с запросом на встречу или пришлёте нам PDF. Удалить свой выбор можно в любое время с помощью кнопки «Сбросить всё».',
         },
-        { h3: 'Online shop (Shopify)' },
+        { h3: 'Интернет-магазин (Shopify)' },
         {
-          p: 'Our online shop at thesartorialist.ch/shop is operated with Shopify (Shopify International Limited, Dublin, Ireland, and Shopify Inc., Ottawa, Canada). Product data, images and prices are loaded from Shopify; product images are delivered directly from the Shopify server (cdn.shopify.com), which necessarily receives your IP address for technical reasons.',
+          p: 'Наш интернет-магазин по адресу thesartorialist.ch/shop работает на платформе Shopify (Shopify International Limited, Дублин, Ирландия, и Shopify Inc., Оттава, Канада). Данные о товарах, изображения и цены загружаются из Shopify; изображения товаров доставляются непосредственно с сервера Shopify (cdn.shopify.com), который по техническим причинам неизбежно получает Ваш IP-адрес.',
         },
         {
-          p: 'As soon as you add an item to your basket, we set a strictly necessary cookie containing the identifier of your basket (valid for 14 days) as well as Shopify’s session cookies, so that your basket and order match. You complete the order itself — address, shipping and payment — in Shopify’s checkout at shop.thesartorialist.ch, where Shopify’s privacy notices also apply. The data is processed for the performance of the purchase contract. Shopify may also process data in countries outside Switzerland and the EU; standard contractual clauses are in place for this.',
+          p: 'Как только Вы добавляете товар в корзину, мы устанавливаем строго необходимый файл cookie с идентификатором Вашей корзины (действует 14 дней), а также сессионные файлы cookie Shopify, чтобы корзина и заказ соответствовали друг другу. Сам заказ — адрес, доставку и оплату — Вы оформляете в кассе Shopify на shop.thesartorialist.ch, где также действуют правила конфиденциальности Shopify. Данные обрабатываются для исполнения договора купли-продажи. Shopify может обрабатывать данные и в странах за пределами Швейцарии и ЕС; для этого действуют стандартные договорные условия.',
         },
-        { h3: 'Appointment and call-back requests via the website' },
+        { h3: 'Запросы на встречу и обратный звонок через сайт' },
         {
-          p: 'If you request an appointment or a call-back via the website, we send your details (name, telephone, email, preferred date and — if selected — your style choices) by email to our atelier and send you a confirmation. To send these emails we use the service Resend (Resend Inc., San Francisco, USA), with data processing in the EU. We also store your details in our customer database so that we can prepare your appointment and consultation and follow up on your request. We use the data exclusively to handle your request and to look after you as a customer. We only contact you via WhatsApp or SMS if you have expressly consented to this; you may withdraw this consent at any time.',
+          p: 'Если Вы запрашиваете встречу или обратный звонок через сайт, мы отправляем Ваши данные (имя, телефон, электронная почта, желаемая дата и — если выбрано — Ваши стилевые предпочтения) по электронной почте в наше ателье и направляем Вам подтверждение. Для отправки этих писем мы используем сервис Resend (Resend Inc., Сан-Франциско, США) с обработкой данных в ЕС. Кроме того, мы сохраняем Ваши данные в нашей клиентской базе, чтобы подготовить встречу и консультацию и сопровождать Ваш запрос. Мы используем данные исключительно для обработки Вашего запроса и обслуживания Вас как клиента. Связываемся с Вами через WhatsApp или SMS мы только при Вашем явном согласии; это согласие можно отозвать в любое время.',
         },
-        { h3: 'Enquiries by email or telephone' },
+        { h3: 'Запросы по электронной почте или телефону' },
         {
-          p: 'If you contact us by email or telephone (e.g. for an appointment request), your enquiry, including the contact details you provide, is stored by us for the purpose of handling the request and in case of follow-up questions. We do not pass on this data without your consent. The data remains with us until you ask us to delete it or the purpose for storing it no longer applies. Mandatory statutory provisions — in particular retention periods — remain unaffected.',
+          p: 'Если Вы связываетесь с нами по электронной почте или телефону (например, с запросом на встречу), Ваш запрос вместе с указанными контактными данными сохраняется у нас для его обработки и на случай дополнительных вопросов. Без Вашего согласия мы эти данные не передаём. Данные остаются у нас, пока Вы не попросите их удалить или пока не отпадёт цель их хранения. Обязательные законодательные положения — в частности, сроки хранения — остаются в силе.',
         },
       ],
     },

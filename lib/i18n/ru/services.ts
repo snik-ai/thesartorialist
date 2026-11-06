@@ -1,43 +1,42 @@
-// TODO übersetzen (Russisch) — noch Kopie der englischen Fassung.
 import type { Woerterbuch } from '../de';
 
-// Services (alterations)
+// Услуги (подгонка и переделка)
 export const services: Woerterbuch['services'] = {
   meta: {
-    titel: 'Tailoring Alterations Zurich — Services',
+    titel: 'Подгонка одежды в Цюрихе — услуги',
     beschreibung:
-      'Alterations at The Sartorialist Zurich: our long-standing partner tailor alters anything that fits under a sewing machine — jackets, coats, trousers and shirts at fair prices.',
-    ogTitel: 'Services — The Sartorialist Zurich',
-    ogBeschreibung: 'Alterations for jackets, coats, trousers and shirts.',
+      'Подгонка одежды в The Sartorialist, Цюрих: наш давний партнёр-портной переделает всё, что помещается под швейную машину, — пиджаки, пальто, брюки и рубашки по честным ценам.',
+    ogTitel: 'Услуги — The Sartorialist Цюрих',
+    ogBeschreibung: 'Подгонка пиджаков, пальто, брюк и рубашек.',
   },
-  breadcrumb: 'Services',
+  breadcrumb: 'Услуги',
   hero: {
-    eyebrow: 'Alterations & adjustments',
-    h1: 'Services',
-    lead: 'Our long-standing partner alterations tailor can handle anything that fits under a sewing machine — and at sensible prices.',
+    eyebrow: 'Подгонка и переделка',
+    h1: 'Услуги',
+    lead: 'Наш давний партнёр-портной справится со всем, что помещается под швейную машину, — и по разумным ценам.',
   },
   leistungen: [
     {
-      titel: 'Jacket / coat',
-      text: 'Shortening or lengthening sleeves, taking in the waist, correcting the shoulders — after alteration, your jacket or coat fits as if made to measure.',
+      titel: 'Пиджак / пальто',
+      text: 'Укоротить или удлинить рукава, ушить по талии, скорректировать плечи — после подгонки Ваш пиджак или пальто сидит так, будто сшит на заказ.',
     },
     {
-      titel: 'Trousers',
-      text: 'Length, waist, turn-ups or a slimmer leg line — quick, precise adjustments for the perfect silhouette.',
+      titel: 'Брюки',
+      text: 'Длина, пояс, отвороты или более узкая линия брючины — быстрая и точная подгонка для идеального силуэта.',
     },
     {
-      titel: 'Shirt',
-      text: 'Tapering, shortening sleeves, renewing collars or cuffs — so that even your favourite shirt fits impeccably once again.',
+      titel: 'Рубашка',
+      text: 'Ушить, укоротить рукава, обновить воротник или манжеты — чтобы и Ваша любимая рубашка снова сидела безупречно.',
     },
   ],
-  hinweis: 'Simply bring your garment to our store — or [book an appointment](termin).',
+  hinweis: 'Просто принесите вещь в наш магазин — или [запишитесь на встречу](termin).',
   cta: {
-    titel: 'Need an alteration? We will take care of it.',
-    text: 'Kuttelgasse 7, 8001 Zurich — Mon–Fri 10 am–7 pm, Sat 10 am–5 pm.',
+    titel: 'Нужна подгонка? Мы обо всём позаботимся.',
+    text: 'Kuttelgasse 7, 8001 Цюрих — пн–пт 10:00–19:00, сб 10:00–17:00.',
   },
   schema: {
-    name: 'Tailoring alterations Zurich',
+    name: 'Подгонка одежды в Цюрихе',
     beschreibung:
-      'Alterations for jackets, coats, trousers and shirts — the partner alterations tailor of The Sartorialist Zurich.',
+      'Подгонка пиджаков, пальто, брюк и рубашек — партнёр-портной The Sartorialist, Цюрих.',
   },
 };
