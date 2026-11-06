@@ -7,7 +7,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { KONFIG_KATEGORIEN, type KonfigOption, type KonfigUntergruppe } from '@/lib/konfigurator/daten';
-import { aufloesen, alsText, optionText, type Gewaehlt } from '@/lib/konfigurator/auswahl';
+import { aufloesen, alsText, optionText, zeigeCode, type Gewaehlt } from '@/lib/konfigurator/auswahl';
 import { useAuswahl } from '@/lib/konfigurator/useAuswahl';
 
 type Detail = { kategorieId: string; u: KonfigUntergruppe; o: KonfigOption };
@@ -61,11 +61,6 @@ export default function Konfigurator() {
     };
   }, []);
 
-  // Aktiven Tab in der mobilen Leiste sichtbar halten
-  useEffect(() => {
-    const el = bar.current?.querySelector<HTMLElement>(`[data-k="${aktiv}"]`);
-    el?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
-  }, [aktiv]);
 
   const waehle = useCallback(
     (u: KonfigUntergruppe, o: KonfigOption) => {
@@ -99,6 +94,15 @@ export default function Konfigurator() {
     }
     setTimeout(() => setStatus(null), 3000);
   };
+  const springe = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const off = (document.querySelector('.header')?.getBoundingClientRect().height ?? 0) + (bar.current?.getBoundingClientRect().height ?? 0) + 16;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - off, behavior: reduce ? 'auto' : 'smooth' });
+    setAktiv(id);
+    history.replaceState(history.state, '', `#${id}`);
+  };
   const kopieren = async () => {
     try {
       await navigator.clipboard.writeText(`Meine Stil-Auswahl — The Sartorialist Zürich\n\n${alsText(items)}\n`);
@@ -114,12 +118,27 @@ export default function Konfigurator() {
       <div className="konf-bar" ref={bar}>
         <div className="container konf-bar-row">
           <nav className="konf-tabs" aria-label="Kategorien">
-            {KONFIG_KATEGORIEN.map((k, i) => {
+            {KONFIG_KATEGORIEN.map((k) => {
               const f = fortschritt(k.id);
               return (
-                <a key={k.id} href={`#${k.id}`} data-k={k.id} className={`konf-tab${aktiv === k.id ? ' is-on' : ''}`} aria-current={aktiv === k.id ? 'true' : undefined}>
-                  <span className="konf-tab-num num">0{i + 1}</span>
-                  {k.title}
+                <a
+                  key={k.id}
+                  href={`#${k.id}`}
+                  data-k={k.id}
+                  className={`konf-tab${aktiv === k.id ? ' is-on' : ''}`}
+                  aria-current={aktiv === k.id ? 'true' : undefined}
+                  onClick={(e) => {
+                    // sofort zur Kategorie, mit Abstand unter Header und Leiste
+                    e.preventDefault();
+                    springe(k.id);
+                  }}
+                >
+                  <span className="konf-tab-img" aria-hidden="true">
+                    <img src={k.subCategories[0].options[0].image} alt="" width={40} height={50} />
+                  </span>
+                  <span className="konf-tab-label">
+                    {k.title}
+                  </span>
                   {f.done > 0 && (
                     <span className="konf-tab-prog num" aria-label={`${f.done} gewählt`}>
                       {f.done}
@@ -137,10 +156,9 @@ export default function Konfigurator() {
       </div>
 
       <div className="container konf-body">
-        {KONFIG_KATEGORIEN.map((k, ki) => (
+        {KONFIG_KATEGORIEN.map((k) => (
           <section key={k.id} id={k.id} className="konf-cat">
             <header className="konf-cat-head">
-              <span className="konf-cat-num num">0{ki + 1}</span>
               <div>
                 <h2 className="h2">{k.title}</h2>
                 <p className="konf-cat-sub">{k.subtitle}</p>
@@ -176,7 +194,7 @@ export default function Konfigurator() {
                                 </>
                               ) : (
                                 <>
-                                  {o.code && <span className="konf-code">{o.code}</span>}
+                                  {zeigeCode(o.code) && <span className="konf-code">{o.code}</span>}
                                   <span className="konf-label">{o.label}</span>
                                 </>
                               )}
@@ -331,7 +349,7 @@ function DetailDialog({ d, on, onToggle, onClose }: { d: Detail; on: boolean; on
           <h3 id="konf-modal-title" className="serif">
             {o.label}
           </h3>
-          {o.code && <p className="konf-code">Code {o.code}</p>}
+          {zeigeCode(o.code) && <p className="konf-code">Code {o.code}</p>}
           {o.subLabel && <p className="konf-modal-sub">{o.subLabel}</p>}
           {o.pocketSpec && (
             <p className="konf-modal-sub">

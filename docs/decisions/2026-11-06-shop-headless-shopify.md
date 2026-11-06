@@ -91,3 +91,12 @@ Das Schritt-für-Schritt-Stil-Studio war zu lang («Leute klicken sich nicht dur
 - Navigation: Über uns · Styles & Options · Massanzug · Hochzeitsanzug | Shop · Brands · Kontakt (Desktop + Mobile).
 - Konfigurator-Karten: eckig, Bezeichnungen in Inter (Sans), gleich hohe Karten, Block-Layout (Safari schnitt Text ab).
   Badges («Beliebt», «Italienisch» …) überall entfernt (Daten und Anzeige).
+
+## Feinschliff Konfigurator & Header (06.11.2026)
+- Sprungleiste Sakko/Hose/Weste/Smoking: klebend, mit Bildchen, Klick scrollt sofort zur Kategorie (`springe()`);
+  mobil 4 gleiche Felder. Keine Nummern (01–04) mehr – auch nicht bei den Kategorien, im Mobile-Menü und im Ablauf
+  der Terminseite. Reine Ziffern-Codes («1», «2») auf Karten ausgeblendet (`zeigeCode`), sprechende Codes bleiben.
+- Gewählt ≠ Überfahren: Hover nur mit Maus und grau; schwarz nur für gewählte Karten (vorher wirkten auf dem iPhone
+  getippte Karten gewählt).
+- Smoking «Reversspiegel» → «Revers», «Seidenspiegel» → «Seidenrevers».
+- Header: Mega-Menü «Brands» (6 Manufakturen mit Bild, Herkunft, Shop-Links), «Über uns» aus dem Header.

@@ -1152,7 +1152,7 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             id: "black-tie-tux-shawl",
             code: "Shawl",
             label: "Smoking mit Schalkragen",
-            subLabel: "Gerundeter Seidenspiegel · ein Knopf",
+            subLabel: "Gerundetes Seidenrevers · ein Knopf",
             image: "/konfigurator/black-tie/tux-shawl.webp",
             description: "Durchgehend gerundeter Seidenkragen mit einem einzelnen bezogenen Knopf.",
           },
@@ -1160,15 +1160,15 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
             id: "black-tie-tux-peak-sb",
             code: "Peak SB",
             label: "Einreiher, steigendes Revers",
-            subLabel: "Nach oben weisender Seidenspiegel",
+            subLabel: "Nach oben weisendes Seidenrevers",
             image: "/konfigurator/black-tie/tux-peak-sb.webp",
-            description: "Ausdrucksstarkes, breites steigendes Revers mit edlem Seidenspiegel.",
+            description: "Ausdrucksstarkes, breites steigendes Revers mit edlem Seidenbesatz.",
           },
           {
             id: "black-tie-tux-peak-db",
             code: "Peak DB",
             label: "Zweireihiger Smoking",
-            subLabel: "6 auf 2 Knöpfe, mit Seidenspiegel",
+            subLabel: "6 auf 2 Knöpfe, mit Seidenrevers",
             image: "/konfigurator/black-tie/tux-peak-db.webp",
             description: "Wird geschlossen getragen, ohne Kummerbund oder Weste.",
           },
@@ -1176,7 +1176,7 @@ export const KONFIG_KATEGORIEN: KonfigKategorie[] = [
       },
       {
         id: "black-tie-facing",
-        title: "Reversspiegel",
+        title: "Revers",
         subtitle: "Seidenbesatz am Smokingrevers",
         options: [
           {

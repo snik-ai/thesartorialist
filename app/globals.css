@@ -2133,3 +2133,105 @@ body.cart-open .studio-fab, body.sheet-open .studio-fab { opacity: 0; pointer-ev
 .konf-card-text { flex: 1; justify-content: flex-start; }
 .konf-sum-link, .konf-count, .konf-dock, .konf-dock-n, .konf-dock-go, .konf-dock-thumbs img, .konf-hints li, .konf-hints li::before, .konf-tab-prog, .konf-modal-x, .konf-sum-x, .konf-info { border-radius: 0; }
 @media (max-width: 640px) { .konf-dock { border-radius: 0; } }
+
+/* Konfigurator: Gewählt ≠ Überfahren (Kundenhinweis 06.11.2026). Hover nur auf Geräten mit Maus und nur
+   als feine graue Linie; schwarz bleibt ausschliesslich gewählten Karten vorbehalten. Kein «hängender»
+   Hover nach dem Antippen auf dem Handy. */
+.konf-card-main:hover { border-color: var(--line); }
+@media (hover: hover) and (pointer: fine) {
+  .konf-card:not(.is-on) .konf-card-main:hover { border-color: #b9b5ad; }
+  .konf-card:not(.is-on) .konf-card-main:hover .konf-card-img img { transform: scale(1.03); }
+}
+.konf-card-main:focus { outline: none; }
+.konf-card-main:focus-visible { outline: 2px solid #c9a063; outline-offset: 2px; }
+.konf-card.is-on .konf-card-main { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.konf-card:not(.is-on) .konf-card-text { background: var(--paper); }
+/* Info-Symbol in die Bildecke, nie über den Text */
+.konf-card .konf-info { top: 2.6rem; bottom: auto; right: 0.6rem; }
+.konf-card:not(.is-on) .konf-info { top: 0.6rem; }
+/* Übersicht: Entfernen-Knopf mit Abstand zum Text */
+.konf-sum-open { padding-right: 0.25rem; }
+.konf-sum-u { white-space: normal; }
+.konf-sum-x { margin-left: 0.25rem; }
+
+/* Konfigurator: klebende Sprungleiste Sakko · Hose · Weste · Smoking (Kundenwunsch) */
+.konf-bar { box-shadow: 0 6px 18px rgba(16, 16, 16, 0.05); }
+.konf-bar-row { min-height: 0; padding: 0.6rem var(--pad); gap: 0.75rem; }
+.konf-tabs { gap: 0.5rem; justify-content: center; flex: 1; }
+.konf-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.4rem 1.1rem 0.4rem 0.4rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.konf-tab:hover { border-color: var(--ink); }
+.konf-tab.is-on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.konf-tab-img { width: 40px; height: 48px; background: #fff; display: block; flex: none; overflow: hidden; }
+.konf-tab-img img { display: block; width: 40px; height: 48px; max-width: none; object-fit: contain; }
+.konf-tab-label { display: inline-flex; align-items: baseline; gap: 0.45rem; }
+.konf-tab-num { font-size: 0.62rem; opacity: 0.55; }
+.konf-tab-prog { background: #c9a063; color: #101010; padding: 0.12rem 0.45rem; font-size: 0.66rem; }
+.konf-tab.is-on .konf-tab-prog { background: #c9a063; color: #101010; }
+@media (max-width: 760px) {
+  .konf-bar-row { padding: 0.5rem 0.6rem; }
+  .konf-sum-link { display: none; }
+  .konf-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem; overflow: visible; }
+  .konf-tab { position: relative; flex-direction: column; gap: 0.3rem; padding: 0.35rem 0.2rem 0.45rem; font-size: 0.62rem; letter-spacing: 0.08em; text-align: center; justify-content: center; }
+  .konf-tab-img, .konf-tab-img img { width: 34px; height: 40px; }
+  .konf-tab-num { display: none; }
+  .konf-tab-prog { position: absolute; top: 3px; right: 3px; padding: 0.05rem 0.35rem; font-size: 0.6rem; }
+}
+
+/* Header: Mega-Menü «Brands» (Desktop) */
+.header { position: sticky; }
+.mega {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  clip-path: inset(0 0 100% 0);
+  visibility: hidden;
+  transition: clip-path 0.45s cubic-bezier(0.7, 0, 0.2, 1), visibility 0s linear 0.45s;
+  z-index: 61;
+}
+.mega.is-open { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path 0.5s cubic-bezier(0.7, 0, 0.2, 1), visibility 0s; }
+.mega-inner { max-width: var(--maxw); margin: 0 auto; padding: 2.25rem var(--pad) 2.5rem; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 2.2fr); gap: 3rem; }
+.mega-intro { border-right: 1px solid var(--line); padding-right: 2.5rem; display: flex; flex-direction: column; gap: 0.9rem; align-items: flex-start; }
+.mega-intro .eyebrow { margin: 0; }
+.mega-title { font-family: var(--serif); font-size: 1.55rem; line-height: 1.2; }
+.mega-text { font-size: 0.88rem; color: var(--muted); }
+.mega-shop { margin-top: auto; padding-top: 1.25rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.8rem; }
+.mega-shop span { width: 100%; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.mega-shop a { border-bottom: 1px solid var(--line); padding-bottom: 0.1rem; }
+.mega-shop a:hover { border-color: var(--ink); }
+.mega-grid { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem 1.25rem; }
+.mega-grid li { opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease, transform 0.45s var(--easing); }
+.mega.is-open .mega-grid li { opacity: 1; transform: none; transition-delay: calc(0.12s + var(--i) * 0.04s); }
+.mega-card { display: grid; gap: 0.2rem; }
+.mega-img { display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--paper-warm); margin-bottom: 0.55rem; }
+.mega-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--easing); filter: grayscale(0.15); }
+.mega-card:hover .mega-img img { transform: scale(1.05); }
+.mega-name { font-family: var(--serif); font-size: 1.1rem; }
+.mega-claim { font-size: 0.84rem; color: var(--ink-soft); }
+.mega-origin { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.mega-trigger { position: relative; }
+.mega-trigger.is-open { border-color: var(--ink) !important; }
+.mega-trigger.is-open::after { transform: scaleX(1) !important; }
+.mega-scrim { position: fixed; inset: 0; z-index: 55; background: rgba(16, 16, 16, 0.25); opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+.mega-scrim.is-open { opacity: 1; pointer-events: auto; }
+@media (max-width: 960px) { .mega, .mega-scrim { display: none; } }
+@media (prefers-reduced-motion: reduce) { .mega, .mega-grid li { transition: none !important; } }
+.konf-hints { counter-reset: hint; }
+.konf-hints li { counter-increment: hint; }
+.konf-hints li::before { content: counter(hint); }
+.konf-card-text { justify-content: center; }

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { BRANDS } from '@/lib/brands';
 import { SITE } from '@/lib/site';
@@ -70,6 +70,26 @@ export default function Header() {
 
   const close = () => setOpen(false);
 
+  // Mega-Menü «Brands» (Desktop): öffnet beim Überfahren mit kurzer Verzögerung, schliesst
+  // beim Verlassen, per Escape oder bei Navigation; per Tastatur über Fokus erreichbar.
+  const [mega, setMega] = useState(false);
+  const megaT = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const megaOpen = () => {
+    if (megaT.current) clearTimeout(megaT.current);
+    megaT.current = setTimeout(() => setMega(true), 90);
+  };
+  const megaClose = () => {
+    if (megaT.current) clearTimeout(megaT.current);
+    megaT.current = setTimeout(() => setMega(false), 160);
+  };
+  useEffect(() => setMega(false), [pathname]);
+  useEffect(() => {
+    if (!mega) return;
+    const k = (e: KeyboardEvent) => e.key === 'Escape' && setMega(false);
+    document.addEventListener('keydown', k);
+    return () => document.removeEventListener('keydown', k);
+  }, [mega]);
+
   const navLink = (item: { label: string; href: string }) => (
     <Link
       key={item.href}
@@ -105,7 +125,25 @@ export default function Header() {
           </Link>
 
           <nav className="header-nav header-nav--right" aria-label="Hauptnavigation rechts">
-            {NAV_RIGHT.map(navLink)}
+            {NAV_RIGHT.map((item) =>
+              item.href === '/category/brand/' ? (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`mega-trigger${mega ? ' is-open' : ''}`}
+                  aria-expanded={mega}
+                  aria-controls="mega-brands"
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                  onMouseEnter={megaOpen}
+                  onMouseLeave={megaClose}
+                  onFocus={() => setMega(true)}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                navLink(item)
+              ),
+            )}
             <CartButton />
             <Link href="/termin/" className="btn">
               Termin buchen
@@ -130,7 +168,53 @@ export default function Header() {
             </span>
           </button>
         </div>
+
+        <div
+          id="mega-brands"
+          className={`mega${mega ? ' is-open' : ''}`}
+          onMouseEnter={megaOpen}
+          onMouseLeave={megaClose}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node)) setMega(false);
+          }}
+          aria-hidden={!mega}
+        >
+          <div className="mega-inner">
+            <div className="mega-intro">
+              <span className="eyebrow">Brands</span>
+              <p className="mega-title">Familiengeführte Manufakturen, persönlich ausgewählt.</p>
+              <p className="mega-text">
+                Wir arbeiten nur mit Häusern, die wir persönlich kennen — von der neapolitanischen Schneiderei bis zur
+                Weberei mit über 200 Jahren Tradition.
+              </p>
+              <Link href="/category/brand/" className="text-link" tabIndex={mega ? 0 : -1}>
+                Alle Brands
+              </Link>
+              <div className="mega-shop">
+                <span>Im Shop</span>
+                <Link href="/shop/woolrich/" tabIndex={mega ? 0 : -1}>Woolrich</Link>
+                <Link href="/shop/gran-sasso/" tabIndex={mega ? 0 : -1}>Gran Sasso</Link>
+                <Link href="/shop/tramarossa/" tabIndex={mega ? 0 : -1}>Tramarossa</Link>
+              </div>
+            </div>
+            <ul className="mega-grid">
+              {BRANDS.map((b, i) => (
+                <li key={b.slug} style={{ '--i': i } as React.CSSProperties}>
+                  <Link href={`/${b.slug}/`} className="mega-card" tabIndex={mega ? 0 : -1}>
+                    <span className="mega-img">
+                      <img src={b.hero} alt="" width={320} height={200} loading="lazy" />
+                    </span>
+                    <span className="mega-name">{b.name}</span>
+                    <span className="mega-claim">{b.claim}</span>
+                    <span className="mega-origin">{b.origin}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </header>
+      <div className={`mega-scrim${mega ? ' is-open' : ''}`} aria-hidden="true" onMouseEnter={megaClose} />
 
       {/* Fullscreen-Menü (mobil) — eigene Kopfzeile mit grossem Logo + Close */}
       <nav
@@ -155,19 +239,15 @@ export default function Header() {
             <span className="fs-kicker">Menü</span>
             <div className="fs-list">
               <Link className="fs-row" href="/massanzug-konfigurator/" onClick={close}>
-                <span className="fs-num">01</span>
                 <span className="fs-lbl">Styles & Options</span>
               </Link>
               <Link className="fs-row" href="/massanzug-zuerich/" onClick={close}>
-                <span className="fs-num">02</span>
                 <span className="fs-lbl">Massanzug</span>
               </Link>
               <Link className="fs-row" href="/hochzeitsanzug-zuerich/" onClick={close}>
-                <span className="fs-num">03</span>
                 <span className="fs-lbl">Hochzeitsanzug</span>
               </Link>
               <Link className="fs-row" href="/shop/" onClick={close}>
-                <span className="fs-num">04</span>
                 <span className="fs-lbl">Shop</span>
               </Link>
               <button
@@ -176,12 +256,10 @@ export default function Header() {
                 aria-haspopup="true"
                 onClick={() => setSub('brands')}
               >
-                <span className="fs-num">05</span>
                 <span className="fs-lbl">Brands</span>
                 <span className="fs-arr"><IconArrow /></span>
               </button>
               <Link className="fs-row" href="/kontakt/" onClick={close}>
-                <span className="fs-num">06</span>
                 <span className="fs-lbl">Kontakt</span>
               </Link>
             </div>
@@ -208,9 +286,8 @@ export default function Header() {
             </button>
             <span className="fs-kicker">{subTitle}</span>
             <div className="fs-list">
-              {subItems.map((item, i) => (
+              {subItems.map((item) => (
                 <Link key={item.href} className="fs-row fs-row--sm" href={item.href} onClick={close}>
-                  <span className="fs-num">{String(i + 1).padStart(2, '0')}</span>
                   <span className="fs-lbl">{item.label}</span>
                 </Link>
               ))}

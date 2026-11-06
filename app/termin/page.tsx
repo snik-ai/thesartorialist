@@ -93,11 +93,8 @@ export default function TerminPage() {
             <h2 className="h2">So läuft Ihre Beratung ab</h2>
           </div>
           <div className="grid-2">
-            {STEPS.map((s, i) => (
-              <div key={s.t} style={{ display: 'flex', gap: '1.25rem' }}>
-                <span className="serif" style={{ fontSize: '1.6rem', color: 'var(--muted)' }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+            {STEPS.map((s) => (
+              <div key={s.t}>
                 <div>
                   <h3 className="h3" style={{ fontSize: '1.1rem' }}>
                     {s.t}

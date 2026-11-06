@@ -45,8 +45,15 @@ export function aufloesen(a: Auswahl): Gewaehlt[] {
   return out;
 }
 
+/** Codes nur zeigen, wenn sie etwas aussagen (z. B. «2 B», «6 X 2», «PCC»), nicht reine Positionsnummern
+ * («1», «2») oder Breitenkürzel, die schon in der Bezeichnung stehen («S», «R», «L»). */
+export const zeigeCode = (code?: string) => !!code && !/^\d+$/.test(code.trim()) && !/^[SRL]$/.test(code.trim());
+
 const optionText = (g: Gewaehlt) =>
-  g.option.pocketSpec ? `Brust ${g.option.pocketSpec.chest}, Seite ${g.option.pocketSpec.side}` : `${g.option.label}${g.option.code ? ` (${g.option.code})` : ''}`;
+  g.option.pocketSpec
+    ? `Brust ${g.option.pocketSpec.chest}, Seite ${g.option.pocketSpec.side}`
+    : // Code nur anhängen, wenn er nicht schon in der Bezeichnung steckt (S/R/L bei Revers-Breiten)
+      `${g.option.label}${zeigeCode(g.option.code) ? ` (${g.option.code})` : ''}`;
 
 /** Lesbare Zusammenfassung für E-Mail, Zwischenablage und Terminanfrage. */
 export function alsText(items: Gewaehlt[]): string {
