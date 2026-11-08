@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { SITE } from '@/lib/site';
-import { alsText, aufloesen, ladeAuswahl, ladeStoffe, optionText, type Gewaehlt } from '@/lib/konfigurator/auswahl';
+import { alsText, aufloesen, optionText, type Gewaehlt } from '@/lib/konfigurator/auswahl';
+import { aktuelleAuswahl, aktuelleStoffe } from '@/lib/konfigurator/useAuswahl';
 import { EmailFeld } from '@/components/formular/EmailFeld';
 import { TelefonFeld } from '@/components/formular/TelefonFeld';
 import { MarkenChip, MarkenLogo, useMarke } from '@/components/formular/Marke';
@@ -91,8 +92,8 @@ export default function BookingWizard({ lang, t }: { lang: Sprache; t: WizardTex
   const [stilMit, setStilMit] = useState(true);
   const [stoffe, setStoffeW] = useState<string[]>([]);
   useEffect(() => {
-    setStil(aufloesen(ladeAuswahl()));
-    setStoffeW(ladeStoffe());
+    setStil(aufloesen(aktuelleAuswahl()));
+    setStoffeW(aktuelleStoffe());
   }, []);
 
   const step = !date ? 0 : !time ? 1 : 2;
