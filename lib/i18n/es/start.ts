@@ -124,4 +124,18 @@ export const start: Woerterbuch['start'] = {
     name: 'Create your own Style! — The Sartorialist Zúrich',
     beschreibung: 'Trajes a medida con elegancia italiana del atelier The Sartorialist en Zúrich.',
   },
+  massfilm: {
+    eyebrow: 'De la medida al traje',
+    titel: 'Un traje hecho para una sola persona.',
+    schritte: [
+      { kicker: '01 · Toma de medidas', titel: 'Más de 30 puntos de medida', text: 'Hombros, pecho, cintura, mangas, largo de pierna: medimos su cuerpo, no una talla estándar.' },
+      { kicker: '02 · Patrón y tejido', titel: 'Un patrón dibujado solo para usted', text: 'Sus medidas se convierten en su patrón personal, cortado en el tejido que elija, por ejemplo de Holland & Sherry, de Savile Row.' },
+      { kicker: '03 · Su traje', titel: 'Un giro. Su traje.', text: 'Entretela completa, 100 % hecho en Italia y listo para recoger en 20 días laborables.' },
+    ],
+    schluss: { titel: 'Hecho para usted. Solo para usted.', text: 'Toma de medidas y asesoramiento en el atelier, Kuttelgasse 7, Zúrich. Desde CHF 1’690.', knopf: 'Reservar una cita' },
+    masse: { schulter: 'Hombro', brust: 'Pecho', taille: 'Cintura', aermel: 'Manga', bein: 'Pantalón', cm: 'cm', punkte: 'Puntos de medida' },
+    teile: { vorderteil: 'Delantero', rueckenteil: 'Espalda', aermel: 'Manga', hose: 'Pantalón' },
+    stoff: 'Holland & Sherry · Savile Row',
+    bildAlt: 'Hombre con traje a medida gris, camisa blanca y corbata delante de una puerta de madera',
+  },
 };

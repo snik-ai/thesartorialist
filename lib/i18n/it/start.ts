@@ -124,4 +124,18 @@ export const start: Woerterbuch['start'] = {
     name: 'Create your own Style! — The Sartorialist Zurigo',
     beschreibung: 'Abiti su misura con eleganza italiana dall’atelier di The Sartorialist a Zurigo.',
   },
+  massfilm: {
+    eyebrow: 'Dalla misura all’abito',
+    titel: 'Un abito fatto per una sola persona.',
+    schritte: [
+      { kicker: '01 · Presa delle misure', titel: 'Oltre 30 punti di misura', text: 'Spalle, torace, vita, maniche, lunghezza gamba: misuriamo il Suo corpo, non una taglia standard.' },
+      { kicker: '02 · Cartamodello & tessuto', titel: 'Un cartamodello disegnato solo per Lei', text: 'Dalle Sue misure nasce il Suo cartamodello personale, tagliato nel tessuto che sceglie, per esempio di Holland & Sherry, Savile Row.' },
+      { kicker: '03 · Il Suo abito', titel: 'Un giro. Il Suo abito.', text: 'Intelatura completa, 100 % Made in Italy e pronto per il ritiro in 20 giorni lavorativi.' },
+    ],
+    schluss: { titel: 'Fatto per Lei. Solo per Lei.', text: 'Presa delle misure e consulenza in atelier, Kuttelgasse 7, Zurigo. A partire da CHF 1’690.', knopf: 'Prenoti un appuntamento' },
+    masse: { schulter: 'Spalle', brust: 'Torace', taille: 'Vita', aermel: 'Manica', bein: 'Pantalone', cm: 'cm', punkte: 'Punti di misura' },
+    teile: { vorderteil: 'Davanti', rueckenteil: 'Dietro', aermel: 'Manica', hose: 'Pantalone' },
+    stoff: 'Holland & Sherry · Savile Row',
+    bildAlt: 'Uomo in abito su misura grigio con camicia bianca e cravatta davanti a una porta di legno',
+  },
 };

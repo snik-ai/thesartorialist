@@ -1,0 +1,57 @@
+The Sartorialist Zürich – Scroll-Film «Vom Mass zum Anzug» (Startseite)
+=======================================================================
+
+Was es ist
+  Grosse, scroll-gesteuerte Szene auf der Startseite direkt nach Hero, Stoffpartner-Band und
+  USP-Leiste (vor «Styles & Options»). Sticky-Bühne über 5 Bildschirmhöhen (500svh), der
+  Scroll-Fortschritt p (0 → 1) steuert alles. Rückwärts scrollen spult exakt zurück.
+
+Dramaturgie (p = Scroll-Fortschritt)
+  −0.17 … 0.04  Körper-Scan: Eine Figur aus goldenen 3D-Konturringen baut sich von unten auf
+                (Titel «Vom Mass zum Anzug»)
+  0.07 … 0.35   Massnehmen: Massband legt sich um Schulter, Brust, Taille, Ärmel, Hosenlänge,
+                Werte zählen hoch (cm), 32 Messpunkte poppen auf, Zähler «Messpunkte»
+  0.36 … 0.60   Papierschnitt: Vorderteil, Rückenteil, Ärmel, Hose zeichnen sich aus der Figur
+                heraus (Nahtzugabe, Fadenlauf, Masse), Holland-&-Sherry-Flanell wischt hinein
+  0.60 … 0.87   Die Teile fliegen zurück auf die Figur, Lichtwelle von oben nach unten, die Figur
+                dreht sich einmal um 360°, der Stoff legt sich über den Körper (Sakko mit Revers,
+                Knöpfen, Brusttasche), die Kamera fährt auf die Bildausschnitt-Position des Fotos
+  0.87 … 0.95   Lichtkante wischt von links nach rechts: die Figur wird zum echten Foto
+                (Mann im grauen Massanzug), Lichtwechsel auf das warme Holz
+  0.93 … 1      Schlusszeile + Knopf «Termin buchen» (→ Terminseite der jeweiligen Sprache)
+
+Technik
+  Live gezeichnet auf Canvas 2D (kein Video, keine Bildsequenz, kein Three.js):
+    components/massfilm/szene.ts     reine Zeichenfunktion zeichne(ctx, W, H, p, …), Körpermodell
+                                     als Superellipsen-Ringe, eigene Perspektiv-Projektion,
+                                     Massband, Schnittteile, Foto-Reveal
+    components/massfilm/MassFilm.tsx Sticky-Bühne, Scroll → p (gedämpft), Texte als echtes HTML,
+                                     Lazy-Laden, «Bewegung reduzieren»-Fassung
+    app/globals.css                  Abschnitt «Scroll-Film»
+    lib/i18n/*/start.ts              Texte unter start.massfilm (9 Sprachen)
+  Bilder: public/images/massfilm/stoff-grau.webp (Ausschnitt aus Holland-Sherry-4, 36 KB)
+          public/images/massanzug-zuerich.webp (bestehendes Foto, 77 KB)
+  Beide laden erst nach dem Seitenaufbau und wenn die Sektion naht.
+  Mobile: eigene Komposition (Figur oben, Text unten über der Knopfleiste), Foto mittig auf
+  den Mann zugeschnitten. «Bewegung reduzieren»: drei Standbilder (aus derselben Funktion
+  gezeichnet) + Foto mit denselben Texten, ohne Sticky.
+
+Prüfen / Kontrollbilder (im Ordner quellen/)
+  Dev-Server starten (freier Port, z. B. NEXT_DIST_DIR=.next-dev-mf npx next dev -p 3417), dann:
+  node stills.mjs http://localhost:3417/ out/stills -0.1,0.2,0.34,0.41,0.56,0.68,0.76,0.84,0.89,1
+  GERAETE=mobile node stills.mjs http://localhost:3417/ru/ out/stills-ru 0.34,0.56,1
+  RUHIG=1 node stills.mjs http://localhost:3417/ out/ruhig          # «Bewegung reduzieren»
+  sh sheet.sh out/stills desktop 4 480                               # Contact-Sheet
+  node perf.mjs http://localhost:3417/ 4                             # Frame-Abstände, CPU ÷ 4
+  (Zeichenzeit pro Frame: in MassFilm.tsx render() vorübergehend performance.now()-Messung in
+   window.__mf schreiben, perf.mjs gibt sie dann mit aus.)
+
+Stoffbild neu erzeugen
+  ffmpeg -i public/images/Holland-Sherry-4-scaled.webp -vf "crop=440:340:0:95" out/stoff.png
+  cwebp -q 80 out/stoff.png -o public/images/massfilm/stoff-grau.webp
+
+Messwerte (10.11.2026)
+  Zeichnen pro Frame: Mobile 0.4 ms (CPU ÷ 4: 1.5 ms, max 2.9 ms), Desktop 0.1–0.3 ms;
+  0 Frames über 20 ms beim Durchscrollen.
+  Lighthouse mobil (Produktions-Build, je 3 Läufe): mit Film 91/91/91, LCP 3.4–3.5 s;
+  ohne Film 89/92/92, LCP 3.3–3.4 s; CLS und TBT unverändert → keine messbare Verschlechterung.

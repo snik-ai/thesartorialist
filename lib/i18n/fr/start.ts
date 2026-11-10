@@ -124,4 +124,18 @@ export const start: Woerterbuch['start'] = {
     name: 'Create your own Style! — The Sartorialist Zurich',
     beschreibung: 'Costumes sur mesure à l’élégance italienne, de l’atelier The Sartorialist à Zurich.',
   },
+  massfilm: {
+    eyebrow: 'Des mesures au costume',
+    titel: 'Un costume fait pour une seule personne.',
+    schritte: [
+      { kicker: '01 · Prise de mesures', titel: 'Plus de 30 points de mesure', text: 'Épaules, poitrine, taille, manches, longueur de jambe : nous mesurons votre corps, pas une taille standard.' },
+      { kicker: '02 · Patron & tissu', titel: 'Un patron dessiné pour vous seul', text: 'Vos mesures deviennent votre patron personnel, coupé dans le tissu de votre choix, par exemple de Holland & Sherry, Savile Row.' },
+      { kicker: '03 · Votre costume', titel: 'Un tour sur vous-même. Votre costume.', text: 'Entoilage complet, 100 % fabriqué en Italie et prêt en 20 jours ouvrables.' },
+    ],
+    schluss: { titel: 'Fait pour vous. Rien que pour vous.', text: 'Prise de mesures et conseil à l’atelier, Kuttelgasse 7, Zurich. À partir de CHF 1’690.', knopf: 'Prendre rendez-vous' },
+    masse: { schulter: 'Épaule', brust: 'Poitrine', taille: 'Taille', aermel: 'Manche', bein: 'Pantalon', cm: 'cm', punkte: 'Points de mesure' },
+    teile: { vorderteil: 'Devant', rueckenteil: 'Dos', aermel: 'Manche', hose: 'Pantalon' },
+    stoff: 'Holland & Sherry · Savile Row',
+    bildAlt: 'Homme en costume gris sur mesure, chemise blanche et cravate, devant une porte en bois',
+  },
 };

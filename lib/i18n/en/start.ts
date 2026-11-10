@@ -124,4 +124,18 @@ export const start: Woerterbuch['start'] = {
     name: 'Create your own Style! — The Sartorialist Zurich',
     beschreibung: 'Made-to-measure suits with Italian elegance from The Sartorialist atelier in Zurich.',
   },
+  massfilm: {
+    eyebrow: 'From measure to suit',
+    titel: 'A suit made for exactly one person.',
+    schritte: [
+      { kicker: '01 · Measuring', titel: 'More than 30 measurements', text: 'Shoulders, chest, waist, sleeves, leg length: we measure your body, not an off-the-peg size.' },
+      { kicker: '02 · Pattern & cloth', titel: 'A pattern drawn only for you', text: 'Your measurements become your personal pattern, cut from the cloth you choose, for example from Holland & Sherry of Savile Row.' },
+      { kicker: '03 · Your suit', titel: 'One turn. Your suit.', text: 'Full canvas, 100 % made in Italy and ready for collection in 20 working days.' },
+    ],
+    schluss: { titel: 'Made for you. Only for you.', text: 'Measuring and advice at our atelier, Kuttelgasse 7, Zurich. From CHF 1’690.', knopf: 'Book an appointment' },
+    masse: { schulter: 'Shoulder', brust: 'Chest', taille: 'Waist', aermel: 'Sleeve', bein: 'Trouser length', cm: 'cm', punkte: 'Measurements' },
+    teile: { vorderteil: 'Front', rueckenteil: 'Back', aermel: 'Sleeve', hose: 'Trousers' },
+    stoff: 'Holland & Sherry · Savile Row',
+    bildAlt: 'Man in a grey made-to-measure suit with white shirt and tie in front of a wooden door',
+  },
 };

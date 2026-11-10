@@ -124,4 +124,18 @@ export const start: Woerterbuch['start'] = {
     name: 'Create your own Style! — The Sartorialist Cyrih',
     beschreibung: 'Kostume me porosi me elegancë italiane nga atelieja The Sartorialist në Cyrih.',
   },
+  massfilm: {
+    eyebrow: 'Nga masa te kostumi',
+    titel: 'Një kostum i bërë për një njeri të vetëm.',
+    schritte: [
+      { kicker: '01 · Marrja e masave', titel: 'Mbi 30 pika matjeje', text: 'Supet, gjoksi, beli, mëngët, gjatësia e këmbëve: ne masim trupin Tuaj, jo një masë standarde.' },
+      { kicker: '02 · Modeli dhe stofi', titel: 'Një model i vizatuar vetëm për Ju', text: 'Nga masat Tuaja lind modeli Juaj personal, i prerë nga stofi që zgjidhni, për shembull nga Holland & Sherry e Savile Row.' },
+      { kicker: '03 · Kostumi Juaj', titel: 'Një rrotullim. Kostumi Juaj.', text: 'Kanavacë e plotë, 100 % prodhuar në Itali dhe gati për t’u marrë brenda 20 ditëve pune.' },
+    ],
+    schluss: { titel: 'Bërë për Ju. Vetëm për Ju.', text: 'Marrja e masave dhe këshillimi në atelie, Kuttelgasse 7, Cyrih. Nga CHF 1’690.', knopf: 'Rezervoni një takim' },
+    masse: { schulter: 'Supet', brust: 'Gjoksi', taille: 'Beli', aermel: 'Mënga', bein: 'Pantallonat', cm: 'cm', punkte: 'Pika matjeje' },
+    teile: { vorderteil: 'Para', rueckenteil: 'Shpina', aermel: 'Mënga', hose: 'Pantallonat' },
+    stoff: 'Holland & Sherry · Savile Row',
+    bildAlt: 'Burrë me kostum gri me porosi, këmishë të bardhë dhe kravatë para një dere druri',
+  },
 };

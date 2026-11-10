@@ -5,6 +5,7 @@ import InstagramBand from '@/components/InstagramBand';
 import KonfiguratorFilm from '@/components/KonfiguratorFilm';
 import Faq from '@/components/Faq';
 import HeroVideo from '@/components/HeroVideo';
+import MassFilm from '@/components/massfilm/MassFilm';
 import { JsonLd } from '@/components/JsonLd';
 import { SITE } from '@/lib/site';
 import { woerterbuch } from '@/lib/i18n';
@@ -103,6 +104,9 @@ export default function Startseite({ lang }: { lang: Sprache }) {
           ))}
         </div>
       </div>
+
+      {/* Scroll-Film: Massnehmen → Schnitt → Drehung in den fertigen Anzug */}
+      <MassFilm t={t.massfilm} terminHref={pfad(lang, 'termin')} />
 
       {/* Styles & Options: Vorschau, führt zum Massanzug-Konfigurator */}
       <section className="section styles-teaser" id="styles-options">

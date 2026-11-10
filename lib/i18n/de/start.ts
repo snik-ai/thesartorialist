@@ -122,4 +122,18 @@ export const start = {
     name: 'Create your own Style! — The Sartorialist Zürich',
     beschreibung: 'Massanzüge mit italienischer Eleganz aus dem Atelier von The Sartorialist in Zürich.',
   },
+  massfilm: {
+    eyebrow: 'Vom Mass zum Anzug',
+    titel: 'Ein Anzug, gemacht für genau einen Menschen.',
+    schritte: [
+      { kicker: '01 · Mass nehmen', titel: 'Über 30 Messpunkte', text: 'Schulter, Brust, Taille, Ärmel, Beinlänge: Wir vermessen Ihren Körper, nicht eine Konfektionsgrösse.' },
+      { kicker: '02 · Schnitt & Stoff', titel: 'Ein Schnitt, nur für Sie gezeichnet', text: 'Aus Ihren Massen entsteht Ihr persönlicher Schnitt, zugeschnitten aus Ihrem Stoff, zum Beispiel von Holland & Sherry aus der Savile Row.' },
+      { kicker: '03 · Ihr Anzug', titel: 'Eine Drehung. Ihr Anzug.', text: 'Full Canvas, 100 % Made in Italy und in 20 Arbeitstagen abholbereit.' },
+    ],
+    schluss: { titel: 'Gemacht für Sie. Nur für Sie.', text: 'Massnehmen und Beratung im Atelier an der Kuttelgasse 7 in Zürich. Ab CHF 1’690.', knopf: 'Termin buchen' },
+    masse: { schulter: 'Schulter', brust: 'Brust', taille: 'Taille', aermel: 'Ärmel', bein: 'Hosenlänge', cm: 'cm', punkte: 'Messpunkte' },
+    teile: { vorderteil: 'Vorderteil', rueckenteil: 'Rückenteil', aermel: 'Ärmel', hose: 'Hose' },
+    stoff: 'Holland & Sherry · Savile Row',
+    bildAlt: 'Mann im grauen Massanzug mit weissem Hemd und Krawatte vor einer Holztür',
+  },
 };
