@@ -45,7 +45,17 @@ function read(): Auswahl {
     cacheRaw = raw;
     try {
       const v = JSON.parse(raw);
-      cacheVal = v && typeof v === 'object' ? v : {};
+      // Nur gültige Einträge (Untergruppe → Liste von Options-IDs); alte oder kaputte Daten fallen weg
+      const sauber: Auswahl = {};
+      if (v && typeof v === 'object' && !Array.isArray(v)) {
+        for (const [k, liste] of Object.entries(v)) {
+          if (Array.isArray(liste)) {
+            const ids = liste.filter((x): x is string => typeof x === 'string');
+            if (ids.length) sauber[k] = ids;
+          }
+        }
+      }
+      cacheVal = sauber;
     } catch {
       cacheVal = {};
     }
