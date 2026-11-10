@@ -1,0 +1,61 @@
+The Sartorialist Zürich — Ratgeber «Der passende Anzug», Konzept A (Editorial / Magazin)
+=========================================================================================
+
+Ergebnis:   ../The-Sartorialist-Ratgeber-Anzug-A4.pdf            (A4 hoch, 16 Seiten, ca. 3.9 MB)
+Vorschau:   ../The-Sartorialist-Ratgeber-Anzug-Vorschau.png      (Titel + Seiten 6 und 10, zur Auswahl)
+Website:    public/ratgeber/ratgeber-anzug-a.pdf + public/ratgeber/cover-a.webp (800 × 1131)
+Alternative (Konzept B, moderner Guide): ../alternative/
+
+Konzept
+  Herrenmagazin: Schwarz / Warmweiss (Creme) / Gold #c9a063, grosse randabfallende Fotos,
+  Playfair Display (auch kursiv) für Titel und Kapitelnummern, Inter für Fliesstext, viel Weissraum,
+  Pull-Quotes und Bildunterschriften. Zahlen mit tabellarischen Ziffern (keine Mono-Schrift).
+  Druckregel: keine box-shadow, text-shadow oder filter:blur; Tiefe nur über Linien und Flächen.
+  Einzige Ausnahme: einfacher Farbverlauf Foto → Schwarz auf dem Titel (in PDFKit geprüft, sauber).
+
+Inhalt der Seiten
+  1  Titel «Der passende Anzug» — Anlass, Schnitt, Stoff und Details
+  2  Editorial Alexander Shubin (Tom Ford / Prada) + Inhaltsverzeichnis
+  3  01 Anlass & Anzug — Opener mit Übersicht der sechs Anlässe
+  4  Anlässe I: Business · Hochzeit/Bräutigam · Trauzeuge & Gast (Farbe, Stoff, Schnitt, Details)
+  5  Anlässe II: Black Tie & Gala · Smart Casual · Sommer & Reise
+  6  02 Dresscodes als Leiter: White Tie, Black Tie, Cut, Cocktail, Business, Smart Casual
+  7  03 Schnitt & Figur: gross/schlank, kräftig, kleiner, sportlich — mit Konfigurator-Illustrationen
+  8  04 Stoffe: Gewichtsklassen, Kammgarn/Flanell/Mohair/Leinen/Fresko/Kaschmir, Super-Zahl,
+     Holland & Sherry, Loro Piana, weitere Webereien, 1’000+ Stoffe
+  9  05 Farben & Muster: Grundfarben mit Anlass, Muster mit Anlass
+ 10  06 Optionen Sakko (Knopfung, Revers, Taschen, Rücken, Knopfloch) mit Anlass-Kennzeichen B/H/G/C/S
+ 11  06 Optionen Hose, Weste, Smoking
+ 12  07 Hemd, Krawatte, Schuhe je Anlass + drei Regeln + Masshemd (Maria Santangelo)
+ 13  08 Hochzeit planen: 8–10 Wochen, Zeitplan, Trauzeugen/Väter
+ 14  09 Checkliste vor der Beratung (zum Abhaken) + Notizen
+ 15  10 Die Beratung im Atelier: vier Schritte, Kennzahlen (ab CHF 1’690, 20 Arbeitstage, 1’000+, 30+)
+ 16  Kontakt, Öffnungszeiten, grosser QR-Code zu https://thesartorialist.ch/termin/
+
+Quellen der Texte (nichts erfunden)
+  lib/site.ts, public/llms.txt, lib/konfigurator/daten.ts (Optionen, Beschreibungen), lib/brands.ts,
+  lib/suitColors.ts, lib/i18n/de/*.ts (Massanzug, Hochzeitsanzug, Start), lib/glossar/* (Black Tie,
+  White Tie, Cutaway, Cocktail, Business Casual, Business-Anzug, Super-Zahl, Stoffgewicht, Flanell,
+  Mohair, Fresko, Trauzeugen-Outfit, Dresscode Hochzeit, Anzugfarben, Oxford-Schuh) sowie die
+  bestehende Unternehmensbroschüre (Marketing/Broschuere). Keine Konkurrenz, keine fremden Preise.
+
+Dateien
+  ratgeber.html            Layout und Texte (alle 16 Seiten)
+  fonts/                   Inter und Playfair Display (woff2, lokal)
+  img/                     vorbereitete Bilder (JPEG), Logo weiss/schwarz, img/illu/ Konfigurator-Illustrationen,
+                           qr-termin.svg (→ https://thesartorialist.ch/termin/, aus Marketing/Broschuere)
+  bilder-vorbereiten.cjs   erzeugt img/ aus public/images und public/konfigurator neu (Chrome-Canvas)
+  render.cjs               rendert das PDF (Puppeteer + Chrome) und prüft auf Überläufe;
+                           --web kopiert zusätzlich PDF und Cover nach public/ratgeber/
+  kontrolle.swift          rendert jede PDF-Seite mit PDFKit (wie macOS-Vorschau) als PNG
+  vorschau.cjs             setzt die Vorschau-PNG aus den Kontrollbildern zusammen
+  out/                     Zwischenrenders, Kontroll-PNGs (nicht in Git)
+
+Neu erzeugen (im Ordner quellen/)
+  node bilder-vorbereiten.cjs        # nur nötig, wenn Bilder geändert werden
+  node render.cjs --web              # PDF → ../The-Sartorialist-Ratgeber-Anzug-A4.pdf (+ public/ratgeber/)
+  swift kontrolle.swift ../The-Sartorialist-Ratgeber-Anzug-A4.pdf out/kontrolle
+  node vorschau.cjs                  # ../The-Sartorialist-Ratgeber-Anzug-Vorschau.png
+
+Voraussetzungen: Google Chrome unter /Applications, puppeteer-core und sharp aus
+/Users/strachi/_Claude/dlmdigital/node_modules.

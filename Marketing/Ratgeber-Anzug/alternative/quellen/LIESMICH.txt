@@ -1,0 +1,70 @@
+The Sartorialist Zürich — Ratgeber «Der passende Anzug», KONZEPT B (grafischer Guide)
+=====================================================================================
+
+Ergebnis:    ../The-Sartorialist-Ratgeber-Anzug-A4.pdf          (A4 hoch, 16 Seiten, ca. 2,9 MB)
+Vorschau:    ../The-Sartorialist-Ratgeber-Anzug-Vorschau.png    (Titel, Entscheidungsbaum, Matrix)
+Website:     public/ratgeber/ratgeber-anzug-b.pdf               (Web-Fassung, gleiche Datei, < 4 MB)
+             public/ratgeber/cover-b.webp                       (Titelseite 800 × 1131)
+             public/ratgeber/innen-b.webp                       (Innenseite Matrix 800 × 1131)
+
+Konzept
+  Konzept A ist ein Magazin (Schwarz-Creme-Gold, grosse Bilder, Serifenschrift). Konzept B ist
+  bewusst das Gegenstück: ein Nachschlage-Guide mit Informationsdesign. Wer einen Anzug sucht,
+  will schnell wissen «was trage ich wozu?» — darum Entscheidungsbaum, Steckbrief-Karten, eine
+  Matrix «Anlass × Option», Swatches, Figurtypen und eine Checkliste zum Ankreuzen. Das Heft wird
+  in die Beratung mitgebracht und bleibt danach als Nachschlagewerk in Gebrauch.
+  Gestaltung: Papierweiss #fbfaf7, Nachtblau #12203a, eine Signalfarbe Terrakotta #c4673f,
+  helle Flächen #eaeef4 / #f3e2d8. Schrift Hanken Grotesk (Text, Titel, Zahlen mit tabular-nums),
+  Playfair Display kursiv nur als Akzent in den Titeln. Eigene Linien-Icons (Inline-SVG-Sprite),
+  Stoffmuster als SVG-Pattern (vektoriell, rendern in Chrome und PDFKit gleich).
+  Druckregel: keine box-shadow, kein text-shadow, kein filter/blur, keine CSS-Verläufe
+  (PDFKit/Vorschau rendert Verläufe unsauber) — Tiefe nur über Linien und Flächen.
+
+Inhalt der Seiten
+   1  Titel «Der passende Anzug für jeden Anlass», 6 Anlass-Icons, Kennzahlen
+   2  So nutzen Sie den Guide (3 Schritte), Inhaltsverzeichnis, Gründer, Kennzahlenleiste
+   3  Entscheidungsbaum: Anlass → Dresscode → Farbe → Schnitt & Details → Steckbrief-Seite
+   4  Dresscodes verständlich: Skala formell ↔ locker (White Tie, Cut, Black Tie, Festlich/Cocktail,
+      Business, Smart Casual), «keine Angabe», «Black Tie Optional»
+   5  Steckbriefe Business, Smart Casual (Farbe, Stoff, Schnitt, Details, Do/Don't)
+   6  Steckbriefe Hochzeit/Bräutigam, Trauzeuge & Gast
+   7  Steckbriefe Black Tie & Gala, Sommer & Reise
+   8  Matrix «Anlass × Option»: 25 Konfigurator-Optionen × 6 Anlässe (empfohlen/möglich/meiden)
+   9  Optionen im Bild: 12 Illustrationen aus public/konfigurator mit Code und Eignung
+  10  Schnitt & Passform je Figurtyp (5 Typen) + Passform-Check
+  11  Stoffwahl: Gewicht/Saison-Grafik (g/m), Super-Zahl, 6 Stoffarten, Webereien (über 1’000 Stoffe)
+  12  Farben (12 Swatches mit Anlass-Icons) & Muster (6 Muster, formell → sportlich)
+  13  Hemd, Krawatte, Schuhe: 6 Kombinationsformeln + 4 Regeln
+  14  Checkliste vor der Beratung (zum Ankreuzen) + Notizen
+  15  So läuft die Beratung: Zeitstrahl Beratung → Masse → Anprobe → Abholung, Hochzeit 8–10 Wochen
+  16  Kontakt, grosser QR-Code zu https://thesartorialist.ch/termin/, Telefon, WhatsApp, E-Mail, Zeiten
+
+Quellen der Fakten
+  lib/site.ts (Adresse, Telefon, WhatsApp, Zeiten), public/llms.txt (Preise ab CHF 1’690 bis ca.
+  CHF 2’500, 20 Arbeitstage, 1’000+ Stoffe, 30+ Masse, Full Canvas, Made in Italy, HeidiPay,
+  Stoff- und Hemdenpartner, Gründer), lib/konfigurator/daten.ts (alle Optionen, Codes, Beschreibungen),
+  lib/i18n/de/massanzug.ts + hochzeitsanzug.ts (Ablauf, 8–10 Wochen, Farben Hochzeit, Futter-Stickerei),
+  lib/glossar/* (Dresscodes Smoking/Frack/Cut/Black Tie/White Tie, Stoffgewichte in g/m, Super-Zahl,
+  Flanell, Mohair, Leinen, Tweed, Kaschmir, Krawatten-/Reversbreiten, Schuhe), lib/brands.ts
+  (Maria Santangelo seit 1953, Loro Piana über 200 Jahre, Holland & Sherry), lib/suitColors.ts.
+  Figurtypen und Matrix-Bewertungen = allgemeines Stilwissen, abgestimmt auf die Konfigurator-Texte.
+  Keine Konkurrenz, keine fremden Preise, kein «exkl. MwSt.».
+
+Dateien
+  ratgeber.html            Layout und Texte (alle 16 Seiten)
+  fonts/                   Hanken Grotesk (Google Fonts, lokal), Playfair Display
+  img/                     vorbereitete Fotos (JPEG), Illustrationen (img/illu), Marke, QR (SVG)
+  bilder-vorbereiten.cjs   erzeugt img/ aus public/images und public/konfigurator neu
+  render.cjs               rendert das PDF (Puppeteer + Chrome), prüft Überläufe und Seitenfuss;
+                           mit --alles zusätzlich Web-PDF, cover-b.webp, innen-b.webp, Vorschau-PNG
+  kontrolle.swift          rendert jede PDF-Seite mit PDFKit (wie macOS-Vorschau) als PNG
+  out/                     Zwischenrenders und Kontroll-PNGs (nicht in Git)
+
+Neu erzeugen (im Ordner quellen/)
+  node bilder-vorbereiten.cjs        # nur nötig, wenn Bilder geändert werden
+  node render.cjs --alles            # PDF, Web-Dateien, Vorschau
+  swift kontrolle.swift ../The-Sartorialist-Ratgeber-Anzug-A4.pdf out/kontrolle
+
+Voraussetzungen: Google Chrome unter /Applications, puppeteer-core und sharp aus
+/Users/strachi/_Claude/dlmdigital/node_modules.
+QR: img/qr-termin.svg (aus Marketing/Broschuere übernommen, Farbe Nachtblau) → https://thesartorialist.ch/termin/
