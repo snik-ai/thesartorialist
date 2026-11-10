@@ -8,6 +8,7 @@ import { fmt } from '@/lib/i18n/fmt';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 const BILDER = [
   '/images/the-sartorialist-zuerich.webp',
@@ -85,6 +86,7 @@ export default function UeberUns({ lang }: { lang: Sprache }) {
         </div>
       </section>
 
+      <RatgeberBlock lang={lang} hell />
       <CtaBand lang={lang} />
     </>
   );

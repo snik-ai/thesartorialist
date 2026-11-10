@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { SITE } from '@/lib/site';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import BookingWizard from '@/components/BookingWizard';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 import { JsonLd, serviceSchema } from '@/components/JsonLd';
 import { woerterbuch } from '@/lib/i18n';
 import { pfad } from '@/lib/i18n/routen';
@@ -95,6 +96,7 @@ export default function Termin({ lang }: { lang: Sprache }) {
           </div>
         </div>
       </section>
+      <RatgeberBlock lang={lang} variante="kompakt" hell />
       <JsonLd data={serviceSchema({ name: t.schema.name, description: t.schema.beschreibung, url: pfad(lang, 'termin'), lang })} />
     </>
   );

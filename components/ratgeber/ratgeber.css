@@ -1,0 +1,167 @@
+/* Gratis-Ratgeber «Der passende Anzug»: 3D-Cover (Buch mit Seitenkante, Glanz, klappt nach dem Absenden auf),
+   Nutzenpunkte, Formularkarte, Danke-Zustand, Fenster und Knöpfe. Gold-Akzent wie die Formulare. */
+
+.rg { --gold: #c9a063; --gold-dunkel: #9b7840; --ease-out: cubic-bezier(0.16, 1, 0.3, 1); position: relative; display: grid; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.rg--block { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+.rg--fenster { grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); gap: clamp(1.5rem, 3vw, 2.75rem); align-items: start; }
+.rg--kompakt { grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); max-width: 980px; margin: 0 auto; }
+
+/* ── Buch ─────────────────────────────────────────────────────────────── */
+.rg-medien { display: grid; place-items: center; min-width: 0; }
+.rg--block .rg-medien { align-self: start; position: sticky; top: 110px; }
+.rg-buehne { position: relative; width: min(100%, 360px); perspective: 1700px; padding: 6% 8% 12%; animation: rg-schweben 7s ease-in-out infinite; }
+.rg-buehne--klein { width: min(100%, 250px); padding: 4% 6% 10%; }
+.rg-buch { position: relative; aspect-ratio: 800 / 1131; transform-style: preserve-3d;
+  transform: rotateX(var(--neig-x, 5deg)) rotateY(calc(-24deg + var(--neig-y, 0deg))) rotateZ(1deg);
+  transition: transform 0.9s var(--ease-out); }
+.rg-buch.is-offen { transform: translateX(46%) scale(0.84) rotateX(4deg) rotateY(-8deg); }
+.rg--fenster .rg-buch.is-offen, .rg--kompakt .rg-buch.is-offen { transform: translateX(28%) scale(0.6) rotateX(4deg) rotateY(-8deg); }
+
+/* Seitenkante rechts und unten (Papierschnitt), dahinter der Rückdeckel */
+.rg-seiten { position: absolute; inset: 1.2% -3.2% 0.6% 1.5%; transform: translateZ(-1px); border-radius: 0 3px 3px 0;
+  background: repeating-linear-gradient(90deg, #f7f3ea 0 1.5px, #ddd6c7 1.5px 2.2px), #efe9dc; }
+.rg-seiten::after { content: ''; position: absolute; inset: 1.5% -2% -1.5% 0; z-index: -1; background: #141414; border-radius: 0 4px 4px 0; transform: translateZ(-2px); }
+
+/* Erste Innenseite (Seite 2 des Ratgebers, sichtbar, wenn der Deckel aufklappt) */
+.rg-innen { position: absolute; inset: 0.6% 0 0.6% 0; overflow: hidden; transform: translateZ(1px); background: #f3efe6; border-radius: 0 2px 2px 0; }
+.rg-innen img { width: 100%; height: 100%; object-fit: cover; display: block; animation: rg-blende 0.6s 0.5s ease both; }
+.rg-innen::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0) 8%); pointer-events: none; }
+
+/* Deckel mit Cover, klappt um die linke Kante auf */
+.rg-deckel { position: absolute; inset: 0; transform-origin: left center; transform: translateZ(3px); transform-style: preserve-3d; transition: transform 1.25s var(--ease-out) 0.1s; }
+.rg-deckel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 1px 3px 3px 1px; backface-visibility: hidden; background: #111; }
+.rg-deckel::after { content: ''; position: absolute; inset: 0; border-radius: 3px 1px 1px 3px; background: linear-gradient(270deg, #262626, #121212 12%, #161616); transform: rotateY(180deg) translateZ(0.5px); backface-visibility: hidden; }
+.rg-buch.is-offen .rg-deckel { transform: translateZ(3px) rotateY(-168deg); }
+.rg-ruecken { position: absolute; inset: 0; pointer-events: none; backface-visibility: hidden; border-radius: 1px 3px 3px 1px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.38) 0, rgba(0, 0, 0, 0.05) 3.2%, rgba(255, 255, 255, 0.16) 4.2%, rgba(255, 255, 255, 0) 7%); }
+.rg-glanz { position: absolute; inset: 0; overflow: hidden; pointer-events: none; backface-visibility: hidden; border-radius: 1px 3px 3px 1px; }
+.rg-glanz::before { content: ''; position: absolute; inset: -20% -60%; background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.22) 49%, rgba(201, 160, 99, 0.18) 52%, transparent 58%);
+  transform: translateX(-70%); animation: rg-glanz 6.5s 1.2s ease-in-out infinite; }
+.rg-boden { position: absolute; left: 12%; right: 4%; bottom: 3%; height: 9%; border-radius: 50%; background: radial-gradient(closest-side, rgba(16, 16, 16, 0.28), rgba(16, 16, 16, 0)); pointer-events: none; }
+
+/* Einblenden beim Erscheinen */
+.rg:not(.is-sichtbar) .rg-buch { transform: rotateX(8deg) rotateY(-70deg) translateX(-18%); opacity: 0; }
+.rg .rg-buch { transition: transform 1.1s var(--ease-out), opacity 0.6s ease; }
+.rg:not(.is-sichtbar) .rg-nutzen li { opacity: 0; transform: translateY(14px); }
+.rg-nutzen li { transition: opacity 0.6s ease calc(0.25s + var(--i, 0) * 0.12s), transform 0.8s var(--ease-out) calc(0.25s + var(--i, 0) * 0.12s); }
+
+/* ── Inhalt ───────────────────────────────────────────────────────────── */
+.rg-inhalt { min-width: 0; }
+.rg-kicker { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--gold-dunkel) !important; }
+.rg-kicker::before { content: ''; width: 22px; height: 1px; background: var(--gold); }
+.rg-titel { font-family: var(--serif); font-weight: 500; font-size: clamp(2.1rem, 4.4vw, 3.4rem); line-height: 1.04; letter-spacing: -0.01em; margin: 0.65rem 0 0.9rem; }
+.rg--fenster .rg-titel, .rg--kompakt .rg-titel { font-size: clamp(1.8rem, 3.2vw, 2.5rem); }
+.rg-unter { color: var(--muted); font-size: 1.04rem; line-height: 1.6; max-width: 36rem; }
+.rg-nutzen { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; gap: 0.15rem; max-width: 36rem; }
+.rg-nutzen li { display: grid; grid-template-columns: 2.4rem 1fr; align-items: baseline; padding: 0.7rem 0; border-top: 1px solid var(--line); font-size: 0.98rem; line-height: 1.45; }
+.rg-nutzen li:last-child { border-bottom: 1px solid var(--line); }
+.rg-nr { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--gold-dunkel); font-variant-numeric: tabular-nums lining-nums; }
+.rg-umfang { margin-top: 1rem; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.rg-sprache { text-transform: none; letter-spacing: 0.02em; font-weight: 500; }
+
+/* Formularkarte */
+.rg-form { position: relative; margin-top: 1.4rem !important; padding: clamp(1.25rem, 2.6vw, 1.75rem); background: var(--paper); border: 1px solid var(--line); border-top: 2px solid var(--gold); gap: 1rem !important; max-width: 36rem; }
+.rg--fenster .rg-form { margin-top: 1.1rem !important; }
+.rg-form-kopf { display: grid; gap: 0.2rem; }
+.rg-form-titel { font-family: var(--serif); font-size: 1.3rem; line-height: 1.2; }
+.rg-form-text { font-size: 0.88rem; color: var(--muted); }
+.rg-form .einw { font-size: 0.86rem; }
+.rg-senden { gap: 0.7rem; min-height: 58px; position: relative; overflow: hidden; }
+.rg-senden::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(201, 160, 99, 0.45) 50%, transparent 65%); transform: translateX(-110%); transition: transform 0.9s var(--ease-out); pointer-events: none; }
+.rg-senden:hover::after { transform: translateX(110%); }
+.rg-senden:disabled { opacity: 0.7; cursor: progress; }
+.rg-klein { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+.rg-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.rg-link:hover { color: var(--gold-dunkel); }
+
+/* Danke-Zustand */
+.rg-danke { margin-top: 1.4rem; padding: clamp(1.25rem, 2.6vw, 1.75rem); background: var(--paper); border: 1px solid var(--line); border-top: 2px solid var(--gold); max-width: 36rem;
+  animation: rg-rein 0.7s var(--ease-out) both; }
+.rg-haken { display: inline-grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--gold); animation: rg-haken 0.8s var(--ease-out) both; }
+.rg-haken path { stroke-dasharray: 24; stroke-dashoffset: 24; animation: rg-strich 0.6s 0.35s ease forwards; }
+.rg-danke-titel { font-family: var(--serif); font-size: clamp(1.35rem, 2.4vw, 1.7rem); line-height: 1.2; margin-top: 0.9rem; }
+.rg-danke-text { margin-top: 0.4rem; color: var(--muted); font-size: 0.94rem; }
+.rg-weiter { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.rg-weiter-titel { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-dunkel); }
+.rg-weiter-text { margin-top: 0.35rem; font-size: 0.94rem; line-height: 1.55; }
+.rg-weiter-knoepfe { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+.rg-weiter-knoepfe .btn { flex: 1 1 210px; }
+.rg-wa svg { color: #25d366; }
+.rg-wa:hover svg { color: #fff; }
+
+/* Abschnitt */
+.rg-section { overflow: hidden; }
+.rg-section--kompakt { padding: clamp(2.75rem, 6vw, 4.5rem) 0; }
+
+/* ── Fenster ──────────────────────────────────────────────────────────── */
+html.rg-gesperrt, html.rg-gesperrt body { overflow: hidden; }
+.rg-fenster { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 16px; background: rgba(12, 12, 12, 0.56); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  animation: rg-blende 0.35s ease both; }
+.rg-fenster-box { position: relative; width: min(100%, 960px); max-height: calc(100svh - 32px); overflow: auto; overscroll-behavior: contain; background: var(--paper-warm);
+  padding: clamp(1.5rem, 3.5vw, 2.75rem); border-top: 2px solid var(--gold, #c9a063); animation: rg-steigen 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.rg-zu { position: absolute; top: 12px; right: 12px; z-index: 2; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); cursor: pointer; display: grid; place-items: center; transition: border-color 0.2s, transform 0.3s; }
+.rg-zu:hover { border-color: var(--ink); transform: rotate(90deg); }
+.rg-zu span, .rg-zu span::after { display: block; width: 16px; height: 1.5px; background: var(--ink); transform: rotate(45deg); }
+.rg-zu span::after { content: ''; transform: rotate(90deg); }
+
+/* ── Knöpfe ───────────────────────────────────────────────────────────── */
+.rg-knopf { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.7rem 1.1rem; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink);
+  font: 600 0.74rem/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.25s; }
+.rg-knopf:hover { border-color: #c9a063; transform: translateY(-1px); }
+.rg-knopf svg { color: #9b7840; }
+.rg-knopf--dunkel { background: transparent; color: #fff; border-color: rgba(201, 160, 99, 0.6); }
+.rg-knopf--dunkel svg { color: #c9a063; }
+.rg-knopf--dunkel:hover { background: #c9a063; border-color: #c9a063; color: #101010; }
+.rg-knopf--dunkel:hover svg { color: #101010; }
+.cta-band-ratgeber { margin-top: 1.4rem; display: flex; justify-content: center; }
+
+/* Kontakt-Knopf (KontaktFab): Ratgeber-Zeile */
+.kfab-ratgeber { display: flex; align-items: center; gap: 0.75rem; width: calc(100% - 2rem); margin: 0.5rem 1rem 0.2rem; padding: 0.7rem 0.85rem; border: 1px solid var(--line); border-left: 2px solid #c9a063;
+  background: linear-gradient(180deg, #fff, var(--paper-warm)); color: var(--ink); text-align: left; font: inherit; cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+.kfab-ratgeber:hover { border-color: var(--ink); border-left-color: #c9a063; transform: translateY(-1px); }
+.kfab-ratgeber img { width: 34px; height: 48px; object-fit: cover; flex: none; border-radius: 1px 2px 2px 1px; }
+.kfab-ratgeber span { display: grid; gap: 0.1rem; min-width: 0; }
+.kfab-ratgeber strong { font-size: 0.86rem; font-weight: 600; }
+.kfab-ratgeber small { font-size: 0.72rem; color: var(--muted); line-height: 1.3; }
+.kfab-ratgeber em { margin-left: auto; font-style: normal; color: #9b7840; }
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .rg--block, .rg--kompakt { grid-template-columns: 1fr; gap: 1.5rem; }
+  .rg--block .rg-buehne { width: min(72%, 300px); }
+  .rg--kompakt .rg-buehne { width: min(52%, 200px); }
+  .rg--block .rg-medien { position: static; align-self: center; }
+  /* Fenster auf dem Handy: Cover klein neben Kicker/Titel, Formular gleich darunter */
+  .rg--fenster { grid-template-columns: 92px minmax(0, 1fr); column-gap: 1rem; row-gap: 0; align-items: start; }
+  .rg--fenster .rg-inhalt { display: contents; }
+  .rg--fenster .rg-medien { grid-column: 1; grid-row: 1 / span 3; justify-items: start; }
+  .rg--fenster .rg-buehne { width: 92px; padding: 0 0 12%; animation: none; }
+  .rg--fenster .rg-kicker { grid-column: 2; grid-row: 1; padding-right: 48px; font-size: 0.62rem; }
+  .rg--fenster .rg-titel { grid-column: 2; grid-row: 2; margin: 0.35rem 0 0.3rem; font-size: 1.7rem; }
+  .rg--fenster .rg-umfang { grid-column: 2; grid-row: 3; margin-top: 0; font-size: 0.66rem; }
+  .rg--fenster .rg-unter { display: none; }
+  .rg--fenster .rg-nutzen { grid-column: 1 / -1; margin-top: 0.9rem; }
+  .rg--fenster .rg-nutzen li { padding: 0.5rem 0; font-size: 0.9rem; }
+  .rg--fenster .rg-form, .rg--fenster .rg-danke { grid-column: 1 / -1; }
+  .rg--fenster .rg-buch.is-offen { transform: rotateX(4deg) rotateY(-20deg); }
+  .rg--fenster .rg-buch.is-offen .rg-deckel { transform: translateZ(3px) rotateY(-100deg); }
+  .rg-fenster { place-items: end stretch; padding: 0; }
+  .rg-fenster-box { width: 100%; max-height: 92svh; padding: 1.25rem 1rem calc(1.5rem + env(safe-area-inset-bottom)); border-radius: 14px 14px 0 0; }
+}
+@media (max-width: 520px) {
+  .rg-form, .rg-danke { padding: 1.1rem; }
+  .rg-weiter-knoepfe .btn { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-buehne, .rg-glanz::before { animation: none; }
+  .rg .rg-buch, .rg-deckel, .rg-nutzen li { transition: none; }
+}
+
+@keyframes rg-schweben { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes rg-glanz { 0%, 55% { transform: translateX(-70%); } 85%, 100% { transform: translateX(70%); } }
+@keyframes rg-rein { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes rg-haken { from { transform: scale(0.4) rotate(-30deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes rg-strich { to { stroke-dashoffset: 0; } }
+@keyframes rg-blende { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rg-steigen { from { opacity: 0; transform: translateY(28px) scale(0.985); } to { opacity: 1; transform: none; } }

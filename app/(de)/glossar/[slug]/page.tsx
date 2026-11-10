@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CtaBand from '@/components/CtaBand';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 import { JsonLd, faqSchema } from '@/components/JsonLd';
 import { GLOSSAR, getBegriff } from '@/lib/glossar';
 import { SITE } from '@/lib/site';
@@ -155,6 +156,7 @@ export default async function BegriffPage({ params }: Props) {
         </nav>
       </article>
 
+      <RatgeberBlock lang="de" />
       <CtaBand lang="de" />
       <JsonLd
         data={{

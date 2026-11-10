@@ -130,6 +130,26 @@ export async function pushNeueAnfrage(a: { terminId: string; art: 'termin' | 'ru
   }
 }
 
+/** Ratgeber-Download (Lead mit Name + Telefon) → Push an alle aktiven Admins. Wirft nie. */
+export async function pushRatgeber(a: { kontaktId: string; name: string; neu: boolean }) {
+  try {
+    const name = a.name.trim().slice(0, 60);
+    const z = await Promise.race([
+      pushAnAlleAdmins({
+        titel: `Ratgeber heruntergeladen${name ? ` — ${name}` : ''}`,
+        text: a.neu ? 'Neuer Lead · jetzt anrufen und Beratung anbieten' : 'Bestehender Kontakt · Ratgeber «Der passende Anzug»',
+        url: `/admin/kontakte/${a.kontaktId}/`,
+        tag: `ratgeber-${a.kontaktId}`,
+      }),
+      new Promise<null>((r) => setTimeout(() => r(null), TIMEOUT_MS + 2000)),
+    ]);
+    if (z === null) console.warn('[push] Ratgeber-Push: Zeitüberschreitung');
+    else console.info(`[push] Ratgeber-Push: ${z.ok} zugestellt, ${z.weg} abgelaufen, ${z.fehler} Fehler`);
+  } catch (e) {
+    console.error('[push] Ratgeber-Push fehlgeschlagen', (e as Error).message);
+  }
+}
+
 /** Kurze Kennung je Gerät (sha256 des Endpoints) — der Browser vergleicht sie mit seinem eigenen Abo. */
 export const kennung = (endpoint: string) => sha256(endpoint).slice(0, 24);
 

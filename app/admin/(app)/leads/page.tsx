@@ -29,6 +29,7 @@ type Lead = {
   termin_start: Date | null;
   termin_status: string | null;
   stil: number;
+  ratgeber: boolean;
   letzte: Date;
 };
 
@@ -38,6 +39,7 @@ export default async function LeadsPage() {
       an.total_rp as angebot_rp, an.nummer as angebot_nummer, an.id as angebot_id, (an.angesehen_am is not null) as angebot_angesehen,
       tn.start as termin_start, tn.status as termin_status,
       coalesce((select max(jsonb_array_length(t.stil)) from termin t where t.kontakt_id = k.id), 0)::int as stil,
+      exists(select 1 from aktivitaet ra where ra.kontakt_id = k.id and ra.daten->>'art' = 'ratgeber') as ratgeber,
       greatest(k.aktualisiert_am, coalesce((select max(a.erstellt_am) from aktivitaet a where a.kontakt_id = k.id), k.aktualisiert_am)) as letzte
     from kontakt k
     left join lateral (select id, nummer, total_rp, angesehen_am from angebot a where a.kontakt_id = k.id and a.status in ('entwurf', 'gesendet') order by a.erstellt_am desc limit 1) an on true
@@ -99,6 +101,11 @@ export default async function LeadsPage() {
                         <span>
                           <Icon name="dokument" /> {l.angebot_nummer}
                           {l.angebot_angesehen ? ' · angesehen' : ''}
+                        </span>
+                      )}
+                      {l.ratgeber && (
+                        <span className="a-ratgeber">
+                          <Icon name="dokument" /> Ratgeber geladen
                         </span>
                       )}
                       {l.stil > 0 && (

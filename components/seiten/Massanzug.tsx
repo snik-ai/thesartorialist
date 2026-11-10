@@ -8,6 +8,7 @@ import { woerterbuch } from '@/lib/i18n';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 export function meta(lang: Sprache): Metadata {
   const t = woerterbuch(lang).massanzug.meta;
@@ -79,6 +80,7 @@ export default function Massanzug({ lang }: { lang: Sprache }) {
       </section>
 
       <Faq lang={lang} items={t.faq} title={t.faqTitel} />
+      <RatgeberBlock lang={lang} />
       <CtaBand lang={lang} title={t.cta.titel} text={t.cta.text} />
       <JsonLd data={serviceSchema({ name: t.schema.name, description: t.schema.beschreibung, url, lang })} />
     </>

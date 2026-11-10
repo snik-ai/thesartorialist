@@ -19,6 +19,7 @@ import { mailBereit } from '@/lib/mail';
 import { faelligText, tagDatum, terminKurz, terminLang } from '@/lib/zeit';
 import { UUID } from '@/lib/admin/zugang';
 import { mahnungenVon } from '@/lib/crm/mahnung';
+import { QUELLE_RATGEBER, quelleLabel } from '@/lib/crm/quelle';
 
 export const metadata: Metadata = { title: 'Kundenakte' };
 export const dynamic = 'force-dynamic';
@@ -80,8 +81,9 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
           <p className="a-sub">
             <span className={`a-pill k-${k.status}`}>{KONTAKT_STATUS[k.status]}</span>
             {k.status === 'lead' && <span className={`a-pill ohne p-${k.leadPhase}`}>{LEAD_LABEL[k.leadPhase]}</span>}
+            {k.quelle === QUELLE_RATGEBER && <span className="a-pill ratgeber">Ratgeber-Lead</span>}
             <span>
-              {k.status === 'kunde' && k.kundeSeit ? `Kunde seit ${tagDatum(k.kundeSeit)}` : `Seit ${tagDatum(k.erstelltAm)}`} · Quelle {k.quelle || '–'}
+              {k.status === 'kunde' && k.kundeSeit ? `Kunde seit ${tagDatum(k.kundeSeit)}` : `Seit ${tagDatum(k.erstelltAm)}`} · Quelle {quelleLabel(k.quelle)}
               {k.abgemeldet ? ' · abgemeldet' : ''}
             </span>
           </p>

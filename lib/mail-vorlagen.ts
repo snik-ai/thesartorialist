@@ -281,6 +281,27 @@ export function mailRueckruf(d: { name: string; telefon: string; wunsch: string;
   return { html, text: `Bitte um Rückruf\nName: ${d.name || '–'}\nTelefon: ${d.telefon}\nWunschzeit: ${d.wunsch || 'egal'}\nSeite: ${d.pfad}`, subject: `Rückrufbitte — ${d.name || d.telefon}` };
 }
 
+/** Ans Atelier: Ratgeber «Der passende Anzug» heruntergeladen (Lead mit Name + Telefon) */
+export function mailRatgeber(d: { name: string; telefon: string; pfad: string; einwilligung: boolean; kontaktUrl?: string }) {
+  const vorname = d.name ? ` ${d.name.split(' ')[0]}` : '';
+  const html = rahmen(
+    `Ratgeber-Download ${d.name || d.telefon}`,
+    titelZeile('Ratgeber heruntergeladen', `${d.name || 'Ein Interessent'} hat den Ratgeber «Der passende Anzug» geöffnet — ein guter Moment für einen persönlichen Anruf.`) +
+      `<tr><td style="padding:18px 36px 6px">${zeilen([
+        ['Name', d.name || '–'],
+        ['Telefon', d.telefon],
+        ['WhatsApp/SMS', d.einwilligung ? 'Einwilligung erteilt' : 'keine Einwilligung (nur Anruf)'],
+        ['Gesendet von', d.pfad],
+      ])}</td></tr>` +
+      `<tr><td style="padding:22px 36px 32px">${knopf(telHref(d.telefon), 'Jetzt anrufen')}${d.einwilligung ? knopf(waHref(d.telefon, `Grüezi${vorname}, hier ist The Sartorialist Zürich — danke für Ihr Interesse an unserem Ratgeber. Dürfen wir Sie zu einer kostenlosen Beratung einladen?`), 'WhatsApp', 'line') : ''}${d.kontaktUrl ? knopf(d.kontaktUrl, 'Im Backend öffnen', 'line') : ''}</td></tr>`,
+  );
+  return {
+    html,
+    text: `Ratgeber heruntergeladen\nName: ${d.name || '–'}\nTelefon: ${d.telefon}\nWhatsApp/SMS: ${d.einwilligung ? 'Einwilligung erteilt' : 'keine Einwilligung'}\nSeite: ${d.pfad}${d.kontaktUrl ? `\nBackend: ${d.kontaktUrl}` : ''}`,
+    subject: `Ratgeber-Download — ${d.name || d.telefon}`,
+  };
+}
+
 /* ---------- Admin: Login, Bestätigung, Vorschläge ---------- */
 
 /** Login-Code für das Backend (6 Stellen, 10 Minuten gültig) */

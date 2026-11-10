@@ -1,4 +1,4 @@
-// Formular-Eingang: Terminanfrage und Rückrufbitte.
+// Formular-Eingang: Terminanfrage, Rückrufbitte und Ratgeber-Download (Lead-Magnet «Der passende Anzug»).
 // 1. Speichert Kontakt (Golden Record über E-Mail/Telefon) und Termin bzw. Rückruf in der DB (Backend /admin).
 // 2. Sendet die Anfrage über Resend an das Atelier (Antworten gehen direkt an den Kunden) und
 //    schickt dem Kunden eine Bestätigung (falls E-Mail angegeben).
@@ -8,12 +8,15 @@
 // Weder DB noch Resend → 503, das Formular öffnet dann wie bisher das Mailprogramm.
 import { after, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
-import { pushNeueAnfrage } from '@/lib/admin/push';
+import { pushNeueAnfrage, pushRatgeber } from '@/lib/admin/push';
 import { db, dbBereit, schema } from '@/lib/db';
 import { aktivitaetLoggen, kontaktAufnehmen } from '@/lib/crm/kontakte';
 import { zuerich } from '@/lib/zeit';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
-import { icsDatei, mailRueckruf, mailTerminAtelier, mailTerminKunde, type StilZeile } from '@/lib/mail-vorlagen';
+import { icsDatei, mailRatgeber, mailRueckruf, mailTerminAtelier, mailTerminKunde, type StilZeile } from '@/lib/mail-vorlagen';
+import { RATGEBER_KONZEPT } from '@/lib/ratgeber';
+import { SITE } from '@/lib/site';
+import { besucherId, geraet, istBot } from '@/lib/tracking/server';
 import { reportDlmLead } from '@/lib/dlm-px';
 import { kundenTexte, stilFuer, terminTextFuer } from '@/lib/i18n/kundenmail';
 
@@ -46,6 +49,7 @@ export async function POST(req: Request) {
   const ip = (req.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'unbekannt';
   if (gedrosselt(ip)) return NextResponse.json({ ok: false, fehler: 'Zu viele Anfragen, bitte später nochmals.' }, { status: 429 });
 
+  if (b.art === 'ratgeber') return ratgeber(b, req, ip);
   const art = b.art === 'rueckruf' ? 'rueckruf' : b.art === 'termin' ? 'termin' : null;
   if (!art) return NextResponse.json({ ok: false, fehler: 'Unbekannte Anfrage' }, { status: 400 });
 
@@ -172,5 +176,78 @@ export async function POST(req: Request) {
 
   void reportDlmLead({ kind: art, path: art === 'termin' ? '/termin/' : text(b.pfad, 120) || '/', sid, label: art === 'termin' ? (stil.length || stoffe.length ? 'Termin mit Stil-Auswahl' : 'Termin') : 'Rückruf' });
 
+  return NextResponse.json({ ok: true });
+}
+
+/**
+ * Ratgeber «Der passende Anzug»: nur Name + Telefon (Einwilligung WhatsApp/SMS optional).
+ * Kontakt als Lead über den Golden Record (Quelle formular:ratgeber), Verlauf «Ratgeber heruntergeladen»,
+ * Push an die Admins, Mail ans Atelier, DLM-Lead. Kein Termin-Datensatz (kein Eintrag im Termine-Eingang).
+ * Das PDF lädt der Browser unabhängig von dieser Antwort — ein Fehler hier hält niemanden vom Ratgeber ab.
+ */
+async function ratgeber(b: Record<string, unknown>, req: Request, ip: string) {
+  const name = text(b.name, 120);
+  const tel = text(b.telefon, 40);
+  if (name.length < 2 || !telOk(tel)) {
+    return NextResponse.json({ ok: false, fehler: 'Bitte Name und eine gültige Telefonnummer angeben.' }, { status: 400 });
+  }
+  const pfad = text(b.pfad, 120) || '/';
+  const sprache = /^(de|en|fr|it|es|pt|ru|sr|sq)$/.test(text(b.sprache, 2)) ? text(b.sprache, 2) : 'de';
+  const einwText = text(b.einwilligungText, 400);
+  const einwilligung = b.einwilligung === true ? { text: einwText || 'Einwilligung WhatsApp/SMS', pfad } : null;
+  const sid = text(b._dlmsid, 80) || undefined;
+
+  let kontakt: { id: string; neu: boolean } | null = null;
+  if (dbBereit()) {
+    try {
+      kontakt = await db().transaction(async (tx) => {
+        const k = await kontaktAufnehmen(tx, { name, telefon: tel, sprache, quelle: 'formular:ratgeber', einwilligung });
+        await aktivitaetLoggen(tx, {
+          kontaktId: k.id,
+          kanal: 'formular',
+          richtung: 'ein',
+          titel: 'Ratgeber heruntergeladen',
+          text: [
+            `Ratgeber «Der passende Anzug» (Konzept ${RATGEBER_KONZEPT.toUpperCase()}) über ${pfad}`,
+            einwilligung ? `Einwilligung WhatsApp/SMS: ${einwilligung.text}` : '',
+            k.abweichend.length ? `Abweichende Angaben (nicht übernommen): ${k.abweichend.join(', ')}` : '',
+          ]
+            .filter(Boolean)
+            .join('\n'),
+          daten: { art: 'ratgeber', konzept: RATGEBER_KONZEPT, pfad, neuerKontakt: k.neu },
+        });
+        return { id: k.id, neu: k.neu };
+      });
+    } catch (err) {
+      console.error('[anfrage] Ratgeber speichern fehlgeschlagen', (err as Error).message);
+    }
+  }
+  // Trichter-Ereignis «anfrage_ratgeber» (wie anfrage_termin/_rueckruf/_konfig der Webseitenanalyse).
+  // Beim Zusammenführen auf deren Tracking-Funktion umstellen; Bots und Admin-Pfade zählen nicht.
+  const ua = req.headers.get('user-agent') ?? '';
+  if (dbBereit() && !istBot(ua)) {
+    await db()
+      .insert(schema.ereignis)
+      .values({ typ: 'anfrage_ratgeber', pfad, geraet: geraet(ua), sprache, besucher: besucherId(ip, ua), label: `konzept-${RATGEBER_KONZEPT}` })
+      .catch((err) => console.warn('[anfrage] Ereignis anfrage_ratgeber fehlgeschlagen', (err as Error).message));
+  }
+  if (kontakt) {
+    const k = kontakt;
+    after(() => pushRatgeber({ kontaktId: k.id, name, neu: k.neu }));
+  }
+
+  if (mailBereit()) {
+    try {
+      const m = mailRatgeber({ name, telefon: tel, pfad, einwilligung: !!einwilligung, kontaktUrl: kontakt ? `${SITE.url}/admin/kontakte/${kontakt.id}/` : undefined });
+      await sendeMail({ to: empfaenger(), subject: m.subject, text: m.text, html: m.html });
+    } catch (err) {
+      console.error('[anfrage] Ratgeber-Mail fehlgeschlagen', err);
+      if (!kontakt) return NextResponse.json({ ok: false, fehler: 'Versand fehlgeschlagen' }, { status: 502 });
+    }
+  } else if (!kontakt) {
+    return NextResponse.json({ ok: false, fehler: 'Versand nicht konfiguriert' }, { status: 503 });
+  }
+
+  void reportDlmLead({ kind: 'ratgeber', path: pfad, sid, label: 'Ratgeber-Download' });
   return NextResponse.json({ ok: true });
 }
