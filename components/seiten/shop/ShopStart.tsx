@@ -19,6 +19,7 @@ import { fmt } from '@/lib/i18n/fmt';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberKnopf, { RatgeberIcon } from '@/components/ratgeber/RatgeberKnopf';
 
 /** Texte der Produktliste für den Browser — nur die Seitensprache. */
 export function gridTexte(lang: Sprache): ShopGridTexte {
@@ -102,6 +103,10 @@ export default async function ShopStart({ lang }: { lang: Sprache }) {
             <Link href={pfad(lang, 'termin')} className="btn btn--ghost">
               {t.mass.termin}
             </Link>
+            {/* dezent: Gratis-Ratgeber zum Massanzug */}
+            <RatgeberKnopf track="ratgeber-shop">
+              <RatgeberIcon /> {woerterbuch(lang).allgemein.client.ratgeber.knopf}
+            </RatgeberKnopf>
           </div>
         </div>
       </section>

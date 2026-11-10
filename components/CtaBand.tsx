@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import RueckrufButton from './RueckrufButton';
+import RatgeberKnopf, { RatgeberIcon } from './ratgeber/RatgeberKnopf';
 import { SITE } from '@/lib/site';
 import { woerterbuch } from '@/lib/i18n';
 import { pfad } from '@/lib/i18n/routen';
@@ -17,6 +18,7 @@ export default function CtaBand({
   eyebrow?: string;
 }) {
   const t = woerterbuch(lang).allgemein.cta;
+  const rg = woerterbuch(lang).allgemein.client.ratgeber;
   const wa = `${SITE.whatsapp}?text=${encodeURIComponent(t.waText)}`;
   const txt = text ?? t.text;
   return (
@@ -35,6 +37,12 @@ export default function CtaBand({
           {t.direkt} <a href={SITE.phoneHref}>{SITE.phone}</a> · <a href={wa} target="_blank" rel="noopener">WhatsApp</a> ·{' '}
           <a href={SITE.socials.instagram} target="_blank" rel="noopener">Instagram</a>
         </p>
+        {/* Gratis-Ratgeber als leise dritte Option (öffnet das Ratgeber-Fenster) */}
+        <div className="cta-band-ratgeber">
+          <RatgeberKnopf className="rg-knopf rg-knopf--dunkel" track="ratgeber-ctaband">
+            <RatgeberIcon /> {rg.knopf}
+          </RatgeberKnopf>
+        </div>
       </div>
     </section>
   );

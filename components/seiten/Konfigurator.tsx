@@ -14,6 +14,7 @@ import { fmt } from '@/lib/i18n/fmt';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 const anzahl = KONFIG_KATEGORIEN.reduce((n, k) => n + k.subCategories.reduce((m, u) => m + u.options.length, 0), 0);
 
@@ -58,6 +59,7 @@ export default function KonfiguratorSeite({ lang }: { lang: Sprache }) {
         t={{ ui: t.ui, pdf: t.pdf }}
         {...(lang === 'de' ? {} : { uebersetzung: w.konfigDaten })}
       />
+      <RatgeberBlock lang={lang} variante="kompakt" kicker={w.allgemein.client.ratgeber.kicker} />
 
       <section className="section section--warm">
         <div className="container split-text">

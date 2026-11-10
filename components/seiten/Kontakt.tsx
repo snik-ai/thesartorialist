@@ -9,6 +9,7 @@ import { woerterbuch } from '@/lib/i18n';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 export function meta(lang: Sprache): Metadata {
   const t = woerterbuch(lang).kontakt.meta;
@@ -106,6 +107,7 @@ export default function Kontakt({ lang }: { lang: Sprache }) {
           </div>
         </div>
       </section>
+      <RatgeberBlock lang={lang} variante="kompakt" />
       <InstagramBand lang={lang} />
     </>
   );

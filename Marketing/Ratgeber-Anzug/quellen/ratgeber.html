@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<title>Der passende Anzug — Ratgeber The Sartorialist Zürich</title>
+<style>
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 800; src: url(fonts/inter-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 800; src: url(fonts/inter-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 900; src: url(fonts/playfair-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 900; src: url(fonts/playfair-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 400 900; src: url(fonts/playfair-italic-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Playfair Display'; font-style: italic; font-weight: 400 900; src: url(fonts/playfair-italic-latin-ext.woff2) format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
+/* Druck-/PDF-Regel: keine Schatten, kein Blur, keine Transparenz-Ebenen über Bildern. Tiefe nur über Linien und Flächen. */
+:root {
+  --ink: #111111;
+  --ink-2: #2a2724;
+  --muted: #6d665d;
+  --line: #d9d2c6;
+  --line-d: #3a3632;
+  --warm: #f4efe6;
+  --cream: #faf7f1;
+  --paper: #ffffff;
+  --gold: #c9a063;
+  --gold-d: #a8834b;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; }
+body { font-family: var(--sans); color: var(--ink); font-size: 8.9pt; line-height: 1.55; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-variant-numeric: lining-nums tabular-nums; }
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; break-after: page; background: var(--paper); }
+.page:last-child { page-break-after: auto; break-after: auto; }
+.warm { background: var(--warm); }
+.cream { background: var(--cream); }
+.dark { background: var(--ink); color: #f1ece3; }
+img { display: block; }
+.bleed { overflow: hidden; }
+.bleed img { width: 100%; height: 100%; object-fit: cover; }
+
+.kicker { font-size: 6.8pt; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-d); }
+.dark .kicker { color: var(--gold); }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -.01em; }
+h2 { font-size: 27pt; line-height: 1.08; margin-top: 3mm; }
+h2 em, h1 em, h3 em { font-style: italic; color: var(--gold-d); }
+.dark h2 em, .dark h1 em, .dark h3 em { color: var(--gold); }
+h3 { font-size: 13pt; line-height: 1.25; }
+p + p { margin-top: 2.2mm; }
+.lead { font-family: var(--serif); font-size: 12pt; line-height: 1.5; color: var(--ink-2); }
+.dark .lead { color: #e6dfd2; }
+.muted { color: var(--muted); }
+.dark .muted { color: #a79f92; }
+.rule { width: 16mm; height: .5mm; background: var(--gold); margin: 5mm 0; }
+.cap { font-size: 6.4pt; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: 1.6mm; }
+.dark .cap { color: #8d8579; }
+
+/* Kapitelnummer gross */
+.chap { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--gold); line-height: .8; font-variant-numeric: lining-nums; }
+
+/* Seitenfuss */
+.folio { position: absolute; left: 16mm; right: 16mm; bottom: 8.5mm; display: flex; justify-content: space-between; font-size: 6.3pt; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.folio b { font-weight: 600; color: var(--ink); letter-spacing: .1em; }
+.dark .folio { color: #8d8579; }
+.dark .folio b { color: #e6dfd2; }
+
+/* Spezifikation (Farbe / Stoff / Schnitt / Details) */
+.spec { list-style: none; margin-top: 3mm; border-top: .25mm solid var(--line); }
+.spec li { display: grid; grid-template-columns: 17mm 1fr; column-gap: 3mm; padding: 1.5mm 0; border-bottom: .25mm solid var(--line); font-size: 8.1pt; line-height: 1.45; }
+.spec li b { font-size: 6.2pt; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-d); font-weight: 600; padding-top: .5mm; }
+.dark .spec { border-color: var(--line-d); }
+.dark .spec li { border-color: var(--line-d); color: #e6dfd2; }
+.dark .spec li b { color: var(--gold); }
+
+/* ---------- 1 Titel ---------- */
+.p-cover .bild { position: absolute; left: 0; top: 0; width: 210mm; height: 196mm; }
+.p-cover .bild img { object-position: 58% 30%; }
+.p-cover .verlauf { position: absolute; left: 0; right: 0; top: 150mm; height: 47mm; background: linear-gradient(180deg, rgba(17,17,17,0) 0%, #111 100%); }
+.p-cover .logo { position: absolute; top: 14mm; left: 16mm; width: 62mm; }
+.p-cover .ausgabe { position: absolute; top: 15mm; right: 16mm; text-align: right; font-size: 6.6pt; letter-spacing: .24em; text-transform: uppercase; color: #fff; line-height: 1.8; }
+.p-cover .body { position: absolute; left: 16mm; right: 16mm; top: 182mm; }
+.p-cover h1 { font-size: 58pt; line-height: .98; color: #fff; margin-top: 4mm; letter-spacing: -.02em; }
+.p-cover .sub { margin-top: 7mm; font-family: var(--serif); font-size: 13pt; color: #d9d1c3; max-width: 150mm; line-height: 1.45; }
+.p-cover .themen { margin-top: 7mm; display: flex; gap: 0; font-size: 6.8pt; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.p-cover .themen span + span::before { content: '·'; margin: 0 3mm; color: #6b645a; }
+.p-cover .bottom { position: absolute; left: 16mm; right: 16mm; bottom: 12mm; display: flex; justify-content: space-between; border-top: .25mm solid var(--line-d); padding-top: 4mm; font-size: 6.8pt; letter-spacing: .22em; text-transform: uppercase; color: #b9b1a4; }
+
+/* ---------- 2 Editorial ---------- */
+.p-edit .bild { width: 210mm; height: 128mm; }
+.p-edit .bild img { object-position: 50% 55%; }
+.p-edit .wrap { padding: 11mm 16mm 0; display: grid; grid-template-columns: 1fr 70mm; column-gap: 12mm; }
+.p-edit h2 { font-size: 24pt; }
+.p-edit .brief { margin-top: 5mm; font-size: 9pt; color: var(--ink-2); }
+.p-edit .brief p:first-child::first-letter { font-family: var(--serif); font-size: 30pt; float: left; line-height: .9; margin: 1mm 2mm 0 0; color: var(--gold-d); }
+.p-edit .sign { margin-top: 5mm; font-family: var(--serif); font-style: italic; font-size: 13pt; }
+.p-edit .sign small { display: block; font-family: var(--sans); font-style: normal; font-size: 6.4pt; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 1mm; }
+.toc { border-left: .25mm solid var(--line); padding-left: 7mm; }
+.toc .kicker { margin-bottom: 3mm; }
+.toc ol { list-style: none; }
+.toc li { display: grid; grid-template-columns: 9mm 1fr auto; align-items: baseline; padding: 2.05mm 0; border-bottom: .25mm solid var(--line); }
+.toc li .n { font-family: var(--serif); font-style: italic; color: var(--gold-d); font-size: 11pt; }
+.toc li .t { font-family: var(--serif); font-size: 10.6pt; line-height: 1.25; }
+.toc li .s { font-size: 7pt; color: var(--muted); }
+
+/* ---------- 3 Kapitel-Opener Anlass ---------- */
+.p-opener .bild { position: absolute; left: 0; top: 0; width: 92mm; height: 297mm; }
+.p-opener .bild img { object-position: 46% 50%; }
+.p-opener .body { position: absolute; left: 104mm; right: 14mm; top: 16mm; }
+.p-opener .chap { font-size: 92pt; }
+.p-opener h2 { font-size: 29pt; margin-top: 4mm; }
+.p-opener .lead { margin-top: 5mm; font-size: 11pt; }
+.uebersicht { list-style: none; margin-top: 8mm; border-top: .35mm solid var(--ink); }
+.uebersicht li { padding: 2.6mm 0; border-bottom: .25mm solid var(--line); }
+.uebersicht li .a { display: flex; justify-content: space-between; align-items: baseline; }
+.uebersicht li b { font-family: var(--serif); font-weight: 500; font-size: 12pt; }
+.uebersicht li i { font-style: normal; font-size: 6.2pt; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.uebersicht li span { display: block; font-size: 8pt; color: var(--ink-2); margin-top: .6mm; }
+.p-opener .quote { position: absolute; left: 104mm; right: 14mm; bottom: 20mm; font-family: var(--serif); font-style: italic; font-size: 14pt; line-height: 1.35; border-top: .25mm solid var(--line); padding-top: 5mm; }
+.p-opener .quote span { color: var(--gold-d); }
+
+/* ---------- 4/5 Anlässe ---------- */
+.p-anlass .wrap { padding: 14mm 16mm 0; }
+.p-anlass .head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: .35mm solid var(--ink); padding-bottom: 3mm; }
+.p-anlass .head h2 { font-size: 22pt; margin-top: 1.5mm; }
+.p-anlass .head .seite { font-family: var(--serif); font-style: italic; font-size: 10pt; color: var(--muted); }
+.anlass { display: grid; grid-template-columns: 56mm 1fr; column-gap: 8mm; padding: 6mm 0; border-bottom: .25mm solid var(--line); height: 82mm; }
+.anlass:last-child { border-bottom: 0; }
+.anlass .bild { height: 70mm; }
+.anlass .bild.illu { background: #fff; border: .25mm solid var(--line); display: flex; align-items: center; justify-content: center; }
+.anlass .bild.illu img { width: auto; height: 62mm; object-fit: contain; }
+.anlass .nr { font-family: var(--serif); font-style: italic; color: var(--gold-d); font-size: 10pt; }
+.anlass h3 { font-size: 17pt; margin-top: .5mm; }
+.anlass .intro { font-size: 8.4pt; color: var(--ink-2); margin-top: 1.5mm; line-height: 1.5; }
+
+/* ---------- 6 Dresscodes ---------- */
+.p-dress .wrap { padding: 16mm 16mm 0; }
+.p-dress .top { display: grid; grid-template-columns: 1fr 64mm; column-gap: 10mm; align-items: end; }
+.p-dress .chap { font-size: 60pt; }
+.p-dress h2 { color: #fff; font-size: 28pt; }
+.p-dress .top p { font-size: 8.6pt; color: #cfc7b9; }
+.leiter { margin-top: 9mm; border-top: .35mm solid var(--gold); }
+.stufe { display: grid; grid-template-columns: 24mm 44mm 1fr; column-gap: 6mm; padding: 4.2mm 0; border-bottom: .25mm solid var(--line-d); }
+.stufe .grad { display: flex; gap: 1.2mm; padding-top: 1.8mm; }
+.stufe .grad i { width: 2.4mm; height: 2.4mm; border-radius: 50%; border: .25mm solid var(--gold); display: block; }
+.stufe .grad i.on { background: var(--gold); }
+.stufe .grad small { display: block; }
+.stufe h3 { color: #fff; font-size: 15pt; }
+.stufe .wann { font-size: 6.3pt; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-top: 1mm; }
+.stufe p { font-size: 8.3pt; color: #d6cfc2; line-height: 1.5; }
+.stufe p b { color: #fff; font-weight: 600; }
+.p-dress .hinweis { position: absolute; left: 16mm; right: 16mm; bottom: 19mm; display: grid; grid-template-columns: auto 1fr; column-gap: 7mm; align-items: center; border: .25mm solid var(--line-d); padding: 5mm 6mm; }
+.p-dress .hinweis .q { font-family: var(--serif); font-style: italic; font-size: 26pt; color: var(--gold); line-height: 1; }
+.p-dress .hinweis p { font-size: 8.6pt; color: #e6dfd2; }
+
+/* ---------- 7 Figur ---------- */
+.p-figur .wrap { padding: 15mm 16mm 0; }
+.p-figur .top { display: grid; grid-template-columns: 1fr 70mm; column-gap: 10mm; align-items: end; }
+.p-figur .chap { font-size: 60pt; }
+.p-figur h2 { font-size: 26pt; }
+.p-figur .top p { font-size: 8.5pt; color: var(--ink-2); }
+.figuren { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; row-gap: 5mm; margin-top: 7mm; }
+.figur { background: #fff; border: .25mm solid var(--line); padding: 5mm 5mm 4.5mm; }
+.figur .illus { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; height: 38mm; }
+.figur .illus div { display: flex; align-items: center; justify-content: center; border-bottom: .25mm solid var(--line); }
+.figur .illus img { max-height: 35mm; max-width: 100%; object-fit: contain; }
+.figur h3 { margin-top: 3.5mm; font-size: 14pt; }
+.figur .ziel { font-family: var(--serif); font-style: italic; color: var(--gold-d); font-size: 9.6pt; margin-top: .5mm; }
+.figur ul { list-style: none; margin-top: 2mm; }
+.figur li { position: relative; padding-left: 4.5mm; font-size: 7.9pt; line-height: 1.45; margin-top: 1.2mm; color: var(--ink-2); }
+.figur li::before { content: ''; position: absolute; left: 0; top: 2mm; width: 2.4mm; height: .3mm; background: var(--gold); }
+.p-figur .fuss { position: absolute; left: 16mm; right: 16mm; bottom: 16mm; font-family: var(--serif); font-style: italic; font-size: 11.5pt; color: var(--ink-2); border-top: .25mm solid var(--line); padding-top: 3.5mm; }
+.p-figur .fuss span { color: var(--gold-d); }
+
+/* ---------- 8 Stoffe ---------- */
+.p-stoffe .mosaik { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2mm; height: 112mm; }
+.p-stoffe .mosaik img { width: 100%; height: 100%; object-fit: cover; }
+.p-stoffe .wrap { padding: 11mm 16mm 0; display: grid; grid-template-columns: 1fr 58mm; column-gap: 10mm; }
+.p-stoffe .chap { font-size: 46pt; }
+.p-stoffe h2 { font-size: 23pt; }
+.p-stoffe .lead { margin-top: 3mm; font-size: 10.5pt; }
+.gewicht { margin-top: 5mm; display: grid; grid-template-columns: repeat(3, 1fr); border-top: .35mm solid var(--ink); }
+.gewicht > div { padding: 3mm 3mm 0 0; }
+.gewicht > div + div { border-left: .25mm solid var(--line); padding-left: 3mm; }
+.gewicht .g { font-family: var(--serif); font-size: 13pt; line-height: 1.1; white-space: nowrap; }
+.gewicht .k { font-size: 6.2pt; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-d); font-weight: 600; margin-bottom: 1mm; }
+.gewicht p { font-size: 7.6pt; color: var(--ink-2); margin-top: 1mm; line-height: 1.45; }
+.fasern { list-style: none; margin-top: 7mm; columns: 2; column-gap: 7mm; }
+.fasern li { break-inside: avoid; padding: 2.2mm 0; border-top: .25mm solid var(--line); font-size: 7.8pt; line-height: 1.45; color: var(--ink-2); }
+.fasern li b { font-family: var(--serif); font-weight: 500; font-size: 10.5pt; color: var(--ink); display: block; }
+.p-stoffe .side { border-left: .25mm solid var(--line); padding-left: 6mm; }
+.p-stoffe .big { font-family: var(--serif); font-size: 26pt; line-height: 1; }
+.p-stoffe .side .muted { font-size: 7.4pt; margin-top: 1mm; }
+.p-stoffe .side h4 { font-size: 6.4pt; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-d); font-weight: 600; margin: 5mm 0 1.5mm; }
+.p-stoffe .side ul { list-style: none; font-family: var(--serif); font-size: 10pt; line-height: 1.5; }
+.p-stoffe .super { margin-top: 5mm; background: var(--warm); padding: 4mm; font-size: 7.6pt; line-height: 1.5; color: var(--ink-2); }
+.p-stoffe .super b { display: block; font-family: var(--serif); font-weight: 500; font-size: 11pt; color: var(--ink); margin-bottom: 1mm; }
+
+/* ---------- 9 Farben ---------- */
+.p-farben .wrap { padding: 15mm 16mm 0; }
+.p-farben .top { display: grid; grid-template-columns: 1fr 66mm; column-gap: 10mm; align-items: end; }
+.p-farben .chap { font-size: 56pt; }
+.p-farben h2 { font-size: 25pt; }
+.p-farben .top p { font-size: 8.5pt; color: var(--ink-2); }
+.p-farben .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin-top: 7mm; }
+.p-farben .trio .bild { height: 70mm; }
+.farbtafel { margin-top: 6mm; display: grid; grid-template-columns: repeat(6, 1fr); gap: 3mm; }
+.farbe .chip { height: 12mm; border: .25mm solid var(--line); }
+.farbe b { display: block; font-family: var(--serif); font-weight: 500; font-size: 10pt; margin-top: 1.8mm; line-height: 1.2; }
+.farbe span { display: block; font-size: 7pt; color: var(--ink-2); line-height: 1.4; margin-top: .8mm; }
+.muster { margin-top: 6mm; border-top: .35mm solid var(--ink); }
+.muster .zeile { display: grid; grid-template-columns: 36mm 1fr 56mm; column-gap: 5mm; padding: 2.1mm 0; border-bottom: .25mm solid var(--line); font-size: 7.9pt; line-height: 1.45; }
+.muster .zeile b { font-family: var(--serif); font-weight: 500; font-size: 10.5pt; }
+.muster .zeile i { font-style: normal; font-size: 6.4pt; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-d); font-weight: 600; padding-top: .6mm; }
+
+/* ---------- 10/11 Optionen ---------- */
+.p-opt .wrap { padding: 14mm 16mm 0; }
+.p-opt .top { display: grid; grid-template-columns: 1fr 72mm; column-gap: 10mm; align-items: end; }
+.p-opt .chap { font-size: 52pt; }
+.p-opt h2 { font-size: 24pt; }
+.p-opt .top p { font-size: 8.3pt; color: var(--ink-2); }
+.legende { display: flex; gap: 4mm; margin-top: 5mm; font-size: 6.4pt; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.legende span { display: inline-flex; align-items: center; gap: 1.4mm; }
+.tag { display: inline-block; font-style: normal; font-size: 5.8pt; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; padding: .5mm 1.4mm; border: .25mm solid var(--gold); color: var(--gold-d); margin: 0 1mm 1mm 0; line-height: 1.4; }
+.tag.voll { background: var(--ink); border-color: var(--ink); color: #fff; }
+.opts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-top: 4mm; }
+.opt { background: #fff; border: .25mm solid var(--line); padding: 2.6mm 2.8mm 2.4mm; }
+.opt .pic { height: 34mm; display: flex; align-items: center; justify-content: center; }
+.opt .pic img { max-height: 34mm; max-width: 100%; object-fit: contain; }
+.opt .g { margin-top: 2mm; font-size: 5.9pt; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-d); font-weight: 600; }
+.opt .l { font-family: var(--serif); font-size: 9.6pt; line-height: 1.2; margin-top: .6mm; }
+.opt .d { font-size: 6.8pt; line-height: 1.38; color: var(--muted); margin: .8mm 0 1.4mm; }
+.grp { margin-top: 5mm; display: flex; align-items: baseline; gap: 4mm; border-bottom: .25mm solid var(--line); padding-bottom: 1.6mm; }
+.grp h3 { font-size: 14pt; }
+.grp span { font-size: 7.2pt; color: var(--muted); }
+.p-opt2 .opts { margin-top: 3mm; }
+.p-opt2 .opt .pic { height: 31mm; }
+.p-opt2 .opt .pic img { max-height: 31mm; }
+
+/* ---------- 12 Hemd, Krawatte, Schuhe ---------- */
+.p-hemd .bild { position: absolute; left: 0; top: 0; width: 78mm; height: 297mm; }
+.p-hemd .bild img { object-position: 54% 30%; }
+.p-hemd .body { position: absolute; left: 90mm; right: 14mm; top: 15mm; }
+.p-hemd .chap { font-size: 52pt; }
+.p-hemd h2 { font-size: 23pt; }
+.p-hemd .intro { font-size: 8.4pt; color: var(--ink-2); margin-top: 3mm; }
+.kombi { margin-top: 5mm; border-top: .35mm solid var(--ink); }
+.kombi .k { padding: 3.6mm 0; border-bottom: .25mm solid var(--line); }
+.kombi .k h3 { font-size: 12pt; }
+.kombi .k .z { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 3mm; margin-top: 1.2mm; }
+.kombi .k .z div { font-size: 7.4pt; line-height: 1.4; color: var(--ink-2); }
+.kombi .k .z div i { display: block; font-style: normal; font-size: 5.8pt; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-d); font-weight: 600; margin-bottom: .4mm; }
+.regeln { margin-top: 7mm; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 4mm; }
+.regeln div { border-top: .5mm solid var(--gold); padding-top: 2mm; font-size: 7.4pt; line-height: 1.45; color: var(--ink-2); }
+.regeln b { display: block; font-family: var(--serif); font-weight: 500; font-size: 10pt; color: var(--ink); margin-bottom: .6mm; }
+.masshemd { position: absolute; left: 90mm; right: 14mm; bottom: 17mm; display: grid; grid-template-columns: 22mm 1fr; column-gap: 5mm; align-items: center; background: var(--warm); padding: 4mm; }
+.masshemd img { width: 22mm; height: 22mm; object-fit: cover; }
+.masshemd p { font-size: 7.6pt; line-height: 1.48; color: var(--ink-2); }
+.masshemd p b { font-family: var(--serif); font-weight: 500; font-size: 10.5pt; color: var(--ink); display: block; margin-bottom: .6mm; }
+
+/* ---------- 13 Hochzeit planen ---------- */
+.p-hz .bild { position: absolute; left: 0; top: 0; width: 210mm; height: 165mm; }
+.p-hz .bild img { object-position: 50% 32%; }
+.p-hz .body { position: absolute; left: 0; right: 0; top: 165mm; bottom: 0; padding: 10mm 16mm 0; }
+.p-hz .kopf { display: grid; grid-template-columns: 1fr 66mm; column-gap: 10mm; align-items: end; }
+.p-hz .chap { font-size: 46pt; }
+.p-hz h2 { color: #fff; font-size: 25pt; }
+.p-hz .kopf p { font-family: var(--serif); font-style: italic; font-size: 12pt; color: #e6dfd2; line-height: 1.4; }
+.zeitplan { margin-top: 7mm; display: grid; grid-template-columns: repeat(4, 1fr); border-top: .35mm solid var(--gold); }
+.zeitplan div { padding: 3.5mm 3.5mm 0 0; }
+.zeitplan div + div { padding-left: 3.5mm; border-left: .25mm solid var(--line-d); }
+.zeitplan .w { font-family: var(--serif); font-size: 15pt; color: #fff; line-height: 1.1; white-space: nowrap; }
+.zeitplan .w small { display: block; font-family: var(--sans); font-size: 6pt; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 1.2mm; }
+.zeitplan p { font-size: 7.7pt; color: #cfc7b9; line-height: 1.45; margin-top: 1.5mm; }
+.p-hz .tipps { margin-top: 6mm; display: grid; grid-template-columns: 1fr 1fr; column-gap: 10mm; }
+.p-hz .tipps p { font-size: 7.9pt; color: #cfc7b9; line-height: 1.5; }
+.p-hz .tipps b { color: #fff; font-weight: 600; }
+
+/* ---------- 14 Checkliste ---------- */
+.p-check .wrap { padding: 15mm 16mm 0; display: grid; grid-template-columns: 1fr 62mm; column-gap: 10mm; }
+.p-check .chap { font-size: 56pt; }
+.p-check h2 { font-size: 26pt; }
+.p-check .intro { font-size: 8.6pt; color: var(--ink-2); margin-top: 3mm; }
+.cl { margin-top: 5mm; }
+.cl h3 { font-size: 6.6pt; font-family: var(--sans); font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-d); padding-bottom: 1.5mm; border-bottom: .35mm solid var(--ink); }
+.cl ul { list-style: none; }
+.cl li { display: grid; grid-template-columns: 6.5mm 1fr; column-gap: 2.5mm; padding: 2.2mm 0; border-bottom: .25mm solid var(--line); font-size: 8.4pt; line-height: 1.42; }
+.cl li .box { width: 4.6mm; height: 4.6mm; border: .35mm solid var(--ink); margin-top: .2mm; background: #fff; }
+.cl li small { display: block; font-size: 7.2pt; color: var(--muted); }
+.p-check .seite { padding-top: 0; }
+.p-check .seite .bild { height: 112mm; }
+.p-check .notiz { margin-top: 6mm; }
+.p-check .notiz h3 { font-size: 6.6pt; font-family: var(--sans); font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-d); }
+.p-check .notiz .linie { height: 9mm; border-bottom: .25mm solid var(--line); }
+.p-check .tipp { margin-top: 6mm; background: var(--ink); color: #e6dfd2; padding: 4.5mm; font-size: 7.8pt; line-height: 1.5; }
+.p-check .tipp b { display: block; font-family: var(--serif); font-weight: 500; color: #fff; font-size: 11pt; margin-bottom: 1mm; }
+
+/* ---------- 15 Beratung ---------- */
+.p-ber .bild { width: 210mm; height: 112mm; }
+.p-ber .bild img { object-position: 50% 40%; }
+.p-ber .wrap { padding: 9mm 16mm 0; }
+.p-ber .kopf { display: grid; grid-template-columns: auto 1fr; column-gap: 8mm; align-items: end; }
+.p-ber .chap { font-size: 56pt; }
+.p-ber h2 { font-size: 25pt; }
+.schritte { display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 5mm; margin-top: 6mm; }
+.schritt { border-top: .35mm solid var(--ink); padding-top: 3mm; }
+.schritt .n { font-family: var(--serif); font-style: italic; font-size: 20pt; color: var(--gold-d); line-height: 1; }
+.schritt h3 { margin-top: 2mm; font-size: 13pt; }
+.schritt p { font-size: 7.7pt; color: var(--ink-2); line-height: 1.48; margin-top: 1.2mm; }
+.schritt .meta { margin-top: 2mm; font-size: 5.9pt; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.ber-quote { margin-top: 9mm; font-family: var(--serif); font-style: italic; font-size: 15pt; line-height: 1.35; border-top: .25mm solid var(--line); padding-top: 5mm; }
+.ber-quote span { color: var(--gold-d); }
+.p-ber .fakten { position: absolute; left: 0; right: 0; bottom: 0; height: 64mm; background: var(--ink); color: #f1ece3; padding: 9mm 16mm 0; }
+.p-ber .fakten .grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: .25mm solid var(--line-d); }
+.p-ber .f { padding: 4mm 4mm 0; border-right: .25mm solid var(--line-d); }
+.p-ber .f:first-child { padding-left: 0; }
+.p-ber .f:last-child { border-right: 0; }
+.p-ber .num { font-family: var(--serif); font-size: 22pt; white-space: nowrap; line-height: 1.1; color: #fff; }
+.p-ber .num small { font-size: 6pt; color: var(--gold); font-family: var(--sans); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 1.5mm; }
+.p-ber .lbl { margin-top: 2mm; font-size: 7.4pt; color: #b9b1a4; line-height: 1.45; }
+.p-ber .note { margin-top: 6mm; font-size: 7.4pt; color: #a79f92; }
+
+/* ---------- 16 Kontakt ---------- */
+.p-kontakt .wrap { padding: 16mm 16mm 0; }
+.p-kontakt .logo { width: 60mm; }
+.p-kontakt h2 { font-size: 38pt; color: #fff; margin-top: 4mm; line-height: 1.02; }
+.p-kontakt .lead { margin-top: 5mm; max-width: 150mm; }
+.p-kontakt .qrblock { margin-top: 10mm; display: grid; grid-template-columns: 62mm 1fr; column-gap: 10mm; align-items: center; border-top: .25mm solid var(--line-d); border-bottom: .25mm solid var(--line-d); padding: 8mm 0; }
+.p-kontakt .qr { background: #fff; padding: 4mm; width: 62mm; height: 62mm; }
+.p-kontakt .qr img { width: 100%; height: 100%; }
+.p-kontakt .qrblock h3 { color: #fff; font-size: 20pt; }
+.p-kontakt .qrblock p { color: #cfc7b9; font-size: 9pt; margin-top: 2mm; }
+.p-kontakt .qrblock .u { margin-top: 4mm; font-size: 7.4pt; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.p-kontakt .grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 11mm; margin-top: 8mm; }
+.p-kontakt .blk h3 { font-family: var(--sans); font-size: 6.6pt; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 2.5mm; }
+.p-kontakt .blk p, .p-kontakt .blk td { font-size: 9.2pt; color: #e6dfd2; line-height: 1.7; }
+.p-kontakt .blk .big { font-family: var(--serif); font-size: 15pt; color: #fff; line-height: 1.35; }
+.p-kontakt table { border-collapse: collapse; width: 100%; }
+.p-kontakt td { padding: 1.1mm 0; border-bottom: .25mm solid #2e2b28; }
+.p-kontakt td:last-child { text-align: right; }
+.p-kontakt .closing { position: absolute; left: 16mm; right: 16mm; bottom: 21mm; font-family: var(--serif); font-style: italic; font-size: 16pt; color: #e6dfd2; }
+.p-kontakt .closing span { color: var(--gold); }
+.p-kontakt .legal { position: absolute; left: 16mm; right: 16mm; bottom: 10mm; display: flex; justify-content: space-between; font-size: 6.3pt; letter-spacing: .2em; text-transform: uppercase; color: #8d8579; border-top: .25mm solid var(--line-d); padding-top: 3mm; }
+</style>
+</head>
+<body>
+
+<!-- 1 · Titel -->
+<section class="page dark p-cover">
+  <div class="bild bleed"><img src="img/titel.jpg" alt=""></div>
+  <div class="verlauf"></div>
+  <img class="logo" src="img/logo-weiss.png" alt="The Sartorialist Zürich">
+  <div class="ausgabe">Ratgeber<br>Ausgabe Zürich</div>
+  <div class="body">
+    <div class="kicker">Ein Ratgeber von The Sartorialist Zürich</div>
+    <h1>Der passende <em>Anzug</em></h1>
+    <p class="sub">Anlass, Schnitt, Stoff und Details — wie Sie den Anzug wählen, der zu Ihnen und zu Ihrem Moment passt.</p>
+    <div class="themen"><span>Anlass</span><span>Dresscode</span><span>Figur</span><span>Stoff</span><span>Details</span></div>
+  </div>
+  <div class="bottom"><span>Kuttelgasse 7 · 8001 Zürich</span><span>thesartorialist.ch</span></div>
+</section>
+
+<!-- 2 · Editorial + Inhalt -->
+<section class="page warm p-edit">
+  <div class="bild bleed"><img src="img/schere.jpg" alt=""></div>
+  <div class="wrap">
+    <div>
+      <div class="kicker">Editorial</div>
+      <h2>Der richtige Anzug ist <em>keine Frage des Zufalls.</em></h2>
+      <div class="brief">
+        <p>Ob Verwaltungsratssitzung, Trauung oder Galaabend: Ein Anzug wirkt nur dann souverän, wenn er zum Anlass, zur Figur und zur Jahreszeit passt. Die gute Nachricht — dafür braucht es kein Fachwissen, sondern die richtigen Fragen.</p>
+        <p>Über 15 Jahre war ich in führenden Positionen bei Tom Ford und Prada tätig, zuletzt als Geschäftsführer des ersten Tom Ford Stores Europas in Zürich. In dieser Zeit habe ich gelernt: Unsere Kunden suchen nicht den günstigsten Anzug, sondern den richtigen.</p>
+        <p>Dieser Ratgeber fasst zusammen, worauf es ankommt — vom Dresscode über Stoff und Farbe bis zu Revers, Taschen und Saum. Nehmen Sie ihn mit zur Beratung ins Atelier. Den Rest finden wir gemeinsam heraus.</p>
+      </div>
+      <p class="sign">Alexander Shubin<small>Gründer · The Sartorialist Zürich</small></p>
+    </div>
+    <div class="toc">
+      <div class="kicker">Inhalt</div>
+      <ol>
+        <li><span class="n">01</span><span class="t">Erst der Anlass, dann der Anzug</span><span class="s">3</span></li>
+        <li><span class="n">02</span><span class="t">Dresscodes verständlich</span><span class="s">6</span></li>
+        <li><span class="n">03</span><span class="t">Schnitt &amp; Figur</span><span class="s">7</span></li>
+        <li><span class="n">04</span><span class="t">Der richtige Stoff</span><span class="s">8</span></li>
+        <li><span class="n">05</span><span class="t">Farben &amp; Muster</span><span class="s">9</span></li>
+        <li><span class="n">06</span><span class="t">Details &amp; Optionen</span><span class="s">10</span></li>
+        <li><span class="n">07</span><span class="t">Hemd, Krawatte, Schuhe</span><span class="s">12</span></li>
+        <li><span class="n">08</span><span class="t">Die Hochzeit planen</span><span class="s">13</span></li>
+        <li><span class="n">09</span><span class="t">Checkliste vor der Beratung</span><span class="s">14</span></li>
+        <li><span class="n">10</span><span class="t">Die Beratung im Atelier</span><span class="s">15</span></li>
+      </ol>
+    </div>
+  </div>
+  <div class="folio"><span>Der passende Anzug</span><span><b>02</b></span></div>
+</section>
+
+<!-- 3 · Kapitel 01 Opener -->
+<section class="page p-opener">
+  <div class="bild bleed"><img src="img/anlass.jpg" alt=""></div>
+  <div class="body">
+    <div class="chap">01</div>
+    <div class="kicker" style="margin-top: 5mm">Anlass &amp; Anzug</div>
+    <h2>Erst der Anlass, <em>dann der Anzug.</em></h2>
+    <p class="lead">Jeder Anlass hat seine eigene Grammatik. Wer sie kennt, wählt Farbe, Stoff und Schnitt mit Leichtigkeit — und trägt den Anzug danach noch jahrelang.</p>
+    <ul class="uebersicht">
+      <li><div class="a"><b>Business</b><i>Seite 4</i></div><span>Marineblau, Grau, Anthrazit · Kammgarn · Einreiher</span></li>
+      <li><div class="a"><b>Hochzeit · Bräutigam</b><i>Seite 4</i></div><span>Dreiteiler oder Zweireiher · Stickerei im Futter</span></li>
+      <li><div class="a"><b>Trauzeuge &amp; Gast</b><i>Seite 4</i></div><span>Eine Spur zurückhaltender als der Bräutigam</span></li>
+      <li><div class="a"><b>Black Tie &amp; Gala</b><i>Seite 5</i></div><span>Smoking in Schwarz oder Mitternachtsblau</span></li>
+      <li><div class="a"><b>Smart Casual</b><i>Seite 5</i></div><span>Sakko und Hose im Kontrast · weiche Schulter</span></li>
+      <li><div class="a"><b>Sommer &amp; Reise</b><i>Seite 5</i></div><span>Leinen, Fresko, Mohair · halb oder ungefüttert</span></li>
+    </ul>
+  </div>
+  <p class="quote">«Ein massgeschneiderter Anzug ist ein wertvolles Stück Lebensqualität, <span>in das jeder Gentleman investieren sollte.</span>»</p>
+  <div class="folio" style="left: 104mm"><span>Anlass &amp; Anzug</span><span><b>03</b></span></div>
+</section>
+
+<!-- 4 · Anlässe I -->
+<section class="page p-anlass">
+  <div class="wrap">
+    <div class="head">
+      <div><div class="kicker">01 · Anlass &amp; Anzug</div><h2>Vom Büro <em>bis zum Ja-Wort</em></h2></div>
+      <span class="seite">Teil 1 von 2</span>
+    </div>
+    <div class="anlass">
+      <div class="bild bleed"><img src="img/business.jpg" alt="" style="object-position: 30% 40%"></div>
+      <div>
+        <span class="nr">I.</span>
+        <h3>Business</h3>
+        <p class="intro">Der Anzug für den Alltag im Büro, für Kundentermine und Sitzungen: zurückhaltend, robust, mehrmals pro Woche getragen.</p>
+        <ul class="spec">
+          <li><b>Farbe</b><span>Marineblau, Mittelgrau, Anthrazit — uni oder mit dezentem Nadelstreifen</span></li>
+          <li><b>Stoff</b><span>Ganzjähriges Kammgarn, 250–320 g/m, Super 100s bis 130s</span></li>
+          <li><b>Schnitt</b><span>Einreiher mit zwei Knöpfen, fallendes Revers (8.0 cm), Seitenschlitze</span></li>
+          <li><b>Details</b><span>Pattentaschen, vier Ärmelknöpfe, Hose ohne oder mit einer Bundfalte</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="anlass">
+      <div class="bild bleed"><img src="img/hochzeit.jpg" alt="" style="object-position: 50% 30%"></div>
+      <div>
+        <span class="nr">II.</span>
+        <h3>Hochzeit · <em>der Bräutigam</em></h3>
+        <p class="intro">Der Anzug steht im Zentrum eines der emotionalsten Tage — und muss Trauung, Fotoshooting, Festmahl und Tanz mitmachen.</p>
+        <ul class="spec">
+          <li><b>Farbe</b><span>Navy, Mitternachtsblau, Grau; Dunkelgrün, Bordeaux oder Beige als Statement</span></li>
+          <li><b>Stoff</b><span>Feine Wolle oder Seidenmischung, Leinen im Sommer, Flanell oder Tweed im Winter</span></li>
+          <li><b>Schnitt</b><span>Dreiteiler mit Weste, steigendes Revers — oder ein Zweireiher 6 auf 2</span></li>
+          <li><b>Details</b><span>Name, Datum oder Sinnspruch im Futter, handgenähtes Knopfloch für die Boutonnière</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="anlass">
+      <div class="bild bleed"><img src="img/gast.jpg" alt="" style="object-position: 45% 30%"></div>
+      <div>
+        <span class="nr">III.</span>
+        <h3>Trauzeuge &amp; Gast</h3>
+        <p class="intro">Gleicher Dresscode wie der Bräutigam, aber eine Spur zurückhaltender — damit er auf jedem Bild erkennbar bleibt.</p>
+        <ul class="spec">
+          <li><b>Trauzeuge</b><span>Ton in Ton (Bräutigam Marineblau, Trauzeugen Mittelgrau) oder gleiche Farbe mit anderen Details</span></li>
+          <li><b>Erkennung</b><span>Gemeinsame Krawatte, Einstecktuch oder Blume am Revers</span></li>
+          <li><b>Gast</b><span>Ohne Angabe: dunkler oder mittlerer Anzug mit Krawatte</span></li>
+          <li><b>Lieber nicht</b><span>Ganz in Weiss, Cutaway neben einem Bräutigam im Anzug, Schwarz am Tag</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><span>Anlass &amp; Anzug</span><span><b>04</b></span></div>
+</section>
+
+<!-- 5 · Anlässe II -->
+<section class="page p-anlass">
+  <div class="wrap">
+    <div class="head">
+      <div><div class="kicker">01 · Anlass &amp; Anzug</div><h2>Vom Galaabend <em>bis zur Reise</em></h2></div>
+      <span class="seite">Teil 2 von 2</span>
+    </div>
+    <div class="anlass">
+      <div class="bild illu"><img src="img/illu/black-tie-tux-shawl.jpg" alt=""></div>
+      <div>
+        <span class="nr">IV.</span>
+        <h3>Black Tie &amp; <em>Gala</em></h3>
+        <p class="intro">Festliche Abendgarderobe, streng nach dem klassischen Dresscode: der Smoking — mit schwarzer Fliege und weissem Smokinghemd.</p>
+        <ul class="spec">
+          <li><b>Farbe</b><span>Tiefschwarz oder Mitternachtsblau</span></li>
+          <li><b>Stoff</b><span>Feine Wolle, gerne mit Mohair — der Glanz fängt das Licht am Abend</span></li>
+          <li><b>Schnitt</b><span>Schalkragen oder steigendes Revers mit Seidenbesatz in Satin oder Ripsband</span></li>
+          <li><b>Details</b><span>Hose mit Seidengalon und Smokingbund, Hufeisen-Abendweste oder Kummerbund</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="anlass">
+      <div class="bild bleed"><img src="img/casual.jpg" alt="" style="object-position: 52% 30%"></div>
+      <div>
+        <span class="nr">V.</span>
+        <h3>Smart Casual</h3>
+        <p class="intro">Gepflegt, aber ohne Anzug und Krawatte: Sakko und Hose in deutlichem Kontrast, für Büros mit lockerem Dresscode und das Wochenende.</p>
+        <ul class="spec">
+          <li><b>Farbe</b><span>Braun, Beige, Grün, Glencheck oder Fischgrat zur unifarbenen Hose</span></li>
+          <li><b>Stoff</b><span>Flanell, Tweed, Hopsack, Cord</span></li>
+          <li><b>Schnitt</b><span>Weiche Schulter, drei auf zwei, halbgefüttert</span></li>
+          <li><b>Details</b><span>Aufgesetzte Taschen, 5-mm-Steppnaht, Hose mit Gürtelschlaufen</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="anlass">
+      <div class="bild bleed"><img src="img/sommer.jpg" alt="" style="object-position: 42% 30%"></div>
+      <div>
+        <span class="nr">VI.</span>
+        <h3>Sommer &amp; <em>Reise</em></h3>
+        <p class="intro">Wenn es heiss wird oder der Anzug nach einer Zugfahrt frisch aussehen soll: offene Gewebe, leichte Verarbeitung.</p>
+        <ul class="spec">
+          <li><b>Farbe</b><span>Beige, Hellgrau, helles Blau</span></li>
+          <li><b>Stoff</b><span>Leinen, Fresko, Mohair (knitterarm), Seersucker — leicht, unter 250 g/m</span></li>
+          <li><b>Schnitt</b><span>Weiche Einlage und weiche Schulter, halb- oder ungefüttert</span></li>
+          <li><b>Details</b><span>Seitenschlitze, ungefütterte Hose, Leinenhemd ohne Krawatte</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><span>Anlass &amp; Anzug</span><span><b>05</b></span></div>
+</section>
+
+<!-- 6 · Dresscodes -->
+<section class="page dark p-dress">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="chap">02</div>
+        <div class="kicker" style="margin-top: 4mm">Dresscodes</div>
+        <h2>Was die Einladung <em>wirklich meint.</em></h2>
+      </div>
+      <p>Von locker bis höchst formell: Die Leiter zeigt, welcher Anzug zu welcher Angabe gehört. Je weiter oben, desto strenger die Regeln.</p>
+    </div>
+    <div class="leiter">
+      <div class="stufe">
+        <div class="grad"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+        <div><h3>White Tie</h3><div class="wann">Abend · «Frack»</div></div>
+        <p>Der formellste Dresscode: <b>Frack mit weisser Fliege und weisser Weste.</b> Nur noch selten vorgeschrieben — Staatsbankette, Opernbälle, die Nobelpreisverleihung.</p>
+      </div>
+      <div class="stufe">
+        <div class="grad"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+        <div><h3>Black Tie</h3><div class="wann">Abend · Gala, Ball</div></div>
+        <p><b>Smoking mit schwarzer Fliege</b>, weisses Smokinghemd mit Doppelmanschetten, Kummerbund oder Abendweste, schwarze Lackschuhe oder polierte Oxfords.</p>
+      </div>
+      <div class="stufe">
+        <div class="grad"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+        <div><h3>Cut</h3><div class="wann">Tag · bis etwa 18 Uhr</div></div>
+        <p>Die formellste Tageskleidung: <b>Cutaway mit grau-schwarz gestreifter Hose</b>, Weste und Krawatte — traditionell bei Hochzeiten und Staatsakten.</p>
+      </div>
+      <div class="stufe">
+        <div class="grad"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+        <div><h3>Cocktail</h3><div class="wann">Früher Abend</div></div>
+        <p>Festlich, aber nicht formell: <b>gut sitzender Anzug in dunkleren oder satten Farben</b>, Hemd und in der Regel Krawatte. Liegt zwischen Business und Black Tie.</p>
+      </div>
+      <div class="stufe">
+        <div class="grad"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+        <div><h3>Business</h3><div class="wann">Büro · Termine</div></div>
+        <p><b>Zweiteiler aus Sakko und Hose im gleichen Stoff</b>, meist Marineblau, Grau oder Anthrazit, aus robustem Kammgarn — mit Hemd und meist mit Krawatte.</p>
+      </div>
+      <div class="stufe">
+        <div class="grad"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        <div><h3>Smart Casual</h3><div class="wann">Business Casual</div></div>
+        <p>Gepflegter als Freizeitkleidung, aber <b>ohne Anzug und Krawatte</b>: Sakko, Stoff- oder Chinohose, Hemd oder Poloshirt und Lederschuhe.</p>
+      </div>
+    </div>
+  </div>
+  <div class="hinweis">
+    <div class="q">?</div>
+    <p><b style="color:#fff">Nichts auf der Einladung?</b> Dann ist ein dunkler oder mittlerer Anzug mit Krawatte angemessen. Schwarz bleibt dem Abend und der Trauer vorbehalten — bei Tageshochzeiten lieber Blau oder Grau.</p>
+  </div>
+  <div class="folio"><span>Dresscodes</span><span><b>06</b></span></div>
+</section>
+
+<!-- 7 · Schnitt & Figur -->
+<section class="page warm p-figur">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="chap">03</div>
+        <div class="kicker" style="margin-top: 4mm">Schnitt &amp; Passform</div>
+        <h2>Proportionen <em>lenken den Blick.</em></h2>
+      </div>
+      <p>Revers, Knopfung, Schulter und Hose verändern, wie eine Silhouette wirkt. Vier typische Figuren — und die Details, die ihnen schmeicheln.</p>
+    </div>
+    <div class="figuren">
+      <div class="figur">
+        <div class="illus"><div><img src="img/illu/jacket-db-6x2.jpg" alt=""></div><div><img src="img/illu/trousers-hem-turnup-4cm.jpg" alt=""></div></div>
+        <h3>Gross &amp; schlank</h3>
+        <div class="ziel">Ziel: Breite und Ruhe gewinnen</div>
+        <ul>
+          <li>Zweireiher sechs auf zwei oder Einreiher mit drei Knöpfen</li>
+          <li>Normales bis breites Revers, klassische Schulter</li>
+          <li>Bundfalten und Umschlag (4.0–4.5 cm) gliedern die Beinlänge</li>
+        </ul>
+      </div>
+      <div class="figur">
+        <div class="illus"><div><img src="img/illu/jacket-sb-1b.jpg" alt=""></div><div><img src="img/illu/jacket-lapel-sb-peak-regular.jpg" alt=""></div></div>
+        <h3>Kräftig</h3>
+        <div class="ziel">Ziel: Länge betonen</div>
+        <ul>
+          <li>Einreiher mit einem oder zwei Knöpfen — der tiefe V-Ausschnitt streckt</li>
+          <li>Steigendes Revers: die Spitzen weisen nach oben</li>
+          <li>Eine Bundfalte für Weite im Sitzen, Seitenregulierer statt Gürtel</li>
+        </ul>
+      </div>
+      <div class="figur">
+        <div class="illus"><div><img src="img/illu/jacket-sb-2b.jpg" alt=""></div><div><img src="img/illu/trousers-front-flat.jpg" alt=""></div></div>
+        <h3>Kleiner</h3>
+        <div class="ziel">Ziel: eine durchgehende Linie</div>
+        <ul>
+          <li>Einreiher mit zwei Knöpfen, schmales bis normales Revers</li>
+          <li>Hose ohne Bundfalte mit glattem Saum — schlank und gestreckt</li>
+          <li>Ton-in-Ton-Kombinationen und uni oder feine Muster</li>
+        </ul>
+      </div>
+      <div class="figur">
+        <div class="illus"><div><img src="img/illu/jacket-shoulder-soft.jpg" alt=""></div><div><img src="img/illu/jacket-back-side-vents.jpg" alt=""></div></div>
+        <h3>Sportlich, <em>breite Schultern</em></h3>
+        <div class="ziel">Ziel: natürlich statt kantig</div>
+        <ul>
+          <li>Weiche Schulter mit dünnem Polster — kein zusätzliches Volumen</li>
+          <li>Seitenschlitze und klare Taillierung</li>
+          <li>Eine Bundfalte gibt den Oberschenkeln Raum</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fuss">Die beste Korrektur ist die Passform: <span>über 30 Masse, inklusive Körperhaltung.</span></p>
+  <div class="folio"><span>Schnitt &amp; Figur</span><span><b>07</b></span></div>
+</section>
+
+<!-- 8 · Stoffe -->
+<section class="page p-stoffe">
+  <div class="mosaik">
+    <img src="img/stoff-1.jpg" alt="">
+    <img src="img/flanell.jpg" alt="" style="object-position: 50% 40%">
+    <img src="img/stoff-2.jpg" alt="">
+  </div>
+  <div class="wrap">
+    <div>
+      <div class="kicker">04 · Der richtige Stoff</div>
+      <h2>Der Stoff entscheidet, <em>wann Sie ihn tragen.</em></h2>
+      <p class="lead">Gewicht, Faser und Webart bestimmen, wie warm ein Anzug ist, wie er fällt und wie er altert.</p>
+      <div class="gewicht">
+        <div><div class="k">Leicht</div><div class="g">unter 250 g/m</div><p>Sommer und Reise: luftig, knittert eher.</p></div>
+        <div><div class="k">Mittel</div><div class="g">250–320 g/m</div><p>Ganzjährig — passt in der Schweiz an den meisten Tagen.</p></div>
+        <div><div class="k">Schwer</div><div class="g">über 320 g/m</div><p>Flanell und Winterkammgarn: warm, fällt sehr ruhig.</p></div>
+      </div>
+      <ul class="fasern">
+        <li><b>Kammgarn</b>Glatt und robust — der Klassiker für Business-Anzüge.</li>
+        <li><b>Flanell</b>Für Oktober bis März; wärmt spürbar, wirkt etwas lockerer.</li>
+        <li><b>Mohair</b>Knitterarm im Sommer, mit Glanz am Abend und zum Smoking.</li>
+        <li><b>Leinen</b>Die Sommerfaser für Hochzeiten im Freien und Ferien.</li>
+        <li><b>Fresko</b>Offen gewebt: trägt sich im Sommer kühler, als das Gewicht vermuten lässt.</li>
+        <li><b>Kaschmir</b>Weich und warm — für Sakkos und besondere Anzüge.</li>
+      </ul>
+    </div>
+    <div class="side">
+      <div class="big">1’000+</div><div class="muted">Anzugstoffe zur Auswahl</div>
+      <h4>Holland &amp; Sherry</h4>
+      <p style="font-size: 7.6pt; color: var(--ink-2); line-height: 1.5">Seit 1836 Stoffe für die besten Schneider der Welt — feinste Wolle, Kaschmir und Seide.</p>
+      <h4>Loro Piana</h4>
+      <p style="font-size: 7.6pt; color: var(--ink-2); line-height: 1.5">Über 200 Jahre Textilerfahrung, aussergewöhnliche Woll- und Kaschmirstoffe.</p>
+      <h4>Weitere Webereien</h4>
+      <ul><li>Vitale Barberis Canonico</li><li>Drago · Reda · Cerruti</li><li>Scabal · Solbiati · Zegna</li></ul>
+      <div class="super"><b>Was heisst «Super 120s»?</b>Die Zahl gibt die Feinheit der Wolle an. Für Anzüge, die mehrmals pro Woche getragen werden, haben sich Super 100s bis 130s bewährt; ab Super 170s sind es Stoffe für Anlässe, an denen der Anzug geschont wird.</div>
+    </div>
+  </div>
+  <div class="folio"><span>Der richtige Stoff</span><span><b>08</b></span></div>
+</section>
+
+<!-- 9 · Farben & Muster -->
+<section class="page cream p-farben">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="chap">05</div>
+        <div class="kicker" style="margin-top: 4mm">Farben &amp; Muster</div>
+        <h2>Die Farbe bestimmt, <em>wie formell Sie wirken.</em></h2>
+      </div>
+      <p>Marineblau, Mittelgrau und Anthrazit sind die Grundfarben jeder Garderobe. Braun, Beige und Grün ergänzen sie — Schwarz bleibt dem Abend vorbehalten.</p>
+    </div>
+    <div class="trio">
+      <div><div class="bild bleed"><img src="img/farbe-blau.jpg" alt="" style="object-position: 50% 40%"></div><div class="cap">Blau · vom Himmelblau bis Marine</div></div>
+      <div><div class="bild bleed"><img src="img/farbe-gruen.jpg" alt="" style="object-position: 50% 40%"></div><div class="cap">Grün · frische Akzente</div></div>
+      <div><div class="bild bleed"><img src="img/farbe-beige.jpg" alt="" style="object-position: 28% 40%"></div><div class="cap">Beige · leicht und hell</div></div>
+    </div>
+    <div class="farbtafel">
+      <div class="farbe"><div class="chip" style="background:#1d2a44"></div><b>Marineblau</b><span>Business, Hochzeit, Cocktail — der Allrounder</span></div>
+      <div class="farbe"><div class="chip" style="background:#3a3b3e"></div><b>Anthrazit</b><span>Business und Abend, sehr seriös</span></div>
+      <div class="farbe"><div class="chip" style="background:#8a8c8f"></div><b>Mittelgrau</b><span>Business und Trauzeugen, Tag</span></div>
+      <div class="farbe"><div class="chip" style="background:#2f3f31"></div><b>Dunkelgrün</b><span>Hochzeit, Herbst, Smart Casual</span></div>
+      <div class="farbe"><div class="chip" style="background:#cbb898"></div><b>Beige</b><span>Sommer, Hochzeit im Freien</span></div>
+      <div class="farbe"><div class="chip" style="background:#111111"></div><b>Schwarz</b><span>Nur am Abend: Smoking, Black Tie</span></div>
+    </div>
+    <div class="muster">
+      <div class="zeile"><b>Uni</b><span>Am formellsten und am vielseitigsten — die sichere Wahl für den ersten Massanzug.</span><i>Business · Hochzeit · Abend</i></div>
+      <div class="zeile"><b>Nadelstreifen</b><span>Feine Linien strecken die Silhouette und wirken klassisch geschäftlich.</span><i>Business</i></div>
+      <div class="zeile"><b>Kreidestreifen</b><span>Breiter und weicher gezeichnet, oft auf Flanell.</span><i>Business · Winter</i></div>
+      <div class="zeile"><b>Glencheck</b><span>Das klassische Karo — als Anzug oder als Sakko zur unifarbenen Hose.</span><i>Business · Smart Casual</i></div>
+      <div class="zeile"><b>Fischgrat</b><span>Struktur statt Muster, typisch für Tweed und Wintersakkos.</span><i>Smart Casual · Herbst</i></div>
+      <div class="zeile"><b>Fensterkaro</b><span>Grosszügiges, markantes Karo für das selbstbewusste Sakko oder den Dreiteiler.</span><i>Smart Casual · Hochzeit</i></div>
+    </div>
+  </div>
+  <div class="folio"><span>Farben &amp; Muster</span><span><b>09</b></span></div>
+</section>
+
+<!-- 10 · Optionen: Sakko -->
+<section class="page warm p-opt">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="chap">06</div>
+        <div class="kicker" style="margin-top: 4mm">Details &amp; Optionen</div>
+        <h2>Das Sakko — <em>Detail für Detail.</em></h2>
+      </div>
+      <p>Aus unserem Konfigurator «Styles &amp; Options»: die wichtigsten Entscheidungen am Sakko und für welchen Anlass sie sich empfehlen.</p>
+    </div>
+    <div class="legende"><span><i class="tag voll">B</i>Business</span><span><i class="tag voll">H</i>Hochzeit</span><span><i class="tag voll">G</i>Gala / Abend</span><span><i class="tag voll">C</i>Smart Casual</span><span><i class="tag voll">S</i>Sommer</span></div>
+    <div class="opts">
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-sb-2b.jpg" alt=""></div><div class="g">Knopfung</div><div class="l">Zwei Knöpfe</div><div class="d">Der klassische Business-Standard.</div><i class="tag">B</i><i class="tag">H</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-sb-3-2b.jpg" alt=""></div><div class="g">Knopfung</div><div class="l">Drei auf zwei</div><div class="d">Neapolitanisch weich gerollt.</div><i class="tag">C</i><i class="tag">S</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-db-6x2.jpg" alt=""></div><div class="g">Knopfung</div><div class="l">Zweireiher 6 auf 2</div><div class="d">Der Savile-Row-Klassiker.</div><i class="tag">B</i><i class="tag">H</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-sb-1b.jpg" alt=""></div><div class="g">Knopfung</div><div class="l">Ein Knopf</div><div class="d">Tiefer, schlanker Verschluss.</div><i class="tag">G</i><i class="tag">H</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-lapel-sb-notch-regular.jpg" alt=""></div><div class="g">Revers</div><div class="l">Fallend, 8.0 cm</div><div class="d">Ausgewogen, zu jeder Krawatte.</div><i class="tag">B</i><i class="tag">C</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-lapel-sb-peak-regular.jpg" alt=""></div><div class="g">Revers</div><div class="l">Steigend, 8.0 cm</div><div class="d">Streckt den Oberkörper.</div><i class="tag">H</i><i class="tag">G</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-pocket-barchetta-jetted.jpg" alt=""></div><div class="g">Taschen</div><div class="l">Paspeltasche</div><div class="d">Die formellste Linie, ohne Patten.</div><i class="tag">G</i><i class="tag">H</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-pocket-barchetta-flap.jpg" alt=""></div><div class="g">Taschen</div><div class="l">Pattentasche</div><div class="d">Vielseitig, Patten einsteckbar.</div><i class="tag">B</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-pocket-patch-patch.jpg" alt=""></div><div class="g">Taschen</div><div class="l">Aufgesetzt</div><div class="d">Lässiger Blazer-Stil.</div><i class="tag">C</i><i class="tag">S</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-back-side-vents.jpg" alt=""></div><div class="g">Rücken</div><div class="l">Seitenschlitze</div><div class="d">Fällt im Sitzen tadellos.</div><i class="tag">B</i><i class="tag">H</i><i class="tag">C</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-back-ventless.jpg" alt=""></div><div class="g">Rücken</div><div class="l">Ohne Schlitz</div><div class="d">Smoking und Abendsakko.</div><i class="tag">G</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-buttonhole-milanese.jpg" alt=""></div><div class="g">Revers-Knopfloch</div><div class="l">Milanese</div><div class="d">Die Krönung der Handarbeit.</div><i class="tag">H</i><i class="tag">G</i></div>
+    </div>
+  </div>
+  <div class="folio"><span>Details &amp; Optionen</span><span><b>10</b></span></div>
+</section>
+
+<!-- 11 · Optionen: Hose, Weste, Smoking -->
+<section class="page warm p-opt p-opt2">
+  <div class="wrap">
+    <div class="kicker">06 · Details &amp; Optionen</div>
+    <h2>Hose, Weste <em>und Smoking</em></h2>
+    <div class="grp"><h3>Hose</h3><span>Bundfalten, Bund und Saum</span></div>
+    <div class="opts">
+      <div class="opt"><div class="pic"><img src="img/illu/trousers-front-flat.jpg" alt=""></div><div class="g">Vorderhose</div><div class="l">Ohne Bundfalte</div><div class="d">Glatt, schlank, modern.</div><i class="tag">B</i><i class="tag">S</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/trousers-front-double-pleat.jpg" alt=""></div><div class="g">Vorderhose</div><div class="l">Zwei Bundfalten</div><div class="d">Hoher Bund, schöner Fall.</div><i class="tag">H</i><i class="tag">C</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/trousers-waistband-side-adjusters.jpg" alt=""></div><div class="g">Bund</div><div class="l">Seitenregulierer</div><div class="d">Klarer Bund, ganz ohne Gürtel.</div><i class="tag">H</i><i class="tag">B</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/trousers-hem-turnup-4cm.jpg" alt=""></div><div class="g">Saum</div><div class="l">Umschlag 4.0 cm</div><div class="d">Nicht zum Smoking.</div><i class="tag">B</i><i class="tag">C</i></div>
+    </div>
+    <div class="grp"><h3>Weste</h3><span>Die Vollendung des Dreiteilers</span></div>
+    <div class="opts">
+      <div class="opt"><div class="pic"><img src="img/illu/waistcoat-sb-5b.jpg" alt=""></div><div class="g">Einreiher</div><div class="l">Fünf Knöpfe</div><div class="d">Die klassische Weste.</div><i class="tag">H</i><i class="tag">B</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/waistcoat-db-6b.jpg" alt=""></div><div class="g">Zweireiher</div><div class="l">Sechs Knöpfe</div><div class="d">Stattlich, gerade abgeschlossen.</div><i class="tag">H</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/waistcoat-sb-horseshoe.jpg" alt=""></div><div class="g">Abendweste</div><div class="l">Hufeisen</div><div class="d">Tiefer U-Ausschnitt, formell.</div><i class="tag">G</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/jacket-monogram-lined.jpg" alt=""></div><div class="g">Futter</div><div class="l">Monogramm</div><div class="d">Initialen oder Datum gestickt.</div><i class="tag">H</i></div>
+    </div>
+    <div class="grp"><h3>Smoking</h3><span>Black Tie, in Mitternachtsblau oder Tiefschwarz</span></div>
+    <div class="opts">
+      <div class="opt"><div class="pic"><img src="img/illu/black-tie-tux-shawl.jpg" alt=""></div><div class="g">Smokingsakko</div><div class="l">Schalkragen</div><div class="d">Ein bezogener Knopf.</div><i class="tag">G</i><i class="tag">H</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/black-tie-tux-peak-db.jpg" alt=""></div><div class="g">Smokingsakko</div><div class="l">Zweireiher</div><div class="d">Geschlossen, ohne Weste.</div><i class="tag">G</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/black-tie-facing-satin-v2.jpg" alt=""></div><div class="g">Reversbesatz</div><div class="l">Satin</div><div class="d">Hochglänzende reine Seide.</div><i class="tag">G</i></div>
+      <div class="opt"><div class="pic"><img src="img/illu/black-tie-trousers-braid-stripe.jpg" alt=""></div><div class="g">Smokinghose</div><div class="l">Seidengalon</div><div class="d">Band über der Seitennaht.</div><i class="tag">G</i></div>
+    </div>
+  </div>
+  <div class="folio"><span>Details &amp; Optionen · alle Optionen: thesartorialist.ch/massanzug-konfigurator</span><span><b>11</b></span></div>
+</section>
+
+<!-- 12 · Hemd, Krawatte, Schuhe -->
+<section class="page p-hemd">
+  <div class="bild bleed"><img src="img/hemd-2.jpg" alt=""></div>
+  <div class="body">
+    <div class="chap">07</div>
+    <div class="kicker" style="margin-top: 4mm">Hemd, Krawatte, Schuhe</div>
+    <h2>Das Ensemble <em>macht den Auftritt.</em></h2>
+    <p class="intro">Der Anzug gibt den Rahmen vor, Hemd, Krawatte und Schuhe setzen ihn fort. Bewährte Kombinationen je Anlass:</p>
+    <div class="kombi">
+      <div class="k"><h3>Business</h3><div class="z"><div><i>Hemd</i>Weiss oder hellblau, Kentkragen</div><div><i>Krawatte</i>Seide, uni oder dezent gemustert</div><div><i>Schuhe</i>Schwarzer Cap-Toe-Oxford</div></div></div>
+      <div class="k"><h3>Hochzeit</h3><div class="z"><div><i>Hemd</i>Weiss, Doppelmanschette</div><div><i>Krawatte</i>Seidenkrawatte oder Fliege, Einstecktuch</div><div><i>Schuhe</i>Schwarz oder dunkelbraun; zum hellen Anzug mittelbraun</div></div></div>
+      <div class="k"><h3>Black Tie</h3><div class="z"><div><i>Hemd</i>Weisses Smokinghemd, Piqué-Brust</div><div><i>Fliege</i>Schwarz, idealerweise selbst gebunden</div><div><i>Schuhe</i>Lackleder oder polierte Oxfords</div></div></div>
+      <div class="k"><h3>Smart Casual</h3><div class="z"><div><i>Oberteil</i>Hemd, Poloshirt oder feiner Strick</div><div><i>Krawatte</i>Keine — oder Strick</div><div><i>Schuhe</i>Dunkelbrauner Oxford oder Wildleder</div></div></div>
+    </div>
+    <div class="regeln">
+      <div><b>Hell zu dunkel</b>Das Hemd heller als der Anzug, die Krawatte dunkler als das Hemd.</div>
+      <div><b>Leder zu Leder</b>Gürtel und Schuhe im gleichen Farbton.</div>
+      <div><b>Sichtbare Manschette</b>Etwa 1 bis 1.5 cm unter dem Sakkoärmel.</div>
+    </div>
+  </div>
+  <div class="masshemd">
+    <img src="img/santangelo.jpg" alt="">
+    <p><b>Das passende Masshemd</b>Über 400 Hemdenstoffe von Canclini, Albini oder Thomas Mason — und die von Hand gefertigten Hemden von Maria Santangelo aus Neapel, seit 1953, mit australischen Perlmuttknöpfen.</p>
+  </div>
+  <div class="folio" style="left: 90mm; right: 14mm"><span>Hemd, Krawatte, Schuhe</span><span><b>12</b></span></div>
+</section>
+
+<!-- 13 · Hochzeit planen -->
+<section class="page dark p-hz">
+  <div class="bild bleed"><img src="img/hochzeit.jpg" alt=""></div>
+  <div class="body">
+    <div class="kopf">
+      <div>
+        <div class="kicker">08 · Die Hochzeit planen</div>
+        <h2>Sie sagen Ja. <em>Wir sorgen dafür, dass alles sitzt.</em></h2>
+      </div>
+      <p>«Planen Sie 8 bis 10 Wochen vor der Hochzeit ein — besser früher.»</p>
+    </div>
+    <div class="zeitplan">
+      <div><div class="w"><small>8–10 Wochen vorher</small>Beratung</div><p>Termin im Atelier: Stil, Stoff und Details festlegen, Masse nehmen.</p></div>
+      <div><div class="w"><small>2–3 Wochen später</small>Anprobe</div><p>Feinschliff vor Ort, bis der Anzug perfekt sitzt.</p></div>
+      <div><div class="w"><small>Nach 20 Arbeitstagen</small>Abholbereit</div><p>Der Anzug ist in der Regel nach 20 Arbeitstagen fertig.</p></div>
+      <div><div class="w"><small>Vor dem Fest</small>Feinabstimmung</div><p>Hemd, Krawatte oder Fliege, Einstecktuch, Manschettenknöpfe.</p></div>
+    </div>
+    <div class="tipps">
+      <p><b>Trauzeugen, Väter, Gäste.</b> Wir statten auch sie aus — stilvoll abgestimmt, ohne den Bräutigam zu überstrahlen. Ein gemeinsamer Termin spart Zeit.</p>
+      <p><b>Über den Tag hinaus.</b> Navy, Anthrazit oder Dunkelgrün und eine separat tragbare Weste machen den Hochzeitsanzug zum Lieblingsanzug für die Jahre danach.</p>
+    </div>
+  </div>
+  <div class="folio"><span>Die Hochzeit planen</span><span><b>13</b></span></div>
+</section>
+
+<!-- 14 · Checkliste -->
+<section class="page warm p-check">
+  <div class="wrap">
+    <div>
+      <div class="chap">09</div>
+      <div class="kicker" style="margin-top: 4mm">Checkliste</div>
+      <h2>Gut vorbereitet <em>zur Beratung.</em></h2>
+      <p class="intro">Sie brauchen keine Vorkenntnisse — aber diese Punkte machen den Termin noch ergiebiger. Zum Abhaken und Mitbringen.</p>
+      <div class="cl">
+        <h3>Anlass &amp; Rahmen</h3>
+        <ul>
+          <li><span class="box"></span><span>Anlass und Datum<small>Hochzeit, Business, Gala — und bis wann der Anzug fertig sein soll</small></span></li>
+          <li><span class="box"></span><span>Dresscode der Einladung<small>Black Tie, Cocktail, Festlich oder ohne Angabe</small></span></li>
+          <li><span class="box"></span><span>Wie oft werde ich ihn tragen?<small>Täglich, wöchentlich oder zu besonderen Anlässen</small></span></li>
+          <li><span class="box"></span><span>Budgetrahmen<small>Massanzug ab CHF 1’690, je nach Stoff und Design typisch bis ca. CHF 2’500</small></span></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <h3>Stil &amp; Vorlieben</h3>
+        <ul>
+          <li><span class="box"></span><span>Bilder von Looks, die Ihnen gefallen<small>Screenshots oder gespeicherte Beiträge</small></span></li>
+          <li><span class="box"></span><span>Auswahl aus dem Konfigurator als PDF<small>Revers, Knöpfe, Taschen — thesartorialist.ch/massanzug-konfigurator</small></span></li>
+          <li><span class="box"></span><span>Stoffnummern Ihrer Favoriten<small>Kollektion von Holland &amp; Sherry — wir legen die Muster bereit</small></span></li>
+        </ul>
+      </div>
+      <div class="cl">
+        <h3>Zum Termin mitbringen</h3>
+        <ul>
+          <li><span class="box"></span><span>Die Schuhe, die Sie dazu tragen möchten<small>Sie beeinflussen die Hosenlänge</small></span></li>
+          <li><span class="box"></span><span>Ein gut sitzendes Hemd<small>Für Kragen- und Ärmelproportionen</small></span></li>
+          <li><span class="box"></span><span>60 bis 90 Minuten Zeit<small>Kostenlos und unverbindlich — gerne mit Begleitung</small></span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="seite">
+      <div class="bild bleed"><img src="img/atelier.jpg" alt="" style="object-position: 38% 50%"></div>
+      <div class="cap">Im Showroom an der Kuttelgasse 7</div>
+      <div class="notiz">
+        <h3>Notizen</h3>
+        <div class="linie"></div><div class="linie"></div><div class="linie"></div><div class="linie"></div><div class="linie"></div><div class="linie"></div>
+      </div>
+      <div class="tipp"><b>Tipp</b>Im Konfigurator lässt sich Ihre Auswahl speichern und direkt mit der Terminanfrage mitschicken.</div>
+    </div>
+  </div>
+  <div class="folio"><span>Checkliste</span><span><b>14</b></span></div>
+</section>
+
+<!-- 15 · Beratung im Atelier -->
+<section class="page p-ber">
+  <div class="bild bleed"><img src="img/anprobe.jpg" alt=""></div>
+  <div class="wrap">
+    <div class="kopf">
+      <div class="chap">10</div>
+      <div>
+        <div class="kicker">Die Beratung im Atelier</div>
+        <h2>In vier Schritten <em>zu Ihrem Anzug.</em></h2>
+      </div>
+    </div>
+    <div class="schritte">
+      <div class="schritt"><div class="n">01</div><h3>Beratung</h3><p>Ein persönliches Gespräch über Wünsche, Anlass, Stil und Körperform, danach Stoffauswahl und Schnittberatung. Kein Druck, keine Hektik.</p><div class="meta">60–90 Min. · kostenlos</div></div>
+      <div class="schritt"><div class="n">02</div><h3>Masse</h3><p>Präzises Massnehmen mit über 30 Parametern. Dazu Revers, Taschen, Knöpfe, Futter und Initialen — wir holen Sie ab, wo Sie sind.</p><div class="meta">Über 30 Messparameter</div></div>
+      <div class="schritt"><div class="n">03</div><h3>Anprobe</h3><p>Zwei bis drei Wochen später die Anprobe mit Feinschliff vor Ort, bis der Anzug perfekt sitzt.</p><div class="meta">Im Atelier</div></div>
+      <div class="schritt"><div class="n">04</div><h3>Abholung</h3><p>In der Regel nach 20 Arbeitstagen abholbereit. Auf Wunsch beraten wir Sie auch im Büro oder zu Hause.</p><div class="meta">In 20 Arbeitstagen</div></div>
+    </div>
+    <p class="ber-quote">«Keine Hektik, kein Druck — <span>nur ehrliche Beratung mit Substanz.</span>»</p>
+  </div>
+  <div class="fakten">
+    <div class="grid">
+      <div class="f"><div class="num"><small>Massanzug ab</small>CHF 1’690</div><div class="lbl">Full Canvas, 100&nbsp;% Made in Italy</div></div>
+      <div class="f"><div class="num"><small>Arbeitstage</small>20</div><div class="lbl">bis abholbereit</div></div>
+      <div class="f"><div class="num"><small>Anzugstoffe</small>1’000+</div><div class="lbl">dazu über 400 Hemdenstoffe</div></div>
+      <div class="f"><div class="num"><small>Messparameter</small>30+</div><div class="lbl">für eine perfekte Passform</div></div>
+    </div>
+    <p class="note">Alle Anzüge in Full-Canvas-Verarbeitung: die Einlage ist vernäht statt geklebt. Persönliche Beratung durch den Gründer. Zahlung auf Raten mit 0&nbsp;% Zinsen via HeidiPay.</p>
+  </div>
+</section>
+
+<!-- 16 · Kontakt -->
+<section class="page dark p-kontakt">
+  <div class="wrap">
+    <img class="logo" src="img/logo-weiss.png" alt="The Sartorialist Zürich">
+    <div class="kicker" style="margin-top: 14mm">Ihr nächster Schritt</div>
+    <h2>Wir freuen uns <em>auf Ihren Besuch.</em></h2>
+    <p class="lead">Bringen Sie diesen Ratgeber, Ihre Fragen und Ihren Anlass mit — bei einem Espresso im Showroom finden wir gemeinsam den passenden Anzug.</p>
+    <div class="qrblock">
+      <div class="qr"><img src="img/qr-termin.svg" alt="QR-Code Termin buchen"></div>
+      <div>
+        <h3>Termin buchen</h3>
+        <p>Code scannen und Wunschtermin für Ihre persönliche Beratung anfragen — kostenlos und unverbindlich.</p>
+        <div class="u">thesartorialist.ch/termin</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="blk">
+        <h3>Showroom</h3>
+        <p class="big">Kuttelgasse 7<br>8001 Zürich</p>
+        <p style="margin-top: 3mm">Telefon +41 43 243 02 77<br>Mobile &amp; WhatsApp +41 76 488 06 30<br>store@thesartorialist.ch</p>
+      </div>
+      <div class="blk">
+        <h3>Öffnungszeiten</h3>
+        <table>
+          <tr><td>Montag – Freitag</td><td>10:00 – 19:00</td></tr>
+          <tr><td>Samstag</td><td>10:00 – 17:00</td></tr>
+          <tr><td>Termin</td><td>nach Vereinbarung</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <p class="closing">«Mode ist vergänglich. <span>Stil ist für die Ewigkeit.</span>»</p>
+  <div class="legal"><span>Swiss Art Partner AG</span><span>thesartorialist.ch</span></div>
+</section>
+
+</body>
+</html>

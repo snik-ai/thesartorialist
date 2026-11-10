@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import CtaBand from '@/components/CtaBand';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 import { JsonLd } from '@/components/JsonLd';
 import GlossarSuche from '@/components/glossar/GlossarSuche';
 import { GLOSSAR, GRUPPEN, buchstabe } from '@/lib/glossar';
@@ -71,6 +72,7 @@ export default function GlossarPage() {
         </div>
       </section>
 
+      <RatgeberBlock lang="de" />
       <CtaBand lang="de" title="Sie wissen jetzt, wie es heisst — wir zeigen Ihnen, wie es sitzt." />
       <JsonLd
         data={{

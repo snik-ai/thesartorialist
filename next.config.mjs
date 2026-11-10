@@ -125,6 +125,14 @@ const nextConfig = {
         source: '/media/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
+      {
+        // Gratis-Ratgeber (Lead-Magnet): nicht in Suchergebnissen, damit der Weg über das Formular führt
+        source: '/ratgeber/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+          { key: 'Cache-Control', value: 'public, max-age=3600, must-revalidate' },
+        ],
+      },
     ];
   },
 };

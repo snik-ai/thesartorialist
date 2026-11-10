@@ -35,6 +35,7 @@ export default async function KontaktePage({ searchParams }: { searchParams: Pro
         firma: k.firma,
         brandDomain: k.brandDomain,
         einwilligung: k.einwilligungWhatsapp,
+        ratgeber: sql<boolean>`exists(select 1 from aktivitaet ra where ra.kontakt_id = ${k.id} and ra.daten->>'art' = 'ratgeber')`,
         aktualisiertAm: k.aktualisiertAm,
         termine: sql<number>`(select count(*)::int from termin t where t.kontakt_id = ${k.id})`,
         letzte: sql<Date | null>`(select max(a.erstellt_am) from aktivitaet a where a.kontakt_id = ${k.id})`.mapWith((v) => (v ? new Date(v) : null)),
@@ -93,6 +94,7 @@ export default async function KontaktePage({ searchParams }: { searchParams: Pro
                   <span className="zahl">
                     {r.termine} {r.termine === 1 ? 'Anfrage' : 'Anfragen'}
                     {r.einwilligung ? ' · WA/SMS ✓' : ''}
+                    {r.ratgeber ? ' · Ratgeber' : ''}
                   </span>
                   <time>{relativ(r.letzte ?? r.aktualisiertAm)}</time>
                 </span>

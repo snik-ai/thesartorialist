@@ -19,6 +19,8 @@ import { pfad } from '@/lib/i18n/routen';
 import type { Sprache } from '@/lib/i18n/sprachen';
 import type { Woerterbuch } from '@/lib/i18n/de';
 import type { KonfigUebersetzung } from '@/lib/i18n/de/konfigDaten';
+import RatgeberKnopf, { RatgeberIcon } from '@/components/ratgeber/RatgeberKnopf';
+import { useSprache } from '@/components/i18n/SprachKontext';
 
 export type KonfigTexte = { ui: Woerterbuch['konfigurator']['ui']; pdf: Woerterbuch['konfigurator']['pdf'] };
 type UiTexte = KonfigTexte['ui'];
@@ -53,6 +55,7 @@ export default function Konfigurator({
   uebersetzung?: KonfigUebersetzung;
 }) {
   const ui = t.ui;
+  const ratgeberText = useSprache().t.ratgeber.knopf;
   const kats = useMemo(() => uebersetzeKatalog(KONFIG_KATEGORIEN, uebersetzung), [uebersetzung]);
   const { auswahl, waehle: setze, entferne: weg, reset } = useAuswahl();
   const [aktiv, setAktiv] = useState(KONFIG_KATEGORIEN[0].id);
@@ -412,6 +415,9 @@ export default function Konfigurator({
                   </svg>
                   {ui.pdfKnopf}
                 </button>
+                <RatgeberKnopf className="rg-knopf" track="ratgeber-konfigurator">
+                  <RatgeberIcon /> {ratgeberText}
+                </RatgeberKnopf>
                 <span className="konf-status" aria-live="polite">
                   {status}
                 </span>

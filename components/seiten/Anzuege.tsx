@@ -7,6 +7,7 @@ import { woerterbuch } from '@/lib/i18n';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 export function meta(lang: Sprache): Metadata {
   const t = woerterbuch(lang).anzuege.meta;
@@ -53,6 +54,7 @@ export default function Anzuege({ lang }: { lang: Sprache }) {
         </div>
       </section>
 
+      <RatgeberBlock lang={lang} />
       <CtaBand lang={lang} />
       <JsonLd data={serviceSchema({ name: t.schema.name, description: t.schema.beschreibung, url, lang })} />
     </>

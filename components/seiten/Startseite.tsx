@@ -13,6 +13,7 @@ import { konfigKategorienFuer, markenFuer, markenPfad } from '@/lib/i18n/inhalte
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 export function meta(lang: Sprache): Metadata {
   const t = woerterbuch(lang).start.meta;
@@ -175,8 +176,11 @@ export default function Startseite({ lang }: { lang: Sprache }) {
         </div>
       </section>
 
+      {/* Gratis-Ratgeber (Lead-Magnet) — bewusst weit unten, nicht neben dem Hero */}
+      <RatgeberBlock lang={lang} />
+
       {/* Brands */}
-      <section className="section section--warm">
+      <section className="section">
         <div className="container">
           <div className="section-head">
             <span className="eyebrow">{t.brands.eyebrow}</span>

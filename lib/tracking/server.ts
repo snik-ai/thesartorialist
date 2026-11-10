@@ -20,6 +20,7 @@ export const TYPEN = [
   'anfrage_termin',
   'anfrage_rueckruf',
   'anfrage_konfig',
+  'anfrage_ratgeber',
 ] as const;
 export type EreignisTyp = (typeof TYPEN)[number];
 

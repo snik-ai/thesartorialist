@@ -11,6 +11,8 @@ import { pfad } from '@/lib/i18n/routen';
 import { fmt } from '@/lib/i18n/fmt';
 import { useSprache, type ClientTexte } from './i18n/SprachKontext';
 import { melde } from '@/lib/tracking/melden';
+import RatgeberKnopf from './ratgeber/RatgeberKnopf';
+import { RATGEBER, RATGEBER_EVENT } from '@/lib/ratgeber';
 
 const ZEITEN_DE = ['Vormittag', 'Mittag', 'Nachmittag', 'Abend'];
 // Nur zum Lesen der Zürcher Uhrzeit (Intl de-CH), nicht zur Anzeige
@@ -104,6 +106,12 @@ export default function KontaktFab() {
     };
     window.addEventListener('ts-rueckruf', auf);
     return () => window.removeEventListener('ts-rueckruf', auf);
+  }, []);
+  // Ratgeber-Fenster öffnet sich → Panel schliessen
+  useEffect(() => {
+    const zu = () => setOpen(false);
+    window.addEventListener(RATGEBER_EVENT, zu);
+    return () => window.removeEventListener(RATGEBER_EVENT, zu);
   }, []);
   useEffect(() => {
     if (!open) return;
@@ -227,6 +235,17 @@ export default function KontaktFab() {
               </button>
             </div>
           </form>
+        )}
+
+        {!rueckruf && (
+          <RatgeberKnopf className="kfab-ratgeber" track="ratgeber-kontaktknopf" tabIndex={open ? 0 : -1}>
+            <img src={RATGEBER.cover} alt="" width={34} height={48} loading="lazy" decoding="async" />
+            <span>
+              <strong>{alle.ratgeber.fabTitel}</strong>
+              <small>{alle.ratgeber.fabText}</small>
+            </span>
+            <em aria-hidden="true">→</em>
+          </RatgeberKnopf>
         )}
 
         <div className="kfab-info">

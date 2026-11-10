@@ -10,6 +10,7 @@ import CartProvider from '@/components/shop/CartProvider';
 import CartDrawer from '@/components/shop/CartDrawer';
 import StudioFab from '@/components/konfigurator/StudioFab';
 import KontaktFab from '@/components/KontaktFab';
+import RatgeberFenster from '@/components/ratgeber/RatgeberFenster';
 import SprachKontext from '@/components/i18n/SprachKontext';
 import { TRACKING_SKRIPT } from '@/lib/tracking/skript';
 import { JsonLd, organizationSchema, websiteSchema } from '@/components/JsonLd';
@@ -65,6 +66,7 @@ export default function SprachRahmen({ lang, children }: { lang: Sprache; childr
             <CartDrawer />
             <StudioFab />
             <KontaktFab />
+            <RatgeberFenster />
           </CartProvider>
         </SprachKontext>
         <Reveal />

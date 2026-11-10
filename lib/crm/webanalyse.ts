@@ -76,6 +76,7 @@ export const KONTAKT_TYP: Record<string, KontaktKey> = {
   anfrage_termin: 'termin',
   anfrage_rueckruf: 'rueckruf',
   anfrage_konfig: 'konfig',
+  anfrage_ratgeber: 'ratgeber',
 };
 const KONV = sql.raw(`(${Object.keys(KONTAKT_TYP).map((t) => `'${t}'`).join(',')})`);
 
@@ -95,6 +96,7 @@ export const EREIGNIS_LABEL: Record<string, string> = {
   anfrage_termin: 'Terminanfrage gesendet',
   anfrage_rueckruf: 'Rückrufbitte gesendet',
   anfrage_konfig: 'Anfrage mit Konfiguration',
+  anfrage_ratgeber: 'Ratgeber angefordert',
 };
 
 /** Seiten, auf denen jemand Termin, Kontakt, Konfiguration oder Kauf sucht — in allen Sprachen. */
@@ -244,7 +246,7 @@ export type Uebersicht = {
   verweildauer: { label: string; sitzungen: number }[];
   aktionen: { typ: string; label: string; anzahl: number; sitzungen: number; kontakt: boolean }[];
   ziele: { typ: string; label: string; ziel: string; anzahl: number }[];
-  backend: { termin: number; rueckruf: number; konfig: number };
+  backend: { termin: number; rueckruf: number; konfig: number; ratgeber: number };
 };
 
 const GERAET_LABEL: Record<string, string> = { mobil: 'Smartphone', tablet: 'Tablet', desktop: 'Computer' };
@@ -299,13 +301,20 @@ async function zeilen<T = Record<string, unknown>>(tx: Tx, q: SQL): Promise<T[]>
 
 /** Website-Anfragen aus dem Backend (ohne im Atelier eingetragene Termine), je Eimer. */
 function backendSql(von: SQL, bis: SQL, eimer: SQL) {
-  return sql`select ${eimer} as schluessel,
-      count(*) filter (where art = 'rueckruf')::int as rueckruf,
-      count(*) filter (where art = 'termin' and jsonb_array_length(stil) = 0)::int as termin,
-      count(*) filter (where art = 'termin' and jsonb_array_length(stil) > 0)::int as konfig
-    from termin where erstellt_am >= ${von} and erstellt_am < ${bis}
-      and coalesce(quelle, '') <> 'atelier' and auftrag_id is null
-    group by 1`;
+  // Ratgeber-Leads legen keinen Termin an: sie stehen als Aktivität «formular» mit daten.art = 'ratgeber' im Verlauf.
+  return sql`select schluessel, sum(rueckruf)::int as rueckruf, sum(termin)::int as termin, sum(konfig)::int as konfig, sum(ratgeber)::int as ratgeber from (
+      select ${eimer} as schluessel,
+        (art = 'rueckruf')::int as rueckruf,
+        (art = 'termin' and jsonb_array_length(stil) = 0)::int as termin,
+        (art = 'termin' and jsonb_array_length(stil) > 0)::int as konfig,
+        0 as ratgeber
+      from termin where erstellt_am >= ${von} and erstellt_am < ${bis}
+        and coalesce(quelle, '') <> 'atelier' and auftrag_id is null
+      union all
+      select ${eimer} as schluessel, 0, 0, 0, 1
+      from aktivitaet where erstellt_am >= ${von} and erstellt_am < ${bis}
+        and kanal = 'formular' and daten->>'art' = 'ratgeber'
+    ) x group by 1`;
 }
 
 async function kennzahlen(tx: Tx, f: 'w' | 'v', von: SQL, bis: SQL): Promise<Kennzahlen> {
@@ -329,7 +338,7 @@ async function kennzahlen(tx: Tx, f: 'w' | 'v', von: SQL, bis: SQL): Promise<Ken
     absprungrate: anteil(sitzungen - n(k?.engagiert), sitzungen),
     mitKontakt: n(k?.mit_kontakt),
     conversionRate: anteil(n(k?.mit_kontakt), sitzungen),
-    kontakte: { tel: t('click_tel'), wa: t('click_whatsapp'), mail: t('click_mail'), termin: n(b?.termin), rueckruf: n(b?.rueckruf), konfig: n(b?.konfig) },
+    kontakte: { tel: t('click_tel'), wa: t('click_whatsapp'), mail: t('click_mail'), termin: n(b?.termin), rueckruf: n(b?.rueckruf), konfig: n(b?.konfig), ratgeber: n(b?.ratgeber) },
     route: t('click_route'),
   };
 }
@@ -367,6 +376,7 @@ async function verlauf(tx: Tx, f: 'w' | 'v', vonTag: string, bisTag: string, auf
       termin: n(b?.termin),
       rueckruf: n(b?.rueckruf),
       konfig: n(b?.konfig),
+      ratgeber: n(b?.ratgeber),
     };
   });
 }
@@ -528,7 +538,7 @@ export async function uebersicht(z: Zeitraum): Promise<Uebersicht> {
       verweildauer,
       aktionen,
       ziele,
-      backend: { termin: jetzt.kontakte.termin, rueckruf: jetzt.kontakte.rueckruf, konfig: jetzt.kontakte.konfig },
+      backend: { termin: jetzt.kontakte.termin, rueckruf: jetzt.kontakte.rueckruf, konfig: jetzt.kontakte.konfig, ratgeber: jetzt.kontakte.ratgeber },
     };
   });
 }

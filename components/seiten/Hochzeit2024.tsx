@@ -7,6 +7,7 @@ import { woerterbuch } from '@/lib/i18n';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 export function meta(lang: Sprache): Metadata {
   const t = woerterbuch(lang).hochzeit2024.meta;
@@ -73,6 +74,7 @@ export default function Hochzeit2024({ lang }: { lang: Sprache }) {
         </div>
       </section>
 
+      <RatgeberBlock lang={lang} hell />
       <CtaBand lang={lang} title={t.cta.titel} text={t.cta.text} />
       <JsonLd data={serviceSchema({ name: t.schema.name, description: t.schema.beschreibung, url, lang })} />
     </>

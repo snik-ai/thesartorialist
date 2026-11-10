@@ -12,6 +12,7 @@ import { farbeFuer, farbenFuer, farbPfad } from '@/lib/i18n/inhalte';
 import { pfad, type SeitenKey } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 export function meta(lang: Sprache, slug: string): Metadata {
   const color = farbeFuer(lang, slug);
@@ -94,6 +95,7 @@ export default async function Farbe({ lang, slug }: { lang: Sprache; slug: strin
         </div>
       </section>
 
+      <RatgeberBlock lang={lang} hell />
       <CtaBand lang={lang} title={fmt(t.ctaTitel, { name: color.name })} text={t.ctaText} />
       <JsonLd
         data={serviceSchema({

@@ -139,6 +139,8 @@
 .a-pill.bestaetigt { background: var(--a-ok-soft); color: var(--a-ok); }
 .a-pill.abgesagt { background: var(--a-bad-soft); color: var(--a-bad); }
 .a-pill.erledigt { background: #efede8; color: var(--a-muted); }
+.a-pill.ratgeber { background: var(--a-gold-soft); color: #8a6a35; }
+.a-bkarte-info .a-ratgeber { color: #8a6a35; font-weight: 600; }
 .a-pill.ohne::before { display: none; }
 
 /* Chips (Filter, Zeitraum, Slots) */
