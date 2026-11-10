@@ -4,7 +4,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 const COOKIES = ['__Host-ts_admin', 'ts_admin'];
-const OFFEN = ['/admin/login/', '/admin/login', '/admin/sw.js', '/admin/offline.html', '/admin/manifest.webmanifest', '/admin/badge-96.png'];
+const OFFEN = ['/admin/login/', '/admin/login', '/admin/sw.js', '/admin/offline.html', '/admin/manifest.webmanifest', '/admin/badge-96.png', '/admin/widget/', '/admin/widget'];
+// /admin/widget/ (Schreibtisch-Widget der Mac-App) enthält selbst keine Daten; die Kennzahlen kommen nur mit Sitzung.
 
 export function middleware(req: NextRequest) {
   const pfad = req.nextUrl.pathname;

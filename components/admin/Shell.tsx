@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Icon from './Icon';
 import { NeuBelegDialog, NeuBelegFab } from './NeuBeleg';
+import { macAppEinrichten } from '@/lib/admin/mac-app';
 
 import { NAV, type Eintrag, type Zaehler } from './navigation';
 
@@ -25,6 +26,14 @@ export default function Shell({ email, zaehler, children }: { email: string; zae
 
   useEffect(() => {
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/admin/sw.js', { scope: '/admin/' }).catch(() => {});
+  }, []);
+
+  // Mac-App (desktop/): Mitteilungen, Dock-Badge, Downloads, Navigation aus Menü/Widget — im Browser ohne Wirkung
+  useEffect(() => macAppEinrichten((p) => router.push(p)), [router]);
+  useEffect(() => {
+    const auf = () => setNeu(true); // Mac-App: Ablage › Neues Angebot (⌘N)
+    window.addEventListener('ts:neu-angebot', auf);
+    return () => window.removeEventListener('ts:neu-angebot', auf);
   }, []);
 
   async function abmelden() {

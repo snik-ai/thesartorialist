@@ -1,0 +1,19 @@
+{
+  "name": "thesartorialist-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The Sartorialist – Admin-Backend als Mac-App (Tauri v2, WKWebView): Menüleiste, Mitteilungen, Dock-Badge, Schreibtisch-Widget",
+  "scripts": {
+    "dev": "TS_APP_URL=${TS_APP_URL:-http://localhost:3000/admin/} tauri dev",
+    "build": "tauri build --bundles app,dmg && node scripts/ablegen.mjs",
+    "build:lokal": "TS_APP_URL=http://localhost:3000/admin/ tauri build --bundles app,dmg && node scripts/ablegen.mjs",
+    "build:universal": "tauri build --target universal-apple-darwin --bundles app,dmg && node scripts/ablegen.mjs --universal",
+    "icons": "node scripts/icons.mjs && tauri icon src-tauri/icons/app-icon-1024.png -o src-tauri/icons && node scripts/icons.mjs",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.3",
+    "sharp": "0.35.5"
+  }
+}

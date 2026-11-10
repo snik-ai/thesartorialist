@@ -1,0 +1,39 @@
+/* Schreibtisch-Widget der Mac-App (randloses, transparentes Fenster): dunkle Karte mit abgerundeten Ecken, Gold-Akzent. */
+html.wg-html, html.wg-html body, html.wg-html .adm { background: transparent !important; min-height: 0; overflow: hidden; }
+.wg {
+  position: fixed; inset: 0; display: flex; flex-direction: column; overflow: hidden;
+  background: rgba(13, 13, 13, 0.94); color: #ece9e2; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 22px;
+  -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2);
+  font-family: var(--sans); -webkit-user-select: none; user-select: none; cursor: default;
+}
+.wg-kopf { display: flex; align-items: center; gap: 12px; padding: 16px 16px 12px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+.wg-kopf img { width: 30px; height: auto; opacity: 0.95; }
+.wg-kopf div { flex: 1; min-width: 0; }
+.wg-kopf b { display: block; font-family: var(--serif); font-weight: 600; font-size: 17px; color: #fff; letter-spacing: 0.01em; line-height: 1.2; }
+.wg-kopf small { display: block; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #8f897d; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.wg-neu { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: #8f897d; transition: color 0.15s, background 0.15s; }
+.wg-neu:hover { color: #c9a063; background: rgba(255, 255, 255, 0.06); }
+.wg-neu svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.wg-liste { flex: 1; display: flex; flex-direction: column; padding: 4px 8px 8px; overflow: hidden; }
+.wg-zeile {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 10px; row-gap: 4px; text-align: left;
+  padding: 10px 10px 11px; border-radius: 12px; transition: background 0.15s; position: relative;
+}
+.wg-zeile + .wg-zeile::before { content: ''; position: absolute; left: 10px; right: 10px; top: 0; height: 1px; background: rgba(255, 255, 255, 0.06); }
+.wg-zeile:hover { background: rgba(255, 255, 255, 0.06); }
+.wg-zeile:hover::before, .wg-zeile:hover + .wg-zeile::before { opacity: 0; }
+.wg-zeile:focus-visible { outline: 2px solid rgba(201, 160, 99, 0.6); outline-offset: -2px; }
+.wg-kicker { font-size: 9.5px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: #8f897d; }
+.wg-wert { grid-row: 1; grid-column: 2; font-family: var(--sans); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1; color: #fff; font-variant-numeric: tabular-nums lining-nums; }
+.wg-zeile.warn .wg-wert { color: #c9a063; }
+.wg-detail { grid-column: 1 / -1; font-size: 12.5px; line-height: 1.4; color: #cfcac0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-variant-numeric: tabular-nums; }
+.wg-detail b { font-weight: 600; color: #fff; }
+.wg-detail em { font-style: normal; color: #e08b7e; }
+.wg-live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #5a564f; margin-right: 7px; vertical-align: 1px; }
+.wg-live.an { background: #4fb58a; animation: wg-puls 2s ease-out infinite; }
+@keyframes wg-puls { 0% { box-shadow: 0 0 0 0 rgba(79, 181, 138, 0.55); } 100% { box-shadow: 0 0 0 7px rgba(79, 181, 138, 0); } }
+
+.wg-hinweis { margin: 14px; padding: 16px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; text-align: left; display: grid; gap: 4px; font-size: 13px; color: #cfcac0; }
+.wg-hinweis b { font-family: var(--serif); font-size: 16px; color: #fff; }
+button.wg-hinweis:hover { border-color: rgba(201, 160, 99, 0.5); }

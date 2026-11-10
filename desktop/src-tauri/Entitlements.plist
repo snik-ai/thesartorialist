@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Hardened Runtime: Netzwerk für das Backend.
+       Bewusst KEINE Associated Domains (webcredentials:thesartorialist.ch): eingeschränkte Berechtigung, braucht ein
+       Apple-Developer-Team mit Provisioning-Profil; mit ad-hoc-Signatur startet die App damit gar nicht.
+       Folge: Passkey/Face ID geht in der App nicht, Anmeldung mit E-Mail-Code (docs/decisions/2026-11-10-mac-app.md). -->
+  <key>com.apple.security.network.client</key>
+  <true/>
+</dict>
+</plist>

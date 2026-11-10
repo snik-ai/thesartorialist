@@ -107,20 +107,25 @@ export async function abosVon(adminUserId: string, endpoint?: string) {
     .where(endpoint ? and(eq(schema.pushAbo.adminUserId, adminUserId), eq(schema.pushAbo.endpoint, endpoint)) : eq(schema.pushAbo.adminUserId, adminUserId));
 }
 
+/** Text der Mitteilung zu einer neuen Anfrage — gemeinsam für Web-Push und die Mac-App (/api/admin/mitteilungen). */
+export function anfrageMitteilung(a: { terminId: string; art: 'termin' | 'rueckruf'; name: string; wunsch: string; mitStil: boolean }): PushNachricht {
+  const name = a.name.trim().slice(0, 60);
+  const titel = a.art === 'termin' ? `Neue Terminanfrage${name ? ` — ${name}` : ''}` : `Neue Rückrufbitte${name ? ` — ${name}` : ''}`;
+  const text =
+    a.art === 'termin'
+      ? `${a.wunsch || 'Termin nach Absprache'}${a.mitStil ? ' · mit Stil-Auswahl' : ''}`
+      : `Zeitfenster: ${a.wunsch || 'egal'}`;
+  return { titel, text, url: `/admin/termine/${a.terminId}/`, tag: `termin-${a.terminId}` };
+}
+
 /**
  * Neue Anfrage aus dem Formular → Push an alle aktiven Admins. Wirft nie (Fehler nur im Log),
  * damit der Anfrage-Versand nie blockiert. Personendaten minimal: Name + Art.
  */
 export async function pushNeueAnfrage(a: { terminId: string; art: 'termin' | 'rueckruf'; name: string; wunsch: string; mitStil: boolean }) {
   try {
-    const name = a.name.trim().slice(0, 60);
-    const titel = a.art === 'termin' ? `Neue Terminanfrage${name ? ` — ${name}` : ''}` : `Neue Rückrufbitte${name ? ` — ${name}` : ''}`;
-    const text =
-      a.art === 'termin'
-        ? `${a.wunsch || 'Termin nach Absprache'}${a.mitStil ? ' · mit Stil-Auswahl' : ''}`
-        : `Zeitfenster: ${a.wunsch || 'egal'}`;
     const z = await Promise.race([
-      pushAnAlleAdmins({ titel, text, url: `/admin/termine/${a.terminId}/`, tag: `termin-${a.terminId}` }),
+      pushAnAlleAdmins(anfrageMitteilung(a)),
       new Promise<null>((r) => setTimeout(() => r(null), TIMEOUT_MS + 2000)),
     ]);
     if (z === null) console.warn('[push] Anfrage-Push: Zeitüberschreitung');
