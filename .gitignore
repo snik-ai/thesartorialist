@@ -29,3 +29,9 @@ Marketing/**/out/
 Marketing/**/frames-*/
 .next-dev/
 .next-dev-*/
+
+# Mac-App (desktop/): Rust-Build, erzeugte Schemas, fertige App/DMG
+/desktop/node_modules
+/desktop/src-tauri/target
+/desktop/src-tauri/gen
+/desktop/release

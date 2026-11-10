@@ -23,7 +23,8 @@ export default function LoginForm({ weiter }: { weiter: string }) {
   };
 
   useEffect(() => {
-    if (!browserSupportsWebAuthn()) return;
+    // Mac-App (desktop/, WKWebView): Passkeys gehen dort ohne Apple-Developer-Signatur nicht — nur E-Mail-Code
+    if (!browserSupportsWebAuthn() || '__TAURI__' in window) return;
     const p = plattform();
     setPk({ moeglich: true, bekannt: passkeyBekannt(), methode: p.methode });
     let aus = false;

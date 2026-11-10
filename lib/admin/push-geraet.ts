@@ -22,7 +22,8 @@ export function umgebung(): Umgebung {
     window.matchMedia?.('(display-mode: standalone)').matches ||
     window.matchMedia?.('(display-mode: fullscreen)').matches ||
     (navigator as Navigator & { standalone?: boolean }).standalone === true;
-  const kann = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  // Mac-App (desktop/, WKWebView): kein Web-Push, Mitteilungen kommen dort über lib/admin/mac-app.ts
+  const kann = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && !('__TAURI__' in window);
   return {
     kann,
     standalone,

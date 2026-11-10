@@ -1,0 +1,24 @@
+/* Mac-App (desktop/): transparente Titelleiste, Ampel-Knöpfe oben links über der dunklen Seitenleiste.
+   Greift nur mit html.mac-app (setzt die App beim Laden, siehe desktop/src-tauri/src/lib.rs) — im Browser ändert sich nichts.
+   Hausregel: Ampel-Knöpfe nie überdecken. Feste Zone oben links (40 px), Rand statt Innenabstand, damit die scrollende
+   Seitenleiste darunter verschwindet und nie unter die Knöpfe läuft. */
+html.mac-app .a-side { border-top: 40px solid #0d0d0d; padding-top: 6px; }
+html.mac-app .a-main { padding-top: 44px; }
+/* Mobile Kopfleiste (nur bei sehr schmalem Fenster; die App hat eine Mindestbreite, trotzdem abgesichert) */
+html.mac-app .a-topbar { padding-left: 84px; }
+
+/* Zugfläche zum Verschieben (Doppelklick = Zoomen). Die App legt .mac-zug-global ins <body>. */
+.mac-zug { position: fixed; top: 0; z-index: 55; -webkit-user-select: none; user-select: none; }
+.mac-zug-global { left: 0; right: 0; height: 30px; }
+/* Im Backend-Rahmen: nur über der Seitenleiste (volle 40-px-Zone), damit Knöpfe oben im Inhalt klickbar bleiben */
+html.mac-app:has(.a-shell) .mac-zug-global { right: auto; width: var(--a-side, 252px); height: 40px; }
+/* Widget-Fenster: eigenes Ziehen über data-tauri-drag-region, keine globale Zone */
+html.wg-html .mac-zug-global { display: none; }
+
+/* Anmeldung: Wortmarke/Bildtext bleiben unten; nur oben links Platz lassen */
+html.mac-app .a-login-bild { padding-top: 56px; }
+
+/* Vollbild-Ebenen (Dialoge, Neues Angebot, Bottom-Sheets; die Beleg-Schublade liegt rechts): Inhalt immer unter der 40-px-Zone */
+html.mac-app .a-ebene, html.mac-app .nb-hg { padding-top: max(8vh, 56px); }
+html.mac-app .a-sheet-hg { padding-top: 56px; }
+html.mac-app .a-sheet { max-height: calc(100dvh - 80px); }

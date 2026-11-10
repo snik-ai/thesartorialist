@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-haupt-oeffnen"
+description = "Enables the haupt_oeffnen command without any pre-configured scope."
+commands.allow = ["haupt_oeffnen"]
+
+[[permission]]
+identifier = "deny-haupt-oeffnen"
+description = "Denies the haupt_oeffnen command without any pre-configured scope."
+commands.deny = ["haupt_oeffnen"]

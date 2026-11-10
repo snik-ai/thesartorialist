@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-mitteilung-zeigen"
+description = "Enables the mitteilung_zeigen command without any pre-configured scope."
+commands.allow = ["mitteilung_zeigen"]
+
+[[permission]]
+identifier = "deny-mitteilung-zeigen"
+description = "Denies the mitteilung_zeigen command without any pre-configured scope."
+commands.deny = ["mitteilung_zeigen"]
