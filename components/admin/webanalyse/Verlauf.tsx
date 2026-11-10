@@ -49,7 +49,8 @@ function kurve(p: [number, number][]) {
 }
 
 function schoeneMax(v: number) {
-  if (v <= 4) return 4;
+  // Durch 4 teilbar, damit die Viertel-Linien ganze Zahlen tragen
+  for (const g of [4, 8, 12, 20, 40, 60, 80, 100]) if (v <= g) return g;
   const p = 10 ** Math.floor(Math.log10(v));
   for (const f of [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (f * p >= v) return f * p;
   return 10 * p;
