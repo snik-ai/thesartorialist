@@ -12,6 +12,7 @@ import { KONFIG_KATEGORIEN, type KonfigOption, type KonfigUntergruppe } from '@/
 import { aufloesen, optionText, zeigeCode, type Gewaehlt } from '@/lib/konfigurator/auswahl';
 import { setStoffe, useAuswahl, useStoffe } from '@/lib/konfigurator/useAuswahl';
 import { STOFF_LINK } from '@/lib/konfigurator/konst';
+import { melde } from '@/lib/tracking/melden';
 import { uebersetzeKatalog } from '@/lib/konfigurator/uebersetzen';
 import { fmt, mz } from '@/lib/i18n/fmt';
 import { pfad } from '@/lib/i18n/routen';
@@ -94,9 +95,15 @@ export default function Konfigurator({
   }, []);
 
 
+  const begonnen = useRef(false);
   const waehle = useCallback(
     (u: KonfigUntergruppe, o: KonfigOption) => {
       setze(u, o);
+      // Webseitenanalyse: erste Auswahl auf dieser Seite = Konfigurator begonnen
+      if (!begonnen.current) {
+        begonnen.current = true;
+        melde('konfig_start');
+      }
       setPop(o.id);
       setTimeout(() => setPop(null), 450);
       setGlow(false);
@@ -116,6 +123,7 @@ export default function Konfigurator({
   };
 
   const pdf = async () => {
+    melde('konfig_pdf');
     setStatus(ui.pdfLaeuft);
     try {
       const { stilPdf } = await import('@/lib/konfigurator/pdf');
@@ -395,7 +403,7 @@ export default function Konfigurator({
                 );
               })}
               <div className="konf-actions">
-                <Link href={`${pfad(lang, 'termin')}?stil=1`} className="btn">
+                <Link href={`${pfad(lang, 'termin')}?stil=1`} className="btn" data-track="konfig_termin">
                   {ui.terminKnopf}
                 </Link>
                 <button type="button" className="btn btn--ghost" onClick={pdf}>

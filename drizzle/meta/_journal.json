@@ -43,6 +43,13 @@
       "when": 1793964478964,
       "tag": "0005_zahlungsplan",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793964479964,
+      "tag": "0006_webseitenanalyse",
+      "breakpoints": true
     }
   ]
 }

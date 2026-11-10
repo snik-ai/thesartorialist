@@ -24,7 +24,7 @@ export const NAV: { titel: string | null; eintraege: Eintrag[] }[] = [
       { href: '/admin/massblaetter/', label: 'Massblätter', icon: 'mass' },
     ],
   },
-  { titel: 'Auswertung', eintraege: [{ href: '/admin/reichweite/', label: 'Reichweite', icon: 'chart' }] },
+  { titel: 'Auswertung', eintraege: [{ href: '/admin/reichweite/', label: 'Webseitenanalyse', icon: 'chart' }] },
   { titel: 'Konto', eintraege: [{ href: '/admin/einstellungen/', label: 'Einstellungen', icon: 'einstellungen' }] },
 ];
 

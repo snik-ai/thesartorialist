@@ -10,6 +10,7 @@ import { SITE } from '@/lib/site';
 import { pfad } from '@/lib/i18n/routen';
 import { fmt } from '@/lib/i18n/fmt';
 import { useSprache, type ClientTexte } from './i18n/SprachKontext';
+import { melde } from '@/lib/tracking/melden';
 
 const ZEITEN_DE = ['Vormittag', 'Mittag', 'Nachmittag', 'Abend'];
 // Nur zum Lesen der Zürcher Uhrzeit (Intl de-CH), nicht zur Anzeige
@@ -141,6 +142,7 @@ export default function KontaktFab() {
         }),
       });
       if (res.ok) {
+        melde('anfrage_rueckruf');
         setGesendet(true);
         return;
       }

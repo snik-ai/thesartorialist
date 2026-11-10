@@ -15,6 +15,7 @@ import type { Woerterbuch } from '@/lib/i18n/de';
 import { pfad } from '@/lib/i18n/routen';
 import { fmt, mz } from '@/lib/i18n/fmt';
 import { SPRACH_INFO, type Sprache } from '@/lib/i18n/sprachen';
+import { melde } from '@/lib/tracking/melden';
 
 export type WizardTexte = Woerterbuch['termin']['wizard'];
 
@@ -179,6 +180,8 @@ export default function BookingWizard({ lang, t }: { lang: Sprache; t: WizardTex
         }),
       });
       if (res.ok) {
+        // Webseitenanalyse: gesendete Anfrage (nur die Art, kein Inhalt)
+        melde(stilMit && stil.length > 0 ? 'anfrage_konfig' : 'anfrage_termin');
         setSent(true);
         setBusy(false);
         return;
