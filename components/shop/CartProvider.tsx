@@ -4,6 +4,7 @@
 // Abgefragt wird erst nach dem Laden, damit alle Seiten statisch (ISR) bleiben.
 import { createContext, useCallback, useContext, useEffect, useState, useTransition } from 'react';
 import { addToCart, getCart, updateLine } from '@/lib/shop/cart';
+import { melde } from '@/lib/tracking/melden';
 import type { CartData } from '@/lib/shop/cart-types';
 
 type Ctx = {
@@ -47,6 +48,7 @@ export default function CartProvider({ children }: { children: React.ReactNode }
     try {
       const next = await addToCart(variantId, qty);
       setCart(next);
+      melde('shop_warenkorb');
       document.cookie = 'ts_has_cart=1; path=/; max-age=1209600; samesite=lax';
       setOpen(true);
       return true;

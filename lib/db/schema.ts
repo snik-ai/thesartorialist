@@ -233,8 +233,10 @@ export const aktivitaet = pgTable(
 );
 
 /**
- * Cookieloses Tracking. `besucher` = sha256(IP|UA|Tag|Secret) gekürzt — wechselt täglich, IP wird nie gespeichert.
- * typ: pageview, click_tel, click_whatsapp, click_mail, click_route, cta, form_submit
+ * Cookieloses Tracking (Webseitenanalyse). `besucher` = sha256(IP|UA|Tag|Secret) gekürzt — wechselt täglich,
+ * IP wird nie gespeichert. `sitzung` bildet der Server (gleicher Tages-Besucher, max. 30 Min. Ruhe).
+ * typ: pageview, click_tel, click_whatsapp, click_mail, click_route, cta, form_submit, konfig_start, konfig_pdf,
+ * konfig_termin, shop_warenkorb, shop_checkout, anfrage_termin, anfrage_rueckruf, anfrage_konfig (lib/tracking/server.ts)
  */
 export const ereignis = pgTable(
   'ereignis',
@@ -247,12 +249,42 @@ export const ereignis = pgTable(
     utmSource: text('utm_source'),
     utmMedium: text('utm_medium'),
     utmCampaign: text('utm_campaign'),
+    utmTerm: text('utm_term'),
+    utmContent: text('utm_content'),
+    /** Google-Klickkennung (gclid/gbraid/wbraid) war in der Adresse — nur ja/nein, nie der Wert */
+    gclid: boolean('gclid').notNull().default(false),
+    /** google_ads | werbung | google_seo | suchmaschinen | ki | social | email | kampagne | verweis | direkt */
+    kanal: text('kanal'),
     geraet: text('geraet').$type<'mobil' | 'tablet' | 'desktop'>(),
+    browser: text('browser'),
+    os: text('os'),
+    /** Bildschirmklasse s/m/l/xl (Breite, nie die genaue Auflösung) */
+    bildschirm: text('bildschirm'),
+    /** ISO-Land; `land_quelle` = proxy (Kopf des Proxys) oder sprache (Region der Browsersprache, Näherung) */
+    land: text('land'),
+    landQuelle: text('land_quelle'),
+    /** Browsersprache (navigator.language) */
     sprache: text('sprache'),
+    /** Sprache der Website aus dem Pfad (de, en, fr, it, es, pt-pt, ru, sr, sq) */
+    seitenSprache: text('seiten_sprache'),
+    titel: text('titel'),
     besucher: text('besucher').notNull(),
+    sitzung: text('sitzung'),
+    /** Kennung des Seitenaufrufs (nur im Arbeitsspeicher der Seite) für das Nachtragen der Verweildauer */
+    aufruf: text('aufruf'),
+    /** Sichtbare Zeit auf der Seite in ms (max. 30 Min.) */
+    dauerMs: integer('dauer_ms'),
+    /** Letztes Lebenszeichen der Seite (Heartbeat) — für «jetzt auf der Website» */
+    zuletzt: zeit('zuletzt'),
     label: text('label'),
   },
-  (t) => [index('ereignis_zeit_idx').on(t.zeit), index('ereignis_typ_zeit_idx').on(t.typ, t.zeit)],
+  (t) => [
+    index('ereignis_zeit_idx').on(t.zeit),
+    index('ereignis_typ_zeit_idx').on(t.typ, t.zeit),
+    index('ereignis_besucher_zeit_idx').on(t.besucher, t.zeit),
+    index('ereignis_aufruf_idx').on(t.aufruf),
+    index('ereignis_zuletzt_idx').on(t.zuletzt),
+  ],
 );
 
 /* ---------- Atelier: Angebote, Aufträge, Rechnungen, Massblätter (Phase 2) ---------- */

@@ -37,13 +37,53 @@ Anfragen auf einem Dashboard. Muster und Sicherheit nach VoxCRM (Login, Passkey,
   danach vorbereitete 1:1-Nachricht für WhatsApp (`wa.me`) und SMS (`sms:`) — nur mit Einwilligung,
   sonst E-Mail/Anruf. Jede Aktion landet im Verlauf. Kontakte mit Suche, Firmenlogo (serverseitig
   geladen, SSRF-Schutz, `lib/admin/logo.ts`), Einwilligungen erfassen/widerrufen.
-- **Dashboard «Reichweite & Anfragen»:** eigenes SVG (Besucher-Fläche + Vorperiode, darunter
-  Bahnen für Anrufe/WhatsApp/E-Mail/Rückrufe/Terminanfragen), KPIs mit Vergleich, Conversion-Rate,
-  Top-Seiten, Herkunft (Referrer/UTM), Geräte, Kampagnen, Zeitraum 7/30/90 Tage.
-- **Tracking (cookielos):** Inline-Skript (`lib/tracking/skript.ts`) → `POST /api/t/` (sendBeacon):
-  pageview (inkl. Client-Navigation), click_tel/whatsapp/mail/route, cta (`data-track`), form_submit.
-  Besucher-ID = sha256(IP|UA|Tag|Secret) gekürzt, IP nie gespeichert, Referrer nur als Host, Bots
-  und angemeldete Admins verworfen, Rate-Limit. Datenschutzerklärung ergänzt. DLM-Pixel bleibt.
+- **Webseitenanalyse** (`/admin/reichweite/`, Navigation «Webseitenanalyse», seit 10.11.2026): Informationsumfang
+  wie Karo, im Atelier-Design (Tinte/Gold, eckig, Playfair + Inter mit tabular-nums). Seite
+  `app/admin/(app)/reichweite/page.tsx`, Bausteine `components/admin/webanalyse/` (Zeitraumwahl, Echtzeit, Bilanz,
+  Verlauf, Trichter, KanalFluss, KanalListe, Wochenraster, Tabellen, `webanalyse.css`), Auswertung
+  `lib/crm/webanalyse.ts`, Kontaktarten/Farben `lib/crm/bahnen.ts`.
+  - **Zeitraum** in der URL (`?zeitraum=heute|gestern|7|30|90|frei&von=JJJJ-MM-TT&bis=…`, altes `?tage=` geht weiter),
+    Schnellwahl-Chips, Blättern um die Bereichslänge, eigener Bereichs-Kalender (kein natives Datumsfeld), Vorperiode
+    gleich lang direkt davor. Einzeltag = Verlauf je Stunde; Klick auf einen Tag im Verlauf öffnet ihn stündlich.
+  - **Echtzeit** (`GET /api/admin/webanalyse/echtzeit/`, alle 30 s, nur bei sichtbarem Tab): jetzt auf der Website
+    (Zeile oder Heartbeat in den letzten 5 Min.), Aufrufe je Minute (30 Min.), Besucher/Aufrufe/Kontakte, letzte Ereignisse.
+  - **Bilanz:** Besucher → Kontakte → Conversion-Rate mit Vorperiode; je Kontaktart (Anrufe, Terminanfragen,
+    Konfigurator, Rückrufe, E-Mail, WhatsApp) Kachel mit Mini-Verlauf; Sitzungen, Seitenaufrufe, Seiten je Sitzung,
+    Ø Verweildauer, Absprungrate, engagierte Sitzungen, Routen-Klicks.
+  - **Verlauf** Besucher/Sitzungen/Aufrufe (Fläche, Vorperiode gestrichelt) + alle sechs Kontaktarten als Bahnen;
+    **Trichter** Besuche → Interaktion → Interesse (Termin-/Kontakt-/Konfigurator-/Shopseite oder Konfigurator-/
+    Shop-Aktion) → Kontakt, auch je Kanal; **Fluss** Kanal → erste Kontaktart; **Kanäle** mit Conversion-Rate;
+    **Wochenraster** Wochentag × Stunde (Besuche/Kontakte).
+  - **Details:** Seiten (Titel, Aufrufe, Besucher, Ø Zeit, Ausstiege), Geräte, Verweildauer-Verteilung,
+    Einstiegs- und Ausstiegsseiten (Absprung, Conv.-Rate, Ausstiegsquote), Herkunft (Referrer-Domain + Kanal),
+    UTM-Kampagnen inkl. term/content und Google-Klickkennung, Browser, Betriebssysteme, Länder (Näherung, siehe
+    unten), Bildschirmklassen, Sprachen der Website (9 Sprachen, aus dem Pfad), Browsersprachen, Aktionen
+    (Konfigurator, Shop, Formulare, Kontaktwege), Kontaktziele.
+  - **Begriffe:** Besucher = Tages-Prüfwerte (je Tag einmal). Sitzung = gleicher Tages-Besucher, max. 30 Min. Ruhe
+    (serverseitig gebildet). Engagiert = ≥ 2 Seiten, eine Aktion oder ≥ 10 s sichtbar; Absprung = nicht engagiert.
+    Conversion-Rate = Sitzungen mit Kontakt ÷ Sitzungen. Kanal = erster Seitenaufruf der Sitzung (Google Ads per
+    gclid/cpc, Google organisch, andere Suchmaschinen, KI-Assistenten, Social, E-Mail, Kampagne, Verweis, Direkt).
+  - **Zwei Quellen für Anfragen:** Verlauf/Bilanz zählen Termin-, Rückruf- und Konfigurator-Anfragen aus der Tabelle
+    `termin` (nur Website: `quelle <> 'atelier'`, ohne Auftrag; Konfigurator = Termin mit Stil). Trichter, Fluss und
+    Kanäle brauchen die Sitzung und nutzen die Tracking-Ereignisse `anfrage_*`.
+  - **Leistung:** eine Auswertung = eine Transaktion; das Zeitfenster wird einmal in Temp-Tabellen gelesen
+    (`w_ev`/`w_s`, Vorperiode `v_ev`/`v_s`), alle Aufteilungen lesen nur noch diese (lokal 90 Tage ≈ 0,1 s).
+  - Testdaten (nur lokal): `npx tsx scripts/webanalyse-testdaten.mts` (`--leeren` entfernt sie).
+- **Tracking (cookielos):** Inline-Skript (`lib/tracking/skript.ts`) → `POST /api/t/` (sendBeacon). Typen:
+  pageview (inkl. Client-Navigation, mit Titel), click_tel/whatsapp/mail/route (mit Ziel), cta (`data-track`),
+  form_submit, konfig_start/konfig_pdf/konfig_termin, shop_warenkorb/shop_checkout, anfrage_termin/anfrage_rueckruf/
+  anfrage_konfig (nach erfolgreichem Versand). Komponenten melden über `melde()` (`lib/tracking/melden.ts`,
+  `window.tsT`). «ende» trägt die **sichtbare Verweildauer** nach (beim Verstecken/Verlassen, vor jeder
+  Client-Navigation und alle 60 s als Heartbeat → `dauer_ms`, `zuletzt`). Die Aufruf-ID lebt nur im Arbeitsspeicher;
+  **kein Cookie, kein local-/sessionStorage**. Die **Sitzung bildet der Server** (`ereignis_besucher_zeit_idx`).
+  Server leitet ab: Kanal, Gerät, Browser, Betriebssystem (User-Agent, iPadOS per Touch), Bildschirmklasse,
+  Sprache der Website (Pfad), Browsersprache. **Land:** Proxy-Kopf (`cf-ipcountry`, `x-vercel-ip-country`,
+  `x-country-code`, `cloudfront-viewer-country`) → `land_quelle = proxy`, sonst Region der Accept-Language
+  (`de-CH` → CH) → `land_quelle = sprache` (Näherung, im Dashboard so beschriftet). Coolify/Traefik liefert keinen
+  Länderkopf, live ist es also die Näherung. Besucher-ID = sha256(IP|UA|Tag|Secret) gekürzt, IP nie gespeichert,
+  Referrer nur als Host, Pfade dekodiert, Bots (inkl. KI-Crawler, Headless), angemeldete Admins und
+  DNT/Global-Privacy-Control verworfen, Rate-Limit. Migration `drizzle/0006_webseitenanalyse.sql` (idempotent,
+  füllt Sitzung/Kanal/Sprache für alte Zeilen grob nach). Datenschutzerklärung (alle 9 Sprachen) nachgeführt. DLM-Pixel bleibt.
 
 ## Push-Benachrichtigungen (Admin-App)
 - **Web Push (VAPID)** mit `web-push`. Schlüssel werden beim ersten Bedarf erzeugt und in der Tabelle

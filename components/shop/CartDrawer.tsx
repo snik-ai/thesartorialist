@@ -81,7 +81,7 @@ export default function CartDrawer() {
                 <strong className="num">{chf(cart!.subtotal)}</strong>
               </div>
               <p className="cart-note">{t.hinweis}</p>
-              <a href={cart!.checkoutUrl} className="btn btn--wide" tabIndex={open ? 0 : -1}>
+              <a href={cart!.checkoutUrl} className="btn btn--wide" tabIndex={open ? 0 : -1} data-track="shop_checkout">
                 {t.kasse}
               </a>
               <button type="button" className="text-link cart-continue" onClick={() => setOpen(false)} tabIndex={open ? 0 : -1}>
