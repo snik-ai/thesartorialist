@@ -7,7 +7,7 @@ import Icon from './Icon';
 import DatumPicker from './DatumPicker';
 import { MeldungZeile, useAktion } from './useAktion';
 import { chf, rpAusText, rpZuText } from '@/lib/crm/geld';
-import { PLAN_GANZ, RATE_STATUS, planPruefen, rate as neueRate, vorlagen, type RateStatus } from '@/lib/crm/zahlungsplan';
+import { PLAN_GANZ, RATE_STATUS, planPruefen, rate as neueRate, rateTeilen, restVerteilen, vorlagen, type RateStatus } from '@/lib/crm/zahlungsplan';
 import type { Zahlungsplan as Plan, ZahlungsplanRate } from '@/lib/db/schema';
 import './zahlung.css';
 
@@ -16,10 +16,10 @@ export type RateInfo = { rechnungId: string; nummer: string | null; status: Rate
 const PILL: Record<RateStatus, string> = { geplant: 're-entwurf', entwurf: 're-entwurf', verschickt: 're-offen', teilbezahlt: 're-teilbezahlt', bezahlt: 're-bezahlt', ueberfaellig: 're-ueberfaellig' };
 const MAHN = ['', 'Erinnerung', '1. Mahnung', '2. Mahnung'];
 
-export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlungProzent, bezahltRp, storniert }: { auftragId: string; totalRp: number; plan: Plan | null; raten: Record<string, RateInfo>; anzahlungProzent: number; bezahltRp: number; storniert?: boolean }) {
+export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlungProzent, bezahltRp, storniert, standard, bankOk = true }: { auftragId: string; totalRp: number; plan: Plan | null; raten: Record<string, RateInfo>; anzahlungProzent: number; bezahltRp: number; storniert?: boolean; /** Vorschlag aus den Einstellungen, solange kein Plan gespeichert ist */ standard?: Plan | null; bankOk?: boolean }) {
   const router = useRouter();
   const { laedt, meldung, senden } = useAktion();
-  const gespeichert = plan ?? PLAN_GANZ();
+  const gespeichert = plan ?? standard ?? PLAN_GANZ();
   const [p, setP] = useState<Plan>(gespeichert);
   const [texte, setTexte] = useState<Record<string, string>>({});
   const geaendert = JSON.stringify(p) !== JSON.stringify(gespeichert) || !plan;
@@ -34,6 +34,16 @@ export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlun
   };
   const wertText = (r: ZahlungsplanRate) => texte[r.id] ?? (r.art === 'prozent' ? String(r.wert).replace('.', ',') : rpZuText(r.wert));
   const fortschritt = totalRp > 0 ? Math.min(100, (bezahltRp / totalRp) * 100) : 0;
+  const gesperrteIds = new Set(p.raten.filter(gesperrt).map((r) => r.id));
+  const offeneRaten = p.raten.filter((r) => !gesperrteIds.has(r.id)).length;
+  const verteilen = () => {
+    setTexte({});
+    setP(restVerteilen(p, totalRp, gesperrteIds));
+  };
+  const teilen = (id: string) => {
+    setTexte({});
+    setP(rateTeilen(p, id));
+  };
 
   async function speichern() {
     const r = await senden<{ plan: Plan }>(`/api/admin/auftraege/${auftragId}/`, { aktion: 'zahlungsplan', plan: p });
@@ -43,12 +53,18 @@ export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlun
     }
   }
   async function rechnung(rateId: string) {
+    if (geaendert) {
+      // Plan noch nicht gespeichert (z. B. erster Plan): erst speichern, dann die Rechnung zur Rate
+      const g = await senden<{ plan: Plan }>(`/api/admin/auftraege/${auftragId}/`, { aktion: 'zahlungsplan', plan: p }, 'POST', { ohneRefresh: true });
+      if (!g?.plan) return;
+      rateId = g.plan.raten[p.raten.findIndex((x) => x.id === rateId)]?.id ?? rateId;
+    }
     const r = await senden<{ id: string }>(`/api/admin/auftraege/${auftragId}/`, { aktion: 'rate-rechnung', rateId }, 'POST', { ohneRefresh: true });
     if (r) router.push(`/admin/rechnungen/${r.id}/`);
   }
 
   return (
-    <section className="a-karte zp">
+    <section className="a-karte zp" id="zahlung">
       <div className="a-karte-kopf">
         <h2>Zahlung</h2>
         <span className="a-sub zahl" style={{ margin: 0 }}>
@@ -59,6 +75,27 @@ export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlun
         <i style={{ width: `${fortschritt}%` }} />
       </div>
       <div className="a-karte-inhalt zp-inhalt">
+        {!plan && !storniert && (
+          <div className="zp-frage" role="status">
+            <Icon name="geld" />
+            <span>
+              <b>Zahlungsplan festlegen</b>
+              Wie soll verrechnet werden – ganz oder in Raten? Vorgeschlagen ist {standard ? 'der Standard aus den Einstellungen' : '«Ganz»'}; anpassen und speichern.
+            </span>
+          </div>
+        )}
+        {!bankOk && (
+          <div className="zp-frage rot" role="status">
+            <Icon name="rechnung" />
+            <span>
+              <b>Bankverbindung fehlt</b>
+              Rechnungen lassen sich als Entwurf erstellen. Der QR-Zahlteil erscheint, sobald die IBAN in den Einstellungen steht.
+            </span>
+            <a href="/admin/einstellungen/#bank" className="a-knopf linie klein">
+              Einstellungen
+            </a>
+          </div>
+        )}
         <div className="a-segment zp-modus" role="group" aria-label="Zahlungsart">
           <button type="button" aria-pressed={p.modus === 'ganz'} disabled={storniert || (irgendGesperrt && p.modus !== 'ganz')} onClick={() => modus('ganz')}>
             Ganz
@@ -100,10 +137,19 @@ export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlun
                     <b className="zp-bez-t">{r.bezeichnung}</b>
                   )}
                   <b className="zp-betrag zahl">{chf(betrag)}</b>
-                  {p.modus === 'teil' && !zu && p.raten.length > 1 && (
-                    <button type="button" className="a-x" aria-label={`Rate ${i + 1} entfernen`} onClick={() => setP({ ...p, raten: p.raten.filter((x) => x.id !== r.id) })}>
-                      <Icon name="x" />
-                    </button>
+                  {p.modus === 'teil' && !zu && (
+                    <span className="zp-knoepfe">
+                      {p.raten.length < 6 && (
+                        <button type="button" className="a-x" aria-label={`Rate ${i + 1} in zwei Raten teilen`} title="In zwei Raten teilen" onClick={() => teilen(r.id)}>
+                          <Icon name="schere" />
+                        </button>
+                      )}
+                      {p.raten.length > 1 && (
+                        <button type="button" className="a-x" aria-label={`Rate ${i + 1} entfernen`} title="Rate entfernen" onClick={() => setP({ ...p, raten: p.raten.filter((x) => x.id !== r.id) })}>
+                          <Icon name="x" />
+                        </button>
+                      )}
+                    </span>
                   )}
                 </div>
                 {p.modus === 'teil' && !zu && (
@@ -148,7 +194,7 @@ export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlun
                       <Icon name="rechnung" /> {info.nummer} öffnen
                     </a>
                   ) : (
-                    <button type="button" className="a-knopf linie klein" disabled={laedt || geaendert || !pruef.ok || storniert} title={geaendert ? 'Zuerst den Zahlungsplan speichern' : undefined} onClick={() => rechnung(r.id)}>
+                    <button type="button" className="a-knopf linie klein" disabled={laedt || (geaendert && Boolean(plan)) || !pruef.ok || storniert} title={geaendert && plan ? 'Zuerst den Zahlungsplan speichern' : !plan ? 'Speichert den Plan und erstellt die Rechnung' : undefined} onClick={() => rechnung(r.id)}>
                       <Icon name="rechnung" /> {p.raten.length === 1 ? 'Rechnung erstellen' : letzte ? 'Schlussrechnung erstellen' : 'Rechnung erstellen'}
                     </button>
                   )}
@@ -165,6 +211,11 @@ export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlun
           </button>
         )}
 
+        {p.modus === 'teil' && !pruef.ok && offeneRaten > 0 && (
+          <button type="button" className="a-knopf linie klein" style={{ alignSelf: 'flex-start' }} onClick={verteilen}>
+            <Icon name="geld" /> Rest auf {offeneRaten === 1 ? 'die offene Rate' : `die ${offeneRaten} offenen Raten`} verteilen
+          </button>
+        )}
         <div className={`zp-summe${pruef.ok ? ' ok' : ' fehlt'}`}>
           <span>
             Summe <b className="zahl">{chf(pruef.summeRp)}</b> · <span className="zahl">{String(pruef.summeProzent).replace('.', ',')} %</span>
@@ -176,7 +227,7 @@ export default function Zahlungsplan({ auftragId, totalRp, plan, raten, anzahlun
             {plan ? 'Zahlungsplan speichern' : p.modus === 'ganz' ? 'Ganz verrechnen – festlegen' : 'Zahlungsplan festlegen'}
           </button>
         )}
-        {p.modus === 'teil' && <p className="a-sub zp-text">Die letzte Rate ist die Schlussrechnung: Sie weist die bezahlten Raten aus und zieht sie ab. Verschickte Raten bleiben unverändert.</p>}
+        {p.modus === 'teil' && <p className="a-sub zp-text">Die letzte Rate ist die Schlussrechnung: Sie weist die verrechneten Raten aus und zieht sie ab. Verschickte Raten bleiben unverändert; offene Raten lassen sich jederzeit teilen, ändern oder neu verteilen.</p>}
         <MeldungZeile m={meldung} />
       </div>
     </section>

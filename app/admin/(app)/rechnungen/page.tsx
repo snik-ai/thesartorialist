@@ -10,6 +10,8 @@ import { faelligText, tagDatum } from '@/lib/zeit';
 import type { RechnungStatus } from '@/lib/db/schema';
 import { zuMahnen } from '@/lib/crm/mahnung';
 import { firma } from '@/lib/crm/firma';
+import { bankPruefen } from '@/lib/beleg/bank';
+import '@/components/admin/zahlung.css';
 import { mailBereit } from '@/lib/mail';
 import { MahnKnopf } from '@/components/admin/MahnPanel';
 import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
@@ -69,6 +71,19 @@ export default async function RechnungenPage({ searchParams }: { searchParams: P
           <NeuBelegKnopf art="rechnung" label="Neue Rechnung" />
         </div>
       </div>
+
+      {!bankPruefen(f0).ok && (
+        <div className="zp-frage rot" role="status" style={{ marginBottom: 16 }}>
+          <Icon name="rechnung" />
+          <span>
+            <b>Bankverbindung fehlt – QR-Zahlteil erscheint, sobald die IBAN in den Einstellungen steht</b>
+            {bankPruefen(f0).kontoArt ? bankPruefen(f0).fehler.join(' ') : 'Entwürfe lassen sich vorbereiten; festschreiben und versenden geht erst mit gültiger IBAN oder QR-IBAN.'}
+          </span>
+          <Link href="/admin/einstellungen/#bank" className="a-knopf linie klein">
+            IBAN eintragen
+          </Link>
+        </div>
+      )}
 
       <div className="a-vk-kpis a-karte">
         <div>

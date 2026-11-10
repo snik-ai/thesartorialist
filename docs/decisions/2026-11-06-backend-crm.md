@@ -219,3 +219,54 @@ Bytes geprüft; Standard: Wortmarke), Termin-Erinnerung.
 - Mahnwesen (Zahlungserinnerung bei überfälligen Rechnungen), Gutschriften/Teilstorno.
 - Drag & Drop im Board (heute: Knopf «weiter» bzw. Statuskette im Auftrag).
 - Rechnungen: Zahlungseingang per camt.054/Bank-Abgleich.
+
+# QR-Rechnung startklar & Zahlungsplan ab Angebot (10.11.2026)
+
+## Bankverbindung / QR-Zahlteil
+- **Prüfung** zentral in `lib/beleg/bank.ts` (Browser + Server): `ibanPruefen` (swissqrbill `isIBANValid`/`isQRIBAN`,
+  nur CH/LI, 21 Zeichen, QR-IBAN nicht im Feld IBAN und umgekehrt), `glaeubigerFehler` (Name ≤ 70, Strasse ≤ 70,
+  PLZ ≤ 16, Ort ≤ 35, Land 2 Buchstaben – SIX), `bankPruefen` (ok, Kontoart, Referenzart, Fehlerliste, Kurztext).
+  QR-IBAN hat Vorrang → **QR-Referenz** (27 Ziffern), sonst IBAN → **Creditor Reference (RF)**; Referenz aus der
+  Rechnungsnummer (`referenzAus`).
+- **Einstellungen › Firma & Dokumente › Bankverbindung & QR-Rechnung** (`#bank`): Live-Prüfung je Feld (Häkchen,
+  Fehler beim Verlassen bzw. ab 21 Zeichen, 4er-Gruppen), Hinweis zur Referenzart, Statuskarte «QR-Rechnung bereit»
+  bzw. was fehlt; neues Feld «Land». Speichern prüft serverseitig gleich (`/api/admin/firma`, Antwort mit `bank`).
+- **Ohne gültige Bankverbindung**: Entwürfe lassen sich erstellen, bearbeiten, als PDF ansehen (Zahlteil-Seite zeigt
+  «QR-Zahlteil nicht möglich»), Barverkauf im Store geht. **Festschreiben und Senden sind gesperrt** (409, Meldung
+  «Bankverbindung fehlt – …», `bankFehlt: true`). Hinweise mit Link `/admin/einstellungen/#bank` im Rechnungseditor
+  (statt «Senden» der Knopf «IBAN eintragen»), in der Rechnungsliste, auf der Übersicht und im Auftrag (Zahlung).
+- **Festschreiben setzt die Referenz neu**, falls sie fehlt oder nicht zur aktuellen Kontoart passt (Entwürfe von vor
+  dem Eintrag der IBAN). Der Zahlteil wählt das Konto passend zur gespeicherten Referenz (`qrKonto` in
+  `lib/beleg/qr.ts`), auch in der PDFKit-Notfassung (`lib/pdf/dokument.ts`), die bei ungültigen Daten das PDF ohne
+  Zahlteil statt eines Fehlers liefert. Bereits verschickte Rechnungen behalten Konto und Referenz.
+- Zahlteil nach SIX-Style-Guide nachgemessen (pdftotext -bbox): Empfangsschein 62 mm, Zahlteil ab 67 mm,
+  Angaben-Spalte ab 118 mm (vorher 123 mm – korrigiert), Höhe 105 mm, gestrichelte Trennlinien mit «Vor der Einzahlung
+  abzutrennen», leeres Betragsfeld 30×10 mm (Empfangsschein) bzw. 40×15 mm (Zahlteil).
+- Testwerte (SIX): IBAN `CH58 0079 1123 0008 8901 2`, QR-IBAN `CH44 3199 9123 0008 8901 2`.
+
+## Zahlungsplan ab Angebot
+- **Standard** in den Einstellungen (`zahlungsplanStandard`: Anzahlung X % + Rest, 50/50, 30/40/30, Ganz, Offen).
+  Neue Angebote erhalten ihn (`angebot.zahlungsplan`, Migration `0007_angebot_zahlungsplan.sql`), im Angebotseditor
+  unter «Zahlungsbedingungen» per Chip änderbar. Text je Sprache (`planBedingung` in `lib/crm/zahlungsplan.ts`) auf dem
+  Blatt, im PDF und auf der Annahmeseite (Karte «Zahlungsbedingungen»).
+- **Annahme im Atelier** fragt «Wie soll verrechnet werden?» (Ganz, Anzahlung X % + Rest mit 20/30/40/50 % oder frei,
+  50/50, 30/40/30, Frei/später), zeigt die Raten mit Beträgen und bietet **«Erste Rechnung gleich erstellen»** (Entwurf,
+  danach direkt im Rechnungseditor). API: `aktion: 'annehmen'` mit `zahlungsplan` und `ersteRechnung`.
+- **Online-Annahme** übernimmt den Plan des Angebots. Ohne Plan: Auftrag zeigt oben «Zahlungsplan festlegen» und die
+  Zahlungskarte zuerst (vorbelegt mit dem Standard), Aufgabe «Zahlungsplan festlegen (ganz oder Teilzahlung)» (wird beim
+  Speichern des Plans abgehakt), Übersicht listet die Aufträge, die Atelier-Mail nennt den Plan bzw. den Link dorthin.
+- «Rechnung erstellen» im Angebot nimmt die erste offene Rate (ohne Plan wird «Ganz» festgelegt).
+- **Nach Teilverrechnung**: verschickte Raten bleiben gesperrt; offene Raten lassen sich ändern, **teilen** (Schere) und
+  mit **«Rest verteilen»** auf den Restbetrag bringen. Wurde der Betrag einer Raten-Rechnung im Entwurf geändert,
+  übernimmt der Plan beim Festschreiben den tatsächlichen Betrag (`rateAbgleichen`). Eine verschickte Schlussrechnung
+  bleibt die letzte Rate, eine verschickte Teilrechnung nie die letzte. Die Schlussrechnung zieht alle festgeschriebenen
+  Raten ab. `GET /api/admin/auftraege/<id>/` liefert Plan + Prüfung.
+
+## Tests
+`scripts/test-qr-zahlungsplan.mjs <basis> [pdf-ordner]` (53 Prüfungen: ohne IBAN, IBAN-Prüfung, RF/QRR, Plan im
+Angebot, Online-/Atelier-Annahme, Splitten/Rest verteilen/Sperren, Schlussrechnung), `scripts/screens-qr.mjs` (Bildschirmfotos),
+`npx tsx scripts/beleg-probe.mts <ordner>` (PDFs mit SIX-Testwerten, mit/ohne IBAN, Angebot 30/40/30).
+
+## Am Donnerstag einzutragen (Einstellungen › Firma & Dokumente)
+IBAN (und, falls die Bank eine vergeben hat, QR-IBAN), Bank, rechtlicher Name = Kontoinhaber genau wie bei der Bank,
+Adresse (Strasse, PLZ, Ort, Land CH), MWST-Nummer, Standard-Zahlungsplan und Anzahlung %. Danach Statuskarte grün.

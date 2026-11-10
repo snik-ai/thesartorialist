@@ -50,6 +50,13 @@
       "when": 1793964479964,
       "tag": "0006_webseitenanalyse",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793964480964,
+      "tag": "0007_angebot_zahlungsplan",
+      "breakpoints": true
     }
   ]
 }

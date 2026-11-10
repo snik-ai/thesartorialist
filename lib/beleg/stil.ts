@@ -135,13 +135,13 @@ export const PAPIER_CSS = `
 .bl-qr-block{margin-bottom:2.5mm}
 .bl-qr-zahl{width:148mm;height:105mm;padding:5mm;display:flex;gap:5mm;font-size:10pt;line-height:11pt}
 .bl-qr-zahl .bl-qr-kopf{font-size:8pt;font-weight:700;line-height:11pt}
-.bl-qr-links{width:51mm;display:flex;flex-direction:column}
+.bl-qr-links{width:46mm;flex:none;display:flex;flex-direction:column}
 .bl-qr-rechts{flex:1;min-width:0}
 .bl-qr-bild{width:46mm;height:46mm;margin:5mm 0}
 .bl-qr-bild svg{display:block;width:46mm;height:46mm}
 .bl-qr-betrag{display:flex;gap:6mm}
 .bl-qr-feld{position:relative;margin-top:1mm}
-.bl-qr-feld.gross{width:65mm;height:25mm}.bl-qr-feld.klein{width:30mm;height:10mm}
+.bl-qr-feld.gross{width:65mm;height:25mm}.bl-qr-feld.klein{width:30mm;height:10mm}.bl-qr-feld.mittel{width:40mm;height:15mm}
 .bl-qr-feld::before,.bl-qr-feld::after,.bl-qr-feld>i::before,.bl-qr-feld>i::after{content:"";position:absolute;width:3mm;height:3mm;border:.75pt solid #000}
 .bl-qr-feld::before{top:0;left:0;border-right:0;border-bottom:0}.bl-qr-feld::after{top:0;right:0;border-left:0;border-bottom:0}
 .bl-qr-feld>i::before{bottom:0;left:0;border-right:0;border-top:0}.bl-qr-feld>i::after{bottom:0;right:0;border-left:0;border-top:0}

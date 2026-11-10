@@ -4,7 +4,8 @@ import { and, eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import { apiAdmin, fehler, jsonBody, txt, UUID } from '@/lib/admin/zugang';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
-import { auftragAbschliessenWennBezahlt, rechnungNachrechnen } from '@/lib/crm/ablauf';
+import { AblaufFehler, auftragAbschliessenWennBezahlt, festschreibReferenz, rechnungNachrechnen, referenzFuer } from '@/lib/crm/ablauf';
+import { rateAbgleichen } from '@/lib/crm/zahlungsplan-server';
 import { chf, positionenAus, summen } from '@/lib/crm/geld';
 import { firma } from '@/lib/crm/firma';
 import { RECHNUNG_ART, ZAHLUNG_ART } from '@/lib/crm/belege';
@@ -110,10 +111,22 @@ export async function POST(req: Request, { params }: P) {
       if (r.status === 'storniert') return fehler('Storniert', 409);
       if (r.status === 'entwurf') {
         if (!r.positionen.length || r.totalRp <= 0) return fehler('Die Rechnung hat keinen Betrag.');
-        const f = await firma();
-        if (!f.iban.trim() && !f.qrIban.trim()) return fehler('Bitte zuerst IBAN oder QR-IBAN unter Einstellungen › Firma erfassen (für den QR-Zahlteil).');
-        await db().update(schema.rechnung).set({ status: 'offen', aktualisiertAm: new Date() }).where(eq(schema.rechnung.id, r.id));
+        if (b.aktion === 'senden') {
+          // Vor dem Festschreiben prüfen, ob die Mail überhaupt rausgehen kann – sonst bliebe die Rechnung offen, aber unversendet
+          const [k0] = await db().select({ email: schema.kontakt.email }).from(schema.kontakt).where(eq(schema.kontakt.id, r.kontaktId)).limit(1);
+          if (!k0?.email) return fehler('Keine E-Mail-Adresse beim Kunden – «Festschreiben» wählen und das PDF selbst senden.');
+          if (!mailBereit()) return fehler('E-Mail-Versand ist nicht konfiguriert – «Festschreiben» wählen und das PDF selbst senden.', 503);
+        }
+        let referenz: string;
+        try {
+          referenz = festschreibReferenz(await firma(), r);
+        } catch (err) {
+          if (err instanceof AblaufFehler) return NextResponse.json({ fehler: err.message, bankFehlt: true }, { status: err.status });
+          throw err;
+        }
+        await db().update(schema.rechnung).set({ status: 'offen', referenz, aktualisiertAm: new Date() }).where(eq(schema.rechnung.id, r.id));
         await rechnungNachrechnen(db(), r.id);
+        if (r.auftragId) await rateAbgleichen(r.auftragId, r.id);
       }
       if (b.aktion === 'festschreiben') {
         await log(`${RECHNUNG_ART[r.art]} ${r.nummer} festgeschrieben (offen)`);
@@ -173,7 +186,11 @@ export async function POST(req: Request, { params }: P) {
       if (r.status === 'storniert' || r.status === 'bezahlt') return fehler('Nicht möglich', 409);
       if (!r.positionen.length || r.totalRp <= 0) return fehler('Die Rechnung hat keinen Betrag.');
       const art = (['bar', 'karte', 'twint', 'bank'] as ZahlungArt[]).includes(b.art as ZahlungArt) ? (b.art as ZahlungArt) : 'bar';
-      if (r.status === 'entwurf') await db().update(schema.rechnung).set({ status: 'offen', aktualisiertAm: new Date() }).where(eq(schema.rechnung.id, r.id));
+      if (r.status === 'entwurf') {
+        // Im Store bezahlt: kein QR-Zahlteil nötig, die Referenz wird trotzdem passend gesetzt, falls ein Konto da ist
+        await db().update(schema.rechnung).set({ status: 'offen', referenz: referenzFuer(await firma(), r.nummer ?? '') ?? r.referenz, aktualisiertAm: new Date() }).where(eq(schema.rechnung.id, r.id));
+        if (r.auftragId) await rateAbgleichen(r.auftragId, r.id);
+      }
       const offen = Math.max(0, r.betragRp + r.mahngebuehrenRp - r.bezahltRp);
       if (offen > 0) await db().insert(schema.zahlung).values({ rechnungId: r.id, betragRp: offen, datum: new Date(), art, adminUserId: wer });
       const neu = await rechnungNachrechnen(db(), r.id);

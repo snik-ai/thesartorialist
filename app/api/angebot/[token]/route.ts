@@ -5,6 +5,8 @@ import { db, dbBereit, schema } from '@/lib/db';
 import { clientIp } from '@/lib/admin/sicherheit';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
 import { AblaufFehler, angebotAnnehmen } from '@/lib/crm/ablauf';
+import { ratenBetraege } from '@/lib/crm/zahlungsplan';
+import { chf } from '@/lib/crm/geld';
 import { angebotGedrosselt, angebotPerToken } from '@/lib/crm/angebot-oeffentlich';
 import { basisUrl } from '@/lib/admin/belege';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
@@ -46,7 +48,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
             ),
           );
         }
-        const at = mailAngebotAngenommenAtelier({ name: t.k.name, angebotNummer: t.a.nummer ?? '', auftragNummer: r.nummer ?? '', titel: t.a.titel, totalRp: t.a.totalRp, link: `${basis}/admin/auftraege/${r.auftragId}/` });
+        const plan = r.zahlungsplan ? (r.zahlungsplan.modus === 'ganz' ? 'Ganz – eine Rechnung über alles' : r.zahlungsplan.raten.map((x, i) => `${x.bezeichnung} ${chf(ratenBetraege(r.zahlungsplan!, t.a.totalRp)[i])}`).join(' · ')) : null;
+        const at = mailAngebotAngenommenAtelier({ name: t.k.name, angebotNummer: t.a.nummer ?? '', auftragNummer: r.nummer ?? '', titel: t.a.titel, totalRp: t.a.totalRp, link: `${basis}/admin/auftraege/${r.auftragId}/${plan ? '' : '#zahlung'}`, zahlungsplan: plan });
         mails.push(sendeMail({ to: empfaenger(), subject: at.subject, text: at.text, html: at.html }));
         await Promise.allSettled(mails).then((e) => e.forEach((x) => x.status === 'rejected' && console.error('[angebot] Annahme-Mail', String(x.reason))));
       }

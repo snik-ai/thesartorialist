@@ -1,7 +1,8 @@
 // Belege als Dokument (BelegDokument) aus den Daten von Angebot, Rechnung und Mahnung – rein, im Browser (Live-Ansicht
 // im Editor, Modus «Kunde») und auf dem Server (PDF, Kundenansicht) gleich. Entspricht VoxCRM dokumentHtml()-Aufrufen
 // in offerten.ts/rechnungen.ts.
-import type { Abzug, BelegSprache, Position, RechnungArt, StilZeileDb } from '@/lib/db/schema';
+import type { Abzug, BelegSprache, Position, RechnungArt, StilZeileDb, Zahlungsplan } from '@/lib/db/schema';
+import { planBedingung } from '@/lib/crm/zahlungsplan';
 import type { Firma } from '@/lib/crm/firma';
 import { summen } from '@/lib/crm/geld';
 import { stilGruppen } from '@/lib/crm/status';
@@ -57,6 +58,8 @@ export type AngebotEingabe = {
   stilAnhang: boolean;
   angenommenAm?: D;
   angenommenName?: string | null;
+  /** Zahlungsbedingungen (null/fehlend = beim Auftrag festlegen, nur Zahlungsfrist) */
+  zahlungsplan?: Zahlungsplan | null;
 };
 
 export function angebotDokument(a: AngebotEingabe, k: KontaktKurz, f: FirmaKurz, logo: string | null): BelegDokument {
@@ -84,7 +87,7 @@ export function angebotDokument(a: AngebotEingabe, k: KontaktKurz, f: FirmaKurz,
     bezahltRp: 0,
     held: { label: T.totalChf, rp: sm.totalRp, zusatz: sm.mwstSatz > 0 ? T.inklMwst : null },
     zahlung: null,
-    info: f.anzahlungProzent > 0 ? fuell(T.bedingungAngebot, { p: f.anzahlungProzent, frist: f.zahlungsfristTage }) : null,
+    info: planBedingung(a.zahlungsplan ?? null, sm.totalRp, s, f.zahlungsfristTage),
     qr: null,
     stempel: a.status === 'angenommen' ? { text: T.angenommen, art: 'ok' } : a.status === 'storniert' ? { text: T.storniert, art: 'storno' } : null,
     unterschrift: a.status !== 'angenommen',

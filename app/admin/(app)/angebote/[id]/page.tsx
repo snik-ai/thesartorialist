@@ -75,6 +75,7 @@ export default async function AngebotDetail({ params }: { params: Promise<{ id: 
         angenommenName: a.angenommenName,
         abgelehntAm: a.abgelehntAm?.toISOString() ?? null,
         abgelehntGrund: a.abgelehntGrund,
+        zahlungsplan: a.zahlungsplan ?? null,
       }}
       kunde={{ id: k.id, name: k.name, anrede: k.anrede, firma: k.firma, strasse: k.strasse, plz: k.plz, ort: k.ort, land: k.land, email: k.email, telefon: k.telefon, whatsappOk: Boolean(k.einwilligungWhatsapp) && !k.abgemeldet }}
       firma={f}

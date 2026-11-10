@@ -7,7 +7,8 @@ import Icon from '@/components/admin/Icon';
 import { Avatar, StilAuswahl, Verlauf } from '@/components/admin/Bausteine';
 import { AuftragMassblatt, AuftragNotiz, AuftragPlanung, AuftragSchritte, AuftragTasks } from '@/components/admin/Auftrag';
 import Zahlungsplan, { type RateInfo } from '@/components/admin/Zahlungsplan';
-import { rateStatus } from '@/lib/crm/zahlungsplan';
+import { planAusVorlage, planStandardAus, rateStatus } from '@/lib/crm/zahlungsplan';
+import { bankPruefen } from '@/lib/beleg/bank';
 import { mahnungenVon } from '@/lib/crm/mahnung';
 import { AUFTRAG_LABEL, RECHNUNG_ART, RECHNUNG_STATUS, rechnungAnzeigeStatus } from '@/lib/crm/belege';
 import { chf, positionBetrag } from '@/lib/crm/geld';
@@ -88,8 +89,23 @@ export default async function AuftragSeite({ params, searchParams }: { params: P
 
       <AuftragSchritte id={au.id} status={au.status} zeiten={au.statusZeiten} liefertermin={isoVon(au.liefertermin)} emailDa={Boolean(k.email)} mailBereit={mailBereit()} offeneTasks={offeneTasks} vorwahl={schritt} />
 
+      {!au.zahlungsplan && au.status !== 'storniert' && au.status !== 'abgeschlossen' && (
+        <div className="zp-frage" role="status" style={{ marginTop: 18 }}>
+          <Icon name="geld" />
+          <span>
+            <b>Zahlungsplan festlegen</b>
+            {an ? `Angebot ${an.nummer} wurde ohne Zahlungsplan angenommen.` : 'Für diesen Auftrag ist noch kein Zahlungsplan gespeichert.'} Ganz oder Teilzahlung? Danach entstehen die Rechnungen direkt aus dem Plan.
+          </span>
+          <a href="#zahlung" className="a-knopf klein">
+            Jetzt festlegen
+          </a>
+        </div>
+      )}
+
       <div className="a-beleg" style={{ marginTop: 18 }}>
         <div className="a-beleg-haupt">
+          {/* Ohne Zahlungsplan steht die Frage ganz oben, sonst nach den Aufgaben */}
+          {!au.zahlungsplan && <Zahlungsplan auftragId={au.id} totalRp={au.totalRp} plan={null} raten={ratenInfo} anzahlungProzent={f.anzahlungProzent} bezahltRp={bezahlt} storniert={au.status === 'storniert'} standard={planAusVorlage(planStandardAus(f.zahlungsplanStandard), f.anzahlungProzent)} bankOk={bankPruefen(f).ok} />}
           <AuftragTasks
             id={au.id}
             status={au.status}
@@ -97,7 +113,7 @@ export default async function AuftragSeite({ params, searchParams }: { params: P
             tasks={tasks.map((t) => ({ id: t.id, titel: t.titel, schritt: t.schritt, faelligAm: isoVon(t.faelligAm), erledigt: Boolean(t.erledigtAm), zustaendigId: t.zustaendigId, spaet: Boolean(t.faelligAm && !t.erledigtAm && tageBis(t.faelligAm) < 0) }))}
           />
 
-          <Zahlungsplan auftragId={au.id} totalRp={au.totalRp} plan={au.zahlungsplan} raten={ratenInfo} anzahlungProzent={f.anzahlungProzent} bezahltRp={bezahlt} storniert={au.status === 'storniert'} />
+          {au.zahlungsplan && <Zahlungsplan auftragId={au.id} totalRp={au.totalRp} plan={au.zahlungsplan} raten={ratenInfo} anzahlungProzent={f.anzahlungProzent} bezahltRp={bezahlt} storniert={au.status === 'storniert'} standard={null} bankOk={bankPruefen(f).ok} />}
 
           <section className="a-karte">
             <div className="a-karte-kopf">

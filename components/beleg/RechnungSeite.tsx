@@ -9,6 +9,7 @@ import type { Abzug, BelegSprache, Position, RechnungArt } from '@/lib/db/schema
 import { rechnungDokument, type FirmaKurz } from '@/lib/beleg/dokument';
 import { blattHtml, dokumentHtml } from '@/lib/beleg/vorlage';
 import { DOK } from '@/lib/beleg/texte';
+import { bankPruefen } from '@/lib/beleg/bank';
 import { Feld, Fehlermeldung, Icon, Knopf, Panel, Pill, ToastBereich, api, geld, heuteIso, plusTage, useToast, type PillArt } from '@/components/vx/ui';
 import MahnPanel from '@/components/admin/MahnPanel';
 import { DokumentRahmen, Abschnitt, PdfVorschau, SpeicherAnzeige, type Aktion, type Modus } from './Rahmen';
@@ -183,10 +184,14 @@ function RechnungEditor({ r, kunde: kundeStart, firma, logo, texte, auftrag, zah
       }
     },
   };
-  const festschreiben: Aktion | null = editierbar ? { label: 'Festschreiben', icon: 'Lock', text: 'Als offen verbuchen, ohne E-Mail', laedt: beschaeftigt === 'fest', onClick: () => aktion({ aktion: 'festschreiben' }, 'fest') } : null;
-  const senden: Aktion | null = r.status !== 'storniert' && r.status !== 'bezahlt' ? { label: editierbar ? 'Festschreiben & senden' : 'Erneut senden', icon: 'Send', text: 'Per E-Mail mit PDF und QR-Zahlteil', onClick: async () => { await zuerstSpeichern(); setPanel('senden'); } } : null;
+  // Ohne gültige Bankverbindung kein QR-Zahlteil: Festschreiben/Senden gesperrt, Entwurf und Barverkauf gehen weiter
+  const bank = bankPruefen(firma);
+  const bankFehlt = editierbar && !bank.ok;
+  const zurBank: Aktion = { label: 'IBAN eintragen', icon: 'Landmark', text: 'Einstellungen › Bankverbindung & QR-Rechnung', onClick: () => router.push('/admin/einstellungen/#bank') };
+  const festschreiben: Aktion | null = editierbar && !bankFehlt ? { label: 'Festschreiben', icon: 'Lock', text: 'Als offen verbuchen, ohne E-Mail', laedt: beschaeftigt === 'fest', onClick: () => aktion({ aktion: 'festschreiben' }, 'fest') } : null;
+  const senden: Aktion | null = r.status !== 'storniert' && r.status !== 'bezahlt' && !bankFehlt ? { label: editierbar ? 'Festschreiben & senden' : 'Erneut senden', icon: 'Send', text: 'Per E-Mail mit PDF und QR-Zahlteil', onClick: async () => { await zuerstSpeichern(); setPanel('senden'); } } : null;
   const zahlung: Aktion | null = ['offen', 'teilbezahlt'].includes(r.status) ? { label: 'Zahlung erfassen', icon: 'Banknote', text: 'Bank, TWINT, Karte oder bar', onClick: () => setPanel('zahlung') } : null;
-  const primaer = editierbar ? senden : zahlung;
+  const primaer = editierbar ? (bankFehlt ? zurBank : senden) : zahlung;
   const mehr: Aktion[] = [
     editierbar ? festschreiben : null,
     !editierbar ? senden : null,
@@ -206,7 +211,16 @@ function RechnungEditor({ r, kunde: kundeStart, firma, logo, texte, auftrag, zah
     </div>
   );
   const weiter =
-    r.status === 'entwurf' ? (
+    bankFehlt ? (
+      <WieWeiter
+        ton="warn"
+        icon="Landmark"
+        titel={bank.kontoArt ? 'QR-Zahlteil noch nicht möglich' : 'Bankverbindung fehlt – der QR-Zahlteil erscheint, sobald die IBAN in den Einstellungen steht'}
+        text={bank.kontoArt ? `${bank.fehler.join(' ')} Der Entwurf bleibt gespeichert.` : 'Den Entwurf können Sie fertig vorbereiten; festschreiben und versenden geht, sobald die Bankverbindung eingetragen ist. Barverkauf im Store geht auch so.'}
+        haupt={zurBank}
+        optionen={ZAHLARTEN.slice(0, 3).map(([k, l, i]) => ({ label: `${l} bezahlt`, icon: i, laedt: beschaeftigt === `sofort-${k}`, onClick: () => aktion({ aktion: 'sofort-bezahlt', art: k }, `sofort-${k}`) }))}
+      />
+    ) : r.status === 'entwurf' ? (
       <WieWeiter ton="neutral" icon="PencilLine" titel="Entwurf – direkt im Blatt bearbeiten" text="Senden schreibt die Rechnung fest. Direktverkauf im Store: gleich hier als bezahlt verbuchen." haupt={senden} optionen={ZAHLARTEN.slice(0, 3).map(([k, l, i]) => ({ label: `${l} bezahlt`, icon: i, laedt: beschaeftigt === `sofort-${k}`, onClick: () => aktion({ aktion: 'sofort-bezahlt', art: k }, `sofort-${k}`) }))} />
     ) : r.status === 'bezahlt' ? (
       <WieWeiter ton="ok" icon="CircleCheck" titel={`Bezahlt${r.bezahltAm ? ` am ${tagText(r.bezahltAm)}` : ''}`} text={auftrag ? `Gehört zu Auftrag ${auftrag.nummer}.` : undefined} optionen={[pdf]} />
@@ -340,6 +354,11 @@ function RechnungEditor({ r, kunde: kundeStart, firma, logo, texte, auftrag, zah
         </Abschnitt>
       )}
       <Abschnitt titel="Versand">
+        {bankFehlt && (
+          <p className="dk-klein" style={{ marginTop: 0 }}>
+            Bankverbindung fehlt – <a href="/admin/einstellungen/#bank">IBAN in den Einstellungen eintragen</a>, dann lässt sich die Rechnung festschreiben und mit QR-Zahlteil senden.
+          </p>
+        )}
         <div className="dk-aktionen">
           {senden && (
             <Knopf art={editierbar ? 'dunkel' : 'hell'} icon="Send" onClick={senden.onClick}>

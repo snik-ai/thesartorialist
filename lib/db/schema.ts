@@ -358,6 +358,8 @@ export const angebot = pgTable(
     /** Laufende Version (wird beim Senden und mit «Version sichern» hochgezählt, Verlauf in beleg_version) */
     version: integer('version').notNull().default(1),
     angesehenAnzahl: integer('angesehen_anzahl').notNull().default(0),
+    /** Zahlungsbedingungen (Plan) des Angebots – für den Kunden sichtbar, wird bei der Annahme in den Auftrag übernommen. null = beim Auftrag festlegen */
+    zahlungsplan: jsonb('zahlungsplan').$type<Zahlungsplan | null>(),
     erstelltAm: erstellt(),
     aktualisiertAm: zeit('aktualisiert_am').notNull().defaultNow(),
   },

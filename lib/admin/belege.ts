@@ -71,6 +71,7 @@ export async function angebotPdfFuer(id: string, link?: string | null) {
       stoffe: a.stoffe,
       link: link ?? null,
       angenommen: a.angenommenAm && a.angenommenName ? { name: a.angenommenName, am: a.angenommenAm } : null,
+      bedingung: x.dok.info,
     },
     empfaengerVon(k),
     await firma(),

@@ -9,6 +9,9 @@ import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
 import { chf, chfKurz } from '@/lib/crm/geld';
 import { AUFTRAG_SCHRITTE, LEAD_PHASEN } from '@/lib/crm/belege';
 import { faelligText, tageBis, tagKurz, terminKurz, TZ } from '@/lib/zeit';
+import { firma } from '@/lib/crm/firma';
+import { bankPruefen } from '@/lib/beleg/bank';
+import '@/components/admin/zahlung.css';
 
 export const metadata: Metadata = { title: 'Übersicht' };
 export const dynamic = 'force-dynamic';
@@ -17,7 +20,7 @@ const tz = sql.raw(`'${TZ}'`);
 
 export default async function Uebersicht() {
   const s = await brauchtAdmin();
-  const [[k], termine, tasks, auftragStatus, rechnungen, lieferungen, monate, pipeline] = await Promise.all([
+  const [[k], termine, tasks, auftragStatus, rechnungen, lieferungen, monate, pipeline, ohnePlan, f] = await Promise.all([
     db().execute<{
       anfragen: number;
       angebote_n: number;
@@ -67,7 +70,15 @@ export default async function Uebersicht() {
       select k.lead_phase as phase, count(*)::int as n,
         coalesce(sum(coalesce(k.potenzial_rp, (select max(total_rp) from angebot a where a.kontakt_id = k.id and a.status in ('entwurf', 'gesendet')), 0)), 0)::int as rp
       from kontakt k where k.zusammengefuehrt_in is null and k.status = 'lead' group by 1`),
+    // Aufträge ohne Zahlungsplan und ohne Rechnung (z. B. online angenommen) – «Zahlungsplan festlegen»
+    db().execute<{ id: string; nummer: string; name: string }>(sql`
+      select a.id, a.nummer, k.name from auftrag a join kontakt k on k.id = a.kontakt_id
+      where a.zahlungsplan is null and a.status not in ('abgeschlossen', 'storniert')
+        and not exists (select 1 from rechnung r where r.auftrag_id = a.id and r.status <> 'storniert')
+      order by a.erstellt_am desc limit 8`),
+    firma(),
   ]);
+  const bank = bankPruefen(f);
 
   const schritte = AUFTRAG_SCHRITTE.filter((x) => x.key !== 'abgeschlossen');
   const maxStatus = Math.max(1, ...auftragStatus.map((a) => a.n));
@@ -134,6 +145,44 @@ export default async function Uebersicht() {
           </span>
         </div>
       </div>
+
+      {(!bank.ok || ohnePlan.length > 0) && (
+        <div style={{ display: 'grid', gap: 10, marginBottom: 18 }}>
+          {!bank.ok && (
+            <div className="zp-frage rot" role="status">
+              <Icon name="rechnung" />
+              <span>
+                <b>{bank.kontoArt ? 'QR-Rechnung noch nicht bereit' : 'Bankverbindung fehlt'}</b>
+                {bank.kontoArt ? bank.fehler.join(' ') : 'Der QR-Zahlteil erscheint, sobald die IBAN in den Einstellungen steht. Bis dahin lassen sich Rechnungen als Entwurf vorbereiten, aber nicht festschreiben oder versenden.'}
+              </span>
+              <Link href="/admin/einstellungen/#bank" className="a-knopf linie klein">
+                IBAN eintragen
+              </Link>
+            </div>
+          )}
+          {ohnePlan.length > 0 && (
+            <div className="zp-frage" role="status">
+              <Icon name="geld" />
+              <span>
+                <b>
+                  Zahlungsplan festlegen · {ohnePlan.length} Auftrag{ohnePlan.length === 1 ? '' : 'e'}
+                </b>
+                Angenommen, aber noch nicht festgelegt, wie verrechnet wird (ganz oder Teilzahlung).
+                <ul className="zp-frage-liste">
+                  {ohnePlan.map((a) => (
+                    <li key={a.id}>
+                      <Link href={`/admin/auftraege/${a.id}/#zahlung`}>
+                        <span className="zahl">{a.nummer}</span> {a.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </span>
+              <span />
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="a-dash">
         <section className="a-karte">
