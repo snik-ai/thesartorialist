@@ -2572,3 +2572,104 @@ a.kfab-info-row:hover { color: var(--ink); }
 .kfab-zeiten { display: flex; flex-wrap: wrap; gap: 0.1rem 0.9rem; }
 .kfab-zeiten .num { color: var(--ink); font-weight: 500; }
 .kfab-form, .kfab-done { padding-bottom: 0.5rem; }
+
+/* ---------- Scroll-Film «Vom Mass zum Anzug» (components/massfilm) ---------- */
+.mf {
+  --mf-gold: #c9aa6e;
+  --mf-creme: #f0e8d6;
+  position: relative;
+  height: 500vh;
+  height: 500svh;
+  background: #0c0b0a;
+  color: var(--mf-creme);
+}
+.mf-buehne {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  contain: layout paint;
+}
+.mf-leinwand { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.mf-standbild { display: none; }
+.mf-schritte { list-style: none; margin: 0; padding: 0; }
+.mf-kopf, .mf-schritt, .mf-schluss {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 58%;
+  width: min(34vw, 470px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.mf-schritt, .mf-schluss { opacity: 0; visibility: hidden; }
+.mf .eyebrow, .mf-kicker {
+  color: var(--mf-gold);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+}
+.mf-kopf .h2 { color: var(--mf-creme); font-size: clamp(2rem, 3.6vw, 3.4rem); line-height: 1.08; }
+.mf-h3, .mf-schluss-titel {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 3.4vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--mf-creme);
+  margin-bottom: 1.1rem;
+}
+.mf-schritt p, .mf-schluss-text {
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.65;
+  color: rgba(240, 232, 214, 0.74);
+  max-width: 34ch;
+}
+.mf-schluss-text { margin-bottom: 1.8rem; }
+.mf-schluss .btn { pointer-events: auto; align-self: flex-start; }
+.mf-schluss .btn:focus-visible { outline-color: var(--mf-creme); }
+
+@media (max-aspect-ratio: 21/20) {
+  .mf-kopf, .mf-schritt, .mf-schluss {
+    left: var(--pad);
+    right: var(--pad);
+    width: auto;
+    top: auto;
+    bottom: calc(5.4rem + env(safe-area-inset-bottom));
+    justify-content: flex-end;
+  }
+  .mf-kopf .h2 { font-size: clamp(1.7rem, 7vw, 2.3rem); }
+  .mf-h3, .mf-schluss-titel { font-size: clamp(1.55rem, 6.6vw, 2.2rem); margin-bottom: 0.6rem; }
+  .mf .eyebrow, .mf-kicker { margin-bottom: 0.7rem; font-size: 0.66rem; }
+  .mf-schritt p, .mf-schluss-text { font-size: 0.95rem; line-height: 1.55; }
+  .mf-schluss-text { margin-bottom: 1.2rem; }
+}
+
+/* Ruhige Fassung bei «Bewegung reduzieren»: drei Standbilder mit denselben Texten */
+@media (prefers-reduced-motion: reduce) {
+  .mf { height: auto; padding: clamp(4rem, 8vw, 7rem) var(--pad); }
+  .mf-buehne { position: static; height: auto; overflow: visible; contain: none; max-width: var(--maxw); margin: 0 auto; }
+  .mf-leinwand { display: none; }
+  .mf-kopf, .mf-schritt, .mf-schluss {
+    position: static;
+    width: auto;
+    display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    pointer-events: auto;
+  }
+  .mf-schritte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 2.5rem 0 3rem; }
+  .mf-standbild { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 32% 50%; margin-bottom: 1.4rem; background: #0c0b0a; }
+  .mf-h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
+  .mf-schritte { grid-template-columns: 1fr; }
+}

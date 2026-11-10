@@ -124,4 +124,18 @@ export const start: Woerterbuch['start'] = {
     name: 'Create your own Style! — The Sartorialist Zurique',
     beschreibung: 'Fatos por medida com elegância italiana, do atelier The Sartorialist em Zurique.',
   },
+  massfilm: {
+    eyebrow: 'Da medida ao fato',
+    titel: 'Um fato feito para uma única pessoa.',
+    schritte: [
+      { kicker: '01 · Tirar medidas', titel: 'Mais de 30 pontos de medida', text: 'Ombros, peito, cintura, mangas, comprimento da perna: medimos o seu corpo, não um tamanho de pronto-a-vestir.' },
+      { kicker: '02 · Molde e tecido', titel: 'Um molde desenhado só para si', text: 'As suas medidas dão origem ao seu molde pessoal, cortado no tecido que escolher, por exemplo da Holland & Sherry, de Savile Row.' },
+      { kicker: '03 · O seu fato', titel: 'Uma volta. O seu fato.', text: 'Full canvas, 100 % made in Italy e pronto a levantar em 20 dias úteis.' },
+    ],
+    schluss: { titel: 'Feito para si. Só para si.', text: 'Medidas e aconselhamento no atelier, Kuttelgasse 7, Zurique. A partir de CHF 1’690.', knopf: 'Marcar uma consulta' },
+    masse: { schulter: 'Ombro', brust: 'Peito', taille: 'Cintura', aermel: 'Manga', bein: 'Calça', cm: 'cm', punkte: 'Pontos de medida' },
+    teile: { vorderteil: 'Frente', rueckenteil: 'Costas', aermel: 'Manga', hose: 'Calça' },
+    stoff: 'Holland & Sherry · Savile Row',
+    bildAlt: 'Homem com fato por medida cinzento, camisa branca e gravata, em frente a uma porta de madeira',
+  },
 };
