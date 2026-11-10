@@ -7,6 +7,9 @@ import { MeldungZeile, useAktion } from './useAktion';
 import { KATEGORIEN } from '@/lib/crm/belege';
 import { neueId, rpAusText, rpZuText } from '@/lib/crm/geld';
 import type { Firma, KatalogEintrag } from '@/lib/crm/firma';
+import { bankPruefen, ibanGruppen, ibanPruefen } from '@/lib/beleg/bank';
+import { planStandardAus, planWahl } from '@/lib/crm/zahlungsplan';
+import './zahlung.css';
 
 const URL = '/api/admin/firma/';
 
@@ -42,6 +45,69 @@ function ZahlChips({ label, wert, optionen, onChange, einheit }: { label: string
   );
 }
 
+/** IBAN-Feld mit Live-Prüfung (swissqrbill): 4er-Gruppen beim Verlassen, Häkchen bei gültig, Hinweis zur Referenzart */
+function IbanFeld({ label, wert, feld, onChange, placeholder }: { label: string; wert: string; feld: 'iban' | 'qr'; onChange: (v: string) => void; placeholder: string }) {
+  const [beruehrt, setBeruehrt] = useState(false);
+  const p = ibanPruefen(wert, feld);
+  const zeigeFehler = !p.leer && p.fehler && (beruehrt || p.formatiert.replace(/\s/g, '').length >= 21);
+  return (
+    <label className="a-feld bank-feld">
+      <span>{label}</span>
+      <span className={`bank-eingabe${p.ok ? ' ok' : zeigeFehler ? ' fehler' : ''}`}>
+        <input
+          className="a-input zahl"
+          value={wert}
+          placeholder={placeholder}
+          autoCapitalize="characters"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+          inputMode="text"
+          aria-invalid={Boolean(zeigeFehler)}
+          onChange={(e) => onChange(e.target.value.toUpperCase())}
+          onBlur={() => {
+            setBeruehrt(true);
+            if (wert.trim()) onChange(ibanGruppen(wert));
+          }}
+        />
+        {p.ok && <Icon name="check" />}
+      </span>
+      {p.ok ? (
+        <small className="bank-info ok">{p.qr ? 'Gültige QR-IBAN → Rechnungen mit QR-Referenz (27 Ziffern)' : 'Gültige IBAN → Rechnungen mit Creditor Reference (RF …)'}</small>
+      ) : zeigeFehler ? (
+        <small className="bank-info fehler">{p.fehler}</small>
+      ) : (
+        <small className="bank-info">{feld === 'qr' ? 'Nur falls die Bank eine QR-IBAN vergeben hat (Institut-ID 30000–31999).' : 'Steht auf dem Kontoauszug bzw. im E-Banking (21 Zeichen, beginnt mit CH).'}</small>
+      )}
+    </label>
+  );
+}
+
+/** Zusammenfassung: Ist der QR-Zahlteil bereit? Was fehlt noch? */
+function BankStatus({ f }: { f: Firma }) {
+  const b = bankPruefen(f);
+  return (
+    <div className={`bank-status${b.ok ? ' ok' : ''}`} role="status">
+      <Icon name={b.ok ? 'check' : 'rechnung'} />
+      <div>
+        <b>{b.ok ? 'QR-Rechnung bereit' : b.kontoArt ? 'QR-Rechnung fast bereit' : 'Bankverbindung fehlt'}</b>
+        {b.ok ? (
+          <p>
+            Konto <span className="zahl">{b.konto}</span> · {b.referenzArt === 'QRR' ? 'QR-Referenz (27 Ziffern)' : 'Creditor Reference (RF)'} · Zahlungsempfänger {f.rechtsname || f.name}, {f.strasse}, {f.plz} {f.ort}
+          </p>
+        ) : (
+          <ul>
+            {b.fehler.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+        )}
+        {!b.ok && <p>Rechnungen lassen sich als Entwurf bearbeiten; festschreiben und versenden geht, sobald hier alles grün ist.</p>}
+      </div>
+    </div>
+  );
+}
+
 export function FirmaForm({ firma }: { firma: Firma }) {
   const [f, setF] = useState(firma);
   const { laedt, meldung, senden } = useAktion();
@@ -64,6 +130,7 @@ export function FirmaForm({ firma }: { firma: Firma }) {
           <Feld label="Strasse und Nr." wert={f.strasse} onChange={s('strasse')} />
           <Feld label="PLZ" wert={f.plz} onChange={s('plz')} inputMode="numeric" />
           <Feld label="Ort" wert={f.ort} onChange={s('ort')} />
+          <Feld label="Land (Ländercode)" wert={f.land} onChange={(v) => s('land')(v.toUpperCase().slice(0, 2))} maxLength={2} autoCapitalize="characters" />
           <Feld label="Telefon" wert={f.telefon} onChange={s('telefon')} type="tel" />
           <Feld label="E-Mail" wert={f.email} onChange={s('email')} type="email" autoCapitalize="none" />
           <Feld label="Website" wert={f.web} onChange={s('web')} autoCapitalize="none" />
@@ -79,13 +146,33 @@ export function FirmaForm({ firma }: { firma: Firma }) {
               <Feld label="MWST-Nummer" wert={f.mwstNr} onChange={s('mwstNr')} placeholder="CHE-123.456.789 MWST" />
             </>
           )}
-          <Feld label="IBAN" wert={f.iban} onChange={s('iban')} placeholder="CH93 0076 2011 6238 5295 7" autoCapitalize="characters" spellCheck={false} />
-          <Feld label="QR-IBAN (optional, für QR-Referenz)" wert={f.qrIban} onChange={s('qrIban')} placeholder="CH44 3199 9123 0008 8901 2" autoCapitalize="characters" spellCheck={false} />
-          <Feld label="Bank" wert={f.bank} onChange={s('bank')} />
           <ZahlChips label="Zahlungsfrist" wert={f.zahlungsfristTage} optionen={[10, 20, 30]} onChange={s('zahlungsfristTage')} einheit="Tage" />
           <ZahlChips label="Angebot gültig" wert={f.angebotGueltigTage} optionen={[14, 30, 60]} onChange={s('angebotGueltigTage')} einheit="Tage" />
           <ZahlChips label="Anzahlung (Standard)" wert={f.anzahlungProzent} optionen={[30, 50, 100]} onChange={s('anzahlungProzent')} einheit="%" />
+          <div className="a-feld">
+            <span>Zahlungsplan neuer Angebote</span>
+            <div className="a-chips zp-vorlagen" role="group" aria-label="Standard-Zahlungsplan">
+              {planWahl(f.anzahlungProzent).map((w) => (
+                <button key={w.key} type="button" className="a-chip klein" aria-pressed={planStandardAus(f.zahlungsplanStandard) === w.key} aria-current={planStandardAus(f.zahlungsplanStandard) === w.key ? 'true' : undefined} onClick={() => s('zahlungsplanStandard')(w.key)}>
+                  {w.kurz}
+                </button>
+              ))}
+            </div>
+            <small className="bank-info">{planWahl(f.anzahlungProzent).find((w) => w.key === planStandardAus(f.zahlungsplanStandard))?.label}. Steht im Angebot (PDF und Annahmeseite), lässt sich je Angebot ändern und wird bei der Annahme in den Auftrag übernommen.</small>
+          </div>
           <ZahlChips label="Produktion bis Eingang" wert={f.produktionTage} optionen={[15, 20, 25]} onChange={s('produktionTage')} einheit="Arbeitstage" />
+        </div>
+        <div className="a-einst-gruppe breit" id="bank">
+          <span className="a-kicker">Bankverbindung &amp; QR-Rechnung</span>
+          <BankStatus f={f} />
+          <div className="bank-felder">
+            <IbanFeld label="IBAN" feld="iban" wert={f.iban} onChange={s('iban')} placeholder="CH58 0079 1123 0008 8901 2" />
+            <IbanFeld label="QR-IBAN (optional)" feld="qr" wert={f.qrIban} onChange={s('qrIban')} placeholder="CH44 3199 9123 0008 8901 2" />
+            <Feld label="Bank" wert={f.bank} onChange={s('bank')} placeholder="z. B. Zürcher Kantonalbank" />
+          </div>
+          <p className="a-sub" style={{ fontSize: 12.5 }}>
+            Zahlungsempfänger auf dem QR-Zahlteil ist der rechtliche Name mit der Adresse oben. Ist eine QR-IBAN eingetragen, hat sie Vorrang (QR-Referenz); sonst gilt die IBAN mit Creditor Reference. Bereits verschickte Rechnungen behalten ihre Referenz.
+          </p>
         </div>
         <div className="a-einst-gruppe breit">
           <span className="a-kicker">Standardtexte</span>

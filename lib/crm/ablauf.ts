@@ -2,10 +2,11 @@
 // Anfrage → Lead → Beratungstermin → Angebot (Online-Annahme) → Kunde + Auftrag (Planung, Tasks) → Rechnung(en) → Zahlung → abgeschlossen.
 import { createHash } from 'node:crypto';
 import { and, asc, desc, eq, inArray, isNotNull, ne, sql } from 'drizzle-orm';
-import { calculateQRReferenceChecksum, calculateSCORReferenceChecksum } from 'swissqrbill/utils';
 import { db, schema } from '@/lib/db';
-import type { Abzug, AuftragStatus, BelegSprache, LeadPhase, Position, RechnungArt } from '@/lib/db/schema';
+import type { Abzug, AuftragStatus, BelegSprache, LeadPhase, Position, RechnungArt, Zahlungsplan } from '@/lib/db/schema';
+import { planAusVorlage, planPruefen, planStandardAus } from './zahlungsplan';
 import { belegSprache } from '@/lib/beleg/texte';
+import { bankPruefen, istQrReferenz, istRfReferenz, referenzAus } from '@/lib/beleg/bank';
 import { aktivitaetLoggen } from './kontakte';
 import { belegTexte, firma, mwstSatzVon, type Firma } from './firma';
 import { naechsteNummer, type Exec } from './nummern';
@@ -71,6 +72,7 @@ export async function angebotErstellen(o: { kontaktId: string; terminId?: string
         stoffe: t?.stoffe ?? [],
         mwstSatz: mwstSatzVon(f),
         gueltigBis: tageSpaeter(new Date(), f.angebotGueltigTage),
+        zahlungsplan: planAusVorlage(planStandardAus(f.zahlungsplanStandard), f.anzahlungProzent),
         erstelltVon: o.adminId,
       })
       .returning({ id: schema.angebot.id });
@@ -96,14 +98,18 @@ export class AblaufFehler extends Error {
 }
 
 /** Angebot annehmen (online über den Link oder im Atelier erfasst): Kontakt wird Kunde, Auftrag mit Planung entsteht. */
-export async function angebotAnnehmen(angebotId: string, o: { name: string; weg: 'online' | 'atelier'; adminId?: string | null }) {
+/**
+ * `zahlungsplan`: im Atelier gewählt (Dialog «Wie soll verrechnet werden?»); `undefined` = Plan aus dem Angebot übernehmen,
+ * `null` = noch offen (der Auftrag zeigt dann «Zahlungsplan festlegen»).
+ */
+export async function angebotAnnehmen(angebotId: string, o: { name: string; weg: 'online' | 'atelier'; adminId?: string | null; zahlungsplan?: Zahlungsplan | null }) {
   const f = await firma();
   return db().transaction(async (tx) => {
     const [a] = await tx.select().from(schema.angebot).where(eq(schema.angebot.id, angebotId)).for('update');
     if (!a || !a.kontaktId) throw new AblaufFehler('Angebot nicht gefunden', 404);
     if (a.status === 'angenommen') {
       const [au] = await tx.select({ id: schema.auftrag.id, nummer: schema.auftrag.nummer }).from(schema.auftrag).where(eq(schema.auftrag.angebotId, a.id)).limit(1);
-      return { auftragId: au?.id ?? null, nummer: au?.nummer ?? null, schon: true };
+      return { auftragId: au?.id ?? null, nummer: au?.nummer ?? null, schon: true, zahlungsplan: null as Zahlungsplan | null };
     }
     if (o.weg === 'online') {
       if (a.status !== 'gesendet') throw new AblaufFehler('Dieses Angebot kann nicht mehr online angenommen werden.', 409);
@@ -130,6 +136,10 @@ export async function angebotAnnehmen(angebotId: string, o: { name: string; weg:
       .where(and(eq(schema.massblatt.kontaktId, k.id), eq(schema.massblatt.aktiv, true)))
       .limit(1);
     const nummer = await naechsteNummer(tx, 'AU');
+    // Zahlungsplan: gewählt bzw. aus dem Angebot; passt er nicht (mehr) zum Total, bleibt er offen statt die Annahme zu blockieren
+    const wunschPlan = o.zahlungsplan !== undefined ? o.zahlungsplan : a.zahlungsplan;
+    if (o.zahlungsplan && !planPruefen(o.zahlungsplan, a.totalRp).ok) throw new AblaufFehler(planPruefen(o.zahlungsplan, a.totalRp).fehler ?? 'Zahlungsplan ungültig');
+    const zahlungsplan = wunschPlan && planPruefen(wunschPlan, a.totalRp).ok ? { ...wunschPlan, raten: wunschPlan.raten.map((r) => ({ ...r, rechnungId: null })) } : null;
     const [au] = await tx
       .insert(schema.auftrag)
       .values({
@@ -149,9 +159,10 @@ export async function angebotAnnehmen(angebotId: string, o: { name: string; weg:
         massblattId: mb?.id ?? null,
         zustaendigId: o.adminId ?? a.erstelltVon ?? null,
         statusZeiten: { mass: jetzt.toISOString() },
+        zahlungsplan,
       })
       .returning({ id: schema.auftrag.id });
-    const tasks = standardTasks(f, jetzt, Boolean(mb));
+    const tasks = [...(zahlungsplan ? [] : [{ titel: TASK_ZAHLUNGSPLAN, schritt: 'mass' as AuftragStatus, faelligAm: jetzt }]), ...standardTasks(f, jetzt, Boolean(mb))];
     await tx.insert(schema.auftragTask).values(tasks.map((t, i) => ({ ...t, auftragId: au.id, reihenfolge: i, zustaendigId: o.adminId ?? a.erstelltVon ?? null })));
     if (mb) await tx.update(schema.massblatt).set({ auftragId: au.id }).where(and(eq(schema.massblatt.id, mb.id), sql`${schema.massblatt.auftragId} is null`));
 
@@ -165,10 +176,21 @@ export async function angebotAnnehmen(angebotId: string, o: { name: string; weg:
       adminUserId: o.adminId ?? null,
     });
     if (wurdeKunde) await aktivitaetLoggen(tx, { kontaktId: k.id, kanal: 'system', titel: 'Vom Lead zum Kunden', angebotId: a.id, adminUserId: o.adminId ?? null });
-    await aktivitaetLoggen(tx, { kontaktId: k.id, kanal: 'system', titel: `Auftrag ${nummer} eröffnet`, text: `${tasks.length} Aufgaben geplant`, auftragId: au.id, angebotId: a.id, adminUserId: o.adminId ?? null });
-    return { auftragId: au.id, nummer, schon: false };
+    await aktivitaetLoggen(tx, {
+      kontaktId: k.id,
+      kanal: 'system',
+      titel: `Auftrag ${nummer} eröffnet`,
+      text: `${tasks.length} Aufgaben geplant · ${zahlungsplan ? (zahlungsplan.modus === 'ganz' ? 'Zahlungsplan: ganz (eine Rechnung)' : `Zahlungsplan: ${zahlungsplan.raten.length} Raten`) : 'Zahlungsplan noch festlegen'}`,
+      auftragId: au.id,
+      angebotId: a.id,
+      adminUserId: o.adminId ?? null,
+    });
+    return { auftragId: au.id, nummer, schon: false, zahlungsplan };
   });
 }
+
+/** Aufgabe, solange kein Zahlungsplan gespeichert ist (wird beim Speichern des Plans automatisch abgehakt) */
+export const TASK_ZAHLUNGSPLAN = 'Zahlungsplan festlegen (ganz oder Teilzahlung)';
 
 /** Standard-Planung eines Massauftrags (Fälligkeiten ab Auftragseingang, Produktion nach Firmeneinstellung) */
 export function standardTasks(f: Firma, start: Date, massblattDa: boolean) {
@@ -228,18 +250,29 @@ export async function auftragAbschliessenWennBezahlt(auftragId: string, adminId:
 
 /* ---------- Rechnung ---------- */
 
-/** Zahlungsreferenz: QR-Referenz (27 Ziffern) bei QR-IBAN, sonst Creditor Reference (RF…) */
+/** Zahlungsreferenz: QR-Referenz (27 Ziffern) bei gültiger QR-IBAN, sonst Creditor Reference (RF…) bei gültiger IBAN */
 export function referenzFuer(f: Firma, nummer: string): string | null {
-  const ziffern = nummer.replace(/\D/g, '');
-  if (f.qrIban.trim()) {
-    const basis = ziffern.padStart(26, '0').slice(-26);
-    return basis + calculateQRReferenceChecksum(basis);
+  const b = bankPruefen(f);
+  return b.referenzArt ? referenzAus(b.referenzArt, nummer) : null;
+}
+
+/**
+ * Vor dem Festschreiben/Senden: Ohne gültige Bankverbindung und vollständige Gläubiger-Adresse kein QR-Zahlteil →
+ * Fehler mit klarer Meldung. Liefert die Referenz passend zum aktuellen Konto (Entwürfe von vor dem Eintrag der
+ * Bankdaten haben noch keine bzw. eine unpassende Referenz).
+ */
+export function festschreibReferenz(f: Firma, r: { nummer: string | null; referenz: string | null }): string {
+  const b = bankPruefen(f);
+  if (!b.ok || !b.referenzArt) {
+    throw new AblaufFehler(
+      b.kontoArt
+        ? `Rechnung kann noch nicht festgeschrieben werden: ${b.fehler.join(' ')} Bitte unter Einstellungen › Firma & Dokumente ergänzen. Der Entwurf bleibt gespeichert.`
+        : 'Bankverbindung fehlt – bitte zuerst IBAN oder QR-IBAN unter Einstellungen › Firma & Dokumente eintragen. Der Entwurf bleibt gespeichert; der QR-Zahlteil erscheint, sobald die IBAN steht.',
+      409,
+    );
   }
-  if (f.iban.trim()) {
-    const basis = ziffern || '1';
-    return `RF${calculateSCORReferenceChecksum(basis)}${basis}`;
-  }
-  return null;
+  const passt = b.referenzArt === 'QRR' ? istQrReferenz(r.referenz) : istRfReferenz(r.referenz);
+  return passt ? r.referenz! : referenzAus(b.referenzArt, r.nummer ?? '');
 }
 
 const AUF_AUFTRAG: Record<BelegSprache, { anzahlung: string; auf: string; total: string }> = {

@@ -87,6 +87,12 @@ export default async function AngebotOeffentlich({ params }: { params: Promise<{
               <p className="k-mut k-klein">
                 {[a.mwstSatz > 0 ? D.inklMwst : null, a.gueltigBis ? `${D.gueltigBis} ${datumText(a.gueltigBis, s)}` : null].filter(Boolean).join(' · ')}
               </p>
+              {dok.info && (
+                <div className="k-bedingung">
+                  <span className="k-lbl">{D.zahlungsbedingungen}</span>
+                  <p className="k-klein">{dok.info}</p>
+                </div>
+              )}
               <AngebotAnnahme token={token} status={st} name={k.name} sprache={s} angenommen={a.angenommenAm ? { name: a.angenommenName ?? k.name, am: datumText(a.angenommenAm, s) } : null} />
               <a className="k-btn line" href={`/api/angebot/${token}/pdf/`} target="_blank" rel="noopener">
                 {T.pdf}

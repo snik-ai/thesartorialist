@@ -25,6 +25,8 @@ export type Firma = {
   zahlungsfristTage: number;
   angebotGueltigTage: number;
   anzahlungProzent: number;
+  /** Standard-Zahlungsplan neuer Angebote (lib/crm/zahlungsplan.ts PlanStandard: anzahlung, 50-50, 30-40-30, ganz, offen) */
+  zahlungsplanStandard: string;
   /** Arbeitstage von Bestellung bis Eingang im Atelier (für Fälligkeiten der Tasks) */
   produktionTage: number;
   texte: {
@@ -69,6 +71,7 @@ export const FIRMA_STANDARD: Firma = {
   zahlungsfristTage: 30,
   angebotGueltigTage: 30,
   anzahlungProzent: 50,
+  zahlungsplanStandard: 'anzahlung',
   produktionTage: 20,
   texte: {
     angebotEinleitung: 'Vielen Dank für Ihren Besuch im Atelier. Gerne unterbreiten wir Ihnen folgendes Angebot für Ihre Massanfertigung — gefertigt in Italien, Full-Canvas, nach Ihren persönlichen Massen.',

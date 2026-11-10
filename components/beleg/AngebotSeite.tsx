@@ -4,7 +4,8 @@
 // gehört: Status, Kunde, Sprache, Bedingungen, Versand, Stil-Auswahl, Versionen, Notiz, Verlauf.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { BelegSprache, Position, StilZeileDb } from '@/lib/db/schema';
+import type { BelegSprache, Position, StilZeileDb, Zahlungsplan } from '@/lib/db/schema';
+import { planAusVorlage, planPruefen, planVorlageVon, planWahl, ratenBetraege, type PlanStandard } from '@/lib/crm/zahlungsplan';
 import { angebotDokument, type FirmaKurz, type KontaktKurz } from '@/lib/beleg/dokument';
 import { blattHtml, dokumentHtml } from '@/lib/beleg/vorlage';
 import { DOK } from '@/lib/beleg/texte';
@@ -48,6 +49,7 @@ export type AngebotDaten = {
   angenommenName: string | null;
   abgelehntAm: string | null;
   abgelehntGrund: string | null;
+  zahlungsplan: Zahlungsplan | null;
 };
 export type KundeDaten = KontaktKurz & { id: string; email: string | null; telefon: string | null; whatsappOk: boolean };
 export type Texte = Record<BelegSprache, { angebotEinleitung: string; angebotSchluss: string; rechnungEinleitung: string; rechnungSchluss: string; anzahlungEinleitung: string }>;
@@ -66,6 +68,7 @@ interface Stand {
   stilAnhang: boolean;
   stil: StilZeileDb[];
   stoffe: string[];
+  zahlungsplan: Zahlungsplan | null;
 }
 const ausDaten = (a: AngebotDaten): Stand => ({
   kontaktId: a.kontaktId,
@@ -81,6 +84,7 @@ const ausDaten = (a: AngebotDaten): Stand => ({
   stilAnhang: a.stilAnhang,
   stil: a.stil,
   stoffe: a.stoffe,
+  zahlungsplan: a.zahlungsplan,
 });
 const nutzlast = (s: Stand) => ({
   kontaktId: s.kontaktId,
@@ -96,6 +100,7 @@ const nutzlast = (s: Stand) => ({
   stilAnhang: s.stilAnhang,
   stil: s.stil,
   stoffe: s.stoffe,
+  zahlungsplan: s.zahlungsplan,
 });
 
 const STATUS_PILL: Record<string, { label: string; pill: PillArt }> = {
@@ -168,7 +173,7 @@ function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rech
   const dok = useMemo(
     () =>
       stand
-        ? angebotDokument({ nummer: a.nummer, status: a.status, titel: stand.titel, datum: stand.datum, gueltigBis: stand.gueltigBis, einleitung: stand.einleitung, schluss: stand.schluss, positionen: zumSpeichern(stand.positionen), rabattProzent: stand.rabattProzent, rabattRp: a.rabattRp, mwstSatz: a.mwstSatz, sprache: stand.sprache, stil: stand.stil, stoffe: stand.stoffe, stilAnhang: stand.stilAnhang, angenommenAm: a.angenommenAm, angenommenName: a.angenommenName }, kunde, firma, logo)
+        ? angebotDokument({ nummer: a.nummer, status: a.status, titel: stand.titel, datum: stand.datum, gueltigBis: stand.gueltigBis, einleitung: stand.einleitung, schluss: stand.schluss, positionen: zumSpeichern(stand.positionen), rabattProzent: stand.rabattProzent, rabattRp: a.rabattRp, mwstSatz: a.mwstSatz, sprache: stand.sprache, stil: stand.stil, stoffe: stand.stoffe, stilAnhang: stand.stilAnhang, angenommenAm: a.angenommenAm, angenommenName: a.angenommenName, zahlungsplan: stand.zahlungsplan }, kunde, firma, logo)
         : null,
     [stand, a, kunde, firma, logo],
   );
@@ -392,7 +397,19 @@ function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rech
             ))}
           </div>
         )}
-        {dok.info && <p className="dk-klein">{dok.info}</p>}
+      </Abschnitt>
+      <Abschnitt titel="Zahlungsbedingungen">
+        {editierbar && (
+          <div className="dk-chips chips-reihe" role="group" aria-label="Zahlungsplan">
+            {planWahl(firma.anzahlungProzent).map((w) => (
+              <button key={w.key} type="button" className={`chip-w ${planVorlageVon(stand.zahlungsplan, firma.anzahlungProzent) === w.key ? 'an' : ''}`} title={w.label} onClick={() => set((s) => ({ ...s, zahlungsplan: w.plan() }))}>
+                {w.kurz}
+              </button>
+            ))}
+          </div>
+        )}
+        {dok.info && <p className="dk-klein" style={{ whiteSpace: 'pre-line' }}>{dok.info}</p>}
+        <p className="dk-klein">{stand.zahlungsplan ? 'Steht so im Angebot (PDF und Annahmeseite) und wird bei der Annahme in den Auftrag übernommen. Raten frei anpassen: im Auftrag.' : 'Der Plan wird bei der Annahme gefragt (im Atelier) bzw. im Auftrag festgelegt (Online-Annahme).'}</p>
       </Abschnitt>
       <Abschnitt titel="Versand">
         <div className="dk-aktionen">
@@ -554,11 +571,15 @@ function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rech
         onZu={() => setPanel(null)}
         vorschlag={kunde.name}
         emailDa={Boolean(kunde.email) && mailBereit}
-        onOk={async (name, mail) => {
-          const r = await api<{ auftragId?: string; meldung?: string }>(`/api/admin/angebote/${a.id}/`, { aktion: 'annehmen', name, mail });
+        totalRp={dok.summen.totalRp}
+        plan={stand.zahlungsplan}
+        anzahlungProzent={firma.anzahlungProzent}
+        onOk={async (name, mail, zahlungsplan, ersteRechnung) => {
+          const r = await api<{ auftragId?: string; rechnungId?: string | null; meldung?: string }>(`/api/admin/angebote/${a.id}/`, { aktion: 'annehmen', name, mail, zahlungsplan, ersteRechnung });
           toast(r.meldung ?? 'Angenommen');
           setPanel(null);
-          if (r.auftragId) router.push(`/admin/auftraege/${r.auftragId}/`);
+          if (r.rechnungId) router.push(`/admin/rechnungen/${r.rechnungId}/`);
+          else if (r.auftragId) router.push(`/admin/auftraege/${r.auftragId}/`);
           else router.refresh();
         }}
       />
@@ -576,17 +597,40 @@ function AngebotEditor({ a, kunde: kundeStart, firma, logo, texte, auftrag, rech
   );
 }
 
-function AnnehmenPanel({ offen, onZu, vorschlag, emailDa, onOk }: { offen: boolean; onZu: () => void; vorschlag: string; emailDa: boolean; onOk: (name: string, mail: boolean) => Promise<void> }) {
+type Wahl = PlanStandard | 'angebot';
+/** Annahme im Atelier: fragt aktiv nach dem Zahlungsplan (vorbelegt mit dem Plan des Angebots) und bietet die erste Rechnung an. */
+function AnnehmenPanel({ offen, onZu, vorschlag, emailDa, totalRp, plan, anzahlungProzent, onOk }: { offen: boolean; onZu: () => void; vorschlag: string; emailDa: boolean; totalRp: number; plan: Zahlungsplan | null; anzahlungProzent: number; onOk: (name: string, mail: boolean, zahlungsplan: Zahlungsplan | null, ersteRechnung: boolean) => Promise<void> }) {
   const [name, setName] = useState(vorschlag);
   const [mail, setMail] = useState(emailDa);
+  const vorlageAngebot = planVorlageVon(plan, anzahlungProzent);
+  const startWahl: Wahl = plan ? (vorlageAngebot ?? 'angebot') : 'ganz';
+  const [wahl, setWahl] = useState<Wahl>(startWahl);
+  const [prozent, setProzent] = useState(String(anzahlungProzent || 50));
+  const [rechnung, setRechnung] = useState(true);
   const [laedt, setLaedt] = useState(false);
   const [fehler, setFehler] = useState<string | null>(null);
   useEffect(() => {
     if (offen) {
       setName(vorschlag);
+      setWahl(startWahl);
+      setProzent(String(anzahlungProzent || 50));
+      setRechnung(true);
       setFehler(null);
     }
-  }, [offen, vorschlag]);
+  }, [offen, vorschlag]); // eslint-disable-line react-hooks/exhaustive-deps
+  const p = Math.round(Number(prozent.replace(',', '.')));
+  const ungueltig = wahl === 'anzahlung' && !(p >= 10 && p <= 90);
+  const gewaehlt: Zahlungsplan | null = wahl === 'angebot' ? plan : wahl === 'anzahlung' ? (ungueltig ? null : planAusVorlage('anzahlung', p)) : planAusVorlage(wahl, anzahlungProzent);
+  const pruef = gewaehlt ? planPruefen(gewaehlt, totalRp) : null;
+  const betraege = gewaehlt ? ratenBetraege(gewaehlt, totalRp) : [];
+  const optionen: { key: Wahl; label: string; text: string }[] = [
+    ...(plan && !vorlageAngebot ? [{ key: 'angebot' as Wahl, label: 'Wie im Angebot', text: `${plan.raten.length} Raten` }] : []),
+    { key: 'ganz', label: 'Ganz', text: 'Eine Rechnung über alles' },
+    { key: 'anzahlung', label: 'Anzahlung + Rest', text: `${Number.isFinite(p) && p ? p : '–'} % bei Bestellung, Rest bei Abholung` },
+    { key: '50-50', label: '50 / 50', text: 'Bestellung / Abholung' },
+    { key: '30-40-30', label: '30 / 40 / 30', text: 'Bestellung / Anprobe / Abholung' },
+    { key: 'offen', label: 'Frei / später', text: 'Raten im Auftrag selbst einteilen' },
+  ];
   return (
     <Panel
       offen={offen}
@@ -601,11 +645,12 @@ function AnnehmenPanel({ offen, onZu, vorschlag, emailDa, onOk }: { offen: boole
             art="dunkel"
             icon="ArrowRightLeft"
             laedt={laedt}
+            disabled={ungueltig || Boolean(pruef && !pruef.ok)}
             onClick={async () => {
               setLaedt(true);
               setFehler(null);
               try {
-                await onOk(name, mail);
+                await onOk(name, mail, gewaehlt, Boolean(gewaehlt) && rechnung);
               } catch (e) {
                 setFehler((e as Error).message);
               } finally {
@@ -613,7 +658,7 @@ function AnnehmenPanel({ offen, onZu, vorschlag, emailDa, onOk }: { offen: boole
               }
             }}
           >
-            Annehmen und Auftrag eröffnen
+            {gewaehlt && rechnung ? 'Annehmen & Rechnung erstellen' : 'Annehmen und Auftrag eröffnen'}
           </Knopf>
         </>
       }
@@ -621,6 +666,51 @@ function AnnehmenPanel({ offen, onZu, vorschlag, emailDa, onOk }: { offen: boole
       <div className="formular">
         <p className="vk-hinweis">Der Kontakt wird Kunde, der Auftrag mit Planung (Stoff bestellen, Anprobe, Abholung) entsteht sofort.</p>
         <Feld label="Angenommen von" value={name} onChange={(e) => setName(e.target.value)} />
+        <div className="vk-frage">
+          <span className="feld-label">Wie soll verrechnet werden?</span>
+          <div className="vk-planwahl" role="radiogroup" aria-label="Zahlungsplan">
+            {optionen.map((o) => (
+              <button key={o.key} type="button" role="radio" aria-checked={wahl === o.key} className={`vk-planwahl-k ${wahl === o.key ? 'an' : ''}`} onClick={() => setWahl(o.key)}>
+                <b>{o.label}</b>
+                <small>{o.text}</small>
+              </button>
+            ))}
+          </div>
+          {wahl === 'anzahlung' && (
+            <div className="vk-prozent">
+              <div className="chips-reihe">
+                {[20, 30, 40, 50].map((x) => (
+                  <button key={x} type="button" className={`chip-w ${p === x ? 'an' : ''}`} onClick={() => setProzent(String(x))}>
+                    {x} %
+                  </button>
+                ))}
+              </div>
+              <Feld label="Anzahlung in %" inputMode="numeric" value={prozent} onChange={(e) => setProzent(e.target.value.replace(/[^\d]/g, '').slice(0, 2))} fehler={ungueltig ? 'Bitte 10 bis 90 %' : null} />
+            </div>
+          )}
+          {gewaehlt ? (
+            <ol className="vk-raten">
+              {gewaehlt.raten.map((r, i) => (
+                <li key={r.id}>
+                  <span>
+                    {r.bezeichnung}
+                    {r.anlass ? <small> · {r.anlass}</small> : null}
+                  </span>
+                  <b className="num">{geld(betraege[i] ?? 0, true)}</b>
+                </li>
+              ))}
+            </ol>
+          ) : !ungueltig ? (
+            <p className="dk-klein">Der Auftrag zeigt «Zahlungsplan festlegen», bis die Raten eingeteilt sind.</p>
+          ) : null}
+          {pruef && !pruef.ok && <Fehlermeldung text={pruef.fehler ?? 'Zahlungsplan passt nicht zum Total.'} />}
+        </div>
+        {gewaehlt && (
+          <button type="button" role="switch" aria-checked={rechnung} className={`schalter ${rechnung ? 'an' : ''}`} onClick={() => setRechnung(!rechnung)}>
+            <span className="tg" aria-hidden="true" />
+            <span>Erste Rechnung gleich erstellen ({gewaehlt.raten.length > 1 ? `${gewaehlt.raten[0].bezeichnung}, ${geld(betraege[0] ?? 0, true)}` : `Gesamtbetrag ${geld(betraege[0] ?? 0, true)}`}) – als Entwurf</span>
+          </button>
+        )}
         {emailDa && (
           <button type="button" role="switch" aria-checked={mail} className={`schalter ${mail ? 'an' : ''}`} onClick={() => setMail(!mail)}>
             <span className="tg" aria-hidden="true" />

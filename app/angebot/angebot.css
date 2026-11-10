@@ -110,6 +110,9 @@
 .k-seitenkarte{position:sticky;top:20px}
 @media (max-width:1180px){.k-raster{grid-template-columns:1fr}.k-dokument{display:flex;justify-content:center}.k-seitenkarte{position:static;max-width:640px;width:100%;margin:0 auto}}
 @media (max-width:860px){.k-blatt{zoom:.82}}
+.k-bedingung{margin:4px 0 18px;padding:12px 14px;border:1px solid var(--line);border-radius:12px}
+.k-bedingung .k-lbl{margin:0 0 6px}
+.k-bedingung .k-klein{margin:0;font-size:13px;line-height:1.55;white-space:pre-line;font-variant-numeric:tabular-nums}
 @media (max-width:700px){.k-blatt{zoom:.6}}
 @media (max-width:520px){.k-blatt{zoom:.46}}
 @media (max-width:400px){.k-blatt{zoom:.43}}

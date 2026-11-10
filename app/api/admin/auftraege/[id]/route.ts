@@ -34,6 +34,15 @@ async function adminOk(id: unknown) {
   return u ? u.id : undefined;
 }
 
+/** Kurzdaten inkl. Zahlungsplan (für Tests und künftige Clients) */
+export async function GET(req: Request, { params }: P) {
+  const a = await apiAdmin(req);
+  if (!a.ok) return a.antwort;
+  const au = await laden((await params).id);
+  if (!au) return fehler('Auftrag nicht gefunden', 404);
+  return NextResponse.json({ ok: true, auftrag: { id: au.id, nummer: au.nummer, status: au.status, totalRp: au.totalRp, zahlungsplan: au.zahlungsplan, pruefung: au.zahlungsplan ? planPruefen(au.zahlungsplan, au.totalRp) : null } });
+}
+
 export async function PATCH(req: Request, { params }: P) {
   const a = await apiAdmin(req);
   if (!a.ok) return a.antwort;

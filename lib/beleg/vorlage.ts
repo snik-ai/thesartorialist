@@ -285,15 +285,16 @@ export function zahlteilHtml(qr: QrTeil, sprache: BelegSprache, kopf: { titel: s
   const blk = (k: string, inhalt: string) => `<div class="bl-qr-block"><div class="bl-qr-kopf">${h(k)}</div>${inhalt}</div>`;
   const konto = `<div>${h(qr.konto)}</div>${adr(qr.glaeubiger)}`;
   const ref = qr.referenz ? `<div>${h(qr.referenz)}</div>` : '';
-  const betrag = qr.betragRp === null ? `<div class="bl-qr-feld klein"><i></i></div>` : `<div>${qrBetrag(qr.betragRp)}</div>`;
-  const betragBlock = `<div class="bl-qr-betrag"><div><div class="bl-qr-kopf">${h(Q.waehrung)}</div><div>CHF</div></div><div><div class="bl-qr-kopf">${h(Q.betrag)}</div>${betrag}</div></div>`;
+  // Leeres Betragsfeld nach SIX: Empfangsschein 30 × 10 mm, Zahlteil 40 × 15 mm
+  const betrag = (feld: 'klein' | 'mittel') => (qr.betragRp === null ? `<div class="bl-qr-feld ${feld}"><i></i></div>` : `<div>${qrBetrag(qr.betragRp)}</div>`);
+  const betragBlock = (feld: 'klein' | 'mittel') => `<div class="bl-qr-betrag"><div><div class="bl-qr-kopf">${h(Q.waehrung)}</div><div>CHF</div></div><div><div class="bl-qr-kopf">${h(Q.betrag)}</div>${betrag(feld)}</div></div>`;
   const schuldner = (gross: boolean) => (qr.schuldner ? blk(Q.zahlbarDurch, adr(qr.schuldner)) : blk(Q.zahlbarDurchLeer, `<div class="bl-qr-feld ${gross ? 'gross' : 'klein'}"><i></i></div>`));
   return `<div class="bl-qr-seite">${hinweis}
 <div class="bl-qr-abtrennen"><span>${h(Q.abtrennen)}</span></div>
 <div class="bl-qr-teil">
   <div class="bl-qr-empfang"><div class="bl-qr-titel">${h(Q.empfangsschein)}</div>${blk(Q.konto, konto)}${ref ? blk(Q.referenz, ref) : ''}${schuldner(false)}
-    <div style="margin-top:auto">${betragBlock}<div class="bl-qr-kopf" style="text-align:right;margin-top:2mm">${h(Q.annahmestelle)}</div></div></div>
-  <div class="bl-qr-zahl"><div class="bl-qr-links"><div class="bl-qr-titel">${h(Q.zahlteil)}</div><div class="bl-qr-bild">${qr.svg}</div>${betragBlock}</div>
+    <div style="margin-top:auto">${betragBlock('klein')}<div class="bl-qr-kopf" style="text-align:right;margin-top:2mm">${h(Q.annahmestelle)}</div></div></div>
+  <div class="bl-qr-zahl"><div class="bl-qr-links"><div class="bl-qr-titel">${h(Q.zahlteil)}</div><div class="bl-qr-bild">${qr.svg}</div>${betragBlock('mittel')}</div>
     <div class="bl-qr-rechts">${blk(Q.konto, konto)}${ref ? blk(Q.referenz, ref) : ''}${qr.mitteilung ? blk(Q.zusatz, `<div>${h(qr.mitteilung)}</div>`) : ''}${schuldner(true)}</div></div>
 </div></div>`;
 }

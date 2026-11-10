@@ -4,7 +4,9 @@ import { eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import { apiAdmin, fehler, jsonBody, txt, UUID } from '@/lib/admin/zugang';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
-import { AblaufFehler, angebotAnnehmen, angebotLinkNeu, leadPhaseSetzen, rechnungErstellen } from '@/lib/crm/ablauf';
+import { AblaufFehler, angebotAnnehmen, angebotLinkNeu, leadPhaseSetzen } from '@/lib/crm/ablauf';
+import { PLAN_GANZ, planAus, planPruefen } from '@/lib/crm/zahlungsplan';
+import { rateRechnung, zahlungsplanSetzen } from '@/lib/crm/zahlungsplan-server';
 import { versionSichern, versionWiederherstellen } from '@/lib/beleg/versionen';
 import { belegSprache, datumText } from '@/lib/beleg/texte';
 import { mailAngebotIn } from '@/lib/beleg/mails-beleg';
@@ -13,7 +15,7 @@ import { positionenAus, summen } from '@/lib/crm/geld';
 import { angebotLink, angebotPdfFuer, basisUrl, tagAus } from '@/lib/admin/belege';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
 import { mailAuftragBestaetigt } from '@/lib/mail-vorlagen';
-import type { StilZeileDb } from '@/lib/db/schema';
+import type { StilZeileDb, Zahlungsplan } from '@/lib/db/schema';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -73,6 +75,14 @@ export async function PATCH(req: Request, { params }: P) {
     const s = stilAus(b.stil);
     if (!s) return fehler('Stil-Auswahl ungültig');
     set.stil = s;
+  }
+  if ('zahlungsplan' in b) {
+    if (b.zahlungsplan === null) set.zahlungsplan = null;
+    else {
+      const plan = planAus(b.zahlungsplan);
+      if (!plan) return fehler('Zahlungsplan ungültig (1–6 Raten, Betrag > 0, Prozent ≤ 100).');
+      set.zahlungsplan = { ...plan, raten: plan.raten.map((r) => ({ ...r, rechnungId: null })) };
+    }
   }
   if ('stoffe' in b) set.stoffe = Array.isArray(b.stoffe) ? b.stoffe.map((s) => txt(s, 30).toUpperCase()).filter(Boolean).slice(0, 10) : [];
   if ('rabattProzent' in b) {
@@ -161,7 +171,18 @@ export async function POST(req: Request, { params }: P) {
 
       case 'annehmen': {
         const name = txt(b.name, 120) || k.name;
-        const r = await angebotAnnehmen(an.id, { name, weg: 'atelier', adminId: wer });
+        // Dialog «Wie soll verrechnet werden?»: Plan (oder null = noch offen); ohne Angabe gilt der Plan des Angebots
+        let zahlungsplan: Zahlungsplan | null | undefined;
+        if ('zahlungsplan' in b) {
+          zahlungsplan = b.zahlungsplan === null ? null : planAus(b.zahlungsplan);
+          if (zahlungsplan === null && b.zahlungsplan !== null) return fehler('Zahlungsplan ungültig (1–6 Raten, Betrag > 0, Prozent ≤ 100).');
+          if (zahlungsplan) {
+            const pr = planPruefen(zahlungsplan, an.totalRp);
+            if (!pr.ok) return fehler(pr.fehler ?? 'Zahlungsplan ungültig');
+          }
+        }
+        if (b.ersteRechnung === true && !an.positionen.length) return fehler('Bitte zuerst Positionen mit Preis erfassen.');
+        const r = await angebotAnnehmen(an.id, { name, weg: 'atelier', adminId: wer, zahlungsplan });
         if (!r.schon && b.mail === true && k.email && mailBereit()) {
           const m = mailAuftragBestaetigt({ name: k.name, anrede: k.anrede, angebotNummer: an.nummer ?? '', auftragNummer: r.nummer ?? '', titel: an.titel, totalRp: an.totalRp });
           await sendeMail({ to: k.email, subject: m.subject, text: m.text, html: m.html, replyTo: empfaenger() }).then(
@@ -169,7 +190,20 @@ export async function POST(req: Request, { params }: P) {
             (err) => console.error('[angebot] Bestätigung', (err as Error).message),
           );
         }
-        return NextResponse.json({ ok: true, auftragId: r.auftragId, meldung: `Angenommen — Auftrag ${r.nummer} eröffnet, Kontakt ist jetzt Kunde.` });
+        // Direkt die erste Rechnung (erste Rate bzw. Gesamtrechnung) als Entwurf – festgeschrieben wird im Rechnungseditor
+        let rechnungId: string | null = null;
+        let rechnungNr: string | null = null;
+        if (!r.schon && r.auftragId && r.zahlungsplan && b.ersteRechnung === true) {
+          const re = await rateRechnung(r.auftragId, r.zahlungsplan.raten[0].id, wer);
+          rechnungId = re.id;
+          rechnungNr = re.nummer;
+        }
+        return NextResponse.json({
+          ok: true,
+          auftragId: r.auftragId,
+          rechnungId,
+          meldung: `Angenommen — Auftrag ${r.nummer} eröffnet, Kontakt ist jetzt Kunde.${rechnungNr ? ` Rechnung ${rechnungNr} als Entwurf erstellt.` : r.zahlungsplan ? '' : ' Zahlungsplan bitte im Auftrag festlegen.'}`,
+        });
       }
 
       case 'ablehnen': {
@@ -233,8 +267,13 @@ export async function POST(req: Request, { params }: P) {
           auftragId = au?.id ?? null;
         }
         if (!auftragId) return fehler('Kein Auftrag zum Angebot gefunden.', 404);
-        const re = await rechnungErstellen({ auftragId, art: 'rechnung', adminId: wer });
-        return NextResponse.json({ ok: true, auftragId, rechnungId: re.id, meldung: `Rechnung ${re.nummer} erstellt (Entwurf).` });
+        // Nach Zahlungsplan: erste noch nicht verrechnete Rate; ohne Plan wird «ganz» festgelegt (eine Rechnung über alles)
+        const [au] = await db().select({ zahlungsplan: schema.auftrag.zahlungsplan }).from(schema.auftrag).where(eq(schema.auftrag.id, auftragId)).limit(1);
+        let plan = au?.zahlungsplan ?? null;
+        if (!plan) plan = (await zahlungsplanSetzen(auftragId, PLAN_GANZ(), wer)).plan;
+        const offen = plan.raten.find((x) => !x.rechnungId) ?? plan.raten[0];
+        const re = await rateRechnung(auftragId, offen.id, wer);
+        return NextResponse.json({ ok: true, auftragId, rechnungId: re.id, meldung: re.schon ? `Rechnung ${re.nummer} besteht bereits.` : `Rechnung ${re.nummer} erstellt (Entwurf).` });
       }
 
       default:

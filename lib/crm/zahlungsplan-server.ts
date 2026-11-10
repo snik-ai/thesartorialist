@@ -1,10 +1,10 @@
 // Zahlungsplan serverseitig: Plan setzen (verschickte Raten bleiben gesperrt) und Rechnung zu einer Rate erstellen.
-import { eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, isNull } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
 import type { Zahlungsplan } from '@/lib/db/schema';
 import { tagAus } from '@/lib/admin/belege';
 import { aktivitaetLoggen } from './kontakte';
-import { AblaufFehler, rechnungErstellen } from './ablauf';
+import { AblaufFehler, TASK_ZAHLUNGSPLAN, rechnungErstellen } from './ablauf';
 import { chf } from './geld';
 import { planPruefen, ratenBetraege } from './zahlungsplan';
 
@@ -17,7 +17,7 @@ export async function zahlungsplanSetzen(auftragId: string, plan: Zahlungsplan, 
   if (!p.ok) throw new AblaufFehler(p.fehler ?? 'Zahlungsplan ungültig');
   const alt = au.zahlungsplan?.raten ?? [];
   const ids = alt.map((r) => r.rechnungId).filter((x): x is string => Boolean(x));
-  const rs = ids.length ? await db().select({ id: schema.rechnung.id, status: schema.rechnung.status, bezahltRp: schema.rechnung.bezahltRp, faelligAm: schema.rechnung.faelligAm }).from(schema.rechnung).where(inArray(schema.rechnung.id, ids)) : [];
+  const rs = ids.length ? await db().select({ id: schema.rechnung.id, status: schema.rechnung.status, art: schema.rechnung.art, bezahltRp: schema.rechnung.bezahltRp, faelligAm: schema.rechnung.faelligAm }).from(schema.rechnung).where(inArray(schema.rechnung.id, ids)) : [];
   const rech = new Map(rs.map((r) => [r.id, r]));
   const loeschen: string[] = [];
   for (const a of alt) {
@@ -27,6 +27,10 @@ export async function zahlungsplanSetzen(auftragId: string, plan: Zahlungsplan, 
     const gleich = neu && neu.art === a.art && Math.abs(neu.wert - a.wert) < 0.001;
     if (offenOderMehr(r.status)) {
       if (!gleich) throw new AblaufFehler(`«${a.bezeichnung}» ist bereits verschickt und kann nicht mehr geändert oder entfernt werden.`, 409);
+      // Reihenfolge: Eine verschickte Schluss-/Gesamtrechnung bleibt die letzte Rate, eine verschickte Teilrechnung nie die letzte
+      const letzte = plan.raten[plan.raten.length - 1].id === a.id;
+      if (r.art !== 'anzahlung' && !letzte) throw new AblaufFehler(`«${a.bezeichnung}» ist als Schlussrechnung verschickt – danach kann keine weitere Rate folgen.`, 409);
+      if (r.art === 'anzahlung' && letzte) throw new AblaufFehler(`«${a.bezeichnung}» ist als Teilrechnung verschickt – danach braucht es noch eine Rate für die Schlussrechnung.`, 409);
       neu!.rechnungId = a.rechnungId;
     } else if (gleich && neu!.faelligAm === a.faelligAm) neu!.rechnungId = a.rechnungId;
     else loeschen.push(a.rechnungId!);
@@ -37,6 +41,10 @@ export async function zahlungsplanSetzen(auftragId: string, plan: Zahlungsplan, 
       await tx.delete(schema.rechnung).where(eq(schema.rechnung.id, id));
     }
     await tx.update(schema.auftrag).set({ zahlungsplan: plan, aktualisiertAm: new Date() }).where(eq(schema.auftrag.id, au.id));
+    await tx
+      .update(schema.auftragTask)
+      .set({ erledigtAm: new Date(), erledigtVon: adminId })
+      .where(and(eq(schema.auftragTask.auftragId, au.id), eq(schema.auftragTask.titel, TASK_ZAHLUNGSPLAN), isNull(schema.auftragTask.erledigtAm)));
     await aktivitaetLoggen(tx, {
       kontaktId: au.kontaktId!,
       kanal: 'system',
@@ -47,6 +55,27 @@ export async function zahlungsplanSetzen(auftragId: string, plan: Zahlungsplan, 
     });
   });
   return { plan, pruefung: p, verworfen: loeschen.length };
+}
+
+/**
+ * Nach dem Festschreiben einer Raten-Rechnung: Wurde der Betrag im Entwurf geändert, übernimmt der Plan den tatsächlichen
+ * Betrag (Rate als fester CHF-Betrag). So stimmt die Summenprüfung, die Rate bleibt gesperrt-gleich und der Rest lässt sich
+ * mit «Rest verteilen» sauber auf die offenen Raten legen. Die letzte Rate (Schlussrechnung) nimmt ohnehin den Rest.
+ */
+export async function rateAbgleichen(auftragId: string, rechnungId: string) {
+  const [au] = await db().select({ id: schema.auftrag.id, kontaktId: schema.auftrag.kontaktId, nummer: schema.auftrag.nummer, totalRp: schema.auftrag.totalRp, zahlungsplan: schema.auftrag.zahlungsplan }).from(schema.auftrag).where(eq(schema.auftrag.id, auftragId)).limit(1);
+  const plan = au?.zahlungsplan;
+  if (!plan) return false;
+  const i = plan.raten.findIndex((r) => r.rechnungId === rechnungId);
+  if (i < 0 || i === plan.raten.length - 1) return false;
+  const [r] = await db().select({ totalRp: schema.rechnung.totalRp, art: schema.rechnung.art }).from(schema.rechnung).where(eq(schema.rechnung.id, rechnungId)).limit(1);
+  if (!r || r.art !== 'anzahlung') return false;
+  const soll = ratenBetraege(plan, au.totalRp)[i];
+  if (r.totalRp === soll) return false;
+  const neu: Zahlungsplan = { ...plan, raten: plan.raten.map((x, j) => (j === i ? { ...x, art: 'betrag', wert: r.totalRp } : x)) };
+  await db().update(schema.auftrag).set({ zahlungsplan: neu, aktualisiertAm: new Date() }).where(eq(schema.auftrag.id, au.id));
+  if (au.kontaktId) await aktivitaetLoggen(db(), { kontaktId: au.kontaktId, kanal: 'system', titel: `${au.nummer}: «${plan.raten[i].bezeichnung}» mit ${chf(r.totalRp)} verrechnet (Plan: ${chf(soll)})`, text: 'Der Zahlungsplan übernimmt den tatsächlichen Rechnungsbetrag – offene Raten bei Bedarf mit «Rest verteilen» anpassen.', auftragId: au.id });
+  return true;
 }
 
 /** Rechnung zur Rate: vor der letzten eine Anzahlungs-/Teilrechnung über den Ratenbetrag, die letzte als Schlussrechnung. */

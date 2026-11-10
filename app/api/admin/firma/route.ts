@@ -6,7 +6,8 @@ import { apiAdmin, fehler, jsonBody, txt } from '@/lib/admin/zugang';
 import { FIRMA_STANDARD, firma, logoDaten, speichern, type Firma, type KatalogEintrag } from '@/lib/crm/firma';
 import { KATEGORIE_LABEL } from '@/lib/crm/belege';
 import { neueId } from '@/lib/crm/geld';
-import { isIBANValid, isQRIBAN } from 'swissqrbill/utils';
+import { ibanGruppen, ibanPruefen, ibanRoh, bankPruefen } from '@/lib/beleg/bank';
+import { planStandardAus } from '@/lib/crm/zahlungsplan';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -34,10 +35,12 @@ export async function PUT(req: Request) {
     const w = (b.wert ?? {}) as Record<string, unknown>;
     const alt = await firma();
     const s = (k: keyof Firma, max = 160) => (k in w ? txt(w[k], max) : (alt[k] as string));
-    const iban = s('iban', 40).replace(/\s+/g, '').toUpperCase();
-    const qrIban = s('qrIban', 40).replace(/\s+/g, '').toUpperCase();
-    if (iban && (!isIBANValid(iban) || isQRIBAN(iban))) return fehler('IBAN ungültig (eine QR-IBAN bitte im Feld QR-IBAN erfassen).');
-    if (qrIban && (!isIBANValid(qrIban) || !isQRIBAN(qrIban))) return fehler('QR-IBAN ungültig (Institut-ID 30000–31999).');
+    const iban = ibanRoh(s('iban', 40));
+    const qrIban = ibanRoh(s('qrIban', 40));
+    const ibP = ibanPruefen(iban, 'iban');
+    if (ibP.fehler) return fehler(`IBAN: ${ibP.fehler}`);
+    const qrP = ibanPruefen(qrIban, 'qr');
+    if (qrP.fehler) return fehler(`QR-IBAN: ${qrP.fehler}`);
     const texte = (w.texte ?? {}) as Record<string, unknown>;
     const neu: Firma = {
       ...alt,
@@ -53,12 +56,13 @@ export async function PUT(req: Request) {
       mwstNr: s('mwstNr', 40),
       mwstPflichtig: typeof w.mwstPflichtig === 'boolean' ? w.mwstPflichtig : alt.mwstPflichtig,
       mwstSatz: zahl(w.mwstSatz ?? alt.mwstSatz, 0, 30, alt.mwstSatz),
-      iban: iban.replace(/(.{4})/g, '$1 ').trim(),
-      qrIban: qrIban.replace(/(.{4})/g, '$1 ').trim(),
+      iban: ibanGruppen(iban),
+      qrIban: ibanGruppen(qrIban),
       bank: s('bank', 80),
       zahlungsfristTage: Math.round(zahl(w.zahlungsfristTage ?? alt.zahlungsfristTage, 0, 120, 30)),
       angebotGueltigTage: Math.round(zahl(w.angebotGueltigTage ?? alt.angebotGueltigTage, 1, 365, 30)),
       anzahlungProzent: Math.round(zahl(w.anzahlungProzent ?? alt.anzahlungProzent, 0, 100, 50)),
+      zahlungsplanStandard: 'zahlungsplanStandard' in w ? planStandardAus(w.zahlungsplanStandard) : planStandardAus(alt.zahlungsplanStandard),
       produktionTage: Math.round(zahl(w.produktionTage ?? alt.produktionTage, 1, 120, 20)),
       erinnerungAktiv: typeof w.erinnerungAktiv === 'boolean' ? w.erinnerungAktiv : alt.erinnerungAktiv,
       erinnerungStunden: zahl(w.erinnerungStunden ?? alt.erinnerungStunden, 0.5, 48, 2),
@@ -72,7 +76,9 @@ export async function PUT(req: Request) {
       texte: Object.fromEntries(Object.entries(alt.texte).map(([k, v]) => [k, k in texte ? txt(texte[k], 2000) : v])) as Firma['texte'],
     };
     await speichern('firma', neu);
-    return NextResponse.json({ ok: true, firma: neu });
+    // Gläubiger-Adresse und Konto zusammen prüfen: speichern geht immer (die Bankdaten kommen evtl. später), die Antwort sagt,
+    // ob der QR-Zahlteil bereit ist und was noch fehlt
+    return NextResponse.json({ ok: true, firma: neu, bank: bankPruefen(neu) });
   }
 
   if (b.schluessel === 'katalog') {

@@ -12,6 +12,7 @@ import Link from 'next/link';
 import Icon from '@/components/admin/Icon';
 import { FirmaForm, LogoForm } from '@/components/admin/FirmaEinstellungen';
 import { firma, logoDaten } from '@/lib/crm/firma';
+import { bankPruefen } from '@/lib/beleg/bank';
 
 export const metadata: Metadata = { title: 'Einstellungen' };
 export const dynamic = 'force-dynamic';
@@ -55,7 +56,7 @@ export default async function EinstellungenPage() {
               <dt>Termin-Erinnerung</dt>
               <dd>{f.erinnerungAktiv ? `${String(f.erinnerungStunden).replace('.', ',')} Std. vorher${mailBereit() ? '' : ' (wartet auf Mailversand)'}` : 'ausgeschaltet'}</dd>
               <dt>QR-Rechnung</dt>
-              <dd>{f.qrIban ? 'QR-IBAN mit QR-Referenz' : f.iban ? 'IBAN mit Creditor Reference (RF)' : 'IBAN fehlt — unter «Firma & Dokumente» erfassen'}</dd>
+              <dd>{bankPruefen(f).kurz}</dd>
             </dl>
           </div>
         </div>

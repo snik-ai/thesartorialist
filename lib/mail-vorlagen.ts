@@ -405,7 +405,8 @@ export function mailAuftragBestaetigt(d: { name: string; anrede?: string | null;
 }
 
 /** Ans Atelier: Angebot wurde online angenommen */
-export function mailAngebotAngenommenAtelier(d: { name: string; angebotNummer: string; auftragNummer: string; titel: string; totalRp: number; link: string }) {
+export function mailAngebotAngenommenAtelier(d: { name: string; angebotNummer: string; auftragNummer: string; titel: string; totalRp: number; link: string; zahlungsplan?: string | null }) {
+  const plan = d.zahlungsplan ?? 'Noch nicht festgelegt – bitte im Auftrag «Zahlungsplan festlegen» (ganz oder Teilzahlung).';
   const html = rahmen(
     `Angebot ${d.angebotNummer} angenommen`,
     titelZeile('Angebot angenommen', `${d.name} hat das Angebot ${d.angebotNummer} online angenommen. Der Auftrag ${d.auftragNummer} ist eröffnet.`) +
@@ -414,9 +415,10 @@ export function mailAngebotAngenommenAtelier(d: { name: string; angebotNummer: s
         ['Angebot', `${d.angebotNummer} · ${d.titel}`],
         ['Total', chfMail(d.totalRp)],
         ['Auftrag', d.auftragNummer],
-      ])}</td></tr><tr><td style="padding:22px 36px 32px">${knopf(d.link, 'Auftrag öffnen')}</td></tr>`,
+        ['Zahlungsplan', plan],
+      ])}</td></tr><tr><td style="padding:22px 36px 32px">${knopf(d.link, d.zahlungsplan ? 'Auftrag öffnen' : 'Zahlungsplan festlegen')}</td></tr>`,
   );
-  return { html, text: `${d.name} hat das Angebot ${d.angebotNummer} angenommen (${chfMail(d.totalRp)}). Auftrag ${d.auftragNummer}: ${d.link}`, subject: `Angenommen: ${d.angebotNummer} — ${d.name}` };
+  return { html, text: `${d.name} hat das Angebot ${d.angebotNummer} angenommen (${chfMail(d.totalRp)}). Auftrag ${d.auftragNummer}: ${d.link}\nZahlungsplan: ${plan}`, subject: `Angenommen: ${d.angebotNummer} — ${d.name}` };
 }
 
 /** An den Kunden: Rechnung (PDF mit QR-Zahlteil im Anhang) */

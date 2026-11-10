@@ -4,6 +4,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import PDFDocument from 'pdfkit';
 import { SwissQRBill } from 'swissqrbill/pdf';
+import { qrKonto } from '@/lib/beleg/qr';
+import { glaeubigerFehler, ibanGruppen } from '@/lib/beleg/bank';
 import type { Data as QrDaten } from 'swissqrbill/types';
 import { formatReference } from 'swissqrbill/utils';
 import type { Abzug, Position, StilZeileDb } from '@/lib/db/schema';
@@ -242,6 +244,8 @@ export type AngebotPdf = {
   stoffe: string[];
   link?: string | null;
   angenommen?: { name: string; am: Date } | null;
+  /** Zahlungsbedingungen (Text aus dem Zahlungsplan des Angebots) */
+  bedingung?: string | null;
 };
 
 export async function angebotPdf(a: AngebotPdf, e: Empfaenger, f: Firma, logo: Buffer | null) {
@@ -266,6 +270,7 @@ export async function angebotPdf(a: AngebotPdf, e: Empfaenger, f: Firma, logo: B
     ],
     y,
   );
+  if (a.bedingung) y = absatz(doc, `Zahlungsbedingungen\n${a.bedingung}`, y);
   y = stilBlock(doc, a.stil, a.stoffe, y);
   y = absatz(doc, a.schluss, y);
   if (a.angenommen) {
@@ -310,11 +315,12 @@ const ART_TITEL = { rechnung: 'Rechnung', anzahlung: 'Anzahlungsrechnung', schlu
 
 /** QR-Zahlteil-Daten (Schuldner nur mit vollständiger Adresse, sonst leer zum Ausfüllen) */
 export function qrDaten(r: Pick<RechnungPdf, 'nummer' | 'betragRp' | 'bezahltRp' | 'referenz'>, e: Empfaenger, f: Firma): QrDaten | null {
-  const konto = (f.qrIban.trim() || f.iban.trim()).replace(/\s+/g, '');
-  if (!konto) return null;
+  const k = qrKonto(f, r.referenz, r.nummer);
+  if (!k || glaeubigerFehler(f).length) return null;
+  const konto = k.konto;
   const offen = Math.max(0, r.betragRp - r.bezahltRp);
   const schuldner = e.strasse && e.plz && e.ort ? { name: [e.name, e.firma ? `(${e.firma})` : ''].filter(Boolean).join(' ').slice(0, 70), address: e.strasse.slice(0, 70), zip: e.plz, city: e.ort, country: (e.land || 'CH').toUpperCase() } : undefined;
-  const ref = r.referenz && (f.qrIban.trim() ? /^\d{27}$/.test(r.referenz) : /^RF\d{2}/.test(r.referenz)) ? r.referenz : undefined;
+  const ref = k.ref;
   return {
     currency: 'CHF',
     amount: offen > 0 ? offen / 100 : undefined,
@@ -354,8 +360,8 @@ export async function rechnungPdf(r: RechnungPdf, e: Empfaenger, f: Firma, logo:
     if (r.mwstSatz > 0) zeilen.push({ k: `inkl. MWST ${String(r.mwstSatz).replace('.', ',')} %`, v: chf(s.mwstRp, false), leise: true });
   }
   y = summenBlock(doc, zeilen, y);
-  const konto = f.qrIban.trim() || f.iban.trim();
-  const zahlung = [r.faelligAm ? `Zahlbar bis ${datum(r.faelligAm)}` : '', konto ? `IBAN ${konto}` : '', f.bank, r.referenz ? `Referenz ${formatReference(r.referenz)}` : ''].filter(Boolean).join('  ·  ');
+  const qk = qrKonto(f, r.referenz, r.nummer);
+  const zahlung = [r.faelligAm ? `Zahlbar bis ${datum(r.faelligAm)}` : '', qk ? `IBAN ${ibanGruppen(qk.konto)}` : '', f.bank, qk?.ref ? `Referenz ${formatReference(qk.ref)}` : ''].filter(Boolean).join('  ·  ');
   y = absatz(doc, r.schluss, y);
   if (zahlung) {
     y = platz(doc, y, 20);
@@ -368,7 +374,14 @@ export async function rechnungPdf(r: RechnungPdf, e: Empfaenger, f: Firma, logo:
   const daten = qrDaten(r, e, f);
   if (daten && r.betragRp - r.bezahltRp > 0) {
     // Zahlteil unten auf der letzten Seite, falls Platz (105 mm), sonst auf eigener Seite
-    const qr = new SwissQRBill(daten, { language: 'DE', scissors: true, separate: false });
+    let qr: SwissQRBill | null = null;
+    try {
+      qr = new SwissQRBill(daten, { language: 'DE', scissors: true, separate: false });
+    } catch (err) {
+      // Ungültige Angaben dürfen das PDF nie verhindern – dann ohne Zahlteil (Festschreiben prüft vorher, das ist ein Notfall)
+      console.error('[pdf] QR-Zahlteil', (err as Error).message);
+    }
+    if (qr) {
     // Reicht der Platz nicht, eine eigene A4-Seite (Zahlteil unten, druckbar auf A4-Papier mit Perforation)
     if (!SwissQRBill.isSpaceSufficient(doc)) {
       doc.addPage({ size: 'A4', margin: 0 });
@@ -378,6 +391,7 @@ export async function rechnungPdf(r: RechnungPdf, e: Empfaenger, f: Firma, logo:
     }
     qr.attachTo(doc);
     ohneFuss.add(doc.bufferedPageRange().start + doc.bufferedPageRange().count - 1);
+    }
   }
   fuss(doc, f, ohneFuss);
   return alsBuffer(doc);

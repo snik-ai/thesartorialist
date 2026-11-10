@@ -17,6 +17,7 @@
 .zp-wert { display: flex; align-items: center; gap: 6px; }
 .zp-wert .a-input { min-height: 40px; padding: 6px 10px; text-align: right; font-size: 14px; width: 100%; }
 .zp-wert span { color: var(--a-muted); font-size: 13px; }
+.zp-knoepfe { display: inline-flex; gap: 2px; }
 .zp-meta { margin: 0; font-size: 12.5px; color: var(--a-muted); }
 .zp-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .zp-summe { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; padding: 10px 12px; font-size: 13px; border-left: 3px solid var(--a-ok); background: var(--a-ok-soft); color: var(--a-ok); }
@@ -48,3 +49,32 @@
 .zm-stand .zahl { font-weight: 600; }
 .zm-akt { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 @media (max-width: 760px) { .zm-zeile { grid-template-columns: 1fr; gap: 10px; } .zm-akt { justify-content: flex-start; } }
+
+/* Bankverbindung & QR-Rechnung (Einstellungen) */
+.bank-felder { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 16px; }
+.bank-eingabe { position: relative; display: block; }
+.bank-eingabe .a-input { width: 100%; letter-spacing: 0.04em; padding-right: 40px; }
+.bank-eingabe svg { position: absolute; right: 12px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--a-ok); }
+.bank-eingabe.ok .a-input { border-color: var(--a-ok); }
+.bank-eingabe.fehler .a-input { border-color: var(--a-bad); }
+.bank-info { display: block; margin-top: 6px; font-size: 12.5px; line-height: 1.45; color: var(--a-muted); letter-spacing: 0; text-transform: none; font-weight: 400; }
+.bank-info.ok { color: var(--a-ok); }
+.bank-info.fehler { color: var(--a-bad); }
+.bank-status { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; padding: 14px 16px; margin-bottom: 16px; border-left: 3px solid var(--a-warn); background: var(--a-warn-soft); font-size: 13.5px; line-height: 1.5; color: #6b4513; }
+.bank-status.ok { border-left-color: var(--a-ok); background: var(--a-ok-soft); color: #1f5a40; }
+.bank-status svg { width: 20px; height: 20px; margin-top: 1px; }
+.bank-status b { display: block; font-size: 14.5px; margin-bottom: 2px; }
+.bank-status p, .bank-status ul { margin: 4px 0 0; }
+.bank-status ul { padding-left: 18px; }
+
+/* Hinweis «Zahlungsplan festlegen» / «Bankverbindung fehlt» (Auftrag, Übersicht, Rechnungen) */
+.zp-frage { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border-left: 3px solid var(--a-gold); background: var(--a-gold-soft); color: #5f4a28; font-size: 13.5px; line-height: 1.5; }
+.zp-frage.rot { border-left-color: var(--a-bad); background: var(--a-bad-soft); color: var(--a-bad); }
+.zp-frage > svg { width: 20px; height: 20px; }
+.zp-frage b { display: block; font-size: 14.5px; color: var(--a-ink); }
+.zp-frage.rot b { color: var(--a-bad); }
+.zp-frage a.a-knopf { white-space: nowrap; }
+.zp-frage-liste { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.zp-frage-liste a { display: inline-flex; gap: 6px; align-items: center; padding: 4px 10px; border: 1px solid rgba(95, 74, 40, 0.25); background: #fff; color: var(--a-ink); text-decoration: none; font-size: 12.5px; }
+.zp-frage-liste a:hover { border-color: var(--a-gold); }
+@media (max-width: 640px) { .zp-frage { grid-template-columns: 24px minmax(0, 1fr); } .zp-frage > :last-child { grid-column: 1 / -1; } }
