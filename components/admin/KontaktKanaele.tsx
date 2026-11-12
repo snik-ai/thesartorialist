@@ -15,19 +15,23 @@ export type KanalKontakt = {
   abgemeldet: boolean;
 };
 
-export default function KontaktKanaele({ k, terminId, text, betreff, anlass }: { k: KanalKontakt; terminId?: string; text: string; betreff: string; anlass: string }) {
+/** Je Kanal eigener Text (z. B. WhatsApp mit Emojis, E-Mail ohne); fehlt einer, gilt `text`. */
+export type KanalTexte = Partial<Record<'mail' | 'whatsapp' | 'sms', string>>;
+
+export default function KontaktKanaele({ k, terminId, text, texte, betreff, anlass }: { k: KanalKontakt; terminId?: string; text: string; texte?: KanalTexte; betreff: string; anlass: string }) {
+  const t = (kanal: 'mail' | 'whatsapp' | 'sms') => texte?.[kanal] ?? text;
   const router = useRouter();
 
   function loggen(kanal: 'anruf' | 'mail' | 'whatsapp' | 'sms') {
     const titel = { anruf: 'Angerufen', mail: 'E-Mail geöffnet', whatsapp: 'WhatsApp geöffnet', sms: 'SMS geöffnet' }[kanal];
-    const body = JSON.stringify({ kontaktId: k.id, terminId, kanal, richtung: 'aus', titel: `${titel} · ${anlass}`, text: kanal === 'anruf' ? null : text });
+    const body = JSON.stringify({ kontaktId: k.id, terminId, kanal, richtung: 'aus', titel: `${titel} · ${anlass}`, text: kanal === 'anruf' ? null : t(kanal) });
     // keepalive: der Eintrag kommt an, auch wenn der Browser in die App wechselt
     fetch('/api/admin/aktivitaet/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true })
       .then(() => router.refresh())
       .catch(() => {});
   }
 
-  const mailHref = k.email ? `mailto:${k.email}?subject=${encodeURIComponent(betreff)}&body=${encodeURIComponent(text)}` : undefined;
+  const mailHref = k.email ? `mailto:${k.email}?subject=${encodeURIComponent(betreff)}&body=${encodeURIComponent(t('mail'))}` : undefined;
   const sperrGrund = (ok: boolean) => (!k.telefon ? 'Keine Telefonnummer' : k.abgemeldet ? 'Abgemeldet' : !ok ? 'Keine Einwilligung' : '');
 
   const Knopf = ({ kanal, href, label, sub, grund }: { kanal: 'anruf' | 'mail' | 'whatsapp' | 'sms'; href?: string; label: string; sub: string; grund?: string }) =>
@@ -54,8 +58,8 @@ export default function KontaktKanaele({ k, terminId, text, betreff, anlass }: {
       <div className="a-kanaele">
         <Knopf kanal="anruf" href={k.telefon ? telLink(k.telefon) : undefined} label="Anrufen" sub={k.telefon ? telAnzeige(k.telefon) : ''} grund={k.telefon ? '' : 'Keine Telefonnummer'} />
         <Knopf kanal="mail" href={mailHref} label="E-Mail" sub={k.email ?? ''} grund={k.email ? '' : 'Keine E-Mail'} />
-        <Knopf kanal="whatsapp" href={k.telefon ? waLink(k.telefon, text) : undefined} label="WhatsApp" sub="Text vorbereitet" grund={sperrGrund(k.whatsappOk)} />
-        <Knopf kanal="sms" href={k.telefon ? smsLink(k.telefon, text) : undefined} label="SMS" sub="Text vorbereitet" grund={sperrGrund(k.smsOk)} />
+        <Knopf kanal="whatsapp" href={k.telefon ? waLink(k.telefon, t('whatsapp')) : undefined} label="WhatsApp" sub="Text vorbereitet" grund={sperrGrund(k.whatsappOk)} />
+        <Knopf kanal="sms" href={k.telefon ? smsLink(k.telefon, t('sms')) : undefined} label="SMS" sub="Text vorbereitet" grund={sperrGrund(k.smsOk)} />
       </div>
       {k.telefon && (!k.whatsappOk || !k.smsOk) && !k.abgemeldet && (
         <p className="a-sub" style={{ fontSize: 12.5, marginTop: 10 }}>

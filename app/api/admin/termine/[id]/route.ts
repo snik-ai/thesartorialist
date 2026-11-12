@@ -72,6 +72,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         }
       }
       await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: 'system', titel: `Termin bestätigt: ${lang}`, adminUserId: wer });
+      // Bestätigung über eine App des Ateliers (WhatsApp, SMS, eigenes Mailprogramm): der Knopf öffnet die App,
+      // diese Anfrage hält den Status und den Verlauf im System nach.
+      const appKanal = b.kanal === 'whatsapp' || b.kanal === 'sms' || b.kanal === 'mail' ? b.kanal : null;
+      if (appKanal) {
+        const name = { whatsapp: 'WhatsApp', sms: 'SMS', mail: 'E-Mail (Mailprogramm)' }[appKanal];
+        await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: appKanal, richtung: 'aus', titel: `Bestätigung per ${name} geöffnet: ${lang}`, text: txt(b.text, 3000) || null, adminUserId: wer });
+        mailMeldung = ` ${name} mit vorbereiteter Nachricht geöffnet.`;
+      }
       return NextResponse.json({ ok: true, mailFehler, meldung: `Termin bestätigt.${mailMeldung}`, text: textBestaetigung(k.name, lang), betreff: 'Ihr Termin bei The Sartorialist Zürich', anlass: 'Bestätigung' });
     }
 

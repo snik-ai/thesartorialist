@@ -477,3 +477,22 @@ body.a-sheet-offen { overflow: hidden; }
   .rg-aktion { grid-column: 2; justify-content: flex-start; flex-wrap: wrap; }
   .rg-aktion .a-knopf { min-height: 44px; }
 }
+
+/* Termin bestätigen: Wahl des Kanals */
+.best-wahl { max-width: 520px; }
+.best-optionen { display: grid; gap: 10px; margin: 16px 0 12px; }
+.best-opt {
+  display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 14px; align-items: center; width: 100%; text-align: left;
+  min-height: 64px; padding: 12px 16px; border: 1.5px solid var(--a-line-2); background: #fff; color: var(--a-ink); border-radius: 2px;
+  cursor: pointer; transition: border-color 0.15s, background 0.15s; font: inherit;
+}
+.best-opt:hover { border-color: var(--a-ink); background: #fbfaf8; }
+.best-opt svg { width: 24px; height: 24px; }
+.best-opt b { display: block; font-size: 15px; }
+.best-opt small { display: block; font-size: 12.5px; color: var(--a-muted); margin-top: 2px; }
+.best-opt.mail svg { color: var(--a-blue); }
+.best-opt.whatsapp svg { color: #1f8a5a; }
+.best-opt.sms svg { color: var(--a-gold); }
+.best-opt.mailapp svg { color: var(--a-soft); }
+.best-opt[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; background: var(--a-bg); }
+.best-opt[aria-disabled='true']:hover { border-color: var(--a-line-2); }

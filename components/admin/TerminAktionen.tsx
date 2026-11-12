@@ -1,12 +1,16 @@
 'use client';
 // Aktionen einer Anfrage: Bestätigen (Mail mit .ics), neuen Termin vorschlagen (1–3 Slots), Status, Notiz.
 // Danach: vorbereitete Nachricht für WhatsApp/SMS (1:1, Knopf öffnet die App).
+// Bestätigen fragt den Weg: E-Mail automatisch (mit Kalender), WhatsApp, SMS, eigenes Mailprogramm oder nur im
+// System. Ein App-Knopf öffnet die App mit fertigem Text und bestätigt im selben Moment im System (keepalive).
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SlotPicker from './SlotPicker';
-import KontaktKanaele, { type KanalKontakt } from './KontaktKanaele';
+import KontaktKanaele, { type KanalKontakt, type KanalTexte } from './KontaktKanaele';
+import Icon from './Icon';
+import { smsLink, waLink } from '@/lib/crm/telefon';
 import { terminLang } from '@/lib/zeit';
-import { textAllgemein, textBestaetigung, textRueckruf, textVorschlag } from '@/lib/crm/nachrichten';
+import { bestaetigungNachricht, textAllgemein, textBestaetigung, textRueckruf, textVorschlag } from '@/lib/crm/nachrichten';
 import type { TerminStatus } from '@/lib/db/schema';
 
 type Props = {
@@ -43,6 +47,46 @@ export default function TerminAktionen(p: Props) {
     return { text: textAllgemein(p.k.name), betreff: 'Ihre Anfrage bei The Sartorialist Zürich', anlass: 'Anfrage' };
   }, [p]);
   const kanalText = danach ?? standardText;
+
+  // Bestätigungstexte je Kanal (WhatsApp mit Emojis, SMS kurz, E-Mail ohne Emojis)
+  const bestaetigtFuer = danach?.anlass === 'Bestätigung' ? start[0] : p.status === 'bestaetigt' ? p.bestaetigtStart : null;
+  const texteFuer = (iso: string | null): KanalTexte | undefined =>
+    iso
+      ? {
+          whatsapp: bestaetigungNachricht('whatsapp', p.k.name, new Date(iso)).text,
+          sms: bestaetigungNachricht('sms', p.k.name, new Date(iso)).text,
+          mail: bestaetigungNachricht('mail', p.k.name, new Date(iso)).text,
+        }
+      : undefined;
+  const kanalTexte = texteFuer(bestaetigtFuer);
+  const mailBetreff = bestaetigtFuer ? bestaetigungNachricht('mail', p.k.name, new Date(bestaetigtFuer)).betreff : kanalText.betreff;
+
+  // Dialog «Wie bestätigen?»
+  const [wahl, setWahl] = useState(false);
+  const wahlTexte = texteFuer(start[0] ?? null);
+  const sperre = (ok: boolean) => (!p.k.telefon ? 'Keine Telefonnummer' : p.k.abgemeldet ? 'Abgemeldet' : !ok ? 'Keine Einwilligung für WhatsApp/SMS' : '');
+  function perApp(kanal: 'whatsapp' | 'sms' | 'mail') {
+    const text = wahlTexte?.[kanal] ?? '';
+    // keepalive: kommt an, auch wenn der Browser gleich in WhatsApp/SMS/Mail wechselt
+    fetch(`/api/admin/termine/${p.terminId}/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aktion: 'bestaetigen', start: start[0], mail: false, kanal, text }),
+      keepalive: true,
+    })
+      .then(async (r) => {
+        const j = await r.json().catch(() => ({}));
+        setMeldung(r.ok ? { art: 'gruen', text: j.meldung || 'Termin bestätigt.' } : { art: 'rot', text: j.fehler || 'Bestätigung im System fehlgeschlagen.' });
+        if (r.ok) setDanach({ text: textBestaetigung(p.k.name, terminLang(new Date(start[0]))), betreff: 'Ihr Termin bei The Sartorialist Zürich', anlass: 'Bestätigung' });
+        router.refresh();
+      })
+      .catch(() => setMeldung({ art: 'rot', text: 'Bestätigung im System fehlgeschlagen — bitte nochmals versuchen.' }));
+    setWahl(false);
+  }
+  const mailtoHref =
+    p.k.email && start[0] && wahlTexte?.mail
+      ? `mailto:${p.k.email}?subject=${encodeURIComponent(bestaetigungNachricht('mail', p.k.name, new Date(start[0])).betreff)}&body=${encodeURIComponent(wahlTexte.mail)}`
+      : undefined;
 
   async function senden(aktion: string, daten: Record<string, unknown> = {}) {
     setLaedt(true);
@@ -105,10 +149,107 @@ export default function TerminAktionen(p: Props) {
                 Termin: <b>{terminLang(new Date(start[0]))}</b>
               </div>
             )}
-            <Schalter />
-            <button type="button" className="a-knopf voll" disabled={laedt || !start[0]} onClick={() => senden('bestaetigen', { start: start[0], mail })}>
-              {laedt ? 'Moment …' : p.status === 'bestaetigt' ? 'Termin ändern & bestätigen' : 'Termin bestätigen'}
+            <button type="button" className="a-knopf voll" disabled={laedt || !start[0]} onClick={() => setWahl(true)}>
+              {laedt ? 'Moment …' : p.status === 'bestaetigt' ? 'Termin ändern & bestätigen …' : 'Termin bestätigen …'}
             </button>
+            {wahl && start[0] && (
+              <div className="a-ebene" role="dialog" aria-modal="true" aria-labelledby="best-titel" onKeyDown={(e) => e.key === 'Escape' && setWahl(false)} onClick={() => setWahl(false)}>
+                <div className="a-ebene-karte best-wahl" onClick={(e) => e.stopPropagation()}>
+                  <div className="a-karte-kopf">
+                    <h2 id="best-titel">Wie möchten Sie bestätigen?</h2>
+                    <button type="button" className="a-x" aria-label="Schliessen" onClick={() => setWahl(false)} autoFocus>
+                      <Icon name="x" />
+                    </button>
+                  </div>
+                  <div className="a-karte-inhalt">
+                    <p className="a-sub" style={{ marginTop: 0 }}>
+                      {p.k.name} · <b>{terminLang(new Date(start[0]))}</b>. Der Termin wird im System bestätigt, sobald Sie einen Weg wählen.
+                    </p>
+                    <div className="best-optionen">
+                      {p.k.email && p.mailBereit ? (
+                        <button
+                          type="button"
+                          className="best-opt mail"
+                          disabled={laedt}
+                          onClick={async () => {
+                            setWahl(false);
+                            await senden('bestaetigen', { start: start[0], mail: true });
+                          }}
+                        >
+                          <Icon name="mail" />
+                          <span>
+                            <b>E-Mail automatisch senden</b>
+                            <small>Mit Kalendereintrag an {p.k.email}</small>
+                          </span>
+                        </button>
+                      ) : (
+                        <span className="best-opt mail" aria-disabled="true">
+                          <Icon name="mail" />
+                          <span>
+                            <b>E-Mail automatisch senden</b>
+                            <small>{p.k.email ? 'E-Mail-Versand nicht konfiguriert' : 'Keine E-Mail-Adresse'}</small>
+                          </span>
+                        </span>
+                      )}
+                      {p.k.telefon && !sperre(p.k.whatsappOk) ? (
+                        <a className="best-opt whatsapp" href={waLink(p.k.telefon, wahlTexte?.whatsapp ?? '')} target="_blank" rel="noopener" onClick={() => perApp('whatsapp')}>
+                          <Icon name="whatsapp" />
+                          <span>
+                            <b>WhatsApp öffnen</b>
+                            <small>Nachricht mit Termin, Adresse und Karte vorbereitet</small>
+                          </span>
+                        </a>
+                      ) : (
+                        <span className="best-opt whatsapp" aria-disabled="true">
+                          <Icon name="whatsapp" />
+                          <span>
+                            <b>WhatsApp öffnen</b>
+                            <small>{sperre(p.k.whatsappOk)}</small>
+                          </span>
+                        </span>
+                      )}
+                      {p.k.telefon && !sperre(p.k.smsOk) ? (
+                        <a className="best-opt sms" href={smsLink(p.k.telefon, wahlTexte?.sms ?? '')} onClick={() => perApp('sms')}>
+                          <Icon name="sms" />
+                          <span>
+                            <b>SMS öffnen</b>
+                            <small>Kurze Bestätigung vorbereitet</small>
+                          </span>
+                        </a>
+                      ) : (
+                        <span className="best-opt sms" aria-disabled="true">
+                          <Icon name="sms" />
+                          <span>
+                            <b>SMS öffnen</b>
+                            <small>{sperre(p.k.smsOk)}</small>
+                          </span>
+                        </span>
+                      )}
+                      {mailtoHref && (
+                        <a className="best-opt mailapp" href={mailtoHref} onClick={() => perApp('mail')}>
+                          <Icon name="stift" />
+                          <span>
+                            <b>Im eigenen Mailprogramm</b>
+                            <small>E-Mail selbst prüfen und senden</small>
+                          </span>
+                        </a>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className="a-knopf leise voll"
+                      disabled={laedt}
+                      onClick={async () => {
+                        setWahl(false);
+                        await senden('bestaetigen', { start: start[0], mail: false });
+                      }}
+                    >
+                      Nur im System bestätigen
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -180,7 +321,7 @@ export default function TerminAktionen(p: Props) {
           <span className="a-kicker" style={{ marginTop: 6 }}>
             {danach ? 'Jetzt auch persönlich mitteilen' : 'Kontakt aufnehmen'}
           </span>
-          <KontaktKanaele k={p.k} terminId={p.terminId} text={kanalText.text} betreff={kanalText.betreff} anlass={kanalText.anlass} />
+          <KontaktKanaele k={p.k} terminId={p.terminId} text={kanalText.text} texte={kanalTexte} betreff={mailBetreff} anlass={kanalText.anlass} />
         </div>
       </div>
     </div>

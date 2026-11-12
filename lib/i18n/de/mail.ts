@@ -50,7 +50,7 @@ export const mail = {
     betreff: 'Termin bestätigt — {termin}',
     vorschau: 'Ihr Termin am {termin} ist bestätigt',
     titel: 'Ihr Termin ist bestätigt, {vorname}.',
-    text: 'Wir freuen uns auf Ihren Besuch im Atelier.',
+    text: 'Wir freuen uns, Sie in unserem Atelier an der Kuttelgasse 7 begrüssen zu dürfen.',
     kicker: 'Ihr Termin',
     unterzeile: 'Persönliche Beratung · 60–90 Minuten · {adresse}',
     textBestaetigt: 'Ihr Termin ist bestätigt: {termin}.',
