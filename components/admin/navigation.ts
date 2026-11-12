@@ -1,5 +1,5 @@
 // Navigation des Backends (gemeinsam für Seitenleiste, Tab-Leiste und die Seite «Mehr»).
-export type Zaehler = { termine: number; tasks: number; ueberfaellig: number; leads: number };
+export type Zaehler = { termine: number; tasks: number; ueberfaellig: number; leads: number; ratgeber: number };
 
 export type Eintrag = { href: string; label: string; icon: string; zahl?: keyof Zaehler; warn?: boolean };
 
@@ -10,6 +10,7 @@ export const NAV: { titel: string | null; eintraege: Eintrag[] }[] = [
     eintraege: [
       { href: '/admin/termine/', label: 'Termine', icon: 'kalender', zahl: 'termine' },
       { href: '/admin/leads/', label: 'Leads', icon: 'leads', zahl: 'leads' },
+      { href: '/admin/ratgeber/', label: 'PDF-Downloads', icon: 'pdf', zahl: 'ratgeber' },
       { href: '/admin/kunden/', label: 'Kunden', icon: 'kunde' },
       { href: '/admin/kontakte/', label: 'Alle Kontakte', icon: 'kontakte' },
     ],

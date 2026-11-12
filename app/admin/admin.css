@@ -461,3 +461,19 @@ body.a-sheet-offen { overflow: hidden; }
   .a-detail { grid-template-columns: 1fr; grid-template-areas: 'w' 'a' 'k' 's' 'v'; grid-template-rows: none; }
   .a-detail > .a { position: static; }
 }
+
+/* PDF-Downloads (Ratgeber-Leads) */
+.rg-zeile { grid-template-columns: 44px minmax(0, 1fr) minmax(170px, auto) auto; }
+.rg-wer { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rg-wer .a-zeile-titel { color: var(--a-ink); }
+.rg-wer .a-zeile-titel:hover { text-decoration: underline; }
+.rg-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.rg-wann { display: flex; flex-direction: column; gap: 3px; text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; }
+.rg-wann small { font-size: 12px; color: var(--a-muted); }
+.rg-aktion { display: flex; gap: 8px; justify-content: flex-end; }
+@media (max-width: 900px) {
+  .rg-zeile { grid-template-columns: 44px minmax(0, 1fr); }
+  .rg-wann { grid-column: 2; text-align: left; }
+  .rg-aktion { grid-column: 2; justify-content: flex-start; flex-wrap: wrap; }
+  .rg-aktion .a-knopf { min-height: 44px; }
+}
