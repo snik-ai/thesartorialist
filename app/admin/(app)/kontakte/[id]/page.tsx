@@ -56,7 +56,7 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
     db().execute<{ umsatz: number }>(sql`select coalesce(sum(z.betrag_rp), 0)::int as umsatz from zahlung z join rechnung r on r.id = z.rechnung_id where r.kontakt_id = ${id}`),
   ]);
 
-  const kanal = { id: k.id, name: k.name, telefon: k.telefon, email: k.email, whatsappOk: Boolean(k.einwilligungWhatsapp), smsOk: Boolean(k.einwilligungSms), abgemeldet: Boolean(k.abgemeldet) };
+  const kanal = { id: k.id, name: k.name, telefon: k.telefon, email: k.email, whatsappOk: Boolean(k.einwilligungWhatsapp), smsOk: Boolean(k.einwilligungSms), abgemeldet: Boolean(k.abgemeldet), sprache: k.sprache };
   const offenRp = rechnungen.filter((r) => r.status === 'offen' || r.status === 'teilbezahlt').reduce((a, r) => a + r.betragRp + r.mahngebuehrenRp - r.bezahltRp, 0);
   const mahnungen = await mahnungenVon(rechnungen.map((r) => r.id));
   const laufend = auftraege.filter((x) => !['abgeschlossen', 'storniert'].includes(x.a.status));

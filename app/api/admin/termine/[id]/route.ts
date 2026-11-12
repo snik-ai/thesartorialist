@@ -8,7 +8,6 @@ import { leadPhaseSetzen } from '@/lib/crm/ablauf';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
 import { icsDatei, mailTerminBestaetigt, mailTerminKunde, mailTerminVorschlag, type TerminDaten } from '@/lib/mail-vorlagen';
 import { kundenTexte, terminTextFuer } from '@/lib/i18n/kundenmail';
-import { textBestaetigung, textVorschlag } from '@/lib/crm/nachrichten';
 import { terminLang, zuerichTeile } from '@/lib/zeit';
 import type { TerminStatus } from '@/lib/db/schema';
 
@@ -33,7 +32,19 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!t) return fehler('Anfrage nicht gefunden', 404);
   const [k] = await db().select().from(schema.kontakt).where(eq(schema.kontakt.id, t.kontaktId)).limit(1);
   const wer = a.s.user.id;
-  // Kundenmails in der Sprache der Anfrage (Website-Sprache beim Absenden)
+  // Sprachwahl im Bestätigungs-/Vorschlagsdialog (de/en): wird Hauptsprache des Kunden und der Anfrage,
+  // damit Bestätigung, Erinnerung, Angebot und Rechnung danach in dieser Sprache gehen.
+  const gewaehlt = (b.aktion === 'bestaetigen' || b.aktion === 'vorschlagen') && (b.sprache === 'de' || b.sprache === 'en') ? b.sprache : null;
+  if (gewaehlt && (k.sprache !== gewaehlt || t.sprache !== gewaehlt)) {
+    const vorher = k.sprache;
+    await db().update(schema.kontakt).set({ sprache: gewaehlt }).where(eq(schema.kontakt.id, k.id));
+    await db().update(schema.termin).set({ sprache: gewaehlt }).where(eq(schema.termin.id, id));
+    if (vorher !== gewaehlt)
+      await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: 'system', titel: `Hauptsprache: ${gewaehlt === 'en' ? 'Englisch' : 'Deutsch'}`, adminUserId: a.s.user.id });
+    k.sprache = gewaehlt;
+    t.sprache = gewaehlt;
+  }
+  // Kundenmails in der Sprache der Anfrage (Website-Sprache beim Absenden bzw. im Dialog gewählt)
   const kunde = kundenTexte(t.sprache);
   const basis = (start: Date | null): TerminDaten => {
     const z = start ? zuerichTeile(start) : null;
@@ -80,7 +91,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: appKanal, richtung: 'aus', titel: `Bestätigung per ${name} geöffnet: ${lang}`, text: txt(b.text, 3000) || null, adminUserId: wer });
         mailMeldung = ` ${name} mit vorbereiteter Nachricht geöffnet.`;
       }
-      return NextResponse.json({ ok: true, mailFehler, meldung: `Termin bestätigt.${mailMeldung}`, text: textBestaetigung(k.name, lang), betreff: 'Ihr Termin bei The Sartorialist Zürich', anlass: 'Bestätigung' });
+      return NextResponse.json({ ok: true, mailFehler, meldung: `Termin bestätigt.${mailMeldung}`, anlass: 'Bestätigung' });
     }
 
     case 'vorschlagen': {
@@ -109,7 +120,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         }
       }
       await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: 'system', titel: `${slots.length} Terminvorschl${slots.length === 1 ? 'ag' : 'äge'}`, text: lang.join('\n'), adminUserId: wer });
-      return NextResponse.json({ ok: true, mailFehler, meldung: `Vorschläge gespeichert.${mailMeldung}`, text: textVorschlag(k.name, lang), betreff: 'Terminvorschläge — The Sartorialist Zürich', anlass: 'Vorschlag' });
+      return NextResponse.json({ ok: true, mailFehler, meldung: `Vorschläge gespeichert.${mailMeldung}`, anlass: 'Vorschlag', slots: slots.map((x) => x.toISOString()) });
     }
 
     case 'erledigt':

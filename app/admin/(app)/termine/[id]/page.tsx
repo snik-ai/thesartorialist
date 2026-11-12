@@ -95,6 +95,7 @@ export default async function TerminDetail({ params }: { params: Promise<{ id: s
               telefon: k.telefon,
               email: k.email,
               whatsappOk: Boolean(k.einwilligungWhatsapp),
+              sprache: k.sprache,
               smsOk: Boolean(k.einwilligungSms),
               abgemeldet: Boolean(k.abgemeldet),
             }}

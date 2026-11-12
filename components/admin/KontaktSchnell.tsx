@@ -6,7 +6,7 @@ import Icon from './Icon';
 import SlotPicker from './SlotPicker';
 import { MeldungZeile, useAktion } from './useAktion';
 import { smsLink, telLink, waLink } from '@/lib/crm/telefon';
-import { textAllgemein } from '@/lib/crm/nachrichten';
+import { nachrichtSprache, textAllgemein } from '@/lib/crm/nachrichten';
 import { terminLang } from '@/lib/zeit';
 import type { KanalKontakt } from './KontaktKanaele';
 
@@ -45,7 +45,7 @@ export default function KontaktSchnell({ k, belegt, mailBereit }: { k: KanalKont
   const [start, setStart] = useState<string[]>([]);
   const [mail, setMail] = useState(Boolean(k.email) && mailBereit);
   const { laedt, meldung, senden } = useAktion();
-  const text = textAllgemein(k.name);
+  const text = textAllgemein(k.name, nachrichtSprache(k.sprache));
   const darf = (ok: boolean) => ok && !k.abgemeldet && Boolean(k.telefon);
 
   const loggen = (kanal: 'anruf' | 'mail' | 'whatsapp' | 'sms') => {

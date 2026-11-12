@@ -8,7 +8,7 @@ import { stufeName, type Mahnstufe } from './mahnwesen';
 
 const T: Record<BelegSprache, { gruezi: string; titel: Record<Mahnstufe, string>; text: Record<Mahnstufe, string>; offen: string; frist: string; rechnung: string; mahnung: string; anhang: string; frage: string; gruss: string; betreff: string }> = {
   de: {
-    gruezi: 'Grüezi',
+    gruezi: 'Hallo',
     titel: { 1: 'Eine kleine Erinnerung', 2: 'Ihre Rechnung ist noch offen', 3: 'Letzte Mahnung vor der Betreibung' },
     text: {
       1: 'Vermutlich ist unsere Rechnung im Alltag untergegangen. Im Anhang finden Sie die Zahlungserinnerung mit QR-Zahlteil – scannen Sie den Code einfach mit Ihrer Banking-App.',
@@ -90,6 +90,6 @@ export function mailMahnung(d: { sprache: BelegSprache; name: string; stufe: Mah
       `<tr><td style="padding:8px 36px 32px;font:13px/1.6 Helvetica,Arial,sans-serif;color:${B.farben.MUTED}">${B.esc(t.frage)}</td></tr>`,
     mt,
   );
-  const text = [`${t.gruezi} ${d.name}`, '', d.nachricht || t.text[d.stufe], '', `${stufe} ${d.nummer} · ${t.rechnung} ${d.rechnungNummer}`, `${t.offen}: ${B.chfMail(d.offenRp)}`, `${t.frist}: ${d.frist}`, '', t.anhang, '', t.gruss, SITE.name].join('\n');
+  const text = [`${t.gruezi} ${B.vornameVon(d.name)}`, '', d.nachricht || t.text[d.stufe], '', `${stufe} ${d.nummer} · ${t.rechnung} ${d.rechnungNummer}`, `${t.offen}: ${B.chfMail(d.offenRp)}`, `${t.frist}: ${d.frist}`, '', t.anhang, '', t.gruss, SITE.name].join('\n');
   return { subject, html, text };
 }

@@ -10,7 +10,7 @@ import KontaktKanaele, { type KanalKontakt, type KanalTexte } from './KontaktKan
 import Icon from './Icon';
 import { smsLink, waLink } from '@/lib/crm/telefon';
 import { terminLang } from '@/lib/zeit';
-import { bestaetigungNachricht, textAllgemein, textBestaetigung, textRueckruf, textVorschlag } from '@/lib/crm/nachrichten';
+import { alleKanaele, bestaetigungNachricht, nachrichtSprache, rueckrufNachricht, textAllgemein, vorschlagNachricht, type NachrichtSprache } from '@/lib/crm/nachrichten';
 import type { TerminStatus } from '@/lib/db/schema';
 
 type Props = {
@@ -38,28 +38,26 @@ export default function TerminAktionen(p: Props) {
   const [notiz, setNotiz] = useState('');
   const [laedt, setLaedt] = useState(false);
   const [meldung, setMeldung] = useState<{ art: 'gruen' | 'rot'; text: string } | null>(null);
-  const [danach, setDanach] = useState<{ text: string; betreff: string; anlass: string } | null>(null);
+  const [danach, setDanach] = useState<{ text: string; texte?: KanalTexte; betreff: string; anlass: string } | null>(null);
 
+  // Sprache der Nachrichten: Hauptsprache des Kunden; im Bestätigungsdialog umschaltbar und dann beim Kunden gespeichert
+  const [sprache, setSprache] = useState<NachrichtSprache>(nachrichtSprache(p.k.sprache));
+  const en = sprache === 'en';
   const standardText = useMemo(() => {
-    if (p.status === 'bestaetigt' && p.bestaetigtStart) return { text: textBestaetigung(p.k.name, terminLang(new Date(p.bestaetigtStart))), betreff: 'Ihr Termin bei The Sartorialist Zürich', anlass: 'Bestätigung' };
-    if (p.status === 'vorgeschlagen' && p.vorschlaege.length) return { text: textVorschlag(p.k.name, p.vorschlaege.map((v) => terminLang(new Date(v)))), betreff: 'Terminvorschläge — The Sartorialist Zürich', anlass: 'Vorschlag' };
-    if (p.art === 'rueckruf') return { text: textRueckruf(p.k.name), betreff: 'Ihr Rückruf — The Sartorialist Zürich', anlass: 'Rückruf' };
-    return { text: textAllgemein(p.k.name), betreff: 'Ihre Anfrage bei The Sartorialist Zürich', anlass: 'Anfrage' };
-  }, [p]);
+    const vorschlaege = p.vorschlaege.map((v) => new Date(v));
+    if (p.status === 'vorgeschlagen' && vorschlaege.length)
+      return { text: vorschlagNachricht('mail', p.k.name, vorschlaege, sprache), texte: alleKanaele((k) => vorschlagNachricht(k, p.k.name, vorschlaege, sprache)), betreff: en ? 'Appointment options — The Sartorialist Zürich' : 'Terminvorschläge — The Sartorialist Zürich', anlass: 'Vorschlag' };
+    if (p.art === 'rueckruf')
+      return { text: rueckrufNachricht('mail', p.k.name, sprache), texte: alleKanaele((k) => rueckrufNachricht(k, p.k.name, sprache)), betreff: en ? 'Your call-back request — The Sartorialist Zürich' : 'Ihr Rückruf — The Sartorialist Zürich', anlass: 'Rückruf' };
+    return { text: textAllgemein(p.k.name, sprache), texte: undefined as KanalTexte | undefined, betreff: en ? 'Your enquiry at The Sartorialist Zürich' : 'Ihre Anfrage bei The Sartorialist Zürich', anlass: 'Anfrage' };
+  }, [p, sprache, en]);
   const kanalText = danach ?? standardText;
 
   // Bestätigungstexte je Kanal (WhatsApp mit Emojis, SMS kurz, E-Mail ohne Emojis)
-  const bestaetigtFuer = danach?.anlass === 'Bestätigung' ? start[0] : p.status === 'bestaetigt' ? p.bestaetigtStart : null;
-  const texteFuer = (iso: string | null): KanalTexte | undefined =>
-    iso
-      ? {
-          whatsapp: bestaetigungNachricht('whatsapp', p.k.name, new Date(iso)).text,
-          sms: bestaetigungNachricht('sms', p.k.name, new Date(iso)).text,
-          mail: bestaetigungNachricht('mail', p.k.name, new Date(iso)).text,
-        }
-      : undefined;
-  const kanalTexte = texteFuer(bestaetigtFuer);
-  const mailBetreff = bestaetigtFuer ? bestaetigungNachricht('mail', p.k.name, new Date(bestaetigtFuer)).betreff : kanalText.betreff;
+  const bestaetigtFuer = danach?.anlass === 'Bestätigung' ? start[0] : p.status === 'bestaetigt' && !danach ? p.bestaetigtStart : null;
+  const texteFuer = (iso: string | null): KanalTexte | undefined => (iso ? alleKanaele((k) => bestaetigungNachricht(k, p.k.name, new Date(iso), sprache).text) : undefined);
+  const kanalTexte = texteFuer(bestaetigtFuer) ?? kanalText.texte;
+  const mailBetreff = bestaetigtFuer ? bestaetigungNachricht('mail', p.k.name, new Date(bestaetigtFuer), sprache).betreff : kanalText.betreff;
 
   // Dialog «Wie bestätigen?»
   const [wahl, setWahl] = useState(false);
@@ -71,13 +69,13 @@ export default function TerminAktionen(p: Props) {
     fetch(`/api/admin/termine/${p.terminId}/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ aktion: 'bestaetigen', start: start[0], mail: false, kanal, text }),
+      body: JSON.stringify({ aktion: 'bestaetigen', start: start[0], mail: false, kanal, text, sprache }),
       keepalive: true,
     })
       .then(async (r) => {
         const j = await r.json().catch(() => ({}));
         setMeldung(r.ok ? { art: 'gruen', text: j.meldung || 'Termin bestätigt.' } : { art: 'rot', text: j.fehler || 'Bestätigung im System fehlgeschlagen.' });
-        if (r.ok) setDanach({ text: textBestaetigung(p.k.name, terminLang(new Date(start[0]))), betreff: 'Ihr Termin bei The Sartorialist Zürich', anlass: 'Bestätigung' });
+        if (r.ok) setDanach({ text: wahlTexte?.mail ?? '', betreff: '', anlass: 'Bestätigung' });
         router.refresh();
       })
       .catch(() => setMeldung({ art: 'rot', text: 'Bestätigung im System fehlgeschlagen — bitte nochmals versuchen.' }));
@@ -85,7 +83,7 @@ export default function TerminAktionen(p: Props) {
   }
   const mailtoHref =
     p.k.email && start[0] && wahlTexte?.mail
-      ? `mailto:${p.k.email}?subject=${encodeURIComponent(bestaetigungNachricht('mail', p.k.name, new Date(start[0])).betreff)}&body=${encodeURIComponent(wahlTexte.mail)}`
+      ? `mailto:${p.k.email}?subject=${encodeURIComponent(bestaetigungNachricht('mail', p.k.name, new Date(start[0]), sprache).betreff)}&body=${encodeURIComponent(wahlTexte.mail)}`
       : undefined;
 
   async function senden(aktion: string, daten: Record<string, unknown> = {}) {
@@ -96,7 +94,7 @@ export default function TerminAktionen(p: Props) {
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j.fehler || 'Fehler');
       setMeldung({ art: j.mailFehler ? 'rot' : 'gruen', text: j.meldung || 'Gespeichert.' });
-      if (j.text) setDanach({ text: j.text, betreff: j.betreff, anlass: j.anlass });
+      if (j.anlass) setDanach({ text: j.text ?? '', betreff: j.betreff ?? '', anlass: j.anlass, texte: j.anlass === 'Vorschlag' && j.slots ? alleKanaele((k) => vorschlagNachricht(k, p.k.name, (j.slots as string[]).map((x) => new Date(x)), sprache)) : undefined });
       router.refresh();
       return true;
     } catch (e) {
@@ -106,6 +104,25 @@ export default function TerminAktionen(p: Props) {
       setLaedt(false);
     }
   }
+
+  const SprachWahl = ({ hinweis = false }: { hinweis?: boolean }) => (
+    <div className="best-sprache">
+      <span className="a-kicker">Sprache für den Kunden</span>
+      <div className="a-aktion-tabs zwei" role="group" aria-label="Sprache">
+        {(
+          [
+            ['de', 'Deutsch'],
+            ['en', 'English'],
+          ] as [NachrichtSprache, string][]
+        ).map(([s, l]) => (
+          <button key={s} type="button" aria-pressed={sprache === s} onClick={() => setSprache(s)}>
+            {l}
+          </button>
+        ))}
+      </div>
+      {hinweis && <small>Wird beim Kunden als Hauptsprache gespeichert — alle weiteren E-Mails gehen in dieser Sprache.</small>}
+    </div>
+  );
 
   const Schalter = () =>
     p.k.email ? (
@@ -165,6 +182,7 @@ export default function TerminAktionen(p: Props) {
                     <p className="a-sub" style={{ marginTop: 0 }}>
                       {p.k.name} · <b>{terminLang(new Date(start[0]))}</b>. Der Termin wird im System bestätigt, sobald Sie einen Weg wählen.
                     </p>
+                    <SprachWahl hinweis />
                     <div className="best-optionen">
                       {p.k.email && p.mailBereit ? (
                         <button
@@ -173,7 +191,7 @@ export default function TerminAktionen(p: Props) {
                           disabled={laedt}
                           onClick={async () => {
                             setWahl(false);
-                            await senden('bestaetigen', { start: start[0], mail: true });
+                            await senden('bestaetigen', { start: start[0], mail: true, sprache });
                           }}
                         >
                           <Icon name="mail" />
@@ -241,7 +259,7 @@ export default function TerminAktionen(p: Props) {
                       disabled={laedt}
                       onClick={async () => {
                         setWahl(false);
-                        await senden('bestaetigen', { start: start[0], mail: false });
+                        await senden('bestaetigen', { start: start[0], mail: false, sprache });
                       }}
                     >
                       Nur im System bestätigen
@@ -263,8 +281,9 @@ export default function TerminAktionen(p: Props) {
               <span>Persönliche Zeile (optional)</span>
               <textarea className="a-input" rows={3} value={nachricht} onChange={(e) => setNachricht(e.target.value)} placeholder="Leider ist Ihr Wunschtermin schon vergeben …" />
             </label>
+            <SprachWahl />
             <Schalter />
-            <button type="button" className="a-knopf voll" disabled={laedt || !slots.length} onClick={() => senden('vorschlagen', { slots, nachricht, mail })}>
+            <button type="button" className="a-knopf voll" disabled={laedt || !slots.length} onClick={() => senden('vorschlagen', { slots, nachricht, mail, sprache })}>
               {laedt ? 'Moment …' : `${slots.length || ''} Vorschl${slots.length === 1 ? 'ag' : 'äge'} senden`}
             </button>
           </>

@@ -5,6 +5,8 @@
 // Mails ans Atelier bleiben Deutsch.
 import { SITE } from './site';
 import { mail as MAIL_DE } from './i18n/de/mail';
+import { bestaetigungNachricht, nachrichtSprache, ratgeberNachricht, rueckrufNachricht } from './crm/nachrichten';
+import { zuerich } from './zeit';
 
 export type MailTexte = typeof MAIL_DE;
 const f = (s: string, w: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (m, k: string) => (k in w ? String(w[k]) : m));
@@ -24,6 +26,10 @@ export type TerminDaten = {
   brandDomain?: string;
   /** Einwilligung: Terminbestätigung und Erinnerung auch per WhatsApp/SMS */
   einwilligung?: boolean;
+  /** ID im Backend (Knopf «Im Backend bestätigen» in der Atelier-Mail) */
+  terminId?: string;
+  /** Sprache der Anfrage (Website-Sprache) für die vorbereiteten Kundennachrichten in der Atelier-Mail */
+  sprache?: string;
 };
 
 const INK = '#101010';
@@ -33,6 +39,8 @@ const LINE = '#e5e3de';
 const WARM = '#f6f5f2';
 const GOLD = '#b08d57';
 
+/** Vorname für die Anrede («Hallo Joakim»), leer → ganzer Name */
+const vornameVon = (name: string) => name.trim().split(/\s+/)[0] || name.trim();
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const telHref = (t: string) => `tel:${t.replace(/[^\d+]/g, '').replace(/^0(?=\d)/, '+41')}`;
 const waHref = (t: string, text: string) =>
@@ -185,14 +193,22 @@ const titelZeile = (titel: string, text?: string) =>
 
 /** Ans Atelier: neue Terminanfrage, mit Schnellaktionen */
 export function mailTerminAtelier(d: TerminDaten) {
-  const vorname = d.name.split(' ')[0];
-  const antwort = `mailto:${d.email}?subject=${encodeURIComponent('Ihr Termin bei The Sartorialist Zürich')}&body=${encodeURIComponent(
-    `Grüezi ${d.name}\n\nGerne bestätigen wir Ihren Termin am ${d.wunschText}.\n\nWir freuen uns auf Sie im Atelier an der ${SITE.address.street}.\n\nFreundliche Grüsse\nThe Sartorialist Zürich`,
+  // Gleiche Texte wie im Backend-Dialog «Wie möchten Sie bestätigen?» (lib/crm/nachrichten.ts)
+  const start = d.datum && d.zeit ? zuerich(d.datum, d.zeit) : null;
+  const ns = nachrichtSprache(d.sprache);
+  const mailText = start ? bestaetigungNachricht('mail', d.name, start, ns) : null;
+  const waText = start
+    ? bestaetigungNachricht('whatsapp', d.name, start, ns).text
+    : `Hallo ${vornameVon(d.name)} 👋\n\nhier ist *The Sartorialist Zürich*. Danke für Ihre Terminanfrage – wann passt es Ihnen am besten?\n\nHerzliche Grüsse\nIhr Team von *The Sartorialist Zürich*`;
+  const antwort = `mailto:${d.email}?subject=${encodeURIComponent(mailText?.betreff ?? 'Ihr Termin bei The Sartorialist Zürich')}&body=${encodeURIComponent(
+    mailText?.text ?? `Hallo ${vornameVon(d.name)}\n\nGerne bestätigen wir Ihren Termin am ${d.wunschText}.\n\nWir freuen uns, Sie in unserem Atelier an der ${SITE.address.street} begrüssen zu dürfen.\n\nHerzliche Grüsse\nThe Sartorialist Zürich`,
   )}`;
+  const backend = d.terminId ? `${SITE.url.replace(/\/$/, '')}/admin/termine/${d.terminId}/` : '';
   const aktionen = [
-    d.email ? knopf(antwort, 'Termin bestätigen') : '',
+    backend ? knopf(backend, 'Im Backend bestätigen') : '',
+    d.telefon && d.einwilligung ? knopf(waHref(d.telefon, waText), 'WhatsApp', 'line') : '',
+    d.email ? knopf(antwort, 'Per E-Mail bestätigen', backend ? 'line' : undefined) : '',
     d.telefon ? knopf(telHref(d.telefon), 'Anrufen', 'line') : '',
-    d.telefon ? knopf(waHref(d.telefon, `Grüezi ${vorname}, hier ist The Sartorialist Zürich — gerne bestätigen wir Ihren Termin am ${d.wunschText}.`), 'WhatsApp', 'line') : '',
   ].join('');
   const html = rahmen(
     `Terminanfrage ${d.wunschText} — ${d.name}`,
@@ -205,7 +221,7 @@ export function mailTerminAtelier(d: TerminDaten) {
         ['Firma', [d.firma, d.brandDomain && d.brandDomain !== d.firma ? `(${d.brandDomain})` : ''].filter(Boolean).join(' ')],
         ['WhatsApp/SMS', d.einwilligung ? 'Ja, Bestätigung und Erinnerung erwünscht' : 'Nein'],
       ])}</td></tr>` +
-      `<tr><td style="padding:22px 36px 18px">${aktionen}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">Kalendereintrag im Anhang (Termin.ics) · Antworten gehen direkt an den Kunden.</div></td></tr>` +
+      `<tr><td style="padding:22px 36px 18px">${aktionen}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">«Im Backend bestätigen» setzt den Status und fragt nach dem Kanal. Kalendereintrag im Anhang (Termin.ics) · Antworten gehen direkt an den Kunden.</div></td></tr>` +
       stilBlock(d),
   );
   const text = [
@@ -248,7 +264,7 @@ export function mailTerminKunde(d: TerminDaten, t: MailTexte = MAIL_DE) {
     t,
   );
   const text = [
-    f(t.gruss, { name: d.name }),
+    f(t.gruss, { name: vornameVon(d.name) }),
     '',
     f(e.textDanke, { termin: d.wunschText ?? '' }),
     '',
@@ -276,14 +292,13 @@ export function mailRueckruf(d: { name: string; telefon: string; wunsch: string;
         ['Wunschzeit', d.wunsch || 'egal'],
         ['Gesendet von', d.pfad],
       ])}</td></tr>` +
-      `<tr><td style="padding:22px 36px 32px">${knopf(telHref(d.telefon), `Jetzt anrufen`)}${knopf(waHref(d.telefon, `Grüezi${d.name ? ` ${d.name.split(' ')[0]}` : ''}, hier ist The Sartorialist Zürich — Sie hatten um einen Rückruf gebeten.`), 'WhatsApp', 'line')}</td></tr>`,
+      `<tr><td style="padding:22px 36px 32px">${knopf(telHref(d.telefon), `Jetzt anrufen`)}${knopf(waHref(d.telefon, rueckrufNachricht('whatsapp', d.name)), 'WhatsApp', 'line')}</td></tr>`,
   );
   return { html, text: `Bitte um Rückruf\nName: ${d.name || '–'}\nTelefon: ${d.telefon}\nWunschzeit: ${d.wunsch || 'egal'}\nSeite: ${d.pfad}`, subject: `Rückrufbitte — ${d.name || d.telefon}` };
 }
 
 /** Ans Atelier: Ratgeber «Der passende Anzug» heruntergeladen (Lead mit Name + Telefon) */
 export function mailRatgeber(d: { name: string; telefon: string; pfad: string; einwilligung: boolean; kontaktUrl?: string }) {
-  const vorname = d.name ? ` ${d.name.split(' ')[0]}` : '';
   const html = rahmen(
     `Ratgeber-Download ${d.name || d.telefon}`,
     titelZeile('Ratgeber heruntergeladen', `${d.name || 'Ein Interessent'} hat den Ratgeber «Der passende Anzug» geöffnet — ein guter Moment für einen persönlichen Anruf.`) +
@@ -293,7 +308,7 @@ export function mailRatgeber(d: { name: string; telefon: string; pfad: string; e
         ['WhatsApp/SMS', d.einwilligung ? 'Einwilligung erteilt' : 'keine Einwilligung (nur Anruf)'],
         ['Gesendet von', d.pfad],
       ])}</td></tr>` +
-      `<tr><td style="padding:22px 36px 32px">${knopf(telHref(d.telefon), 'Jetzt anrufen')}${d.einwilligung ? knopf(waHref(d.telefon, `Grüezi${vorname}, hier ist The Sartorialist Zürich — danke für Ihr Interesse an unserem Ratgeber. Dürfen wir Sie zu einer kostenlosen Beratung einladen?`), 'WhatsApp', 'line') : ''}${d.kontaktUrl ? knopf(d.kontaktUrl, 'Im Backend öffnen', 'line') : ''}</td></tr>`,
+      `<tr><td style="padding:22px 36px 32px">${knopf(telHref(d.telefon), 'Jetzt anrufen')}${d.einwilligung ? knopf(waHref(d.telefon, ratgeberNachricht('whatsapp', d.name)), 'WhatsApp', 'line') : ''}${d.kontaktUrl ? knopf(d.kontaktUrl, 'Im Backend öffnen', 'line') : ''}</td></tr>`,
   );
   return {
     html,
@@ -333,7 +348,7 @@ export function mailTerminBestaetigt(d: TerminDaten & { nachricht?: string }, t:
     t,
   );
   const text = [
-    f(t.gruss, { name: d.name }),
+    f(t.gruss, { name: vornameVon(d.name) }),
     '',
     f(b.textBestaetigt, { termin: d.wunschText ?? '' }),
     d.nachricht || '',
@@ -363,7 +378,7 @@ export function mailTerminVorschlag(d: { name: string; vorschlaege: string[]; na
       `<tr><td style="padding:14px 36px 32px">${knopf(`mailto:${SITE.email}?subject=${encodeURIComponent(v.antwortBetreff)}`, v.perMail)}${knopf(SITE.whatsapp, 'WhatsApp', 'gold')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}</td></tr>`,
     t,
   );
-  const text = [f(t.gruss, { name: d.name }), '', d.nachricht || v.textKurz, '', ...d.vorschlaege.map((x) => `– ${x}`), '', t.grussFormel, t.signatur].join('\n');
+  const text = [f(t.gruss, { name: vornameVon(d.name) }), '', d.nachricht || v.textKurz, '', ...d.vorschlaege.map((x) => `– ${x}`), '', t.grussFormel, t.signatur].join('\n');
   return { html, text, subject: v.betreff };
 }
 
@@ -386,7 +401,7 @@ export function mailTerminErinnerung(d: TerminDaten & { bestaetigt: boolean; zwe
       `<tr><td style="padding:22px 36px 32px">${knopf(MAPS, t.routePlanen, 'ink')}${knopf(telHref(SITE.phone), SITE.phone, 'line')}${knopf(wa, 'WhatsApp', 'gold')}</td></tr>`,
     t,
   );
-  const text = [f(t.gruss, { name: d.name }), '', d.bestaetigt ? e.text : e.textWunsch, '', `${termin} — ${e.zweck[d.zweck]}`, adresse(), f(t.eingang.textTelefon, { telefon: SITE.phone }), '', t.grussFormel, t.signatur].join('\n');
+  const text = [f(t.gruss, { name: vornameVon(d.name) }), '', d.bestaetigt ? e.text : e.textWunsch, '', `${termin} — ${e.zweck[d.zweck]}`, adresse(), f(t.eingang.textTelefon, { telefon: SITE.phone }), '', t.grussFormel, t.signatur].join('\n');
   return { html, text, subject: f(d.bestaetigt ? e.betreff : e.betreffWunsch, { termin }) };
 }
 
@@ -404,7 +419,7 @@ export function mailAngebot(d: { name: string; anrede?: string | null; nummer: s
       `<tr><td style="padding:22px 36px 8px">${knopf(d.link, 'Angebot ansehen & annehmen', 'gold')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:4px">Das Angebot liegt zusätzlich als PDF bei.</div></td></tr>` +
       `<tr><td style="padding:14px 36px 32px">${kicker('Fragen zum Angebot?')}<p style="margin:0 0 14px;font:14px/1.6 Helvetica,Arial,sans-serif;color:${SOFT}">Antworten Sie einfach auf diese E-Mail oder rufen Sie uns an.</p>${knopf(telHref(SITE.phone), SITE.phone, 'line')}${knopf(SITE.whatsapp, 'WhatsApp', 'line')}</td></tr>`,
   );
-  const text = [`Grüezi ${d.name}`, '', d.nachricht || 'Gerne senden wir Ihnen unser Angebot für Ihre Massanfertigung.', '', `Angebot ${d.nummer}: ${d.titel}`, `Total ${chfMail(d.totalRp)} inkl. MWST${d.gueltigBis ? `, gültig bis ${d.gueltigBis}` : ''}`, '', `Online ansehen und annehmen: ${d.link}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  const text = [`Hallo ${vornameVon(d.name)}`, '', d.nachricht || 'Gerne senden wir Ihnen unser Angebot für Ihre Massanfertigung.', '', `Angebot ${d.nummer}: ${d.titel}`, `Total ${chfMail(d.totalRp)} inkl. MWST${d.gueltigBis ? `, gültig bis ${d.gueltigBis}` : ''}`, '', `Online ansehen und annehmen: ${d.link}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
   return { html, text, subject: `Ihr Angebot ${d.nummer} — The Sartorialist Zürich` };
 }
 
@@ -421,7 +436,7 @@ export function mailAuftragBestaetigt(d: { name: string; anrede?: string | null;
       ])}</td></tr>` +
       `<tr><td style="padding:22px 36px 32px">${kicker('So geht es weiter')}<p style="margin:0;font:14px/1.7 Helvetica,Arial,sans-serif;color:${SOFT}">1 · Stoff und Material werden bestellt<br>2 · Fertigung in Italien<br>3 · Anprobe im Atelier, Feinanpassungen<br>4 · Abholung — wir melden uns, sobald alles bereit ist</p></td></tr>`,
   );
-  const text = [`Grüezi ${d.name}`, '', 'Herzlichen Dank für Ihre Zusage. Wir beginnen mit Ihrer Massanfertigung.', '', `Auftrag: ${d.auftragNummer}`, `Angebot: ${d.angebotNummer}`, `${d.titel} — ${chfMail(d.totalRp)} inkl. MWST`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  const text = [`Hallo ${vornameVon(d.name)}`, '', 'Herzlichen Dank für Ihre Zusage. Wir beginnen mit Ihrer Massanfertigung.', '', `Auftrag: ${d.auftragNummer}`, `Angebot: ${d.angebotNummer}`, `${d.titel} — ${chfMail(d.totalRp)} inkl. MWST`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
   return { html, text, subject: `Auftragsbestätigung ${d.auftragNummer} — The Sartorialist Zürich` };
 }
 
@@ -451,7 +466,7 @@ export function mailRechnung(d: { name: string; anrede?: string | null; nummer: 
       `<tr><td style="padding:18px 36px 6px">${kicker(`${artText} ${d.nummer}`)}<div style="padding:20px 22px;background:${INK};color:#ffffff"><div style="font:700 21px/1.35 Georgia,'Times New Roman',serif">${esc(chfMail(d.betragRp))}</div><div style="font:13px/1.6 Helvetica,Arial,sans-serif;color:#d8d4cc;margin-top:6px">${esc([d.titel, d.faellig ? `zahlbar bis ${d.faellig}` : ''].filter(Boolean).join(' · '))}</div></div></td></tr>` +
       `<tr><td style="padding:22px 36px 32px;font:13px/1.6 Helvetica,Arial,sans-serif;color:${MUTED}">Fragen zur Rechnung? Antworten Sie einfach auf diese E-Mail.</td></tr>`,
   );
-  const text = [`Grüezi ${d.name}`, '', d.nachricht || 'Im Anhang finden Sie die Rechnung mit QR-Zahlteil.', '', `${artText} ${d.nummer}: ${chfMail(d.betragRp)}${d.faellig ? `, zahlbar bis ${d.faellig}` : ''}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  const text = [`Hallo ${vornameVon(d.name)}`, '', d.nachricht || 'Im Anhang finden Sie die Rechnung mit QR-Zahlteil.', '', `${artText} ${d.nummer}: ${chfMail(d.betragRp)}${d.faellig ? `, zahlbar bis ${d.faellig}` : ''}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
   return { html, text, subject: `${artText} ${d.nummer} — The Sartorialist Zürich` };
 }
 
@@ -462,9 +477,9 @@ export function mailAbholbereit(d: { name: string; anrede?: string | null; titel
     titelZeile(`Es ist so weit, ${anredeName(d.name, d.anrede)}.`, `Ihre Massanfertigung «${d.titel}» ist fertig und wartet im Atelier auf Sie. Wann passt es Ihnen für die Abholung?`) +
       `<tr><td style="padding:18px 36px 32px">${knopf(telHref(SITE.phone), SITE.phone, 'ink')}${knopf(SITE.whatsapp, 'WhatsApp', 'gold')}${knopf(MAPS, 'Route planen', 'line')}<div style="font:12px/1.5 Helvetica,Arial,sans-serif;color:${MUTED};margin-top:6px">Auftrag ${esc(d.auftragNummer)} · ${esc(adresse())}</div></td></tr>`,
   );
-  const text = [`Grüezi ${d.name}`, '', `Ihre Massanfertigung «${d.titel}» ist abholbereit. Wann passt es Ihnen?`, `Atelier: ${adresse()}`, `Telefon: ${SITE.phone}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
+  const text = [`Hallo ${vornameVon(d.name)}`, '', `Ihre Massanfertigung «${d.titel}» ist abholbereit. Wann passt es Ihnen?`, `Atelier: ${adresse()}`, `Telefon: ${SITE.phone}`, '', 'Freundliche Grüsse', 'The Sartorialist Zürich'].join('\n');
   return { html, text, subject: 'Ihre Massanfertigung ist abholbereit — The Sartorialist Zürich' };
 }
 
 /** Bausteine für weitere Kundenmails (lib/beleg/mails.ts: Mahnungen in der Kundensprache) */
-export const mailBausteine = { rahmen, titelZeile, kicker, knopf, zeilen, esc, chfMail, telHref, farben: { INK, SOFT, MUTED, LINE, WARM, GOLD } };
+export const mailBausteine = { vornameVon, rahmen, titelZeile, kicker, knopf, zeilen, esc, chfMail, telHref, farben: { INK, SOFT, MUTED, LINE, WARM, GOLD } };

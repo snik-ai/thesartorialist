@@ -146,7 +146,7 @@ export async function POST(req: Request) {
 
   try {
     if (art === 'termin') {
-      const d = { name, email: emailOk(email) ? email : undefined, telefon: tel || undefined, datum, zeit, wunschText: wunsch || 'nach Absprache', stil, stoffe, firma: firma || undefined, brandDomain: brandDomain || undefined, einwilligung: !!einwilligung };
+      const d = { name, email: emailOk(email) ? email : undefined, telefon: tel || undefined, datum, zeit, wunschText: wunsch || 'nach Absprache', stil, stoffe, firma: firma || undefined, brandDomain: brandDomain || undefined, einwilligung: !!einwilligung, terminId: terminId ?? undefined, sprache };
       const atelier = mailTerminAtelier(d);
       const icsA = icsDatei(d, 'atelier');
       await sendeMail({ to: empfaenger(), subject: atelier.subject, text: atelier.text, html: atelier.html, replyTo: d.email, anhaenge: icsA ? [{ filename: 'Termin.ics', content: icsA }] : undefined });

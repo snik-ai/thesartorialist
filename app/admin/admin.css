@@ -248,6 +248,10 @@ textarea.a-input { min-height: 110px; resize: vertical; line-height: 1.55; }
 .a-aktion-tabs button { padding: 12px 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--a-muted); border-right: 1px solid var(--a-line-2); }
 .a-aktion-tabs button:last-child { border-right: 0; }
 .a-aktion-tabs button[aria-pressed='true'] { background: var(--a-ink); color: #fff; }
+.a-aktion-tabs.zwei { grid-template-columns: repeat(2, 1fr); }
+.best-sprache { display: grid; gap: 8px; margin: 14px 0 4px; }
+.best-sprache .a-kicker { margin: 0; }
+.best-sprache small { font-size: 12.5px; color: var(--a-muted); line-height: 1.45; }
 .a-kanaele { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .a-kanal {
   display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--a-line-2); background: #fff; text-align: left; min-height: 58px;

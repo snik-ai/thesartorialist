@@ -7,6 +7,7 @@ import Icon from '@/components/admin/Icon';
 import { LEAD_PHASEN } from '@/lib/crm/belege';
 import { telAnzeige, telLink, waLink } from '@/lib/crm/telefon';
 import { TZ, relativ } from '@/lib/zeit';
+import { nachrichtSprache, ratgeberNachricht } from '@/lib/crm/nachrichten';
 
 // PDF-Downloads: jeder Abruf des Ratgebers «Der passende Anzug» (Lead-Magnet, Name + Telefon)
 // mit Kontakt, Zeitpunkt, Seite, Einwilligung WhatsApp/SMS und Stand des Leads.
@@ -26,6 +27,7 @@ type Download = {
   brand_domain: string | null;
   status: string;
   lead_phase: string;
+  sprache: string;
   einwilligung: boolean;
   anzahl: number;
 };
@@ -49,7 +51,7 @@ export default async function RatgeberPage({ searchParams }: { searchParams: Pro
     db().execute<Download>(sql`
       select a.id, a.erstellt_am, a.daten->>'pfad' as pfad, a.daten->>'konzept' as konzept,
         (a.daten->>'neuerKontakt')::boolean as neuer_kontakt,
-        k.id as kontakt_id, k.name, k.telefon, k.email, k.brand_domain, k.status, k.lead_phase,
+        k.id as kontakt_id, k.name, k.telefon, k.email, k.brand_domain, k.status, k.lead_phase, k.sprache,
         (k.einwilligung_whatsapp is not null) as einwilligung,
         (select count(*)::int from aktivitaet b where b.kontakt_id = k.id and b.daten->>'art' = 'ratgeber') as anzahl
       from aktivitaet a
@@ -159,7 +161,7 @@ export default async function RatgeberPage({ searchParams }: { searchParams: Pro
                   )}
                   {r.telefon && r.einwilligung && (
                     <a
-                      href={waLink(r.telefon, `Guten Tag ${r.name.split(' ')[0]}, danke für Ihr Interesse an unserem Ratgeber «Der passende Anzug». Dürfen wir Sie zu einer unverbindlichen Beratung im Atelier einladen? — The Sartorialist, Kuttelgasse 7, Zürich`)}
+                      href={waLink(r.telefon, ratgeberNachricht('whatsapp', r.name, nachrichtSprache(r.sprache)))}
                       target="_blank"
                       rel="noopener"
                       className="a-knopf gruen klein"

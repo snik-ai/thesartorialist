@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import KontaktKanaele, { type KanalKontakt } from './KontaktKanaele';
-import { textAllgemein } from '@/lib/crm/nachrichten';
+import { nachrichtSprache, textAllgemein } from '@/lib/crm/nachrichten';
 
 type Daten = { name: string; email: string; telefon: string; firma: string; brandDomain: string; notiz: string; anrede: string; strasse: string; plz: string; ort: string };
 
@@ -58,7 +58,7 @@ export default function KontaktPanel({ k, daten, whatsapp, sms, abgemeldet }: { 
           <h2>Kontakt aufnehmen</h2>
         </div>
         <div className="a-karte-inhalt">
-          <KontaktKanaele k={k} text={textAllgemein(k.name)} betreff="The Sartorialist Zürich" anlass="Kontakt" />
+          <KontaktKanaele k={k} text={textAllgemein(k.name, nachrichtSprache(k.sprache))} betreff="The Sartorialist Zürich" anlass="Kontakt" />
         </div>
       </div>
 

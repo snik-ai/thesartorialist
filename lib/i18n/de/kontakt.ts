@@ -28,6 +28,6 @@ export const kontakt = {
     frage: 'Kein passender Termin dabei?',
     rueckruf: 'Rückruf anfordern',
     whatsapp: 'WhatsApp',
-    waText: 'Grüezi, ich hätte gerne einen Beratungstermin.',
+    waText: 'Hallo, ich hätte gerne einen Beratungstermin.',
   },
 };

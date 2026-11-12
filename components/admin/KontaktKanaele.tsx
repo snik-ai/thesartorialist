@@ -13,6 +13,8 @@ export type KanalKontakt = {
   whatsappOk: boolean;
   smsOk: boolean;
   abgemeldet: boolean;
+  /** Hauptsprache des Kunden (de/en …) — bestimmt Sprache der Nachrichten und Kundenmails */
+  sprache?: string;
 };
 
 /** Je Kanal eigener Text (z. B. WhatsApp mit Emojis, E-Mail ohne); fehlt einer, gilt `text`. */
