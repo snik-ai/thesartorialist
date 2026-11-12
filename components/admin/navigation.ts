@@ -9,6 +9,7 @@ export const NAV: { titel: string | null; eintraege: Eintrag[] }[] = [
     titel: 'Kunden',
     eintraege: [
       { href: '/admin/termine/', label: 'Termine', icon: 'kalender', zahl: 'termine' },
+      { href: '/admin/termine/woche/', label: 'Wochenplanung', icon: 'uhr' },
       { href: '/admin/leads/', label: 'Leads', icon: 'leads', zahl: 'leads' },
       { href: '/admin/ratgeber/', label: 'PDF-Downloads', icon: 'pdf', zahl: 'ratgeber' },
       { href: '/admin/kunden/', label: 'Kunden', icon: 'kunde' },

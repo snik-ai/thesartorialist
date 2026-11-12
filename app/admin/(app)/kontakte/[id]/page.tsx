@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { and, desc, eq, gte, isNotNull, sql } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
+import { belegtFuerPicker } from '@/lib/crm/kalender';
 import Icon from '@/components/admin/Icon';
 import { NeuBelegKnopf } from '@/components/admin/NeuBeleg';
 import KontaktPanel from '@/components/admin/KontaktPanel';
@@ -24,7 +25,7 @@ import { QUELLE_RATGEBER, quelleLabel } from '@/lib/crm/quelle';
 export const metadata: Metadata = { title: 'Kundenakte' };
 export const dynamic = 'force-dynamic';
 
-const ZWECK: Record<string, string> = { beratung: 'Beratung', massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung' };
+const ZWECK: Record<string, string> = { beratung: 'Beratung', massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', telefon: 'Telefontermin' };
 const KERN = ['sakko.brust', 'sakko.taille', 'sakko.schulter', 'sakko.aermel_li', 'hose.bund', 'hose.schritt', 'hemd.hals', 'allgemein.koerpergroesse'];
 
 export default async function KontaktDetail({ params }: { params: Promise<{ id: string }> }) {
@@ -49,10 +50,7 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
       .orderBy(desc(schema.auftrag.erstelltAm)),
     db().select().from(schema.rechnung).where(eq(schema.rechnung.kontaktId, id)).orderBy(desc(schema.rechnung.erstelltAm)),
     db().select().from(schema.massblatt).where(eq(schema.massblatt.kontaktId, id)).orderBy(desc(schema.massblatt.version)),
-    db()
-      .select({ start: schema.termin.bestaetigtStart })
-      .from(schema.termin)
-      .where(and(eq(schema.termin.status, 'bestaetigt'), isNotNull(schema.termin.bestaetigtStart), gte(schema.termin.bestaetigtStart, new Date(Date.now() - 86400_000)))),
+    belegtFuerPicker(),
     db().execute<{ umsatz: number }>(sql`select coalesce(sum(z.betrag_rp), 0)::int as umsatz from zahlung z join rechnung r on r.id = z.rechnung_id where r.kontakt_id = ${id}`),
   ]);
 
@@ -65,7 +63,7 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
   const kommend = termine.filter((t) => t.status === 'bestaetigt' && t.bestaetigtStart && t.bestaetigtStart.getTime() > Date.now() - 3600_000);
   const fruehere = termine.filter((t) => !offeneAnfragen.includes(t) && !kommend.includes(t));
   const mb = massblaetter[0];
-  const belegtIso = belegt.map((b) => b.start!.toISOString());
+  const belegtIso = belegt;
 
   return (
     <>
@@ -152,7 +150,7 @@ export default async function KontaktDetail({ params }: { params: Promise<{ id: 
                     wunschStart={t.wunschStart?.toISOString() ?? null}
                     bestaetigtStart={t.bestaetigtStart?.toISOString() ?? null}
                     vorschlaege={t.vorschlaege}
-                    belegt={belegtIso.filter((b) => b !== t.bestaetigtStart?.toISOString())}
+                    belegt={belegtIso.filter((b) => b.art !== 'termin' || b.start !== t.bestaetigtStart?.toISOString())}
                     eingangOffen={!t.eingangMailAm}
                     mailBereit={mailBereit()}
                     k={kanal}

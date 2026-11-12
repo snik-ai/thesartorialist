@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic';
 
 type P = { params: Promise<{ id: string }> };
 const STATUS = new Set<string>([...AUFTRAG_SCHRITTE.map((s) => s.key), 'storniert']);
-const ZWECK: Record<string, string> = { massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', beratung: 'Beratung' };
+const ZWECK: Record<string, string> = { massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', beratung: 'Beratung', telefon: 'Telefontermin' };
 
 async function laden(id: string) {
   if (!UUID.test(id)) return null;

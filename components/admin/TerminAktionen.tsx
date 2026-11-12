@@ -5,7 +5,7 @@
 // System. Ein App-Knopf öffnet die App mit fertigem Text und bestätigt im selben Moment im System (keepalive).
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import SlotPicker from './SlotPicker';
+import SlotPicker, { type Belegt } from './SlotPicker';
 import KontaktKanaele, { type KanalKontakt, type KanalTexte } from './KontaktKanaele';
 import Icon from './Icon';
 import { smsLink, waLink } from '@/lib/crm/telefon';
@@ -20,7 +20,7 @@ type Props = {
   wunschStart: string | null;
   bestaetigtStart: string | null;
   vorschlaege: string[];
-  belegt: string[];
+  belegt: Belegt;
   eingangOffen: boolean;
   mailBereit: boolean;
   k: KanalKontakt;

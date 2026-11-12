@@ -1,10 +1,14 @@
 'use client';
 // Eigener Kalender- und Slot-Picker: Öffnungszeiten aus lib/site.ts (hours), 30-Minuten-Raster,
-// Beratung 90 Minuten (letzter Start 90 Min. vor Ladenschluss), belegte Termine gesperrt.
+// Beratung 90 Minuten (letzter Start 90 Min. vor Ladenschluss), belegte Termine und private Blocker
+// (Wochenplanung) gesperrt. belegt: Startzeiten (ISO, ±90 Min.) oder Bereiche { start, ende } aus lib/crm/kalender.ts.
 import { useMemo, useState } from 'react';
 import Icon from './Icon';
 import { SITE } from '@/lib/site';
 import { terminLang, zuerich, zuerichTeile } from '@/lib/zeit';
+import type { Bereich } from '@/lib/kalender';
+
+export type Belegt = (string | Bereich)[];
 
 const DAUER_MIN = 90;
 const WT = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
@@ -32,7 +36,7 @@ export default function SlotPicker({
   max?: number;
   wert: string[];
   onChange: (iso: string[]) => void;
-  belegt?: string[];
+  belegt?: Belegt;
   wunsch?: string | null;
 }) {
   const heute = zuerichTeile(new Date());
@@ -40,7 +44,18 @@ export default function SlotPicker({
   const [monat, setMonat] = useState(start.slice(0, 7));
   const [tag, setTag] = useState<string>(start);
 
-  const belegtMs = useMemo(() => belegt.map((b) => new Date(b).getTime()), [belegt]);
+  // Punkt (Startzeit eines Termins) → ±90 Min. gesperrt; Bereich → jede Überschneidung mit dem 90-Minuten-Slot gesperrt
+  const sperren = useMemo(
+    () =>
+      belegt.map((b) => {
+        if (typeof b === 'string') {
+          const t = new Date(b).getTime();
+          return { von: t - DAUER_MIN * 60_000, bis: t + DAUER_MIN * 60_000, privat: false };
+        }
+        return { von: new Date(b.start).getTime() - DAUER_MIN * 60_000, bis: new Date(b.ende).getTime(), privat: b.art === 'privat' };
+      }),
+    [belegt],
+  );
   const wunschTag = wunsch ? zuerichTeile(new Date(wunsch)).datum : null;
   const wunschZeit = wunsch ? zuerichTeile(new Date(wunsch)).zeit : null;
   const gewaehltTage = new Set(wert.map((w) => zuerichTeile(new Date(w)).datum));
@@ -119,7 +134,8 @@ export default function SlotPicker({
           const ms = zuerich(d, z)!.getTime();
           const iso = new Date(ms).toISOString();
           const vorbei = ms < jetzt;
-          const besetzt = belegtMs.some((b) => Math.abs(b - ms) < DAUER_MIN * 60_000);
+          const sperre = sperren.find((b) => ms > b.von && ms < b.bis);
+          const besetzt = Boolean(sperre);
           return (
             <button
               key={lokal}
@@ -127,7 +143,7 @@ export default function SlotPicker({
               className={`a-slot${d === wunschTag && z === wunschZeit ? ' wunsch' : ''}`}
               disabled={vorbei || besetzt}
               aria-pressed={wert.includes(iso)}
-              title={besetzt ? 'Belegt (bestätigter Termin)' : d === wunschTag && z === wunschZeit ? 'Wunschzeit der Kundin / des Kunden' : undefined}
+              title={sperre ? (sperre.privat ? 'Blockiert (privater Eintrag)' : 'Belegt (bestätigter Termin)') : d === wunschTag && z === wunschZeit ? 'Wunschzeit der Kundin / des Kunden' : undefined}
               onClick={() => waehle(lokal)}
             >
               {z}

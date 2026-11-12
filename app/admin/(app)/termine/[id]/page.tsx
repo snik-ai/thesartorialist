@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { and, desc, eq, gte, isNotNull, ne } from 'drizzle-orm';
+import { and, desc, eq, ne } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
+import { belegtFuerPicker } from '@/lib/crm/kalender';
 import Icon from '@/components/admin/Icon';
 import TerminAktionen from '@/components/admin/TerminAktionen';
 import { Avatar, StilAuswahl, Verlauf } from '@/components/admin/Bausteine';
 import { STATUS_LABEL } from '@/lib/crm/status';
-import { telAnzeige } from '@/lib/crm/telefon';
+import { telAnzeige, telLink } from '@/lib/crm/telefon';
 import { mailBereit } from '@/lib/mail';
 import { relativ, terminLang, TZ } from '@/lib/zeit';
 import { UUID } from '@/lib/admin/zugang';
@@ -30,10 +31,7 @@ export default async function TerminDetail({ params }: { params: Promise<{ id: s
       .where(eq(schema.aktivitaet.kontaktId, k.id))
       .orderBy(desc(schema.aktivitaet.erstelltAm))
       .limit(60),
-    db()
-      .select({ start: schema.termin.bestaetigtStart })
-      .from(schema.termin)
-      .where(and(eq(schema.termin.status, 'bestaetigt'), isNotNull(schema.termin.bestaetigtStart), ne(schema.termin.id, id), gte(schema.termin.bestaetigtStart, new Date(Date.now() - 86400_000)))),
+    belegtFuerPicker({ ohneTermin: id }),
     db()
       .select({ id: schema.termin.id, status: schema.termin.status, art: schema.termin.art, erstelltAm: schema.termin.erstelltAm })
       .from(schema.termin)
@@ -42,6 +40,7 @@ export default async function TerminDetail({ params }: { params: Promise<{ id: s
       .limit(5),
   ]);
 
+  const telefonTermin = t.art === 'termin' && t.zweck === 'telefon';
   const wunsch = t.wunschStart ? terminLang(t.wunschStart) : t.wunschText || 'nach Absprache';
 
   return (
@@ -49,11 +48,14 @@ export default async function TerminDetail({ params }: { params: Promise<{ id: s
       <Link href="/admin/termine/" className="a-zurueck">
         <Icon name="zurueck" width={16} height={16} /> Alle Anfragen
       </Link>
+      <Link href="/admin/termine/woche/" className="a-zurueck" style={{ marginLeft: 18 }}>
+        <Icon name="kalender" width={16} height={16} /> Wochenplanung
+      </Link>
       <div className="a-kopf">
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
           <Avatar name={k.name || '?'} brandDomain={k.brandDomain} gross />
           <div style={{ minWidth: 0 }}>
-            <span className="a-kicker">{t.art === 'rueckruf' ? 'Rückrufbitte' : 'Terminanfrage'}</span>
+            <span className="a-kicker">{t.art === 'rueckruf' ? 'Rückrufbitte' : t.zweck === 'telefon' ? 'Telefontermin' : t.quelle?.startsWith('atelier') ? 'Termin' : 'Terminanfrage'}</span>
             <h1>{k.name || (k.telefon ? telAnzeige(k.telefon) : 'Ohne Namen')}</h1>
             <p className="a-sub">
               <span className={`a-pill ${t.status}`}>{STATUS_LABEL[t.status]}</span> &nbsp;Eingang {Date.now() - t.erstelltAm.getTime() < 7 * 86400_000 ? `${relativ(t.erstelltAm)} · ` : ''}
@@ -72,10 +74,27 @@ export default async function TerminDetail({ params }: { params: Promise<{ id: s
             <span className="a-kicker">{t.status === 'bestaetigt' && t.bestaetigtStart ? 'Bestätigter Termin' : t.art === 'rueckruf' ? 'Wunschzeit Rückruf' : 'Wunschtermin'}</span>
             <strong>{t.status === 'bestaetigt' && t.bestaetigtStart ? terminLang(t.bestaetigtStart) : wunsch}</strong>
             <small>
-              {t.status === 'bestaetigt' && t.bestaetigtStart ? `Ursprünglicher Wunsch: ${wunsch}` : t.art === 'termin' ? 'Persönliche Beratung · 60–90 Minuten' : 'Bitte zurückrufen'}
+              {telefonTermin
+                ? `Telefontermin · ${t.dauerMin} Minuten · Sie rufen an`
+                : t.status === 'bestaetigt' && t.bestaetigtStart
+                  ? `Ursprünglicher Wunsch: ${wunsch}`
+                  : t.art === 'termin'
+                    ? 'Persönliche Beratung · 60–90 Minuten'
+                    : 'Bitte zurückrufen'}
               {t.status === 'vorgeschlagen' && t.vorschlaege.length > 0 && ` · Vorgeschlagen: ${t.vorschlaege.map((v) => terminLang(new Date(v))).join(' / ')}`}
             </small>
           </div>
+          {telefonTermin && k.telefon && (
+            <a href={telLink(k.telefon)} className="a-knopf gold gross voll" style={{ marginTop: 12, minHeight: 68, gap: 14 }}>
+              <Icon name="telefon" width={22} height={22} />
+              <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 3 }}>
+                <span>Jetzt anrufen</span>
+                <span className="zahl" style={{ fontSize: 13, letterSpacing: '0.04em', textTransform: 'none', fontWeight: 500 }}>
+                  {telAnzeige(k.telefon)}
+                </span>
+              </span>
+            </a>
+          )}
         </div>
 
         <div className="a">
@@ -86,7 +105,7 @@ export default async function TerminDetail({ params }: { params: Promise<{ id: s
             wunschStart={t.wunschStart?.toISOString() ?? null}
             bestaetigtStart={t.bestaetigtStart?.toISOString() ?? null}
             vorschlaege={t.vorschlaege}
-            belegt={belegt.map((b) => b.start!.toISOString())}
+            belegt={belegt}
             eingangOffen={!t.eingangMailAm}
             mailBereit={mailBereit()}
             k={{

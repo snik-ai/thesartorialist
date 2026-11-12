@@ -7,7 +7,7 @@ import { chfKurz } from '@/lib/crm/geld';
 import { istMacApp, nativ } from '@/lib/admin/mac-app';
 
 const TAKT_MS = 90_000;
-const ZWECK: Record<string, string> = { beratung: 'Beratung', massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung' };
+const ZWECK: Record<string, string> = { beratung: 'Beratung', massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', telefon: 'Telefontermin' };
 
 function oeffnen(pfad: string) {
   if (istMacApp()) void nativ('haupt_oeffnen', { pfad });

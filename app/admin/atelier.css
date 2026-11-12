@@ -70,7 +70,7 @@ strong.warn { color: var(--a-bad); }
   color: var(--a-muted); border-right: 1px solid var(--a-line-2); transition: background 0.15s, color 0.15s;
 }
 .a-segment > :last-child { border-right: 0; }
-.a-segment > [aria-pressed='true'] { background: var(--a-ink); color: #fff; }
+.a-segment > [aria-pressed='true'], .a-segment > [aria-current='page'] { background: var(--a-ink); color: #fff; }
 .a-segment svg { width: 16px; height: 16px; }
 .a-segment.klein > button { min-height: 36px; padding: 0 12px; font-size: 12px; }
 

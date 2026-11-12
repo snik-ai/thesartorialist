@@ -71,7 +71,7 @@ export default async function AuftraegePage({ searchParams }: { searchParams: Pr
 
   const spalten = AUFTRAG_SCHRITTE.filter((s) => s.key !== 'abgeschlossen');
   const offenSumme = karten.reduce((a, k) => a + k.total_rp, 0);
-  const ZWECK: Record<string, string> = { massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', beratung: 'Beratung' };
+  const ZWECK: Record<string, string> = { massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', beratung: 'Beratung', telefon: 'Telefontermin' };
 
   // Zeitstrahl: Gruppen nach Woche
   const gruppen = new Map<string, Ereignis[]>();

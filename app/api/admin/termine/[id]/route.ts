@@ -5,6 +5,7 @@ import { db, schema } from '@/lib/db';
 import { apiAdmin, fehler, jsonBody, txt, UUID } from '@/lib/admin/zugang';
 import { aktivitaetLoggen } from '@/lib/crm/kontakte';
 import { leadPhaseSetzen } from '@/lib/crm/ablauf';
+import { privatKollision } from '@/lib/crm/kalender';
 import { empfaenger, mailBereit, sendeMail } from '@/lib/mail';
 import { icsDatei, mailTerminBestaetigt, mailTerminKunde, mailTerminVorschlag, type TerminDaten } from '@/lib/mail-vorlagen';
 import { kundenTexte, terminTextFuer } from '@/lib/i18n/kundenmail';
@@ -57,6 +58,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     case 'bestaetigen': {
       const start = datumOk(b.start);
       if (!start) return fehler('Bitte einen Termin wählen.');
+      const blockiert = await privatKollision(start, new Date(start.getTime() + t.dauerMin * 60_000));
+      if (blockiert) return fehler(`Diese Zeit ist privat blockiert: ${blockiert}.`);
       // Neue Zeit → Erinnerung neu fällig
       await setzeStatus('bestaetigt', { bestaetigtStart: start, erinnerungGesendetAm: t.bestaetigtStart?.getTime() === start.getTime() ? t.erinnerungGesendetAm : null });
       await leadPhaseSetzen(db(), k.id, 'termin');
@@ -92,6 +95,27 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         mailMeldung = ` ${name} mit vorbereiteter Nachricht geöffnet.`;
       }
       return NextResponse.json({ ok: true, mailFehler, meldung: `Termin bestätigt.${mailMeldung}`, anlass: 'Bestätigung' });
+    }
+
+    // Wochenplanung: Drag & Drop (verschieben/verlängern). Ohne Nachricht an den Kunden — das fragt der Browser danach.
+    case 'verschieben': {
+      if (t.status !== 'bestaetigt' || !t.bestaetigtStart) return fehler('Nur bestätigte Termine lassen sich verschieben.');
+      const start = datumOk(b.start);
+      if (!start) return fehler('Ungültige Zeit');
+      const dauerRoh = Number(b.dauerMin);
+      const dauerMin = Number.isInteger(dauerRoh) && dauerRoh >= 5 && dauerRoh <= 600 ? dauerRoh : t.dauerMin;
+      const blocker = await privatKollision(start, new Date(start.getTime() + dauerMin * 60_000));
+      if (blocker) return fehler(`Diese Zeit ist privat blockiert: ${blocker}.`);
+      const zeitNeu = start.getTime() !== t.bestaetigtStart.getTime();
+      await db()
+        .update(schema.termin)
+        .set({ bestaetigtStart: start, dauerMin, aktualisiertAm: new Date(), ...(zeitNeu ? { erinnerungGesendetAm: null } : {}) })
+        .where(eq(schema.termin.id, id));
+      const titel = zeitNeu
+        ? `Termin verschoben: ${terminLang(t.bestaetigtStart)} → ${terminLang(start)}${dauerMin !== t.dauerMin ? ` (${dauerMin} Min.)` : ''}`
+        : `Dauer geändert: ${t.dauerMin} → ${dauerMin} Min.`;
+      await aktivitaetLoggen(db(), { kontaktId: k.id, terminId: id, kanal: 'system', titel, adminUserId: wer });
+      return NextResponse.json({ ok: true, meldung: zeitNeu ? 'Termin verschoben.' : 'Dauer geändert.' });
     }
 
     case 'vorschlagen': {

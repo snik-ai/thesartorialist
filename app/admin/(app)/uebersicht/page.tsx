@@ -207,7 +207,7 @@ export default async function Uebersicht() {
                       <time className="zahl">{terminKurz(d)}</time>
                       <span>
                         <b>{t.name || 'Ohne Namen'}</b>
-                        <small>{{ beratung: 'Beratung', massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung' }[t.zweck] ?? 'Termin'}</small>
+                        <small>{{ beratung: 'Beratung', massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', telefon: 'Telefon' }[t.zweck] ?? 'Termin'}</small>
                       </span>
                       <span className={`a-pill ${t.status}`}>{t.status === 'bestaetigt' ? 'Bestätigt' : 'Wunsch'}</span>
                     </Link>

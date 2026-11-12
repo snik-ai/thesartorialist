@@ -195,7 +195,7 @@ export const termin = pgTable(
     gelesenAm: zeit('gelesen_am'),
     /** Erinnerungs-Mail 2 h vor dem Termin verschickt (wird beim Verschieben zurückgesetzt) */
     erinnerungGesendetAm: zeit('erinnerung_gesendet_am'),
-    /** beratung (Website) | massnehmen | anprobe | abholung (aus dem Auftrag geplant) */
+    /** beratung (Website) | massnehmen | anprobe | abholung (aus dem Auftrag geplant) | telefon (Telefontermin, im Backend eingetragen) */
     zweck: text('zweck').$type<TerminZweck>().notNull().default('beratung'),
     auftragId: uuid('auftrag_id'),
     dauerMin: integer('dauer_min').notNull().default(90),
@@ -205,7 +205,26 @@ export const termin = pgTable(
   (t) => [index('termin_status_idx').on(t.status, t.erstelltAm), index('termin_kontakt_idx').on(t.kontaktId)],
 );
 
-export type TerminZweck = 'beratung' | 'massnehmen' | 'anprobe' | 'abholung';
+export type TerminZweck = 'beratung' | 'massnehmen' | 'anprobe' | 'abholung' | 'telefon';
+
+/** Private Einträge / Blocker in der Wochenplanung (Alex privat, Mittag, Messe …). Blockieren Slots für Kundentermine.
+ *  wiederholung 'woche': jede Woche zur gleichen Zeit (Serie ab start, ohne Ende). */
+export const kalenderEintrag = pgTable(
+  'kalender_eintrag',
+  {
+    id: id(),
+    titel: text('titel').notNull(),
+    start: zeit('start').notNull(),
+    ende: zeit('ende').notNull(),
+    ganztaegig: boolean('ganztaegig').notNull().default(false),
+    notiz: text('notiz'),
+    wiederholung: text('wiederholung').$type<'woche' | null>(),
+    adminUserId: uuid('admin_user_id').references(() => adminUser.id, { onDelete: 'set null' }),
+    erstelltAm: erstellt(),
+    aktualisiertAm: zeit('aktualisiert_am').notNull().defaultNow(),
+  },
+  (t) => [index('kalender_eintrag_start_idx').on(t.start, t.ende)],
+);
 
 export type Kanal = 'mail' | 'whatsapp' | 'sms' | 'anruf' | 'notiz' | 'formular' | 'system';
 

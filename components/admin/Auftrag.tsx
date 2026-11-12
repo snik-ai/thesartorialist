@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Icon from './Icon';
 import Auswahl from './Auswahl';
 import DatumPicker from './DatumPicker';
-import SlotPicker from './SlotPicker';
+import SlotPicker, { type Belegt } from './SlotPicker';
 import { MeldungZeile, useAktion } from './useAktion';
 import { AUFTRAG_SCHRITTE, schrittIndex } from '@/lib/crm/belege';
 import { chf } from '@/lib/crm/geld';
@@ -110,14 +110,14 @@ export function AuftragSchritte({ id, status, zeiten, liefertermin, emailDa, mai
 
 /* ---------- Planung ---------- */
 
-export function AuftragPlanung(p: { id: string; liefertermin: string | null; anlass: string; anlassDatum: string | null; abholung: string | null; zustaendigId: string | null; bestellnotiz: string; admins: Admin[]; termine: { id: string; zweck: string; start: string; status: string }[]; belegt: string[] }) {
+export function AuftragPlanung(p: { id: string; liefertermin: string | null; anlass: string; anlassDatum: string | null; abholung: string | null; zustaendigId: string | null; bestellnotiz: string; admins: Admin[]; termine: { id: string; zweck: string; start: string; status: string }[]; belegt: Belegt }) {
   const { laedt, meldung, senden } = useAktion();
   const [anlass, setAnlass] = useState(p.anlass);
   const [notiz, setNotiz] = useState(p.bestellnotiz);
   const [planen, setPlanen] = useState<null | 'anprobe' | 'abholung' | 'massnehmen'>(null);
   const [slot, setSlot] = useState<string[]>([]);
   const patch = (b: Record<string, unknown>) => senden(api(p.id), b, 'PATCH');
-  const ZW: Record<string, string> = { massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', beratung: 'Beratung' };
+  const ZW: Record<string, string> = { massnehmen: 'Massnehmen', anprobe: 'Anprobe', abholung: 'Abholung', beratung: 'Beratung', telefon: 'Telefontermin' };
   const knapp = p.anlassDatum && p.liefertermin && (Date.parse(p.anlassDatum) - Date.parse(p.liefertermin)) / 86400_000 < 10;
 
   return (

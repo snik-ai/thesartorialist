@@ -232,3 +232,18 @@ export function ratgeberNachricht(kanal: BestaetigungsKanal, name: string, s: Na
 
 /** Alle drei Kanäle auf einmal (für KontaktKanaele `texte`). */
 export const alleKanaele = (f: (k: BestaetigungsKanal) => string) => ({ whatsapp: f('whatsapp'), sms: f('sms'), mail: f('mail') });
+
+/** Telefontermin auf neue Zeit verschoben (Wochenplanung): kurze Nachricht, dass wir zur neuen Zeit anrufen. */
+export function telefonNeuNachricht(kanal: BestaetigungsKanal, name: string, start: Date, s: NachrichtSprache = 'de'): { text: string; betreff: string } {
+  const tag = start.toLocaleDateString(locale(s), { timeZone: TZ, weekday: 'long', day: 'numeric', month: 'long' });
+  const zeit = uhr(start, s);
+  const en = s === 'en';
+  const betreff = en ? `Our call on ${tag}, ${zeit} — The Sartorialist Zürich` : `Unser Telefonat am ${tag}, ${zeit} — The Sartorialist Zürich`;
+  const kern = en ? `A small change: I will call you on ${tag} at ${zeit}.` : `Kleine Änderung: Ich rufe Sie neu am ${tag} um ${zeit} an.`;
+  const frage = en ? 'If that does not suit you, just reply to this message.' : 'Passt Ihnen das nicht, antworten Sie einfach auf diese Nachricht.';
+  const fuss = en ? 'Kind regards\nThe Sartorialist Zürich' : 'Freundliche Grüsse\nThe Sartorialist Zürich';
+  const g = gruss(name, s);
+  if (kanal === 'whatsapp') return { betreff, text: [`${g} 👋`, '', `📞 ${kern}`, '', frage, '', fuss].join('\n') };
+  if (kanal === 'sms') return { betreff, text: `${g}, ${kern} ${frage} — The Sartorialist Zürich` };
+  return { betreff, text: [`${g}`, '', kern, '', frage, '', fuss].join('\n') };
+}

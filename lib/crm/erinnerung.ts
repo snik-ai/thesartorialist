@@ -2,10 +2,10 @@
 // bestätigte Termine und (auf Wunsch des Ateliers) auch noch nicht bestätigte Wunschtermine.
 // Idempotent: Termin wird vor dem Versand mit erinnerung_gesendet_am «reserviert»; ein Advisory-Lock verhindert,
 // dass zwei Server-Instanzen gleichzeitig laufen. Schlägt der Versand fehl, wird die Reservierung zurückgenommen.
-import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
+import { and, eq, inArray, isNull, ne, sql } from 'drizzle-orm';
 import { db, schema, sqlClient } from '@/lib/db';
 import { mailBereit, empfaenger, sendeMail } from '@/lib/mail';
-import { mailTerminErinnerung } from '@/lib/mail-vorlagen';
+import { mailTerminErinnerung, type ErinnerungZweck } from '@/lib/mail-vorlagen';
 import { kundenTexte, terminTextFuer } from '@/lib/i18n/kundenmail';
 import { zuerichTeile } from '@/lib/zeit';
 import { aktivitaetLoggen } from './kontakte';
@@ -27,6 +27,8 @@ async function faellige(stunden: number) {
     .where(
       and(
         eq(t.art, 'termin'),
+        // Telefontermine: Alex ruft an — keine Atelier-Erinnerung mit Adresse
+        ne(t.zweck, 'telefon'),
         inArray(t.status, ['angefragt', 'bestaetigt']),
         isNull(t.erinnerungGesendetAm),
         sql`(${t.status} = 'bestaetigt' and ${t.bestaetigtStart} is not null or ${t.status} = 'angefragt' and ${t.wunschStart} is not null)`,
@@ -59,7 +61,7 @@ export async function erinnerungenSenden(o: { trocken?: boolean } = {}): Promise
         const kunde = kundenTexte(t.sprache || k.sprache);
         const z = zuerichTeile(start);
         const m = mailTerminErinnerung(
-          { name: k.name || '', email: k.email ?? undefined, datum: z.datum, zeit: z.zeit, wunschText: terminTextFuer(t.sprache || k.sprache, start), stil: [], stoffe: [], bestaetigt, zweck: t.zweck },
+          { name: k.name || '', email: k.email ?? undefined, datum: z.datum, zeit: z.zeit, wunschText: terminTextFuer(t.sprache || k.sprache, start), stil: [], stoffe: [], bestaetigt, zweck: t.zweck as ErinnerungZweck },
           kunde.t,
         );
         if (o.trocken) {

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { and, asc, desc, eq, gte, isNotNull } from 'drizzle-orm';
+import { asc, desc, eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db';
+import { belegtFuerPicker } from '@/lib/crm/kalender';
 import Icon from '@/components/admin/Icon';
 import { Avatar, StilAuswahl, Verlauf } from '@/components/admin/Bausteine';
 import { AuftragMassblatt, AuftragNotiz, AuftragPlanung, AuftragSchritte, AuftragTasks } from '@/components/admin/Auftrag';
@@ -34,10 +35,7 @@ export default async function AuftragSeite({ params, searchParams }: { params: P
     db().select().from(schema.rechnung).where(eq(schema.rechnung.auftragId, id)).orderBy(asc(schema.rechnung.erstelltAm)),
     db().select().from(schema.massblatt).where(eq(schema.massblatt.kontaktId, au.kontaktId)).orderBy(desc(schema.massblatt.version)),
     db().select().from(schema.aktivitaet).where(eq(schema.aktivitaet.auftragId, id)).orderBy(desc(schema.aktivitaet.erstelltAm)).limit(80),
-    db()
-      .select({ start: schema.termin.bestaetigtStart })
-      .from(schema.termin)
-      .where(and(eq(schema.termin.status, 'bestaetigt'), isNotNull(schema.termin.bestaetigtStart), gte(schema.termin.bestaetigtStart, new Date(Date.now() - 86400_000)))),
+    belegtFuerPicker(),
     au.angebotId ? db().select({ id: schema.angebot.id, nummer: schema.angebot.nummer }).from(schema.angebot).where(eq(schema.angebot.id, au.angebotId)).limit(1) : Promise.resolve([] as { id: string; nummer: string | null }[]),
     firma(),
   ]);
@@ -173,7 +171,7 @@ export default async function AuftragSeite({ params, searchParams }: { params: P
             bestellnotiz={au.bestellnotiz ?? ''}
             admins={adminListe}
             termine={termine.filter((t) => t.bestaetigtStart).map((t) => ({ id: t.id, zweck: t.zweck, start: t.bestaetigtStart!.toISOString(), status: t.status }))}
-            belegt={belegt.map((b) => b.start!.toISOString())}
+            belegt={belegt}
           />
 
           <section className="a-karte">

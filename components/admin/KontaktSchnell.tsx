@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Icon from './Icon';
-import SlotPicker from './SlotPicker';
+import SlotPicker, { type Belegt } from './SlotPicker';
 import { MeldungZeile, useAktion } from './useAktion';
 import { smsLink, telLink, waLink } from '@/lib/crm/telefon';
 import { nachrichtSprache, textAllgemein } from '@/lib/crm/nachrichten';
@@ -15,6 +15,7 @@ const ZWECKE = [
   ['massnehmen', 'Massnehmen'],
   ['anprobe', 'Anprobe'],
   ['abholung', 'Abholung'],
+  ['telefon', 'Telefon'],
 ] as const;
 
 export function AngebotNeuKnopf({ kontaktId, terminId, klasse = 'a-knopf', text = 'Angebot erstellen' }: { kontaktId: string; terminId?: string; klasse?: string; text?: string }) {
@@ -38,7 +39,7 @@ export function AngebotNeuKnopf({ kontaktId, terminId, klasse = 'a-knopf', text 
   );
 }
 
-export default function KontaktSchnell({ k, belegt, mailBereit }: { k: KanalKontakt; belegt: string[]; mailBereit: boolean }) {
+export default function KontaktSchnell({ k, belegt, mailBereit }: { k: KanalKontakt; belegt: Belegt; mailBereit: boolean }) {
   const router = useRouter();
   const [termin, setTermin] = useState(false);
   const [zweck, setZweck] = useState<(typeof ZWECKE)[number][0]>('beratung');

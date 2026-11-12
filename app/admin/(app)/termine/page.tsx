@@ -38,6 +38,7 @@ export default async function TerminePage({ searchParams }: { searchParams: Prom
     .select({
       id: t.id,
       art: t.art,
+      zweck: t.zweck,
       status: t.status,
       wunschStart: t.wunschStart,
       wunschText: t.wunschText,
@@ -64,6 +65,14 @@ export default async function TerminePage({ searchParams }: { searchParams: Prom
           <h1>Termine &amp; Rückrufe</h1>
           <p className="a-sub">Anfragen von der Website — bestätigen, neuen Termin vorschlagen oder zurückrufen.</p>
         </div>
+        <div className="a-segment" role="navigation" aria-label="Ansicht">
+          <Link href="/admin/termine/" aria-current="page">
+            Liste
+          </Link>
+          <Link href="/admin/termine/woche/">
+            <Icon name="kalender" /> Woche
+          </Link>
+        </div>
       </div>
 
       <div className="a-chips" style={{ marginBottom: 16 }} role="navigation" aria-label="Filter">
@@ -89,7 +98,7 @@ export default async function TerminePage({ searchParams }: { searchParams: Prom
               const monat = start ? start.toLocaleDateString('de-CH', { timeZone: TZ, month: 'short' }).replace('.', '') : '';
               return (
                 <Link key={r.id} href={`/admin/termine/${r.id}/`} className={`a-zeile${r.gelesenAm ? '' : ' neu'}`}>
-                  {r.art === 'rueckruf' ? (
+                  {r.art === 'rueckruf' || r.zweck === 'telefon' ? (
                     <span className="a-avatar rueckruf">
                       <Icon name="telefon" />
                     </span>
@@ -110,7 +119,7 @@ export default async function TerminePage({ searchParams }: { searchParams: Prom
                       {r.name || r.telefon || r.email || 'Ohne Namen'}
                     </span>
                     <span className="a-zeile-sub" style={{ display: 'block' }}>
-                      {r.art === 'rueckruf' ? `Rückruf · ${r.wunschText || 'Zeit egal'}` : r.bestaetigtStart ? `Bestätigt · ${terminKurz(r.bestaetigtStart)}` : r.wunschStart ? `Wunsch · ${terminKurz(r.wunschStart)}` : `Wunsch · ${r.wunschText || 'nach Absprache'}`}
+                      {r.art === 'rueckruf' ? `Rückruf · ${r.wunschText || 'Zeit egal'}` : r.zweck === 'telefon' && r.bestaetigtStart ? `Telefontermin · ${terminKurz(r.bestaetigtStart)}` : r.bestaetigtStart ? `Bestätigt · ${terminKurz(r.bestaetigtStart)}` : r.wunschStart ? `Wunsch · ${terminKurz(r.wunschStart)}` : `Wunsch · ${r.wunschText || 'nach Absprache'}`}
                       {r.stilAnzahl > 0 ? ` · Stil ${r.stilAnzahl}` : ''}
                       {r.stoffe.length ? ` · Stoff ${r.stoffe.join(', ')}` : ''}
                     </span>
