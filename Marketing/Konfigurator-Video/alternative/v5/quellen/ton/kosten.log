@@ -1,0 +1,27 @@
+2026-11-12T12:25:24.768Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2?output_format=mp3_44100_192 stimmtest kerstin 424 KB 15.5 s character-cost=77 request-id=suXqEEKO60moMgmMQPk0
+2026-11-12T12:25:27.406Z  /v1/text-to-speech/Ehc9dVwDGENWbpsWNTfK?output_format=mp3_44100_192 stimmtest lyra 449 KB 2.6 s character-cost=77 request-id=QOgmpbakUY3pbKBA8sMF
+2026-11-12T12:25:37.169Z  /v1/text-to-speech/r0fLdYmTH96Lr4s10B6K?output_format=mp3_44100_192 stimmtest ramona 366 KB 9.7 s character-cost=77 request-id=vDCpXlKpL334dIlo6QuQ
+2026-11-12T12:25:48.997Z  /v1/text-to-speech/t7VaN65ClS2VrEUwk1nR?output_format=mp3_44100_192 stimmtest lilith 557 KB 11.8 s character-cost=77 request-id=0LH1kyl36wrlJLZDEPdR
+2026-11-12T12:25:50.315Z  /v1/text-to-speech/Qy4b2JlSGxY7I9M9Bqxb?output_format=mp3_44100_192 stimmtest laura 370 KB 1.3 s character-cost=77 request-id=elNTw2k5Z8SkTHAyx5aP
+2026-11-12T12:26:58.697Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher hook 50 Zeichen 183 KB 0.8 s character-cost=22 request-id=Hbi3iz5FJ1aY5rgcdCGr
+2026-11-12T12:26:59.284Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher revers 22 Zeichen 81 KB 0.5 s character-cost=10 request-id=GcgbqGOCN5J1eICAGQcs
+2026-11-12T12:26:59.993Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher tasche 12 Zeichen 54 KB 0.7 s character-cost=5 request-id=ej77zCIMLIGA5hdx5jD1
+2026-11-12T12:27:00.676Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher futter 38 Zeichen 156 KB 0.6 s character-cost=17 request-id=laS9SesZggSx4RoQd6ZJ
+2026-11-12T12:27:01.436Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher stoff 33 Zeichen 104 KB 0.7 s character-cost=15 request-id=sTx3ZCY6ufMMEhu9gLfO
+2026-11-12T12:27:02.196Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher knopf 28 Zeichen 102 KB 0.7 s character-cost=12 request-id=FKXVqBiQSpAEhqkUjpCV
+2026-11-12T12:27:03.154Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher blick 56 Zeichen 226 KB 0.9 s character-cost=25 request-id=yemWPaZjHdrCV4j4SU3w
+2026-11-12T12:27:04.122Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher preis 49 Zeichen 167 KB 0.9 s character-cost=22 request-id=PDzCG74T3fBiEk3MnGA7
+2026-11-12T12:27:04.913Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher cta 55 Zeichen 197 KB 0.8 s character-cost=24 request-id=7zLtNKo7lbTR4krUsJte
+2026-11-12T12:28:04.110Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher hook 50 Zeichen 180 KB 0.9 s character-cost=22 request-id=nhw8fnWuQmPWJdzlteel
+2026-11-12T12:28:04.721Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher revers 22 Zeichen 71 KB 0.6 s character-cost=10 request-id=E7tmNifgCqkPUvqv5y8A
+2026-11-12T12:28:05.339Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher tasche 12 Zeichen 45 KB 0.6 s character-cost=5 request-id=aBkJjleSaQiseokmKoHL
+2026-11-12T12:28:05.941Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher futter 37 Zeichen 113 KB 0.6 s character-cost=16 request-id=TXNWo8PKiue9QVw7XiK7
+2026-11-12T12:28:06.601Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher stoff 33 Zeichen 98 KB 0.6 s character-cost=15 request-id=4iVxuHxYOKHoQcDCOW9N
+2026-11-12T12:28:07.482Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher knopf 27 Zeichen 83 KB 0.8 s character-cost=12 request-id=fJwtZyB96ypUaNZdtkg8
+2026-11-12T12:28:08.329Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher blick 55 Zeichen 179 KB 0.8 s character-cost=24 request-id=vUPUy40y6RDh2doepfdF
+2026-11-12T12:28:09.199Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher preis 49 Zeichen 145 KB 0.8 s character-cost=22 request-id=bRaCDWu7JbT6arP2oElv
+2026-11-12T12:28:09.943Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher cta 55 Zeichen 171 KB 0.7 s character-cost=24 request-id=SzEZzjHP8POu0AxDE9UV
+2026-11-12T13:30:15.596Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2?output_format=mp3_44100_192 zeilentest a 134 KB 0.9 s character-cost=25 request-id=aNlVu7Mlp1jUHmOKiwQR
+2026-11-12T13:30:16.226Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2?output_format=mp3_44100_192 zeilentest b 134 KB 0.6 s character-cost=25 request-id=6ZYCoSZfcCD4F9GkAFoy
+2026-11-12T13:50:46.289Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher preis 49 Zeichen 145 KB 1.1 s character-cost=22 request-id=65fAnFR9gveyTYDxaZzV
+2026-11-12T13:50:46.989Z  /v1/text-to-speech/Y5JXXvUD3rmjDInkLVA2/with-timestamps?output_format=mp3_44100_192 sprecher cta 56 Zeichen 170 KB 0.7 s character-cost=25 request-id=2Ka3Y3lN2fiSnbIHzrzB

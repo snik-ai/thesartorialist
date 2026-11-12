@@ -1,0 +1,90 @@
+The Sartorialist Zürich – Konfigurator-Video «Styles & Options» · Fassung 5 (Knöpfe zuletzt, Sprecherin «sinnlich & edel»)
+=========================================================================================
+
+Inhalt
+------
+Basis: Fassung 3 (alternative/v3/quellen/film-v3.html). 38.2 s, mit Sprecherin, 16:9 und 9:16, 60 fps.
+Neu gegenüber v3:
+  1. Reihenfolge wie im Konfigurator – die Knöpfe kommen zuletzt:
+     Hook → Revers → Taschen → Futter & Details → Stoff von Holland & Sherry → Knöpfe → Übersicht → Atelier → Endkarte → Loop.
+  2. Weibliche Stimme statt Michael: warm, langsam, sinnlich, aber edel (Parfum-Spot-Charakter).
+Kinetic Captions = exakt die gesprochenen Wörter, Wort für Wort auf die ElevenLabs-Wortzeiten (ton/sprecher-zeiten.js).
+Gemeinsame Quellen (nur gelesen, relativ verlinkt): ../../../quellen/ img/, fonts/, motion.js, ton/effekte (Effekt-Bibliothek).
+Eigene Dateien von v5 (überschreiben nichts von v3/v4): film-v5.html, ton/ (Plan, Wortzeiten, Zeilen-Cache, Stimmtest, kosten.log), engine/.
+
+Sprecherin
+----------
+ElevenLabs «Kerstin – Seductive, Sensual and Silky» (Y5JXXvUD3rmjDInkLVA2, Voice Library, deutsch, Hochdeutsch),
+eleven_multilingual_v2, stability 0.55, similarity 0.8, style 0.2, speaker boost, speed 0.97, Seed 7.
+Stimmtest (ton/stimmtest/*.mp3, gleicher Satz, stability 0.5 / style 0.25 / speed 0.9):
+  kerstin  F0 ≈ 151 Hz, 1.82 Wörter/s, hauchigste Klangfarbe (spektrale Flatness 0.207)  → gewählt
+  lilith   F0 ≈ 130 Hz (Knarrstimme bis 73 Hz), 1.69 W/s, sehr lange Pausen, «Sartorialist» unsauber
+  lyra     F0 ≈ 174 Hz, 1.90 W/s, Artefakt am Satzende («hey» im Transkript)
+  ramona   F0 ≈ 155 Hz, 2.48 W/s (zu schnell), «Sartorialist» unsauber
+  laura    F0 ≈ 170 Hz, 2.41 W/s, ruhig, aber hell und eher sachlich
+  Auswahl über Messung (Stimmlage, Tempo, Hauchigkeit) + Transkript (Scribe); bitte einmal anhören und bestätigen.
+Aussprache-Kniffe: «Holland and Sherry» (Anzeige «&»), «sechzehnhundertneunzig Franken» (Anzeige «CHF 1’690»),
+«The Sartorrialist Punkt C H» (Doppel-r, sonst verschluckt die Stimme das r; Scribe: «thesartorialist.ch»).
+Satzzeichen-Pausen: Kerstin pausiert an Punkt/Doppelpunkt bis 1 s → Sätze mit Kommas verbunden.
+engine/ton-sprecher.mjs (v5): Wortende nur aus Buchstaben/Ziffern (die Satzzeichen tragen sonst die Pause danach).
+Sprechtext (Einsätze in s):
+  0.30  Ihr Massanzug, bis ins Detail von Ihnen entworfen.
+  5.83  Wählen Sie das Revers.
+  8.39  Die Taschen.
+ 10.57  Futter und Details bis zum Monogramm.
+ 13.94  Den Stoff von Holland & Sherry.
+ 17.56  Und zum Schluss die Knöpfe.
+ 20.74  Alles auf einen Blick, als PDF oder direkt ins Atelier.
+ 26.28  Ihr Massanzug, ab CHF 1’690.
+ 30.66  Gestalten Sie ihn jetzt auf thesartorialist.ch.
+Aufnahmen-Cache: ton/sprecher/zeilen (nicht löschen, sonst kostet jeder Neubau Zeichen). Kosten: ton/kosten.log.
+
+Szenen und Übergänge (jeder Übergang einmalig, alle mit Träger)
+  0.00– 4.96  Hook (wie v3): ORBIT um den Entwurf, Callouts auf LIQUID-GLASS, goldener Handstich, FRAME ESCAPE
+  4.96– 5.76  MATCH-CUT: der Entwurf wird zur Karte «Steigend», die warme Welt öffnet sich, Nachbarkarten fliegen aus der Tiefe
+  5.76– 7.69  Revers: Klick, DIGITAL ZOOM aufs Revers, Detail-Karte, Rückzug in die Totale
+  7.69– 8.33  3D-KARUSSELL: die Revers-Reihe dreht sich auf einem Zylinder weiter zu den Taschen
+  8.33– 9.85  Taschen: «Barchetta & Patte»
+  9.85–10.55  WENDEFLIP in echter Perspektive: die Tasche dreht sich um, innen liegt das Futter
+ 10.55–13.12  CHECKLIST POP auf «Futter», «Details», «bis», «Monogramm»
+ 13.12–13.89  MAKRO-ZOOM-THROUGH: Kamera taucht ins Futter, das Futter wird zum Stoff
+ 13.89–17.06  Stoff von Holland & Sherry (Caption auf Liquid Glass, Stoffnummer tippen, «Hinzufügen»);
+              ab 16.56 zeichnet sich ein GOLDRING auf den Stoff – genau dort, wo gleich der obere Knopf sitzt
+ 17.06–17.74  KNOPF-IRIS: der Ring öffnet sich kreisrund zur Knöpfe-Welt, aussen fährt die Kamera in den Stoff;
+              die Caption «Und zum Schluss:» invertiert live an der Iriskante
+ 17.74–20.04  Knöpfe: «Zwei Knöpfe», SNAP ZOOM auf «Knöpfe» mit Gold-Unterstrich
+ 20.04–20.79  LIQUID-GLASS-MORPH: die Karte «Zwei Knöpfe» wird zur Glasfläche und wächst zur Übersicht, das Raster sinkt
+              unscharf in die Tiefe; «Zwei Knöpfe» fliegt in seine Zeile (TYPO-MORPH). Übersicht jetzt in Konfigurator-
+              Reihenfolge: Revers, Taschen, Futter, Knopfloch, Ärmelknöpfe, Monogramm, Stoff, Knöpfe (zuletzt)
+ 20.79–24.95  Übersicht, «PDF herunterladen» auf «PDF», «Termin» auf «Atelier»
+ 24.95–25.80  SCHERENSCHNITT → Atelier (Foto mit Schere), Captions invertieren im Spalt
+ 25.96–26.70  SHAPE-MORPH: das Atelierfoto schrumpft zur goldenen Linie der Endkarte
+ 26.70–37.50  Endkarte: Logo, «Ihr Massanzug.», SLOT-Ziffern «CHF 1’690.», CTA Wort für Wort, URL schreibt sich (steht ~2 s ruhig)
+ 37.50–38.20  RACK-FOCUS-LOOP zurück zum ersten Frame (nahtlos)
+
+Ton
+---
+Sprecherin + Sounddesign aus der gemeinsamen ElevenLabs-Effektbibliothek (../../../quellen/ton/effekte, Cues in film-v5.html).
+Musik: weiterhin OFFEN (Schlüssel ohne music_generation, siehe v4).
+Mischung: Stimme ≈ 9–10 dB über dem Bett, Ducking, −14 LUFS, True Peak −1.5 dB.
+
+Formate / Ergebnisse
+--------------------
+  ../The-Sartorialist-Konfigurator-v5-16x9.mp4    1920×1080, 60 fps, Sprecherin + Effekte
+  ../The-Sartorialist-Konfigurator-v5-9x16.mp4    1080×1920, 60 fps, Sprecherin + Effekte (Safe Zones TikTok/Reels)
+  public/videos/ ist NICHT angepasst (dort läuft weiterhin v4).
+
+Neu erzeugen (aus diesem Ordner)
+--------------------------------
+  Voraussetzung: Node 20+, ffmpeg, Playwright (NODE_PATH auf dessen node_modules) + Google Chrome.
+  export ELEVENLABS_KEY_FILE=~/_Claude/voxcrm/.env   (Schlüssel nie ausgeben)
+  node engine/stimmtest.mjs                                  Stimmvergleich (nur fehlende)
+  node engine/ton-mischen.mjs --page film-v5.html --out out/ton-fx.wav
+  node engine/ton-sprecher.mjs --plan ton/sprecher.json --ton out/ton-fx.wav --out out/ton-final.wav --stimmePegel 12 --ducken 0.08
+  node engine/render.mjs --page film-v5.html --w 1920 --h 1080 --fps 60 --sub 4 --dur 38.2 --out out/v5-silent-16x9.mp4
+  node engine/render.mjs --page film-v5.html --w 1080 --h 1920 --q f=9x16 --fps 60 --sub 4 --dur 38.2 --out out/v5-silent-9x16.mp4
+  ffmpeg -i out/v5-silent-16x9.mp4 -i out/ton-final.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest \
+    -movflags +faststart ../The-Sartorialist-Konfigurator-v5-16x9.mp4        (9:16 analog)
+  Kontrolle: ./stills.sh 16x9 <zeiten> out/sheet.png · node engine/stt-detail.mjs <datei.mp3> · node engine/f0.mjs <datei>
+  engine/render.mjs + stills.mjs: Kopien aus dem motion-reel-Skill, mit page.screenshot statt Element-Screenshot
+  (der Element-Screenshot blieb mit der aktuellen Chrome-Version bei schweren Frames hängen).

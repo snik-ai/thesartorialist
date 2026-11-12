@@ -1,0 +1,61 @@
+{
+ "stimme": {
+  "name": "Kerstin – Seductive, Sensual and Silky",
+  "id": "Y5JXXvUD3rmjDInkLVA2"
+ },
+ "modell": "eleven_multilingual_v2",
+ "einstellungen": {
+  "stability": 0.55,
+  "similarity_boost": 0.8,
+  "style": 0.2,
+  "use_speaker_boost": true,
+  "speed": 0.97
+ },
+ "zeilen": [
+  {
+   "id": "hook",
+   "text": "Ihr Massanzug, bis ins Detail von Ihnen entworfen.",
+   "t": 0.3
+  },
+  {
+   "id": "revers",
+   "text": "Wählen Sie das Revers.",
+   "nach": 0.9
+  },
+  {
+   "id": "tasche",
+   "text": "Die Taschen.",
+   "nach": 1.1
+  },
+  {
+   "id": "futter",
+   "text": "Futter und Details bis zum Monogramm.",
+   "nach": 1.5
+  },
+  {
+   "id": "stoff",
+   "text": "Den Stoff von Holland and Sherry.",
+   "nach": 0.85
+  },
+  {
+   "id": "knopf",
+   "text": "Und zum Schluss die Knöpfe.",
+   "nach": 1.5
+  },
+  {
+   "id": "blick",
+   "text": "Alles auf einen Blick, als PDF oder direkt ins Atelier.",
+   "nach": 1.4
+  },
+  {
+   "id": "preis",
+   "text": "Ihr Massanzug, ab sechzehnhundertneunzig Franken.",
+   "nach": 0.75
+  },
+  {
+   "id": "cta",
+   "text": "Gestalten Sie ihn jetzt auf The Sartorrialist Punkt C H.",
+   "nach": 0.3
+  }
+ ]
+}
