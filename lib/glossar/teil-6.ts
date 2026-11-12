@@ -250,7 +250,7 @@ export const TEIL_6: GlossarBegriff[] = [
       { label: 'Anzüge Zürich', href: '/anzuege-zuerich/' },
       { label: 'Termin buchen', href: '/termin/' },
     ],
-    bild: '/images/logan-weaver-lgnwvr-JqRQtSr2MCI-unsplash-scaled.webp',
+    bild: '/images/anzugfarben/grau-karo-sakko-detail.webp',
     bildAlt: 'Karierter Anzug auf einer Schaufensterpuppe in einem Herrengeschäft mit Backsteinwand',
   },
   {
