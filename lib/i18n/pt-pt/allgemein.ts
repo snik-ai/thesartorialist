@@ -155,6 +155,10 @@ export const allgemein: Woerterbuch['allgemein'] = {
           { label: 'Fato azul', ziel: 'farbe:anzug-blau' },
           { label: 'Fato verde', ziel: 'farbe:anzug-gruen' },
           { label: 'Fato bege', ziel: 'farbe:anzug-beige' },
+          { label: 'Fato cinzento', ziel: 'farbe:anzug-grau' },
+          { label: 'Fato preto', ziel: 'farbe:anzug-schwarz' },
+          { label: 'Fato castanho', ziel: 'farbe:anzug-braun' },
+          { label: 'Fato vermelho', ziel: 'farbe:anzug-rot' },
         ],
       },
       {

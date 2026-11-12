@@ -20,7 +20,16 @@ export function markeFuer(lang: Sprache, slug: string): Brand | undefined {
 
 export function farbenFuer(lang: Sprache): SuitColor[] {
   const ueb = woerterbuch(lang).farben;
-  return SUIT_COLORS.map((f) => ({ ...f, ...(lang === 'de' ? {} : ueb[f.slug] ?? {}) }));
+  return SUIT_COLORS.map((f) => {
+    if (lang === 'de' || !ueb[f.slug]) return f;
+    const { varianten: vt, ...text } = ueb[f.slug];
+    const varianten = f.varianten?.map((v, i) => {
+      const t = vt?.[i];
+      if (!t) return v;
+      return { ...v, titel: t.titel, teile: v.teile.map((teil, j) => ({ ...teil, ...(t.teile[j] ?? {}) })) };
+    });
+    return { ...f, ...text, varianten };
+  });
 }
 
 export function farbeFuer(lang: Sprache, slug: string): SuitColor | undefined {

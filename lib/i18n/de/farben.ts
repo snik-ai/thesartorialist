@@ -3,6 +3,9 @@
 // «sections» muss gleich viele Einträge in gleicher Reihenfolge haben wie in lib/suitColors.ts.
 import type { SuitColor } from '@/lib/suitColors';
 
-export type FarbText = Partial<Pick<SuitColor, 'name' | 'title' | 'claim' | 'metaDescription' | 'sections'>>;
+export type FarbText = Partial<Pick<SuitColor, 'name' | 'title' | 'claim' | 'metaDescription' | 'sections'>> & {
+  /** Varianten in gleicher Reihenfolge wie in lib/suitColors.ts; je Teil nur «art» und «material» übersetzt */
+  varianten?: { titel: string; teile: { art: string; material: string }[] }[];
+};
 
 export const farben: Record<string, FarbText> = {};

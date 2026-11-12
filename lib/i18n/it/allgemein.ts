@@ -155,6 +155,10 @@ export const allgemein: Woerterbuch['allgemein'] = {
           { label: 'Completo blu', ziel: 'farbe:anzug-blau' },
           { label: 'Completo verde', ziel: 'farbe:anzug-gruen' },
           { label: 'Completo beige', ziel: 'farbe:anzug-beige' },
+          { label: 'Completo grigio', ziel: 'farbe:anzug-grau' },
+          { label: 'Completo nero', ziel: 'farbe:anzug-schwarz' },
+          { label: 'Completo marrone', ziel: 'farbe:anzug-braun' },
+          { label: 'Completo rosso', ziel: 'farbe:anzug-rot' },
         ],
       },
       {

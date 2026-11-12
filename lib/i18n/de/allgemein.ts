@@ -160,6 +160,10 @@ export const allgemein = {
           { label: 'Anzug blau', ziel: 'farbe:anzug-blau' },
           { label: 'Anzug grün', ziel: 'farbe:anzug-gruen' },
           { label: 'Anzug beige', ziel: 'farbe:anzug-beige' },
+          { label: 'Anzug grau', ziel: 'farbe:anzug-grau' },
+          { label: 'Anzug schwarz', ziel: 'farbe:anzug-schwarz' },
+          { label: 'Anzug braun', ziel: 'farbe:anzug-braun' },
+          { label: 'Anzug rot', ziel: 'farbe:anzug-rot' },
         ],
       },
       {

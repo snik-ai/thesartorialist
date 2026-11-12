@@ -30,6 +30,22 @@ export const farben: Woerterbuch['farben'] = {
         text: 'Diseñe su traje azul exactamente como lo imagina: tejidos, cortes y detalles a su elección. Una pieza única que subraya su personalidad.',
       },
     ],
+    varianten: [
+      {
+        titel: 'Chaqueta de esmoquin azul real de jacquard',
+        teile: [
+          { art: 'Chaqueta de esmoquin azul real con jacquard de guepardo', material: '100 % seda' },
+          { art: 'Pantalón de bengalina negra', material: '100 % lana virgen' },
+        ],
+      },
+      {
+        titel: 'Abrigo azul marino en espiga',
+        teile: [
+          { art: 'Abrigo azul marino en espiga', material: '100 % lana virgen' },
+          { art: 'Dos piezas rojo medio en espiga', material: '100 % lana virgen Super 120\'s' },
+        ],
+      },
+    ],
   },
   'anzug-gruen': {
     name: 'Traje verde',
@@ -59,6 +75,14 @@ export const farben: Woerterbuch['farben'] = {
         text: 'Un traje verde de nuestra casa es más que una prenda: es una expresión de su personalidad. Elija entre una amplia selección de tejidos, cortes y detalles.',
       },
     ],
+    varianten: [
+      {
+        titel: 'Dos piezas verde bosque con cuadro split matt',
+        teile: [
+          { art: 'Dos piezas verde bosque con cuadro split matt', material: '100 % lana virgen Super 120\'s' },
+        ],
+      },
+    ],
   },
   'anzug-beige': {
     name: 'Traje beige',
@@ -86,6 +110,188 @@ export const farben: Woerterbuch['farben'] = {
       {
         title: 'Diseño individual',
         text: 'Elija el tejido, el corte y detalles especiales como los botones y el forro: así nace un traje de ajuste perfecto que refleja su sello personal.',
+      },
+    ],
+    varianten: [
+      {
+        titel: 'Americana de pata de gallo clara, pantalón blanco',
+        teile: [
+          { art: 'Americana de pata de gallo clara en tono camel', material: '100 % lana Shetland natural' },
+          { art: 'Pantalón blanco, liso', material: '100 % lana virgen' },
+        ],
+      },
+    ],
+  },
+  'anzug-grau': {
+    name: 'Traje gris',
+    title: 'Traje gris a medida en Zúrich',
+    claim: 'El color más versátil del armario',
+    metaDescription:
+      'Traje gris a medida en Zúrich: del gris claro al antracita, liso o de cuadros. Tejidos de Holland & Sherry, confeccionado por The Sartorialist.',
+    sections: [
+      {
+        title: 'El color más versátil del armario',
+        text: 'El gris es el color que siempre acierta. Un traje gris resulta serio sin ser severo y combina con casi cualquier color de camisa y corbata. Del gris perla claro al gris medio y al antracita profundo, el gris sirve para la oficina, la comida de negocios y la boda de tarde.',
+      },
+      {
+        title: 'Liso, franela o cuadros',
+        text: 'Un gris medio liso es la piedra angular de todo vestuario. La franela gris aporta calidez y profundidad en otoño e invierno. Quien quiera mostrar carácter elige un cuadro: en el look book de Holland & Sherry, la americana luce un gris con cuadros rosa y un sobrecuadro bouclé, combinada con un pantalón gris medio.',
+      },
+      {
+        title: 'A medida en Zúrich',
+        text: 'Confeccionamos su traje gris según sus medidas y su estilo. En nuestro showroom de Kuttelgasse le mostramos los tonos de gris a la luz del día y le aconsejamos qué tono va con su tez y con la ocasión.',
+      },
+      {
+        title: 'Tejidos y gramajes',
+        text: 'Desde la ligera lana Super 130\'s para todo el año hasta la robusta franela para el invierno: la elección del tejido determina la caída, el brillo y la comodidad. La colección Four Seasons de Holland & Sherry está pensada para trajes que se llevan de la primavera al invierno.',
+      },
+      {
+        title: 'Cómo combinar el gris',
+        text: 'Las camisas blancas y azul claro resultan clásicas; el rosa y el burdeos aportan acentos cálidos. Los zapatos negros o marrón oscuro quedan igual de bien. La americana también puede llevarse sola, con chinos o pantalón de franela.',
+      },
+    ],
+    varianten: [
+      {
+        titel: 'Americana de cuadros gris y rosa, pantalón gris medio',
+        teile: [
+          { art: 'Americana de cuadros gris y rosa con sobrecuadro bouclé', material: '93 % lana virgen, 7 % seda' },
+          { art: 'Pantalón gris medio, liso', material: '100 % lana virgen Super 130\'s' },
+        ],
+      },
+    ],
+  },
+  'anzug-schwarz': {
+    name: 'Traje negro',
+    title: 'Traje negro y esmoquin a medida en Zúrich',
+    claim: 'Para las grandes noches',
+    metaDescription:
+      'Traje negro y esmoquin a medida en Zúrich: bengalina, chaleco de jacquard y Black Tie de Holland & Sherry, confeccionados por The Sartorialist.',
+    sections: [
+      {
+        title: 'Para las grandes noches',
+        text: 'El negro es el color de la noche. Un traje negro o un esmoquin tiene su lugar en galas, noches de ópera, bodas de etiqueta y recepciones festivas. Hecho a medida, sienta de forma que transmite aplomo en lugar de rigidez.',
+      },
+      {
+        title: '¿Traje o esmoquin?',
+        text: 'El esmoquin se distingue del traje negro por sus detalles: solapas forradas de seda, galón a lo largo del pantalón, normalmente un solo botón y pajarita en lugar de corbata. El traje negro es más sobrio y también puede llevarse de día. Le aconsejamos qué encaja con su ocasión y con el código de vestimenta.',
+      },
+      {
+        title: 'Black tie con carácter',
+        text: 'En el look book de Holland & Sherry, el esmoquin de bengalina negra se combina con un chaleco de jacquard floral negro: clásico en el color y singular en el detalle. Para una imagen más moderna, una chaqueta de esmoquin azul real también va bien con el pantalón negro.',
+      },
+      {
+        title: 'A medida en Zúrich',
+        text: 'Solapas, botones, forro, galón y chaleco los elige usted libremente. Tomamos medidas, confeccionamos y ajustamos hasta que el esmoquin o el traje sienta a la perfección, a tiempo para su ocasión.',
+      },
+      {
+        title: 'Tejidos para la noche',
+        text: 'La bengalina, la barathea y la lana fina dan al negro la profundidad necesaria. Las colecciones Black Tie y Masquerade de Holland & Sherry ofrecen además jacquards, terciopelo y seda para chalecos y chaquetas de esmoquin.',
+      },
+    ],
+    varianten: [
+      {
+        titel: 'Esmoquin de bengalina negra con chaleco de jacquard',
+        teile: [
+          { art: 'Esmoquin de bengalina negra', material: '100 % lana virgen' },
+          { art: 'Chaleco de jacquard floral negro', material: '45 % acrílico, 25 % lana virgen, 30 % viscosa' },
+        ],
+      },
+    ],
+  },
+  'anzug-braun': {
+    name: 'Traje marrón',
+    title: 'Traje marrón a medida en Zúrich',
+    claim: 'Cálido, elegante y atemporal',
+    metaDescription:
+      'Traje marrón a medida en Zúrich: raya tiza, príncipe de Gales o pana color miel. Tejidos de Holland & Sherry, confeccionado por The Sartorialist.',
+    sections: [
+      {
+        title: 'Cálido, elegante y atemporal',
+        text: 'El marrón ha vuelto, y con estilo. Un traje marrón resulta cálido, cercano y seguro de sí mismo. Es la alternativa elegante al azul y al gris, y encaja tanto en la oficina como en una boda de otoño o en un fin de semana en el campo.',
+      },
+      {
+        title: 'Tres variantes del look book',
+        text: 'En su colección otoño/invierno 2026, Holland & Sherry presenta el marrón en tres variantes: un dos piezas marrón medio de raya tiza, una americana príncipe de Gales con pantalón de franela y un traje de pana color miel con un abrigo ocre.',
+      },
+      {
+        title: 'A medida en Zúrich',
+        text: 'Confeccionamos su traje marrón según sus medidas. En nuestro showroom de Kuttelgasse encontramos juntos el tono que va con su tez, del tabaco al chocolate y la miel.',
+      },
+      {
+        title: 'Tejidos y texturas',
+        text: 'El marrón vive de la textura: raya tiza sobre lana Super 120\'s, príncipe de Gales en lana Shetland o pana de algodón de 14 canales. Cada tejido cambia el carácter del traje, del look de negocios al relajado estilo campestre.',
+      },
+      {
+        title: 'Cómo combinar el marrón',
+        text: 'Camisas azul claro y color crema, corbatas burdeos, verdes o de cachemira y zapatos marrón oscuro o de ante combinan con el traje marrón. Un abrigo camel u ocre completa el conjunto.',
+      },
+    ],
+    varianten: [
+      {
+        titel: 'Dos piezas marrón medio de raya tiza',
+        teile: [
+          { art: 'Dos piezas marrón medio de raya tiza', material: '100 % lana virgen Super 120\'s' },
+          { art: 'Abrigo camel en espiga', material: '100 % lana virgen' },
+        ],
+      },
+      {
+        titel: 'Americana príncipe de Gales marrón medio',
+        teile: [
+          { art: 'Americana príncipe de Gales marrón medio', material: '100 % lana Shetland natural' },
+          { art: 'Pantalón marrón medio, liso', material: '100 % lana virgen Super 140\'s' },
+        ],
+      },
+      {
+        titel: 'Dos piezas de pana color miel',
+        teile: [
+          { art: 'Dos piezas de pana de 14 canales color miel', material: '98 % algodón, 2 % elastano' },
+          { art: 'Abrigo ocre en espiga', material: '100 % lana virgen' },
+        ],
+      },
+    ],
+  },
+  'anzug-rot': {
+    name: 'Traje rojo',
+    title: 'Traje rojo a medida en Zúrich',
+    claim: 'Burdeos, merlot y borgoña',
+    metaDescription:
+      'Traje rojo a medida en Zúrich: rojo en espiga o americana con pantalón merlot. Tejidos de Holland & Sherry, confeccionado por The Sartorialist.',
+    sections: [
+      {
+        title: 'Burdeos, merlot y borgoña',
+        text: 'Un traje rojo es toda una declaración, pero en los tonos adecuados resulta sorprendentemente elegante. Los rojos apagados como el burdeos, el merlot y el borgoña se perciben profundos y nobles en lugar de estridentes. Encajan en eventos de noche, bodas y allí donde quiera destacar sin excederse.',
+      },
+      {
+        title: 'Dos variantes del look book',
+        text: 'En su colección otoño/invierno 2026, Holland & Sherry presenta el rojo como dos piezas rojo medio en espiga, llevado bajo un abrigo azul marino, y como pantalón merlot con una americana de cuadro gun club en camel.',
+      },
+      {
+        title: 'A medida en Zúrich',
+        text: 'Confeccionamos su traje rojo o su conjunto según sus medidas. Juntos elegimos el tono de rojo que le favorece y los detalles que lo hacen discreto o llamativo.',
+      },
+      {
+        title: 'Tejidos para el rojo',
+        text: 'La espiga sobre lana fina da al rojo profundidad y textura; la gabardina hace que el merlot luzca intenso y sereno. El terciopelo y la franela también se prestan a los tonos rojos en otoño e invierno.',
+      },
+      {
+        title: 'Cómo combinar el rojo',
+        text: 'Camisas blancas y rosa pálido, corbatas oscuras y zapatos negros o marrón oscuro mantienen la elegancia del conjunto. Un abrigo azul marino o antracita es el contrapunto sereno.',
+      },
+    ],
+    varianten: [
+      {
+        titel: 'Dos piezas rojo medio en espiga',
+        teile: [
+          { art: 'Dos piezas rojo medio en espiga', material: '100 % lana virgen Super 120\'s' },
+          { art: 'Abrigo azul marino en espiga', material: '100 % lana virgen' },
+        ],
+      },
+      {
+        titel: 'Americana de cuadro gun club, pantalón merlot',
+        teile: [
+          { art: 'Americana de cuadro gun club en camel y cuadro ventana en borgoña', material: '100 % lana virgen con elasticidad natural' },
+          { art: 'Pantalón merlot, liso', material: '100 % lana virgen' },
+        ],
       },
     ],
   },
