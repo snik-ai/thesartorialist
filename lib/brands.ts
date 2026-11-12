@@ -90,17 +90,7 @@ export const BRANDS: Brand[] = [
     origin: 'San Martino di Lupari, Padua · seit 1968',
     hero: '/images/gimos/gimos-lammfelljacke-herbst-winter-2026.webp',
     banner: '/images/gimos/gimos-herbst-winter-2026-paar.webp',
-    gallery: [
-      '/images/gimos/gimos-lammfell-kurzmantel.webp',
-      '/images/gimos/gimos-bomber-wolle-stone.webp',
-      '/images/gimos/gimos-flanell-mantel-kapuze.webp',
-      '/images/gimos/gimos-wildleder-hemdjacke.webp',
-      '/images/gimos/gimos-gms75-lammfell.webp',
-      '/images/gimos/gimos-blouson-flanell-kaschmir.webp',
-      '/images/gimos/gimos-fruehling-sommer-2026.webp',
-      '/images/gimos/gimos-bomber-wolle-kragen.webp',
-      '/images/gimos/gimos-manufaktur-padua.webp',
-    ],
+    gallery: [],
     sections: [
       {
         title: 'Eine Familienwerkstatt für Leder',
