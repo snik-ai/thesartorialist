@@ -88,6 +88,49 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
 
   const close = () => setOpen(false);
 
+  // Robust gegen Safari (iOS): Ein externer Link (Stoffe, Instagram) öffnet einen neuen Tab und friert
+  // diese Seite mitten in der Schliess-Animation ein. Darum externe Links ohne Animation schliessen und
+  // beim Zurückkehren (bfcache, Tab-Wechsel) Menü, Unterpanel und Scroll-Sperre hart zurücksetzen.
+  const menuRef = useRef<HTMLElement>(null);
+  const ohneAnimation = () => {
+    const m = menuRef.current;
+    if (!m) return;
+    m.classList.add('is-instant');
+    requestAnimationFrame(() => requestAnimationFrame(() => m.classList.remove('is-instant')));
+  };
+  const schliessenSofort = () => {
+    ohneAnimation();
+    setOpen(false);
+    setSub(null);
+    document.body.classList.remove('menu-open');
+    document.documentElement.classList.remove('menu-open');
+  };
+  const schliessenExtern = () => schliessenSofort();
+  useEffect(() => {
+    const zurueck = () => {
+      if (document.visibilityState === 'hidden') return;
+      schliessenSofort();
+    };
+    const sichtbar = () => document.visibilityState === 'visible' && zurueck();
+    window.addEventListener('pageshow', zurueck);
+    document.addEventListener('visibilitychange', sichtbar);
+    return () => {
+      window.removeEventListener('pageshow', zurueck);
+      document.removeEventListener('visibilitychange', sichtbar);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // Öffnen erzwingen: Falls der Zustand nach einem eingefrorenen Tab noch «offen» meldet, die Anzeige
+  // aber geschlossen ist, erst sauber schliessen und im nächsten Frame öffnen.
+  const oeffnen = () => {
+    if (open) {
+      schliessenSofort();
+      requestAnimationFrame(() => setOpen(true));
+      return;
+    }
+    setOpen(true);
+  };
+
   // Mega-Menü «Brands» (Desktop): öffnet beim Überfahren mit kurzer Verzögerung, schliesst
   // beim Verlassen, per Escape oder bei Navigation; per Tastatur über Fokus erreichbar.
   const [mega, setMega] = useState(false);
@@ -180,7 +223,7 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
             aria-label={t.header.menueOeffnen}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            onClick={() => setOpen(true)}
+            onClick={oeffnen}
           >
             <span className="menu-toggle-bx">
               <span />
@@ -236,9 +279,11 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
 
       {/* Fullscreen-Menü (mobil) — eigene Kopfzeile mit grossem Logo + Close */}
       <nav
+        ref={menuRef}
         className={`fs-menu${open ? ' is-open' : ''}${sub ? ' show-sub' : ''}`}
         id="mobile-menu"
         aria-hidden={!open}
+        inert={!open}
         aria-label={t.header.mobileNav}
       >
         <div className="fs-top">
@@ -259,7 +304,7 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
               <Link className="fs-row" href={p.konfigurator} onClick={close}>
                 <span className="fs-lbl">{nav.stylesOptions}</span>
               </Link>
-              <a className="fs-row" href={STOFFE_URL} target="_blank" rel="noopener" onClick={close}>
+              <a className="fs-row" href={STOFFE_URL} target="_blank" rel="noopener" onClick={schliessenExtern}>
                 <span className="fs-lbl">{nav.stoffe}</span>
               </a>
               <Link className="fs-row" href={p.massanzug} onClick={close}>
@@ -293,7 +338,7 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
               <div className="fs-contact">
                 <a href={SITE.phoneHref}>{SITE.phone}</a>
                 <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-                <a href={SITE.socials.instagram} target="_blank" rel="noopener">
+                <a href={SITE.socials.instagram} target="_blank" rel="noopener" onClick={schliessenExtern}>
                   Instagram
                 </a>
               </div>

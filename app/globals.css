@@ -273,6 +273,8 @@ h1, h2, h3, .serif {
 }
 body.menu-open { overflow: hidden; }
 .fs-menu.is-open { transform: translateY(0); visibility: visible; }
+/* Sofort schliessen ohne Animation (externer Link / Rückkehr in den Tab, siehe Header.tsx) */
+.fs-menu.is-instant, .fs-menu.is-instant * { transition: none !important; }
 
 /* Eigene Kopfzeile: grosses Logo links, Close rechts */
 .fs-top {
