@@ -43,6 +43,7 @@ export function rahmenMeta(lang: Sprache): Metadata {
     },
     twitter: { card: 'summary_large_image', title: titel, description: t.beschreibung },
     robots: { index: true, follow: true },
+    manifest: '/manifest.webmanifest',
   };
 }
 
