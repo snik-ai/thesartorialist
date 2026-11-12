@@ -1,10 +1,10 @@
 'use client';
 
-// Film «Create your own Style!» (Vimeo, von thesartorialist.ch) als ruhiger
-// Hintergrund im Hero: ohne Ton, Endlosschleife, ohne Bedienelemente und mit
-// «dnt» (keine Vimeo-Cookies, kein Tracking). Zuerst steht das Standbild (LCP),
-// der Film lädt erst bei der ersten Interaktion und blendet weich ein. Bei
-// «Bewegung reduzieren» oder Datensparmodus bleibt es beim Standbild.
+// Film «Create your own Style!» (Vimeo, von thesartorialist.ch) als Hintergrund im Hero:
+// ohne Ton, Endlosschleife, ohne Bedienelemente und mit «dnt» (keine Vimeo-Cookies).
+// Kein Standbild davor (das alte Uhr-Foto wirkte wie ein Overlay): Der Hero ist dunkel,
+// der Film lädt direkt nach dem Seitenaufbau und blendet voll deckend ein.
+// Bei «Bewegung reduzieren» oder Datensparmodus bleibt der Hero dunkel.
 // «Film ansehen» öffnet ihn mit Ton im Vollbild.
 import { useEffect, useRef, useState } from 'react';
 
@@ -47,16 +47,18 @@ export default function HeroVideo({ t }: { t: FilmTexte }) {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const save = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     if (reduce || save) return;
-    // Film erst bei der ersten Interaktion (Maus, Scrollen, Tippen, Taste) laden:
-    // Das Standbild bleibt das LCP-Element, und ohne Interaktion setzt Vimeo keine
-    // Drittanbieter-Cookies und blockiert kein Netzwerk.
-    const evs = ['pointermove', 'pointerdown', 'scroll', 'touchstart', 'keydown', 'wheel'] as const;
+    // Direkt nach dem Seitenaufbau laden (nicht erst bei der ersten Interaktion),
+    // damit der Film sofort läuft; kurz verzögert, damit Text und CSS zuerst stehen.
+    let t: ReturnType<typeof setTimeout> | undefined;
     const go = () => {
-      setLoad(true);
-      evs.forEach((e) => window.removeEventListener(e, go));
+      t = setTimeout(() => setLoad(true), 150);
     };
-    evs.forEach((e) => window.addEventListener(e, go, { once: true, passive: true }));
-    return () => evs.forEach((e) => window.removeEventListener(e, go));
+    if (document.readyState === 'complete') go();
+    else window.addEventListener('load', go, { once: true });
+    return () => {
+      window.removeEventListener('load', go);
+      if (t) clearTimeout(t);
+    };
   }, []);
 
   useEffect(() => {
@@ -72,14 +74,6 @@ export default function HeroVideo({ t }: { t: FilmTexte }) {
 
   return (
     <>
-      <img
-        src="/images/hero-film.webp"
-        alt={t.bildAlt}
-        className="hero-img hero-img--film"
-        width={1920}
-        height={1080}
-        fetchPriority="high"
-      />
       {load && (
         <div className={`hero-video${ready ? ' is-ready' : ''}`} aria-hidden="true">
           <iframe
