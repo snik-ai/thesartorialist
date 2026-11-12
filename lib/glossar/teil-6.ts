@@ -251,7 +251,7 @@ export const TEIL_6: GlossarBegriff[] = [
       { label: 'Termin buchen', href: '/termin/' },
     ],
     bild: '/images/anzugfarben/grau-karo-sakko-detail.webp',
-    bildAlt: 'Karierter Anzug auf einer Schaufensterpuppe in einem Herrengeschäft mit Backsteinwand',
+    bildAlt: 'Sakko mit Karo in Grau und Rosa, massgefertigt aus Holland-&-Sherry-Stoff',
   },
   {
     slug: 'aermellaenge',
