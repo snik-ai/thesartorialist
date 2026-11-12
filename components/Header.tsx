@@ -88,18 +88,21 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
 
   const close = () => setOpen(false);
 
-  // Robust gegen Safari (iOS): Ein externer Link (Stoffe, Instagram) öffnet einen neuen Tab und friert
-  // diese Seite mitten in der Schliess-Animation ein. Darum externe Links ohne Animation schliessen und
-  // beim Zurückkehren (bfcache, Tab-Wechsel) Menü, Unterpanel und Scroll-Sperre hart zurücksetzen.
-  const menuRef = useRef<HTMLElement>(null);
-  const ohneAnimation = () => {
-    const m = menuRef.current;
-    if (!m) return;
-    m.classList.add('is-instant');
-    requestAnimationFrame(() => requestAnimationFrame(() => m.classList.remove('is-instant')));
-  };
+  // Robust gegen Safari (iOS): «Stoffe» öffnet die H&S-Seite (oft im selben Tab), «Zurück» stellt diese
+  // Seite aus dem bfcache wieder her. Darum: geschlossen ist das Menü display:none (kein alter Layer),
+  // externe Links schliessen ohne Animation, und bei pageshow/visibilitychange wird alles hart zurückgesetzt.
+  // «sichtbar» hält das Menü während der Schliess-Animation im Layout; danach display:none (siehe CSS).
+  const [sichtbar, setSichtbar] = useState(false);
+  useEffect(() => {
+    if (open) {
+      setSichtbar(true);
+      return;
+    }
+    const t = setTimeout(() => setSichtbar(false), 520);
+    return () => clearTimeout(t);
+  }, [open]);
   const schliessenSofort = () => {
-    ohneAnimation();
+    setSichtbar(false);
     setOpen(false);
     setSub(null);
     document.body.classList.remove('menu-open');
@@ -279,8 +282,7 @@ export default function Header({ marken }: { marken: MenueMarke[] }) {
 
       {/* Fullscreen-Menü (mobil) — eigene Kopfzeile mit grossem Logo + Close */}
       <nav
-        ref={menuRef}
-        className={`fs-menu${open ? ' is-open' : ''}${sub ? ' show-sub' : ''}`}
+        className={`fs-menu${open ? ' is-open' : ''}${sichtbar ? ' is-shown' : ''}${sub ? ' show-sub' : ''}`}
         id="mobile-menu"
         aria-hidden={!open}
         inert={!open}
