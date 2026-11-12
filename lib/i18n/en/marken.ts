@@ -74,6 +74,46 @@ export const marken: Woerterbuch['marken'] = {
       },
     ],
   },
+  berwich: {
+    claim: 'The Italian trouser',
+    metaDescription:
+      'Berwich at The Sartorialist Zurich: trousers from Apulia, made entirely in-house since 1975 — Italian fit, selected fabrics, Made in Italy.',
+    origin: 'Martina Franca, Apulia · since 1975',
+    sections: [
+      {
+        title: 'A passion that began in a small garage',
+        text: 'Berwich began in 1975 in a small garage in Martina Franca, Apulia, where Michele and Anna Fumarola started sewing trousers — and they still run the company today. While the fashion industry keeps outsourcing its production, every step at Berwich stays in-house, from the cut to the final seam. Techniques and tailoring tradition are passed down from father to son and refined along the way.',
+      },
+      {
+        title: 'The trouser in the leading role',
+        text: 'Since 2007 the house’s own collection has carried the name Berwich — inspired by travelling and discovery. Fit is at the heart of it all: from the high-waisted pleated trouser and the slim chino to the relaxed cargo, made from carefully selected fabrics. A Berwich trouser sits right, falls cleanly and turns a jacket, knit or shirt into a complete look.',
+      },
+      {
+        title: 'Berwich in our Zurich boutique',
+        text: 'As a Berwich partner, we carry the trousers in our showroom on Kuttelgasse. Try cuts and fabrics in person — we pair them with your jacket or bespoke suit and advise you on rise, width and length until everything is right.',
+      },
+    ],
+  },
+  gimos: {
+    claim: "Italian leather craft",
+    metaDescription:
+      "Gimo's at The Sartorialist Zurich: leather jackets, shearling and coats from Padua — a family manufacturer since 1968, traditional Italian craftsmanship.",
+    origin: "San Martino di Lupari, Padua · since 1968",
+    sections: [
+      {
+        title: "A family workshop for leather",
+        text: "Gimo's began in 1968 as a small family workshop near Padua, specialising in leather garments for women and men. From 1975, founder Renzo Girardin built the company into what it is today. From the outset Gimo's focused on first-class materials and careful workmanship — staying true to traditional Italian leather-making methods while remaining open to new ideas from fashion.",
+      },
+      {
+        title: "Classic cut, contemporary presence",
+        text: "The collection ranges from the suede shirt jacket and the shearling short coat to the blouson in flannel with cashmere and silk. Classic cuts get a contemporary touch, every detail is considered, and the materials are never ordinary. Alongside them come fabric coats and jackets that combine style with protection from the cold — with clean lines in shape and volume.",
+      },
+      {
+        title: "Gimo's in our Zurich boutique",
+        text: "We carry selected pieces from Gimo's in our showroom on Kuttelgasse. Feel the quality of the leather for yourself — we will advise you on which jacket or coat suits your suit, your wardrobe and your everyday life.",
+      },
+    ],
+  },
   'gran-sasso': {
     claim: 'Italian knitwear artistry',
     metaDescription:

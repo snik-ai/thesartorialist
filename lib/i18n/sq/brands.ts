@@ -5,7 +5,7 @@ export const brands: Woerterbuch['brands'] = {
   meta: {
     titel: 'Markat — Shtëpitë tona të rrobaqepësisë dhe fabrikat e endjes',
     beschreibung:
-      'Markat e The Sartorialist Cyrih: Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso dhe Woolrich — shtëpi familjare, të përzgjedhura personalisht.',
+      'Markat e The Sartorialist Cyrih: Gran Sasso, Berwich, Gimo’s, Woolrich, Orazio Luciano, Maria Santangelo, Loro Piana dhe Holland & Sherry — shtëpi familjare, të përzgjedhura personalisht.',
     ogTitel: 'Markat — The Sartorialist Cyrih',
     ogBeschreibung: 'Shtëpi familjare, të përzgjedhura personalisht.',
   },

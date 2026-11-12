@@ -74,6 +74,46 @@ export const marken: Woerterbuch['marken'] = {
       },
     ],
   },
+  berwich: {
+    claim: 'Le pantalon italien',
+    metaDescription:
+      'Berwich chez The Sartorialist Zurich : des pantalons des Pouilles, entièrement fabriqués en interne depuis 1975 — coupe italienne, tissus choisis, Made in Italy.',
+    origin: 'Martina Franca, Pouilles · depuis 1975',
+    sections: [
+      {
+        title: 'Une passion née dans un petit garage',
+        text: 'Berwich naît en 1975 dans un petit garage de Martina Franca, dans les Pouilles : Michele et Anna Fumarola y commencent à coudre des pantalons — et dirigent encore l’entreprise aujourd’hui. Alors que la mode délocalise toujours plus sa production, chez Berwich chaque étape reste dans la maison, de la coupe à la dernière couture. Techniques et tradition tailleur se transmettent de père en fils et s’affinent.',
+      },
+      {
+        title: 'Le pantalon en premier rôle',
+        text: 'Depuis 2007, la collection maison porte le nom de Berwich — inspirée par le voyage et la découverte. Au centre : la coupe, du pantalon à pinces taille haute au chino ajusté jusqu’au cargo décontracté, confectionnés dans des tissus choisis. Un pantalon Berwich tombe juste et fait d’une veste, d’un pull ou d’une chemise une silhouette aboutie.',
+      },
+      {
+        title: 'Berwich dans notre boutique à Zurich',
+        text: 'Partenaire de Berwich, nous présentons ses pantalons dans notre showroom de la Kuttelgasse. Essayez coupes et tissus sur place — nous les associons à votre veste ou à votre costume sur mesure et vous conseillons sur la hauteur de taille, l’ampleur et la longueur, jusqu’à ce que tout soit parfait.',
+      },
+    ],
+  },
+  gimos: {
+    claim: "L’art du cuir italien",
+    metaDescription:
+      "Gimo's chez The Sartorialist Zurich : vestes en cuir, peau lainée et manteaux de Padoue — manufacture familiale depuis 1968, savoir-faire italien traditionnel.",
+    origin: "San Martino di Lupari, Padoue · depuis 1968",
+    sections: [
+      {
+        title: "Un atelier familial du cuir",
+        text: "Gimo's naît en 1968 comme petit atelier familial près de Padoue, spécialisé dans les vêtements en cuir pour femme et homme. À partir de 1975, le fondateur Renzo Girardin développe l’entreprise jusqu’à sa taille actuelle. Dès le départ, Gimo's mise sur des matières de premier choix et une fabrication soignée — fidèle aux méthodes italiennes traditionnelles du travail du cuir, ouverte aux nouvelles impulsions de la mode.",
+      },
+      {
+        title: "Coupe classique, allure actuelle",
+        text: "La collection va de la veste-chemise en daim au manteau court en peau lainée, jusqu’au blouson en flanelle avec cachemire et soie. Les coupes classiques reçoivent une touche contemporaine, chaque détail est pensé, les matières ne sont jamais banales. S’y ajoutent des manteaux et vestes en tissu qui allient style et protection contre le froid — avec des lignes nettes dans les formes et les volumes.",
+      },
+      {
+        title: "Gimo's dans notre boutique à Zurich",
+        text: "Nous présentons une sélection de pièces Gimo's dans notre showroom de la Kuttelgasse. Sentez vous-même la qualité du cuir — nous vous conseillons sur la veste ou le manteau qui s’accorde à votre costume, à votre garde-robe et à votre quotidien.",
+      },
+    ],
+  },
   'gran-sasso': {
     claim: 'L’art italien de la maille',
     metaDescription:

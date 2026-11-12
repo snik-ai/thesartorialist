@@ -74,6 +74,46 @@ export const marken: Woerterbuch['marken'] = {
       },
     ],
   },
+  berwich: {
+    claim: 'A calça italiana',
+    metaDescription:
+      'Berwich no The Sartorialist Zurique: calças da Apúlia, feitas inteiramente em casa desde 1975 — corte italiano, tecidos selecionados, Made in Italy.',
+    origin: 'Martina Franca, Apúlia · desde 1975',
+    sections: [
+      {
+        title: 'Uma paixão que nasceu numa pequena garagem',
+        text: 'A Berwich nasce em 1975 numa pequena garagem em Martina Franca, na Apúlia: Michele e Anna Fumarola começam ali a coser calças — e ainda hoje dirigem a empresa. Enquanto a moda subcontrata cada vez mais a produção, na Berwich cada etapa fica em casa, do corte à última costura. Técnicas e tradição de alfaiataria passam de pai para filho e são aperfeiçoadas.',
+      },
+      {
+        title: 'A calça como protagonista',
+        text: 'Desde 2007 a coleção própria tem o nome Berwich — inspirada na viagem e na descoberta. No centro está o corte: da calça com pinças de cintura subida ao chino justo e ao cargo descontraído, em tecidos selecionados. Uma calça Berwich assenta bem, cai de forma limpa e transforma um casaco, uma malha ou uma camisa num visual completo.',
+      },
+      {
+        title: 'Berwich na nossa loja em Zurique',
+        text: 'Como parceiros da Berwich, temos as calças no nosso showroom na Kuttelgasse. Experimente cortes e tecidos pessoalmente — combinamo-los com o seu casaco ou fato por medida e aconselhamos sobre a altura da cintura, a largura e o comprimento, até tudo estar certo.',
+      },
+    ],
+  },
+  gimos: {
+    claim: "Arte italiana do couro",
+    metaDescription:
+      "Gimo's no The Sartorialist Zurique: casacos de pele, pele de carneiro e sobretudos de Pádua — manufatura familiar desde 1968, confeção italiana tradicional.",
+    origin: "San Martino di Lupari, Pádua · desde 1968",
+    sections: [
+      {
+        title: "Uma oficina familiar de couro",
+        text: "A Gimo's nasce em 1968 como pequena oficina familiar perto de Pádua, especializada em peças de pele para senhora e homem. A partir de 1975, o fundador Renzo Girardin leva a empresa à sua dimensão atual. Desde o início, a Gimo's aposta em materiais de primeira e numa confeção cuidada — fiel aos métodos italianos tradicionais do couro, aberta a novos impulsos da moda.",
+      },
+      {
+        title: "Corte clássico, presença atual",
+        text: "A coleção vai da sobrecamisa em camurça e do casaco curto em pele de carneiro ao blusão em flanela com caxemira e seda. Os cortes clássicos recebem um toque contemporâneo, cada detalhe é pensado e os materiais nunca são banais. Juntam-se sobretudos e casacos em tecido que unem estilo e proteção contra o frio — com linhas limpas nas formas e nos volumes.",
+      },
+      {
+        title: "Gimo's na nossa loja em Zurique",
+        text: "Temos uma seleção de peças da Gimo's no nosso showroom na Kuttelgasse. Sinta a qualidade da pele — aconselhamos qual casaco ou sobretudo combina com o seu fato, o seu guarda-roupa e o seu dia a dia.",
+      },
+    ],
+  },
   'gran-sasso': {
     claim: 'A arte italiana da malha',
     metaDescription:

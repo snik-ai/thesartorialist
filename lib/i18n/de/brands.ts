@@ -4,7 +4,7 @@ export const brands = {
   meta: {
     titel: 'Brands — Unsere Manufakturen',
     beschreibung:
-      'Die Brands von The Sartorialist Zürich: Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso und Woolrich — familiengeführte Manufakturen, persönlich ausgewählt.',
+      'Die Brands von The Sartorialist Zürich: Gran Sasso, Berwich, Gimo’s, Woolrich, Orazio Luciano, Maria Santangelo, Loro Piana und Holland & Sherry — familiengeführte Manufakturen, persönlich ausgewählt.',
     ogTitel: 'Brands — The Sartorialist Zürich',
     ogBeschreibung: 'Familiengeführte Manufakturen, persönlich ausgewählt.',
   },

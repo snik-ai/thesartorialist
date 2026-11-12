@@ -77,6 +77,12 @@ export default async function Marke({ lang, slug }: { lang: Sprache; slug: strin
         </div>
       </section>
 
+      {brand.banner && (
+        <figure className="brand-banner">
+          <img src={brand.banner} alt={fmt(t.bildAlt, { name: brand.name })} width={1920} height={1042} loading="lazy" />
+        </figure>
+      )}
+
       {brand.sections.length > 2 && (
         <section className="section section--warm">
           <div className="container grid-2">
@@ -128,7 +134,7 @@ export default async function Marke({ lang, slug }: { lang: Sprache; slug: strin
               <span className="eyebrow">{t.impressionenEyebrow}</span>
               <h2 className="h2">{brand.name}</h2>
             </div>
-            <div className="gallery-grid">
+            <div className={`gallery-grid${brand.galerieHoch ? ' gallery-grid--hoch' : ''}`}>
               {brand.gallery.map((img, i) => (
                 <img
                   key={img}

@@ -11,10 +11,137 @@ export type Brand = {
   /** Marke im Shopify-Shop: Galerie zeigt dann echte Produktfotos aus dem Shop */
   shopMarke?: string;
   shopSlug?: string;
+  /** Breites Stimmungsbild zwischen Einleitung und weiteren Abschnitten */
+  banner?: string;
+  /** Galerie im Hochformat 2:3 (Ganzkörper-Fotos), sonst 3:4 */
+  galerieHoch?: boolean;
   sections: { title: string; text: string }[];
 };
 
 export const BRANDS: Brand[] = [
+  {
+    slug: 'gran-sasso',
+    name: 'Gran Sasso',
+    claim: 'Italienische Strickkunst',
+    metaDescription:
+      'Gran Sasso bei The Sartorialist Zürich: luxuriöse Strickmode aus Italien — Kaschmir, Wolle und Baumwolle in zeitlosem Design.',
+    origin: 'Abruzzen, Italien · seit den 1950ern',
+    hero: '/images/2024069_A20245715220202049L.webp',
+    gallery: ['/images/2024069_A20245715220202049L.webp'],
+    shopMarke: 'Gran Sasso',
+    shopSlug: 'gran-sasso',
+    sections: [
+      {
+        title: 'Zeitlose italienische Eleganz',
+        text: 'Gran Sasso steht seit Jahrzehnten für hochwertige italienische Mode, die Eleganz und Handwerkskunst vereint. Die in den 1950er Jahren gegründete Marke hat sich auf luxuriöse Strickmode spezialisiert und überzeugt mit zeitlosem Stil und exquisiten Materialien. Jedes Kleidungsstück wird in Italien gefertigt und verkörpert die Tradition des «Made in Italy».',
+      },
+      {
+        title: 'Qualität und Design',
+        text: 'Bei Gran Sasso treffen innovative Designs auf traditionelle Handarbeit. Das Sortiment reicht von edlen Pullovern und Cardigans über Polohemden bis hin zu eleganten Freizeit- und Businessoutfits. Hochwertige Materialien wie Kaschmir, Wolle und Baumwolle sorgen für Komfort und Langlebigkeit.',
+      },
+      {
+        title: 'Gran Sasso bei uns im Store in Zürich',
+        text: 'Entdecken Sie die exklusive Mode von Gran Sasso in unserem Store im Herzen von Zürich. Wir bieten eine sorgfältig ausgewählte Kollektion der hochwertigen Strickwaren und eleganten Kleidungsstücke dieser renommierten Marke. Unser Team steht Ihnen beratend zur Seite.',
+      },
+    ],
+  },
+  {
+    slug: 'berwich',
+    name: 'Berwich',
+    claim: 'Die italienische Hose',
+    metaDescription:
+      'Berwich bei The Sartorialist Zürich: Hosen aus Apulien, seit 1975 komplett im eigenen Haus gefertigt — italienische Passform, ausgesuchte Stoffe, Made in Italy.',
+    origin: 'Martina Franca, Apulien · seit 1975',
+    hero: '/images/berwich/berwich-hose-herren-kollektion.webp',
+    banner: '/images/berwich/berwich-naehmaschine-manufaktur.webp',
+    galerieHoch: true,
+    gallery: [
+      '/images/berwich/berwich-hose-vulcanolux-braun.webp',
+      '/images/berwich/berwich-hose-retrolong-gruen.webp',
+      '/images/berwich/berwich-hose-lucano-navy.webp',
+      '/images/berwich/berwich-hose-retrolux-greige.webp',
+      '/images/berwich/berwich-hose-m5t19-grau.webp',
+      '/images/berwich/berwich-hose-vulcanolux-latte.webp',
+      '/images/berwich/berwich-hose-chiaia-grau.webp',
+      '/images/berwich/berwich-hose-spiaggia-caramel.webp',
+      '/images/berwich/berwich-hose-negroni-blau.webp',
+    ],
+    sections: [
+      {
+        title: 'Eine Leidenschaft, die in einer kleinen Garage begann',
+        text: 'Berwich beginnt 1975 in einer kleinen Garage in Martina Franca, Apulien: Michele und Anna Fumarola beginnen dort, Hosen zu nähen — und führen das Unternehmen bis heute. Während die Modebranche ihre Produktion immer weiter auslagert, bleibt bei Berwich jeder Schritt im eigenen Haus, vom Zuschnitt bis zur letzten Naht. Techniken und Schneidertradition werden vom Vater an den Sohn weitergegeben und verfeinert.',
+      },
+      {
+        title: 'Die Hose in der Hauptrolle',
+        text: 'Seit 2007 trägt die eigene Kollektion den Namen Berwich — inspiriert vom Reisen und Entdecken. Im Mittelpunkt steht die Passform: von der Bundfaltenhose mit hoher Taille über die schmale Chino bis zur lässigen Cargo, gefertigt aus ausgesuchten Stoffen. Eine Berwich-Hose sitzt, fällt sauber und macht aus Sakko, Strick oder Hemd einen stimmigen Auftritt.',
+      },
+      {
+        title: 'Berwich bei uns im Store in Zürich',
+        text: 'Als Partner von Berwich führen wir die Hosen in unserem Showroom an der Kuttelgasse. Probieren Sie Schnitte und Stoffe direkt an — wir kombinieren sie mit Ihrem Sakko oder Massanzug und beraten Sie zu Bundhöhe, Weite und Länge, bis alles stimmt.',
+      },
+    ],
+  },
+  {
+    slug: 'gimos',
+    name: "Gimo's",
+    claim: 'Italienische Lederkunst',
+    metaDescription:
+      "Gimo's bei The Sartorialist Zürich: Lederjacken, Lammfell und Mäntel aus Padua — Familienmanufaktur seit 1968, traditionelle italienische Verarbeitung.",
+    origin: 'San Martino di Lupari, Padua · seit 1968',
+    hero: '/images/gimos/gimos-lammfelljacke-herbst-winter-2026.webp',
+    banner: '/images/gimos/gimos-herbst-winter-2026-paar.webp',
+    gallery: [
+      '/images/gimos/gimos-lammfell-kurzmantel.webp',
+      '/images/gimos/gimos-bomber-wolle-stone.webp',
+      '/images/gimos/gimos-flanell-mantel-kapuze.webp',
+      '/images/gimos/gimos-wildleder-hemdjacke.webp',
+      '/images/gimos/gimos-gms75-lammfell.webp',
+      '/images/gimos/gimos-blouson-flanell-kaschmir.webp',
+      '/images/gimos/gimos-fruehling-sommer-2026.webp',
+      '/images/gimos/gimos-bomber-wolle-kragen.webp',
+      '/images/gimos/gimos-manufaktur-padua.webp',
+    ],
+    sections: [
+      {
+        title: 'Eine Familienwerkstatt für Leder',
+        text: "Gimo's beginnt 1968 als kleine Familienwerkstatt in der Nähe von Padua, spezialisiert auf Lederbekleidung für Damen und Herren. Ab 1975 baut Gründer Renzo Girardin das Unternehmen zu seiner heutigen Grösse aus. Von Anfang an setzt Gimo's auf erstklassige Materialien und sorgfältige Verarbeitung — und bleibt den traditionellen italienischen Methoden der Lederverarbeitung treu, offen für neue Impulse aus der Mode.",
+      },
+      {
+        title: 'Klassischer Schnitt, zeitgemässer Auftritt',
+        text: "Die Kollektion reicht von der Wildleder-Hemdjacke über den Lammfell-Kurzmantel bis zum Blouson aus Flanell mit Kaschmir und Seide. Klassische Schnitte erhalten einen zeitgemässen Touch, jedes Detail ist durchdacht, die Materialien sind nie beliebig. Dazu kommen Mäntel und Jacken aus Stoff, die Stil und Schutz vor der Kälte vereinen — mit klaren Linien in Form und Volumen.",
+      },
+      {
+        title: "Gimo's bei uns im Store in Zürich",
+        text: "Wir führen ausgewählte Stücke von Gimo's in unserem Showroom an der Kuttelgasse. Spüren Sie die Qualität des Leders selbst — wir beraten Sie, welche Jacke oder welcher Mantel zu Ihrem Anzug, Ihrer Garderobe und Ihrem Alltag passt.",
+      },
+    ],
+  },
+  {
+    slug: 'woolrich',
+    name: 'Woolrich',
+    claim: 'Outdoor-Ikone seit 1830',
+    metaDescription:
+      'Woolrich bei The Sartorialist Zürich: ikonische Outdoor-Bekleidung seit 1830 — vom Arctic Parka bis zum eleganten Wollmantel.',
+    origin: 'USA · seit 1830',
+    hero: '/images/CFWOOU0792MRUT3496-3989.webp',
+    gallery: ['/images/CFWOOU0792MRUT3496-3989.webp'],
+    shopMarke: 'Woolrich',
+    shopSlug: 'woolrich',
+    sections: [
+      {
+        title: 'Traditionelle Outdoor-Mode mit modernem Flair',
+        text: 'Woolrich ist eine ikonische Marke, die seit 1830 für hochwertige Outdoor-Bekleidung bekannt ist. Ursprünglich in den USA gegründet, vereint Woolrich traditionelle Handwerkskunst mit innovativen Designs und setzt Massstäbe für funktionale, stilvolle Mode — robust, wetterfest, klassisch.',
+      },
+      {
+        title: 'Zeitlose Qualität und Funktionalität',
+        text: 'Von der ikonischen Arctic Parka bis zu eleganten Wollmänteln: Jedes Kleidungsstück wird aus erstklassigen Materialien gefertigt, die Schutz vor den Elementen bieten und höchsten Komfort gewährleisten — in der Stadt wie in der Natur.',
+      },
+      {
+        title: 'Woolrich bei uns im Store',
+        text: 'Erleben Sie die exklusive Welt von Woolrich direkt bei uns im Store in Zürich — mit einer sorgfältig ausgewählten Kollektion hochwertiger Outdoor-Bekleidung und Accessoires.',
+      },
+    ],
+  },
   {
     slug: 'orazio-luciano',
     name: 'Orazio Luciano',
@@ -134,58 +261,6 @@ export const BRANDS: Brand[] = [
       {
         title: 'Qualität und Stil vereint',
         text: 'Die Stoffe zeichnen sich durch aussergewöhnliche Qualität und präzise Verarbeitung aus: leicht, atmungsaktiv und hervorragend haltbar — ideal für massgeschneiderte Anzüge mit makellosem Sitz und edler Optik, die über viele Jahre höchsten Tragekomfort bieten.',
-      },
-    ],
-  },
-  {
-    slug: 'gran-sasso',
-    name: 'Gran Sasso',
-    claim: 'Italienische Strickkunst',
-    metaDescription:
-      'Gran Sasso bei The Sartorialist Zürich: luxuriöse Strickmode aus Italien — Kaschmir, Wolle und Baumwolle in zeitlosem Design.',
-    origin: 'Abruzzen, Italien · seit den 1950ern',
-    hero: '/images/2024069_A20245715220202049L.webp',
-    gallery: ['/images/2024069_A20245715220202049L.webp'],
-    shopMarke: 'Gran Sasso',
-    shopSlug: 'gran-sasso',
-    sections: [
-      {
-        title: 'Zeitlose italienische Eleganz',
-        text: 'Gran Sasso steht seit Jahrzehnten für hochwertige italienische Mode, die Eleganz und Handwerkskunst vereint. Die in den 1950er Jahren gegründete Marke hat sich auf luxuriöse Strickmode spezialisiert und überzeugt mit zeitlosem Stil und exquisiten Materialien. Jedes Kleidungsstück wird in Italien gefertigt und verkörpert die Tradition des «Made in Italy».',
-      },
-      {
-        title: 'Qualität und Design',
-        text: 'Bei Gran Sasso treffen innovative Designs auf traditionelle Handarbeit. Das Sortiment reicht von edlen Pullovern und Cardigans über Polohemden bis hin zu eleganten Freizeit- und Businessoutfits. Hochwertige Materialien wie Kaschmir, Wolle und Baumwolle sorgen für Komfort und Langlebigkeit.',
-      },
-      {
-        title: 'Gran Sasso bei uns im Store in Zürich',
-        text: 'Entdecken Sie die exklusive Mode von Gran Sasso in unserem Store im Herzen von Zürich. Wir bieten eine sorgfältig ausgewählte Kollektion der hochwertigen Strickwaren und eleganten Kleidungsstücke dieser renommierten Marke. Unser Team steht Ihnen beratend zur Seite.',
-      },
-    ],
-  },
-  {
-    slug: 'woolrich',
-    name: 'Woolrich',
-    claim: 'Outdoor-Ikone seit 1830',
-    metaDescription:
-      'Woolrich bei The Sartorialist Zürich: ikonische Outdoor-Bekleidung seit 1830 — vom Arctic Parka bis zum eleganten Wollmantel.',
-    origin: 'USA · seit 1830',
-    hero: '/images/CFWOOU0792MRUT3496-3989.webp',
-    gallery: ['/images/CFWOOU0792MRUT3496-3989.webp'],
-    shopMarke: 'Woolrich',
-    shopSlug: 'woolrich',
-    sections: [
-      {
-        title: 'Traditionelle Outdoor-Mode mit modernem Flair',
-        text: 'Woolrich ist eine ikonische Marke, die seit 1830 für hochwertige Outdoor-Bekleidung bekannt ist. Ursprünglich in den USA gegründet, vereint Woolrich traditionelle Handwerkskunst mit innovativen Designs und setzt Massstäbe für funktionale, stilvolle Mode — robust, wetterfest, klassisch.',
-      },
-      {
-        title: 'Zeitlose Qualität und Funktionalität',
-        text: 'Von der ikonischen Arctic Parka bis zu eleganten Wollmänteln: Jedes Kleidungsstück wird aus erstklassigen Materialien gefertigt, die Schutz vor den Elementen bieten und höchsten Komfort gewährleisten — in der Stadt wie in der Natur.',
-      },
-      {
-        title: 'Woolrich bei uns im Store',
-        text: 'Erleben Sie die exklusive Welt von Woolrich direkt bei uns im Store in Zürich — mit einer sorgfältig ausgewählten Kollektion hochwertiger Outdoor-Bekleidung und Accessoires.',
       },
     ],
   },

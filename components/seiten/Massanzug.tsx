@@ -8,6 +8,7 @@ import { woerterbuch } from '@/lib/i18n';
 import { pfad } from '@/lib/i18n/routen';
 import { seitenMeta } from '@/lib/i18n/seo';
 import type { Sprache } from '@/lib/i18n/sprachen';
+import AnzugFarben from '@/components/AnzugFarben';
 import RatgeberBlock from '@/components/ratgeber/RatgeberBlock';
 
 export function meta(lang: Sprache): Metadata {
@@ -79,6 +80,7 @@ export default function Massanzug({ lang }: { lang: Sprache }) {
         </div>
       </section>
 
+      <AnzugFarben lang={lang} />
       <Faq lang={lang} items={t.faq} title={t.faqTitel} />
       <RatgeberBlock lang={lang} />
       <CtaBand lang={lang} title={t.cta.titel} text={t.cta.text} />

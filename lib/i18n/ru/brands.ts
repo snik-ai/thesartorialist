@@ -5,7 +5,7 @@ export const brands: Woerterbuch['brands'] = {
   meta: {
     titel: 'Бренды — наши портновские дома и ткацкие фабрики',
     beschreibung:
-      'Бренды The Sartorialist в Цюрихе: Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso и Woolrich — семейные дома, выбранные лично.',
+      'Бренды The Sartorialist в Цюрихе: Gran Sasso, Berwich, Gimo’s, Woolrich, Orazio Luciano, Maria Santangelo, Loro Piana и Holland & Sherry — семейные дома, выбранные лично.',
     ogTitel: 'Бренды — The Sartorialist Цюрих',
     ogBeschreibung: 'Семейные дома, выбранные лично.',
   },

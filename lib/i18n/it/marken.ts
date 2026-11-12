@@ -74,6 +74,46 @@ export const marken: Woerterbuch['marken'] = {
       },
     ],
   },
+  berwich: {
+    claim: 'Il pantalone italiano',
+    metaDescription:
+      'Berwich da The Sartorialist Zurigo: pantaloni dalla Puglia, interamente prodotti in casa dal 1975 — vestibilità italiana, tessuti selezionati, Made in Italy.',
+    origin: 'Martina Franca, Puglia · dal 1975',
+    sections: [
+      {
+        title: 'Una passione nata in un piccolo garage',
+        text: 'Berwich nasce nel 1975 in un piccolo garage di Martina Franca, in Puglia: Michele e Anna Fumarola iniziano a cucire pantaloni — e guidano l’azienda ancora oggi. Mentre la moda esternalizza sempre di più, da Berwich ogni fase resta in casa, dal taglio all’ultima cucitura. Tecniche e tradizione sartoriale passano di padre in figlio e si arricchiscono.',
+      },
+      {
+        title: 'Il pantalone come protagonista',
+        text: 'Dal 2007 la collezione propria porta il nome Berwich — ispirata al viaggio e alla scoperta. Al centro c’è la vestibilità: dal pantalone con pinces a vita alta al chino affusolato fino al cargo rilassato, in tessuti selezionati. Un pantalone Berwich veste bene, cade pulito e trasforma giacca, maglia o camicia in un look compiuto.',
+      },
+      {
+        title: 'Berwich nel nostro negozio a Zurigo',
+        text: 'Come partner di Berwich, proponiamo i pantaloni nel nostro showroom in Kuttelgasse. Provate tagli e tessuti di persona — li abbiniamo alla vostra giacca o al vostro abito su misura e vi consigliamo su vita, ampiezza e lunghezza, finché tutto è perfetto.',
+      },
+    ],
+  },
+  gimos: {
+    claim: "Arte italiana della pelle",
+    metaDescription:
+      "Gimo's da The Sartorialist Zurigo: giacche in pelle, montone e cappotti da Padova — manifattura di famiglia dal 1968, lavorazione italiana tradizionale.",
+    origin: "San Martino di Lupari, Padova · dal 1968",
+    sections: [
+      {
+        title: "Un laboratorio di famiglia per la pelle",
+        text: "Gimo's nasce nel 1968 come piccolo laboratorio a conduzione familiare vicino a Padova, specializzato in capi in pelle per uomo e donna. Dal 1975 il fondatore Renzo Girardin porta l’azienda alla struttura attuale. Fin dall’inizio Gimo's punta su materiali di prima qualità e su una lavorazione accurata — fedele ai metodi tradizionali italiani della pelle, aperta agli stimoli più innovativi della moda.",
+      },
+      {
+        title: "Taglio classico, presenza contemporanea",
+        text: "La collezione va dalla camicia in camoscio al cappotto corto in montone, fino al blouson in flanella con cashmere e seta. I tagli classici ricevono un tocco contemporaneo, ogni dettaglio è curato, i materiali non sono mai banali. Si aggiungono cappotti e giacche in tessuto che uniscono stile e protezione dal freddo — con linee pulite di forme e volumi.",
+      },
+      {
+        title: "Gimo's nel nostro negozio a Zurigo",
+        text: "Proponiamo una selezione di capi Gimo's nel nostro showroom in Kuttelgasse. Toccate con mano la qualità della pelle — vi consigliamo quale giacca o cappotto si abbina al vostro abito, al vostro guardaroba e alla vostra quotidianità.",
+      },
+    ],
+  },
   'gran-sasso': {
     claim: 'L’arte italiana della maglieria',
     metaDescription:

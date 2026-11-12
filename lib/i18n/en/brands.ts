@@ -5,7 +5,7 @@ export const brands: Woerterbuch['brands'] = {
   meta: {
     titel: 'Brands — Our Tailoring Houses & Mills',
     beschreibung:
-      'The brands of The Sartorialist Zurich: Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso and Woolrich — family-run houses, personally selected.',
+      'The brands of The Sartorialist Zurich: Gran Sasso, Berwich, Gimo’s, Woolrich, Orazio Luciano, Maria Santangelo, Loro Piana and Holland & Sherry — family-run houses, personally selected.',
     ogTitel: 'Brands — The Sartorialist Zurich',
     ogBeschreibung: 'Family-run houses, personally selected.',
   },

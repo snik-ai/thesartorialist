@@ -74,6 +74,46 @@ export const marken: Woerterbuch['marken'] = {
       },
     ],
   },
+  berwich: {
+    claim: 'Pantallona italiane',
+    metaDescription:
+      'Berwich te The Sartorialist Cyrih: pantallona nga Apulia, të prodhuara tërësisht brenda shtëpisë që nga viti 1975 — prerje italiane, stofa të përzgjedhura, Made in Italy.',
+    origin: 'Martina Franca, Apulia · që nga 1975',
+    sections: [
+      {
+        title: 'Një pasion që nisi në një garazh të vogël',
+        text: 'Berwich lind në vitin 1975 në një garazh të vogël në Martina Franca, në Apulia: Michele dhe Anna Fumarola nisin aty të qepin pantallona — dhe e drejtojnë kompaninë edhe sot. Ndërsa industria e modës e nxjerr gjithnjë e më shumë prodhimin jashtë, te Berwich çdo hap mbetet në shtëpi, nga prerja deri te qepja e fundit. Teknikat dhe tradita e rrobaqepësisë kalojnë nga babai te djali dhe përsosen.',
+      },
+      {
+        title: 'Pantallonat në rolin kryesor',
+        text: 'Që nga viti 2007 koleksioni i vetë mban emrin Berwich — i frymëzuar nga udhëtimi dhe zbulimi. Në qendër është prerja: nga pantallonat me pala dhe bel të lartë te chino e ngushtë dhe cargo e lirshme, nga stofa të përzgjedhura. Pantallonat Berwich rrinë mirë, bien pastër dhe e kthejnë një xhaketë, triko apo këmishë në një paraqitje të plotë.',
+      },
+      {
+        title: 'Berwich në dyqanin tonë në Cyrih',
+        text: 'Si partner i Berwich, pantallonat i kemi në showroom-in tonë në Kuttelgasse. Provoni prerjet dhe stofat vetë — i kombinojmë me xhaketën ose kostumin tuaj me masë dhe ju këshillojmë për lartësinë e belit, gjerësinë dhe gjatësinë, derisa gjithçka të jetë në vend.',
+      },
+    ],
+  },
+  gimos: {
+    claim: "Arti italian i lëkurës",
+    metaDescription:
+      "Gimo's te The Sartorialist Cyrih: xhaketa lëkure, lëkurë qengji dhe pallto nga Padova — manifakturë familjare që nga 1968, punim tradicional italian.",
+    origin: "San Martino di Lupari, Padova · që nga 1968",
+    sections: [
+      {
+        title: "Një punishte familjare lëkure",
+        text: "Gimo's lind në vitin 1968 si punishte e vogël familjare pranë Padovës, e specializuar në veshje lëkure për gra dhe burra. Që nga viti 1975 themeluesi Renzo Girardin e rrit kompaninë deri në madhësinë e sotme. Që në fillim Gimo's mbështetet në materiale të klasit të parë dhe punim të kujdesshëm — besnike ndaj metodave tradicionale italiane të lëkurës, e hapur ndaj impulseve të reja të modës.",
+      },
+      {
+        title: "Prerje klasike, paraqitje bashkëkohore",
+        text: "Koleksioni shtrihet nga këmisha-xhaketë prej kamoshi dhe pallto e shkurtër prej lëkure qengji deri te bluzoni prej fanelle me kashmir dhe mëndafsh. Prerjet klasike marrin një prekje bashkëkohore, çdo detaj është i menduar, materialet nuk janë kurrë të zakonshme. Krahas tyre janë pallto dhe xhaketa prej stofi që bashkojnë stilin me mbrojtjen nga i ftohti — me vija të pastra në forma dhe vëllime.",
+      },
+      {
+        title: "Gimo's në dyqanin tonë në Cyrih",
+        text: "Pjesë të përzgjedhura të Gimo's i kemi në showroom-in tonë në Kuttelgasse. Ndjeni vetë cilësinë e lëkurës — ju këshillojmë cila xhaketë apo pallto i shkon kostumit, garderobës dhe përditshmërisë suaj.",
+      },
+    ],
+  },
   'gran-sasso': {
     claim: 'Arti italian i trikotazhit',
     metaDescription:

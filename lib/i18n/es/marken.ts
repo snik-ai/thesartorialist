@@ -74,6 +74,46 @@ export const marken: Woerterbuch['marken'] = {
       },
     ],
   },
+  berwich: {
+    claim: 'El pantalón italiano',
+    metaDescription:
+      'Berwich en The Sartorialist Zúrich: pantalones de Apulia, fabricados íntegramente en casa desde 1975. Patronaje italiano, tejidos seleccionados, Made in Italy.',
+    origin: 'Martina Franca, Apulia · desde 1975',
+    sections: [
+      {
+        title: 'Una pasión que nació en un pequeño garaje',
+        text: 'Berwich nace en 1975 en un pequeño garaje de Martina Franca, en Apulia: allí Michele y Anna Fumarola empiezan a coser pantalones, y siguen dirigiendo la empresa hoy. Mientras la moda externaliza cada vez más su producción, en Berwich cada paso se queda en casa, del corte a la última costura. Las técnicas y la tradición sastre pasan de padre a hijo y se perfeccionan.',
+      },
+      {
+        title: 'El pantalón como protagonista',
+        text: 'Desde 2007 la colección propia lleva el nombre de Berwich, inspirada en el viaje y el descubrimiento. En el centro está el patronaje: del pantalón de pinzas de talle alto al chino entallado y al cargo relajado, confeccionados en tejidos seleccionados. Un pantalón Berwich sienta bien, cae limpio y convierte una americana, un punto o una camisa en un conjunto logrado.',
+      },
+      {
+        title: 'Berwich en nuestra tienda de Zúrich',
+        text: 'Como socios de Berwich, tenemos sus pantalones en nuestro showroom de la Kuttelgasse. Pruebe cortes y tejidos en persona: los combinamos con su americana o su traje a medida y le asesoramos sobre tiro, anchura y largo hasta que todo encaje.',
+      },
+    ],
+  },
+  gimos: {
+    claim: "Arte italiano del cuero",
+    metaDescription:
+      "Gimo's en The Sartorialist Zúrich: chaquetas de piel, borrego y abrigos de Padua. Manufactura familiar desde 1968, confección italiana tradicional.",
+    origin: "San Martino di Lupari, Padua · desde 1968",
+    sections: [
+      {
+        title: "Un taller familiar de piel",
+        text: "Gimo's nace en 1968 como pequeño taller familiar cerca de Padua, especializado en prendas de piel para mujer y hombre. A partir de 1975, su fundador Renzo Girardin lleva la empresa a su tamaño actual. Desde el principio, Gimo's apuesta por materiales de primera y una confección cuidada, fiel a los métodos italianos tradicionales del cuero y abierta a los nuevos impulsos de la moda.",
+      },
+      {
+        title: "Corte clásico, presencia actual",
+        text: "La colección va de la sobrecamisa de ante y el abrigo corto de borrego al blusón de franela con cachemira y seda. Los cortes clásicos reciben un toque contemporáneo, cada detalle está pensado y los materiales nunca son corrientes. Se suman abrigos y chaquetas de tejido que unen estilo y protección frente al frío, con líneas limpias en formas y volúmenes.",
+      },
+      {
+        title: "Gimo's en nuestra tienda de Zúrich",
+        text: "Tenemos una selección de prendas de Gimo's en nuestro showroom de la Kuttelgasse. Compruebe usted mismo la calidad de la piel: le asesoramos sobre qué chaqueta o abrigo combina con su traje, su armario y su día a día.",
+      },
+    ],
+  },
   'gran-sasso': {
     claim: 'El arte italiano del punto',
     metaDescription:

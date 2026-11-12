@@ -5,7 +5,7 @@ export const brands: Woerterbuch['brands'] = {
   meta: {
     titel: 'Marchi — Le nostre sartorie e i nostri lanifici',
     beschreibung:
-      'I marchi di The Sartorialist Zurigo: Orazio Luciano, Maria Santangelo, Loro Piana, Holland & Sherry, Gran Sasso e Woolrich — case a conduzione familiare, scelte personalmente.',
+      'I marchi di The Sartorialist Zurigo: Gran Sasso, Berwich, Gimo’s, Woolrich, Orazio Luciano, Maria Santangelo, Loro Piana e Holland & Sherry — case a conduzione familiare, scelte personalmente.',
     ogTitel: 'Marchi — The Sartorialist Zurigo',
     ogBeschreibung: 'Case a conduzione familiare, scelte personalmente.',
   },

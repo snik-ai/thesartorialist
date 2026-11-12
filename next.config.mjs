@@ -109,7 +109,7 @@ const nextConfig = {
       { source: '/author/:path*', destination: '/ueber-uns/', permanent: true },
       { source: '/category/brand/page/:n/', destination: '/category/brand/', permanent: true },
       { source: '/brands/', destination: '/category/brand/', permanent: true },
-      { source: '/gimos/', destination: '/category/brand/', permanent: true },
+      // /gimos/ ist seit 12.11.2026 wieder eine eigene Brand-Seite (lib/brands.ts)
       { source: '/paul-shark/', destination: '/', permanent: true },
       { source: '/home/', destination: '/', permanent: true },
       { source: '/tailoring/', destination: '/massanzug-zuerich/', permanent: true },
