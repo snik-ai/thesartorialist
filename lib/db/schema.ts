@@ -235,8 +235,9 @@ export const aktivitaet = pgTable(
 /**
  * Cookieloses Tracking (Webseitenanalyse). `besucher` = sha256(IP|UA|Tag|Secret) gekürzt — wechselt täglich,
  * IP wird nie gespeichert. `sitzung` bildet der Server (gleicher Tages-Besucher, max. 30 Min. Ruhe).
- * typ: pageview, click_tel, click_whatsapp, click_mail, click_route, cta, form_submit, konfig_start, konfig_pdf,
- * konfig_termin, shop_warenkorb, shop_checkout, anfrage_termin, anfrage_rueckruf, anfrage_konfig (lib/tracking/server.ts)
+ * typ: pageview, click_tel, click_whatsapp, click_mail, click_route, cta, form_submit, konfig_* (offen, kategorie, wahl,
+ * abwahl, detail, fertig, reset, stoff, start, pdf, termin — Ziel in `label`),
+ * shop_warenkorb, shop_checkout, anfrage_termin, anfrage_rueckruf, anfrage_konfig (lib/tracking/server.ts)
  */
 export const ereignis = pgTable(
   'ereignis',

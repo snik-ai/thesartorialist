@@ -227,3 +227,122 @@
 .wa-kontakt-text::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--a-gold); margin-right: 8px; vertical-align: middle; }
 .wa-leer { padding: 8px 0; }
 @media (max-width: 640px) { .wa-tabelle .breit { display: none; } .wa-tabelle { font-size: 13px; } }
+
+/* ---------- Konfigurator (/admin/reichweite/konfigurator) ---------- */
+.wa-zurueck { display: inline-block; font-size: 12.5px; font-weight: 600; color: var(--a-muted); margin-bottom: 14px; }
+.wa-zurueck:hover { color: var(--a-ink); }
+.wa-k-kacheln { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1px; }
+.wa-k-kacheln .wa-kachel strong { font-size: 32px; }
+.wa-k-kacheln .wa-kachel.gold { background: var(--a-ink); }
+.wa-k-kacheln .wa-kachel.gold .a-kicker { color: #a9a49a; }
+.wa-k-kacheln .wa-kachel.gold strong { color: var(--a-gold); }
+.wa-k-kacheln .wa-kachel.gold small { color: #a9a49a; }
+.wa-k-kacheln .wa-kachel.gold .wa-delta:not(.gut):not(.schlecht) { background: rgba(255, 255, 255, 0.08); color: #cfcabf; }
+.wa-k-kacheln .wa-kachel.gold .wa-delta.leer { background: transparent; }
+@media (max-width: 1280px) { .wa-k-kacheln { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .wa-k-kacheln { grid-template-columns: repeat(2, minmax(0, 1fr)); } .wa-k-kacheln .wa-kachel strong { font-size: 26px; } }
+
+/* Schritt-Trichter */
+.wa-kt-liste { list-style: none; margin: 0; padding: 0; }
+.wa-kt-liste li { display: grid; grid-template-columns: minmax(170px, 250px) minmax(0, 1fr) 118px 96px; gap: 16px; align-items: center; padding: 7px 0; }
+.wa-kt-liste li.trenner { border-top: 1px solid var(--a-line); margin-top: 8px; padding-top: 15px; }
+.wa-kt-kopf { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--a-muted); padding-bottom: 10px !important; border-bottom: 1px solid var(--a-line-2); margin-bottom: 6px; }
+.wa-kt-liste .r { text-align: right; }
+.wa-kt-name { font-size: 13.5px; font-weight: 600; display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.wa-kt-name i { font-style: normal; font-size: 11px; font-weight: 700; color: var(--a-gold-dunkel); flex: none; }
+.wa-kt-spur { position: relative; height: 30px; background: repeating-linear-gradient(135deg, #f4f2ed 0 6px, #ece9e2 6px 7px); display: block; }
+.wa-kt-spur b { position: absolute; inset: 0 auto 0 0; background: var(--a-ink); transition: width 0.6s cubic-bezier(.2,.8,.2,1); }
+.wa-kt-liste li.ziel .wa-kt-spur b { background: var(--a-gold); }
+.wa-kt-spur em { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-style: normal; font-size: 12px; color: #fff; mix-blend-mode: difference; white-space: nowrap; }
+.wa-kt-spur em strong { font-weight: 700; }
+.wa-kt-weiter { display: flex; flex-direction: column; align-items: flex-end; font-size: 13px; font-weight: 700; line-height: 1.2; }
+.wa-kt-weiter small { font-size: 11px; font-weight: 500; color: var(--a-muted); }
+.wa-kt-liste .auf { color: var(--a-ok); }
+.wa-kt-liste .ab { color: var(--a-bad); }
+.wa-kt-liste .leer { color: var(--a-muted); font-weight: 500; font-size: 12px; }
+.wa-kt-vorher { font-size: 12px; font-weight: 700; }
+@media (max-width: 760px) {
+  .wa-kt-kopf { display: none !important; }
+  .wa-kt-liste li { grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px 12px; padding: 9px 0; }
+  .wa-kt-name { grid-column: 1 / -1; }
+  .wa-kt-spur { grid-column: 1 / 2; height: 26px; }
+  .wa-kt-weiter { min-width: 52px; }
+  .wa-kt-vorher { min-width: 46px; }
+}
+
+/* Verlauf (Balken) */
+.wa-kv-legende { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--a-soft); margin-bottom: 12px; }
+.wa-kv-legende span { display: inline-flex; align-items: center; gap: 7px; }
+.wa-kv-legende i { width: 10px; height: 10px; display: inline-block; }
+.wa-kv i.o { background: #e6dcc9; } .wa-kv i.s { background: var(--a-ink); } .wa-kv i.z { background: var(--a-gold); }
+.wa-kv-balken { display: flex; align-items: stretch; gap: 2px; height: 180px; border-bottom: 1px solid var(--a-line-2); }
+.wa-kv { min-width: 0; overflow: hidden; }
+.wa-kv-balken > div { flex: 1; position: relative; min-width: 0; }
+.wa-kv-balken > div:hover { background: #f6f4ef; }
+.wa-kv-balken i { position: absolute; left: 0; right: 0; bottom: 0; display: block; }
+.wa-kv-balken i.s { left: 18%; right: 18%; }
+.wa-kv-balken i.z { left: 32%; right: 32%; }
+.wa-kv-achse { display: flex; gap: 2px; margin-top: 6px; }
+.wa-kv-achse span { flex: 1; min-width: 0; font-size: 10px; color: var(--a-muted); white-space: nowrap; overflow: visible; }
+@media (max-width: 640px) { .wa-kv-balken { height: 140px; } .wa-kv-achse span { font-size: 9px; } }
+
+/* Optionen je Kategorie */
+.wa-ko { display: flex; flex-direction: column; gap: 10px; }
+.wa-ko-kat { border: 1px solid var(--a-line); background: #fff; }
+.wa-ko-kat > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 14px 16px; min-height: 52px; }
+.wa-ko-kat > summary::-webkit-details-marker { display: none; }
+.wa-ko-kat > summary b { font-family: var(--serif); font-size: 18px; font-weight: 600; }
+.wa-ko-kat > summary span { font-size: 12.5px; color: var(--a-muted); margin-left: auto; text-align: right; }
+.wa-ko-kat > summary svg { width: 16px; height: 16px; flex: none; transition: transform 0.2s; color: var(--a-soft); }
+.wa-ko-kat[open] > summary { border-bottom: 1px solid var(--a-line); }
+.wa-ko-kat[open] > summary svg { transform: rotate(180deg); }
+.wa-ko-kat > summary:hover { background: #fbfaf7; }
+.wa-ko-gruppen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--a-line); }
+.wa-ko-gruppe { background: #fff; padding: 14px 16px 16px; min-width: 0; }
+.wa-ko-gruppe h3 { font-family: var(--sans) !important; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--a-soft); margin: 0 0 10px; display: flex; justify-content: space-between; gap: 10px; }
+.wa-ko-gruppe h3 span { color: var(--a-muted); letter-spacing: 0.04em; }
+.wa-ko-gruppe ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.wa-ko-gruppe li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; align-items: baseline; }
+.wa-ko-gruppe .name { font-size: 13px; min-width: 0; overflow-wrap: anywhere; }
+.wa-ko-gruppe li.top .name { font-weight: 700; }
+.wa-ko-gruppe li.null .name { color: var(--a-muted); }
+.wa-ko-gruppe .werte { display: inline-flex; gap: 8px; font-size: 12.5px; }
+.wa-ko-gruppe .werte strong { font-weight: 700; }
+.wa-ko-gruppe .werte em { font-style: normal; color: var(--a-muted); min-width: 34px; text-align: right; }
+.wa-ko-gruppe .spur { grid-column: 1 / -1; height: 4px; background: #f1efea; display: block; position: relative; }
+.wa-ko-gruppe .spur b { position: absolute; inset: 0 auto 0 0; background: #d9c39c; }
+.wa-ko-gruppe li.top .spur b { background: var(--a-gold); }
+.wa-ko-gruppe li small { grid-column: 1 / -1; font-size: 11px; color: var(--a-muted); }
+@media (max-width: 1280px) { .wa-ko-gruppen { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .wa-ko-gruppen { grid-template-columns: 1fr; }
+  .wa-ko-kat > summary { flex-wrap: wrap; gap: 4px 12px; }
+  .wa-ko-kat > summary span { margin-left: 0; order: 3; flex-basis: 100%; text-align: left; }
+  .wa-ko-kat > summary svg { margin-left: auto; }
+}
+
+/* Kachel auf der Webseitenanalyse */
+.wa-kteaser { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)) auto; gap: 1px; background: var(--a-line); border: 1px solid var(--a-line); align-items: stretch; }
+.wa-kteaser > div { background: #fff; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.wa-kteaser > div span { font-size: 11px; color: var(--a-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wa-kteaser > div b { font-size: 22px; font-weight: 600; }
+.wa-kteaser > div .wa-delta { align-self: flex-start; font-size: 11px; padding: 1px 6px; }
+.wa-kteaser > a { background: var(--a-ink); color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 22px; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; min-height: 48px; }
+.wa-kteaser > a:hover { background: #2b2b2b; }
+.wa-kteaser > a i { font-style: normal; color: var(--a-gold); font-size: 16px; }
+@media (max-width: 1100px) { .wa-kteaser { grid-template-columns: repeat(3, minmax(0, 1fr)); } .wa-kteaser > a { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .wa-kteaser { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.wa-neben.acht { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+@media (max-width: 1280px) { .wa-neben.acht { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .wa-neben.acht { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Konfigurator-Seite: Spalten dürfen schmaler werden als ihr Inhalt (Balken-Verlauf, Tabellen) */
+.wa-zwei.eng { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.wa-zwei.eng.breit-links { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+@media (max-width: 1100px) { .wa-zwei.eng, .wa-zwei.eng.breit-links { grid-template-columns: minmax(0, 1fr); } }
+/* Nie seitlich scrollen: breite Diagramme (Startbreite vor dem Messen) und die randlosen Zeitraum-Chips dürfen
+   die Seite nicht verbreitern — sonst misst der ResizeObserver die verbreiterte Seite und bleibt zu breit. */
+.wa { overflow-x: clip; }
+.wa .a-karte-inhalt { min-width: 0; overflow-x: clip; }
+.wa .a-chart { min-width: 0; max-width: 100%; overflow: hidden; }
+.wa .a-chart > svg { max-width: none; }
+@media (max-width: 400px) { .wa-tabelle th { letter-spacing: 0.1em; } }

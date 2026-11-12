@@ -2,6 +2,7 @@
 // Conversion-Rate, Verlauf mit allen Kontaktarten, Trichter, Fluss Kanal → Kontaktart, Kanäle, Wochenraster und
 // Detailtabellen. Zeitraum in der URL (?zeitraum=heute|gestern|7|30|90|frei&von=&bis=), damit ein Blick teilbar ist.
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import '@/components/admin/webanalyse/webanalyse.css';
 import { echtzeit, heuteZuerich, uebersicht, zeitraumAus, type Aufteilung, type Echtzeit as EchtzeitDaten } from '@/lib/crm/webanalyse';
 import Zeitraumwahl from '@/components/admin/webanalyse/Zeitraumwahl';
@@ -10,8 +11,9 @@ import Verlauf from '@/components/admin/webanalyse/Verlauf';
 import Trichter from '@/components/admin/webanalyse/Trichter';
 import KanalFluss from '@/components/admin/webanalyse/KanalFluss';
 import Wochenraster from '@/components/admin/webanalyse/Wochenraster';
-import { Bilanz, KanalListe, Karte, Pfad, Tabelle, type Spalte } from '@/components/admin/webanalyse/Bausteine';
-import { bereichText, dauer, quote, zahl } from '@/components/admin/webanalyse/format';
+import { Bilanz, Delta, KanalListe, Karte, Pfad, Tabelle, type Spalte } from '@/components/admin/webanalyse/Bausteine';
+import { bereichText, dauer, quote, veraenderung, zahl } from '@/components/admin/webanalyse/format';
+import { konfigKennzahlen } from '@/lib/crm/konfiganalyse';
 
 export const metadata: Metadata = { title: 'Webseitenanalyse' };
 export const dynamic = 'force-dynamic';
@@ -26,7 +28,8 @@ export default async function WebanalysePage({ searchParams }: { searchParams: P
   const sp = await searchParams;
   const heute = heuteZuerich();
   const z = zeitraumAus(sp, heute);
-  const [u, e] = await Promise.all([uebersicht(z), echtzeit().catch((): EchtzeitDaten | null => null)]);
+  const [u, e, kz] = await Promise.all([uebersicht(z), echtzeit().catch((): EchtzeitDaten | null => null), konfigKennzahlen(z).catch(() => null)]);
+  const zq = new URLSearchParams(z.art === 'frei' ? { zeitraum: 'frei', von: z.von, bis: z.bis } : { zeitraum: z.art }).toString();
   const k = u.kennzahlen;
   const lq = u.landQuelle;
   const lqTotal = lq.proxy + lq.sprache + lq.unbekannt;
@@ -60,6 +63,29 @@ export default async function WebanalysePage({ searchParams }: { searchParams: P
           <KanalFluss fluss={u.fluss} kanaele={u.kanaele} />
         </Karte>
       </div>
+
+      {kz && (
+        <Karte titel="Stil-Konfigurator" unter="Geöffnet → gewählt → Termin. Jeder Schritt, jede Option und jede Kategorie im Detail auf der eigenen Seite.">
+          <div className="wa-kteaser">
+            {[
+              { label: 'Geöffnet', wert: zahl(kz.jetzt.geoeffnet), d: veraenderung(kz.jetzt.geoeffnet, kz.vorher.geoeffnet) },
+              { label: 'Mit Auswahl', wert: zahl(kz.jetzt.mitAuswahl), d: veraenderung(kz.jetzt.mitAuswahl, kz.vorher.mitAuswahl) },
+              { label: 'Startquote', wert: quote(kz.jetzt.startquote, 0), d: kz.jetzt.startquote !== null && kz.vorher.startquote !== null ? (kz.jetzt.startquote - kz.vorher.startquote) * 100 : null, pp: true },
+              { label: 'Weiter zum Termin', wert: zahl(kz.jetzt.termin), d: veraenderung(kz.jetzt.termin, kz.vorher.termin) },
+              { label: 'Anfrage mit Stil', wert: zahl(kz.jetzt.anfrage), d: veraenderung(kz.jetzt.anfrage, kz.vorher.anfrage) },
+            ].map((x) => (
+              <div key={x.label}>
+                <span>{x.label}</span>
+                <b className="zahl">{x.wert}</b>
+                <Delta wert={x.d} pp={x.pp} />
+              </div>
+            ))}
+            <Link href={`/admin/reichweite/konfigurator/?${zq}`}>
+              Konfigurator-Analyse <i aria-hidden>→</i>
+            </Link>
+          </div>
+        </Karte>
+      )}
 
       <Karte titel="Kanäle im Vergleich" unter={<>Sitzungen je Kanal, darin farbig die Sitzungen mit Kontakt · Ø Conversion-Rate {quote(k.conversionRate)}, gold = über dem Schnitt</>}>
         <KanalListe u={u} />

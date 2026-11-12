@@ -12,6 +12,16 @@ export const TYPEN = [
   'click_route',
   'cta',
   'form_submit',
+  // Konfigurator (Ziel = IDs aus lib/konfigurator/daten.ts): Seite geöffnet, Schritt erreicht, Option gewählt/
+  // abgewählt, Details angesehen, Kategorie vollständig, Auswahl geleert, Stoffnummer notiert, PDF, weiter zum Termin
+  'konfig_offen',
+  'konfig_kategorie',
+  'konfig_wahl',
+  'konfig_abwahl',
+  'konfig_detail',
+  'konfig_fertig',
+  'konfig_reset',
+  'konfig_stoff',
   'konfig_start',
   'konfig_pdf',
   'konfig_termin',

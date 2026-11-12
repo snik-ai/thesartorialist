@@ -21,6 +21,7 @@ import { TZ } from '@/lib/zeit';
 import { ROUTEN } from '@/lib/i18n/routen';
 import { KANAL_LABEL, type Kanal } from '@/lib/tracking/server';
 import { KONTAKTARTEN, type KontaktKey } from '@/lib/crm/bahnen';
+import { konfigZielText } from '@/lib/konfigurator/bezeichnungen';
 
 /* ---------- Zeitraum ---------- */
 
@@ -78,6 +79,8 @@ export const KONTAKT_TYP: Record<string, KontaktKey> = {
   anfrage_konfig: 'konfig',
   anfrage_ratgeber: 'ratgeber',
 };
+/** Ereignisse ohne eigenes Zutun des Besuchers: zählen nicht als Aktion (Engagement, Aktionen-Tabelle). */
+const PASSIV = sql.raw(`('pageview','konfig_offen','konfig_kategorie')`);
 const KONV = sql.raw(`(${Object.keys(KONTAKT_TYP).map((t) => `'${t}'`).join(',')})`);
 
 export const EREIGNIS_LABEL: Record<string, string> = {
@@ -88,6 +91,14 @@ export const EREIGNIS_LABEL: Record<string, string> = {
   click_route: 'Route geöffnet',
   cta: 'Knopf geklickt',
   form_submit: 'Formular abgeschickt',
+  konfig_offen: 'Konfigurator geöffnet',
+  konfig_kategorie: 'Konfigurator: Schritt erreicht',
+  konfig_wahl: 'Konfigurator: Option gewählt',
+  konfig_abwahl: 'Konfigurator: Option abgewählt',
+  konfig_detail: 'Konfigurator: Details angesehen',
+  konfig_fertig: 'Konfigurator: Kategorie vollständig',
+  konfig_reset: 'Konfigurator: Auswahl geleert',
+  konfig_stoff: 'Konfigurator: Stoffnummer notiert',
   konfig_start: 'Konfigurator begonnen',
   konfig_pdf: 'Konfiguration als PDF',
   konfig_termin: 'Konfigurator → Termin',
@@ -146,7 +157,8 @@ function fensterSql(name: 'w' | 'v', von: SQL, bis: SQL): SQL[] {
           (array_agg(pfad order by zeit) filter (where typ = 'pageview'))[1] as einstieg,
           (array_agg(pfad order by zeit desc) filter (where typ = 'pageview'))[1] as ausstieg,
           count(*) filter (where typ = 'pageview')::int as aufrufe,
-          count(*) filter (where typ <> 'pageview')::int as aktionen,
+          -- Passive Messpunkte (Seite geöffnet, Abschnitt im Blick) sind keine Aktion des Besuchers
+          count(*) filter (where typ not in ${PASSIV})::int as aktionen,
           count(*) filter (where typ in ${KONV})::int as kontakte,
           bool_or(typ like 'konfig\\_%' or typ like 'shop\\_%' or (typ = 'pageview' and (${absichtsSeiten()}))) as interesse,
           (array_agg(typ order by zeit) filter (where typ in ${KONV}))[1] as erster_kontakt,
@@ -502,7 +514,7 @@ export async function uebersicht(z: Zeitraum): Promise<Uebersicht> {
       ['über 10 Min.', 'f'],
     ].map(([label, k]) => ({ label, sitzungen: n(vd?.[k]) }));
 
-    const aktionen = (await zeilen(tx, sql`select typ, count(*)::int as anzahl, count(distinct sid)::int as sitzungen from w_ev where typ <> 'pageview' group by 1 order by 2 desc`)).map(
+    const aktionen = (await zeilen(tx, sql`select typ, count(*)::int as anzahl, count(distinct sid)::int as sitzungen from w_ev where typ not in ${PASSIV} group by 1 order by 2 desc`)).map(
       (r) => ({ typ: String(r.typ), label: EREIGNIS_LABEL[String(r.typ)] ?? String(r.typ), anzahl: n(r.anzahl), sitzungen: n(r.sitzungen), kontakt: String(r.typ) in KONTAKT_TYP }),
     );
     const ziele = (
@@ -582,7 +594,7 @@ export async function echtzeit(): Promise<Echtzeit> {
       zeit: String(r.zeit),
       typ: String(r.typ),
       label: EREIGNIS_LABEL[String(r.typ)] ?? String(r.typ),
-      ziel: (r.label as string | null) ?? null,
+      ziel: konfigZielText(String(r.typ), (r.label as string | null) ?? null),
       pfad: String(r.pfad),
       kanal: kanalLabel(String(r.kanal)),
       geraet: (r.geraet as string | null) ?? null,

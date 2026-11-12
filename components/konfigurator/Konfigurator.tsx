@@ -10,7 +10,8 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { KONFIG_KATEGORIEN, type KonfigOption, type KonfigUntergruppe } from '@/lib/konfigurator/daten';
 import { aufloesen, optionText, zeigeCode, type Gewaehlt } from '@/lib/konfigurator/auswahl';
-import { setStoffe, useAuswahl, useStoffe } from '@/lib/konfigurator/useAuswahl';
+import { aktuelleAuswahl, setStoffe, useAuswahl, useStoffe } from '@/lib/konfigurator/useAuswahl';
+import { vollstaendig } from '@/lib/konfigurator/vollstaendig';
 import { STOFF_LINK } from '@/lib/konfigurator/konst';
 import { melde } from '@/lib/tracking/melden';
 import { uebersetzeKatalog } from '@/lib/konfigurator/uebersetzen';
@@ -73,14 +74,49 @@ export default function Konfigurator({
     if (!neu.length) return;
     setStoffe([...new Set([...stoffe, ...neu])].slice(0, 12));
     setStoffEingabe('');
+    melde('konfig_stoff');
   };
 
+
+  // Webseitenanalyse (cookielos, lib/tracking): jeder Schritt höchstens einmal je Seitenaufruf.
+  // Ziele sind IDs aus dem Katalog (nie übersetzte Bezeichnungen), damit alle Sprachen zusammenlaufen.
+  const gemeldet = useRef(new Set<string>());
+  const einmal = useCallback((typ: string, ziel?: string) => {
+    const k = `${typ}|${ziel ?? ''}`;
+    if (gemeldet.current.has(k)) return;
+    gemeldet.current.add(k);
+    melde(typ, ziel);
+  }, []);
+  // Schritt erreicht = Abschnitt bleibt mindestens 0,8 s im Blick (beim Durchscrollen per Reiter
+  // zählen die überflogenen Abschnitte nicht mit)
+  const uhren = useRef(new Map<string, ReturnType<typeof setTimeout>>());
+  const imBlick = useCallback(
+    (id: string, sichtbar: boolean) => {
+      const alt = uhren.current.get(id);
+      if (alt) clearTimeout(alt);
+      uhren.current.delete(id);
+      if (sichtbar) uhren.current.set(id, setTimeout(() => einmal('konfig_kategorie', id), 800));
+    },
+    [einmal],
+  );
+  useEffect(() => {
+    einmal('konfig_offen');
+    const u = uhren.current;
+    return () => {
+      u.forEach((x) => clearTimeout(x));
+      u.clear();
+    };
+  }, [einmal]);
 
   // Aktive Kategorie in der Leiste mitführen; Übersicht sichtbar → Schwebeleiste aus
   useEffect(() => {
     const io = new IntersectionObserver(
       (es) => {
-        for (const e of es) if (e.isIntersecting && e.target.id !== 'uebersicht') setAktiv(e.target.id);
+        for (const e of es) {
+          if (e.target.id === 'uebersicht') continue;
+          if (e.isIntersecting) setAktiv(e.target.id);
+          imBlick(e.target.id, e.isIntersecting);
+        }
       },
       { rootMargin: '-40% 0px -55% 0px' },
     );
@@ -89,23 +125,43 @@ export default function Konfigurator({
       if (el) io.observe(el);
     });
     const sum = document.getElementById('uebersicht');
-    const io2 = new IntersectionObserver(([e]) => setUeberSicht(e.isIntersecting || e.boundingClientRect.top < 0), { threshold: 0 });
+    const io2 = new IntersectionObserver(
+      ([e]) => {
+        setUeberSicht(e.isIntersecting || e.boundingClientRect.top < 0);
+        imBlick('uebersicht', e.isIntersecting);
+      },
+      { threshold: 0 },
+    );
     if (sum) io2.observe(sum);
     return () => {
       io.disconnect();
       io2.disconnect();
     };
-  }, []);
+  }, [imBlick]);
 
 
-  const begonnen = useRef(false);
   const waehle = useCallback(
     (u: KonfigUntergruppe, o: KonfigOption) => {
+      let warGewaehlt = false;
+      try {
+        warGewaehlt = (aktuelleAuswahl()[u.id] ?? []).includes(o.id);
+      } catch {
+        /* nur für die Messung */
+      }
       setze(u, o);
-      // Webseitenanalyse: erste Auswahl auf dieser Seite = Konfigurator begonnen
-      if (!begonnen.current) {
-        begonnen.current = true;
-        melde('konfig_start');
+      try {
+        const kat = KONFIG_KATEGORIEN.find((k) => k.subCategories.some((x) => x.id === u.id));
+        if (warGewaehlt) melde('konfig_abwahl', `${u.id}:${o.id}`);
+        else {
+          // erste Auswahl auf dieser Seite = Konfigurator begonnen
+          einmal('konfig_start');
+          if (kat) einmal('konfig_kategorie', kat.id);
+          melde('konfig_wahl', `${u.id}:${o.id}`);
+          // Kategorie mit dieser Wahl vollständig (alle Entscheidungen getroffen)?
+          if (kat && vollstaendig(kat, aktuelleAuswahl())) einmal('konfig_fertig', kat.id);
+        }
+      } catch {
+        /* Messung darf nie stören */
       }
       setPop(o.id);
       setTimeout(() => setPop(null), 450);
@@ -113,10 +169,17 @@ export default function Konfigurator({
       requestAnimationFrame(() => setGlow(true));
       setTimeout(() => setGlow(false), 1300);
     },
-    [setze],
+    [setze, einmal],
   );
   const istGewaehlt = (u: string, o: string) => (auswahl[u] ?? []).includes(o);
-  const entferne = (g: Gewaehlt) => weg(g.untergruppeId, g.option.id);
+  const entferne = (g: Gewaehlt) => {
+    weg(g.untergruppeId, g.option.id);
+    melde('konfig_abwahl', `${g.untergruppeId}:${g.option.id}`);
+  };
+  const zuruecksetzen = () => {
+    reset();
+    melde('konfig_reset');
+  };
 
   const items = useMemo(() => aufloesen(auswahl, kats), [auswahl, kats]);
   const fortschritt = (kid: string) => {
@@ -251,7 +314,10 @@ export default function Konfigurator({
                               <Check />
                             </span>
                           </button>
-                          <button type="button" className="konf-info" aria-label={fmt(ui.detailsZu, { label: o.label })} onClick={() => setDetail({ kategorieId: k.id, u, o })}>
+                          <button type="button" className="konf-info" aria-label={fmt(ui.detailsZu, { label: o.label })} onClick={() => {
+                              setDetail({ kategorieId: k.id, u, o });
+                              melde('konfig_detail', `${u.id}:${o.id}`);
+                            }}>
                             <Info />
                           </button>
                         </div>
@@ -338,7 +404,7 @@ export default function Konfigurator({
               <p className="muted">{ui.summaryText}</p>
             </div>
             {items.length > 0 && (
-              <button type="button" className="linkbtn" onClick={reset}>
+              <button type="button" className="linkbtn" onClick={zuruecksetzen}>
                 {ui.reset}
               </button>
             )}

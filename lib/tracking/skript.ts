@@ -39,4 +39,5 @@ else if(tr&&EIGEN.test(tr))s(tr);
 else if(tr)s('cta',tr);},true);
 D.addEventListener('submit',function(e){var f=e.target;s('form_submit',f&&(f.getAttribute('data-track')||f.getAttribute('aria-label')||f.id||''))},true);
 pv();
+var Q=W.__tsQ;W.__tsQ=null;if(Q&&Q.length)setTimeout(function(){Q.forEach(function(x){s(x[0],x[1])})},0);
 })();`;

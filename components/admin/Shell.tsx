@@ -18,10 +18,14 @@ const TABS: Eintrag[] = [
   { href: '/admin/auftraege/', label: 'Aufträge', icon: 'auftrag', zahl: 'tasks' },
 ];
 
+const ALLE_HREFS = NAV.flatMap((g) => g.eintraege.map((e) => e.href));
+
 export default function Shell({ email, zaehler, children }: { email: string; zaehler: Zaehler; children: React.ReactNode }) {
   const pfad = usePathname() ?? '';
   const router = useRouter();
-  const aktiv = (href: string) => (pfad.startsWith(href) ? 'page' : undefined);
+  // Der genaueste Eintrag gewinnt (/admin/reichweite/konfigurator/ markiert nicht auch die Webseitenanalyse)
+  const aktiv = (href: string) =>
+    pfad.startsWith(href) && !ALLE_HREFS.some((h) => h.length > href.length && h.startsWith(href) && pfad.startsWith(h)) ? 'page' : undefined;
   const [neu, setNeu] = useState(false);
 
   useEffect(() => {

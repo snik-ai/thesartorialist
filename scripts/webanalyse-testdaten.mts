@@ -6,7 +6,14 @@
 import './db/env';
 import { createHash } from 'node:crypto';
 import postgres from 'postgres';
+import { readFileSync } from 'node:fs';
 import { browserVon, geraet, kanalVon, osVon, seitenSprache, bildschirmKlasse } from '../lib/tracking/server';
+import { KONFIG_KATEGORIEN } from '../lib/konfigurator/daten';
+import { entscheidungen } from '../lib/konfigurator/vollstaendig';
+
+const KONFIG_PFAD: Record<string, string> = JSON.parse(readFileSync(new URL('../lib/i18n/routen.json', import.meta.url), 'utf8')).konfigurator;
+// Beliebtheit je Option (fest, damit die Ranglisten realistisch ungleich sind)
+const BELIEBT = new Map<string, number>();
 
 const url = process.env.DATABASE_URL;
 if (!url) throw new Error('DATABASE_URL fehlt');
@@ -87,6 +94,8 @@ const TITEL: Record<string, string> = {
 type Zeile = Record<string, unknown>;
 
 async function main() {
+  for (const k of KONFIG_KATEGORIEN)
+    for (const u of k.subCategories) u.options.forEach((o, i) => BELIEBT.set(`${u.id}:${o.id}`, (i === 0 ? 2.2 : 1) * (0.25 + rnd() * 1.8)));
   await sql`delete from ereignis where besucher like 'demo%'`;
   if (process.argv.includes('--leeren')) {
     console.log('Tracking-Testdaten entfernt.');
@@ -154,10 +163,68 @@ async function main() {
       }
       return false;
     };
-    const konfig = ev('konfig_start', 0.09, null, lang === 'de' ? '/massanzug-konfigurator/' : SEITEN[lang][0]);
-    if (konfig) {
-      ev('konfig_pdf', 0.25);
-      if (ev('konfig_termin', 0.35)) ev('anfrage_konfig', 0.55, null, lang === 'de' ? '/termin/' : SEITEN[lang][0]);
+    // Konfigurator: Seite öffnen → Schritte erreichen → Optionen wählen → Übersicht → PDF / Termin → Anfrage
+    const kpfad = KONFIG_PFAD[lang] ?? KONFIG_PFAD.de;
+    if (rnd() < 0.11 * interesse) {
+      const kev = (typ: string, label: string | null = null, pause = 2000 + rnd() * 9000) => {
+        t += pause;
+        if (live && t >= jetzt) return false;
+        zeilen.push({ ...basis, zeit: new Date(t), typ, pfad: kpfad, label, seiten_sprache: seitenSprache(kpfad), kanal: 'direkt', gclid: false });
+        return true;
+      };
+      t += 3000;
+      zeilen.push({ ...basis, zeit: new Date(t), typ: 'pageview', pfad: kpfad, titel: 'Massanzug-Konfigurator | The Sartorialist', seiten_sprache: seitenSprache(kpfad), referrer: null, gclid: false, kanal: 'direkt', aufruf: `a${Math.floor(rnd() * 1e12).toString(36)}`, dauer_ms: 60_000 + Math.round(rnd() * 600_000) });
+      kev('konfig_offen', null, 300);
+      const mobil = /iPhone|Android/.test(ua);
+      const eifer = (0.55 + rnd() * 0.6) * (mobil ? 0.85 : 1.1);
+      let gewaehlt = 0;
+      const auswahl: Record<string, string[]> = {};
+      const REICHWEITE: Record<string, number> = { jacket: 0.82, trousers: 0.6, waistcoat: 0.42, 'black-tie': 0.3 };
+      let weiter = true;
+      for (const k of KONFIG_KATEGORIEN) {
+        if (!weiter || rnd() > (REICHWEITE[k.id] ?? 0.3) * (gewaehlt ? 1.25 : 1)) {
+          weiter = weiter && rnd() < 0.35; // manche springen per Reiter weiter
+          continue;
+        }
+        kev('konfig_kategorie', k.id);
+        for (const gruppe of entscheidungen(k)) {
+          if (rnd() > 0.68 * eifer) continue;
+          const gid = wahl(gruppe);
+          const u = k.subCategories.find((x) => x.id === gid)!;
+          const o = gewichtet(u.options.map((x) => [x, BELIEBT.get(`${u.id}:${x.id}`) ?? 1] as [typeof x, number]));
+          if (rnd() < 0.18) kev('konfig_detail', `${u.id}:${o.id}`);
+          if (!kev('konfig_wahl', `${u.id}:${o.id}`)) break;
+          if (!gewaehlt) kev('konfig_start', null, 50);
+          gewaehlt++;
+          auswahl[u.id] = [o.id];
+          if (rnd() < 0.08) {
+            kev('konfig_abwahl', `${u.id}:${o.id}`);
+            const o2 = wahl(u.options);
+            kev('konfig_wahl', `${u.id}:${o2.id}`);
+            auswahl[u.id] = [o2.id];
+          }
+        }
+        if (entscheidungen(k).every((g) => g.some((id) => auswahl[id]?.length))) kev('konfig_fertig', k.id);
+        if (rnd() < 0.25) weiter = false;
+      }
+      if (gewaehlt && rnd() < 0.45) {
+        kev('konfig_kategorie', 'stoff');
+        if (rnd() < 0.3) kev('konfig_stoff');
+      }
+      if (gewaehlt && rnd() < 0.7) {
+        kev('konfig_kategorie', 'uebersicht');
+        if (rnd() < 0.04) kev('konfig_reset');
+        else {
+          if (rnd() < 0.3) kev('konfig_pdf', null, 20_000 + rnd() * 120_000);
+          if (rnd() < 0.34 && kev('konfig_termin', null, 15_000 + rnd() * 90_000)) {
+            if (rnd() < 0.55) {
+              t += 60_000 + rnd() * 240_000;
+              const tp = lang === 'de' ? '/termin/' : SEITEN[lang][SEITEN[lang].length - 1];
+              if (!live || t < jetzt) zeilen.push({ ...basis, zeit: new Date(t), typ: 'anfrage_konfig', pfad: tp, label: null, seiten_sprache: seitenSprache(tp), kanal: 'direkt', gclid: false });
+            }
+          }
+        }
+      }
     }
     if (ev('shop_warenkorb', 0.03, null, '/shop/')) ev('shop_checkout', 0.5, null, '/shop/');
     ev('click_route', 0.012, 'Route');
